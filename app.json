@@ -1,0 +1,17 @@
+{
+  "name": "buddies",
+  "displayName": "buddies",
+  "expo": {
+    "name": "buddies",
+    "slug": "buddies",
+    "version": "1.0.0",
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
