@@ -6,6 +6,7 @@ import ProfileScreen from "./app/screens/ProfileScreen/ProfileScreen";
 import FriendsScreen from "./app/screens/FriendsScreen/FriendsScreen";
 import ActivitiesScreen from "./app/screens/ActivitiesScreen/ActivitiesScreen";
 import SettingsScreen from "./app/screens/SettingsScreen/SettingsScreen";
+import translate from "./app/utils/language/translate";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -20,7 +21,7 @@ const App = () => {
                     name="Profile"
                     component={ProfileScreen}
                     options={{
-                        tabBarLabel: "Profile",
+                        tabBarLabel: translate("menu_profile"),
                         tabBarIcon: ({ color }) => (
                             <MaterialCommunityIcons
                                 name="account"
@@ -34,7 +35,7 @@ const App = () => {
                     name="Friends"
                     component={FriendsScreen}
                     options={{
-                        tabBarLabel: "Friends",
+                        tabBarLabel: translate("menu_friends"),
                         tabBarIcon: ({ color }) => (
                             <MaterialCommunityIcons
                                 name="account-group"
@@ -48,7 +49,7 @@ const App = () => {
                     name="Activities"
                     component={ActivitiesScreen}
                     options={{
-                        tabBarLabel: "Activities",
+                        tabBarLabel: translate("menu_activities"),
                         tabBarIcon: ({ color }) => (
                             <MaterialCommunityIcons
                                 name="rocket"
@@ -62,7 +63,7 @@ const App = () => {
                     name="Settings"
                     component={SettingsScreen}
                     options={{
-                        tabBarLabel: "Settings",
+                        tabBarLabel: translate("menu_settings"),
                         tabBarIcon: ({ color }) => (
                             <MaterialCommunityIcons
                                 name="settings"
