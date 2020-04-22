@@ -8,7 +8,11 @@ import ParticipatedActivitiesScreen from "./ParticipatedActivitiesScreen";
 
 const StackNavigator = createStackNavigator();
 
-const ActivitiesStack = ({ navigation }) => {
+interface ActivitiesStackProps {
+    navigation: any;
+}
+
+const ActivitiesStack = ({ navigation }: ActivitiesStackProps) => {
     return (
         <StackNavigator.Navigator>
             <StackNavigator.Screen
