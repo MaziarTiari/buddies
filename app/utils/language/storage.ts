@@ -7,9 +7,9 @@ const MultiLanguageStorage: IMultiLanguageStorage = {
         en_US: "Profile",
         de_DE: "Profil",
     },
-    menu_friends: {
-        en_US: "Friends",
-        de_DE: "Freunde",
+    menu_feed: {
+        en_US: "Feed",
+        de_DE: "Feed",
     },
     menu_activities: {
         en_US: "Activities",

@@ -2,52 +2,35 @@ import React from "react";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import ProfileScreen from "./app/screens/ProfileScreen/ProfileScreen";
-import FriendsScreen from "./app/screens/FriendsScreen/FriendsScreen";
-import ActivitiesScreen from "./app/screens/ActivitiesScreen/ActivitiesScreen";
-import SettingsScreen from "./app/screens/SettingsScreen/SettingsScreen";
+import FeedStack from "./app/screens/Feed/FeedStack";
+import ActivitiesStack from "./app/screens/Activities/ActivitiesStack";
+import ProfileStack from "./app/screens/Profile/ProfileStack";
+import SettingsStack from "./app/screens/Settings/SettingsStack";
 import translate from "./app/utils/language/translate";
 
-const Tab = createMaterialBottomTabNavigator();
+const BottomNavigator = createMaterialBottomTabNavigator();
 
 const App = () => {
     return (
         <NavigationContainer>
-            <Tab.Navigator
-                initialRouteName="Profile"
+            <BottomNavigator.Navigator
+                initialRouteName="Feed"
                 screenOptions={{ tabBarColor: "#222" }}
+                labeled={false}
             >
-                <Tab.Screen
-                    name="Profile"
-                    component={ProfileScreen}
+                <BottomNavigator.Screen
+                    name="Feed"
+                    component={FeedStack}
                     options={{
-                        tabBarLabel: translate("menu_profile"),
+                        tabBarLabel: translate("menu_feed"),
                         tabBarIcon: ({ color }) => (
-                            <MaterialCommunityIcons
-                                name="account"
-                                color={color}
-                                size={26}
-                            />
+                            <MaterialCommunityIcons name="home" color={color} size={26} />
                         ),
                     }}
                 />
-                <Tab.Screen
-                    name="Friends"
-                    component={FriendsScreen}
-                    options={{
-                        tabBarLabel: translate("menu_friends"),
-                        tabBarIcon: ({ color }) => (
-                            <MaterialCommunityIcons
-                                name="account-group"
-                                color={color}
-                                size={26}
-                            />
-                        ),
-                    }}
-                />
-                <Tab.Screen
+                <BottomNavigator.Screen
                     name="Activities"
-                    component={ActivitiesScreen}
+                    component={ActivitiesStack}
                     options={{
                         tabBarLabel: translate("menu_activities"),
                         tabBarIcon: ({ color }) => (
@@ -59,9 +42,23 @@ const App = () => {
                         ),
                     }}
                 />
-                <Tab.Screen
+                <BottomNavigator.Screen
+                    name="Profile"
+                    component={ProfileStack}
+                    options={{
+                        tabBarLabel: translate("menu_profile"),
+                        tabBarIcon: ({ color }) => (
+                            <MaterialCommunityIcons
+                                name="account"
+                                color={color}
+                                size={26}
+                            />
+                        ),
+                    }}
+                />
+                <BottomNavigator.Screen
                     name="Settings"
-                    component={SettingsScreen}
+                    component={SettingsStack}
                     options={{
                         tabBarLabel: translate("menu_settings"),
                         tabBarIcon: ({ color }) => (
@@ -73,7 +70,7 @@ const App = () => {
                         ),
                     }}
                 />
-            </Tab.Navigator>
+            </BottomNavigator.Navigator>
         </NavigationContainer>
     );
 };
