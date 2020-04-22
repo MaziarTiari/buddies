@@ -3,6 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import HeaderButton from "../../components/HeaderButton/HeaderButton";
 import translate from "../../utils/language/translate";
 import ProfileTab from "./ProfileTab";
+import Color from "../../utils/theme/color";
 
 const StackNavigator = createStackNavigator();
 
@@ -13,14 +14,16 @@ const ProfileStack = () => {
                 name={translate("menu_profile")}
                 component={ProfileTab}
                 options={{
-                    headerRight: () => {
-                        return (
-                            <HeaderButton
-                                icon="dots-vertical-circle-outline"
-                                onPress={() => {}}
-                            />
-                        );
-                    },
+                    headerRight: () => (
+                        <HeaderButton
+                            color={Color.secondaryText}
+                            icon="dots-vertical-circle-outline"
+                            onPress={() => {}}
+                        />
+                    ),
+
+                    headerTintColor: Color.secondaryText,
+                    headerStyle: { backgroundColor: Color.navBackground },
                 }}
             />
         </StackNavigator.Navigator>

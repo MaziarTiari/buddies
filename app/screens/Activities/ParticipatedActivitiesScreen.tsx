@@ -2,10 +2,10 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import Color from "../../utils/theme/color";
 
-const GaleryScreen = () => {
+const ParticipatedActivitiesScreen = () => {
     return (
         <View style={styles.screen}>
-            <Text style={styles.text}>Galery Screen</Text>
+            <Text style={styles.text}>Participated Activities Screen</Text>
         </View>
     );
 };
@@ -22,4 +22,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default GaleryScreen;
+export default ParticipatedActivitiesScreen;

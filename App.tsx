@@ -4,18 +4,29 @@ import { NavigationContainer } from "@react-navigation/native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import FeedStack from "./app/screens/Feed/FeedStack";
 import ActivitiesStack from "./app/screens/Activities/ActivitiesStack";
+import ChatStack from "./app/screens/Chat/ChatStack";
 import ProfileStack from "./app/screens/Profile/ProfileStack";
-import SettingsStack from "./app/screens/Settings/SettingsStack";
 import translate from "./app/utils/language/translate";
+import Color from "./app/utils/theme/color";
 
 const BottomNavigator = createMaterialBottomTabNavigator();
+
+const Icon = (icon: string, focused: boolean) => {
+    return (
+        <MaterialCommunityIcons
+            name={icon}
+            color={focused ? Color.primaryText : Color.secondaryText}
+            size={26}
+        />
+    );
+};
 
 const App = () => {
     return (
         <NavigationContainer>
             <BottomNavigator.Navigator
                 initialRouteName="Feed"
-                screenOptions={{ tabBarColor: "#222" }}
+                screenOptions={{ tabBarColor: Color.navBackground }}
                 labeled={false}
             >
                 <BottomNavigator.Screen
@@ -23,9 +34,7 @@ const App = () => {
                     component={FeedStack}
                     options={{
                         tabBarLabel: translate("menu_feed"),
-                        tabBarIcon: ({ color }) => (
-                            <MaterialCommunityIcons name="home" color={color} size={26} />
-                        ),
+                        tabBarIcon: ({ focused }) => Icon("home", focused),
                     }}
                 />
                 <BottomNavigator.Screen
@@ -33,13 +42,15 @@ const App = () => {
                     component={ActivitiesStack}
                     options={{
                         tabBarLabel: translate("menu_activities"),
-                        tabBarIcon: ({ color }) => (
-                            <MaterialCommunityIcons
-                                name="rocket"
-                                color={color}
-                                size={26}
-                            />
-                        ),
+                        tabBarIcon: ({ focused }) => Icon("rocket", focused),
+                    }}
+                />
+                <BottomNavigator.Screen
+                    name="Chat"
+                    component={ChatStack}
+                    options={{
+                        tabBarLabel: translate("menu_chat"),
+                        tabBarIcon: ({ focused }) => Icon("chat", focused),
                     }}
                 />
                 <BottomNavigator.Screen
@@ -47,27 +58,7 @@ const App = () => {
                     component={ProfileStack}
                     options={{
                         tabBarLabel: translate("menu_profile"),
-                        tabBarIcon: ({ color }) => (
-                            <MaterialCommunityIcons
-                                name="account"
-                                color={color}
-                                size={26}
-                            />
-                        ),
-                    }}
-                />
-                <BottomNavigator.Screen
-                    name="Settings"
-                    component={SettingsStack}
-                    options={{
-                        tabBarLabel: translate("menu_settings"),
-                        tabBarIcon: ({ color }) => (
-                            <MaterialCommunityIcons
-                                name="settings"
-                                color={color}
-                                size={26}
-                            />
-                        ),
+                        tabBarIcon: ({ focused }) => Icon("account", focused),
                     }}
                 />
             </BottomNavigator.Navigator>

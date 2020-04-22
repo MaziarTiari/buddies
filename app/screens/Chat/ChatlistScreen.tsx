@@ -1,11 +1,11 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import Color from "../../utils/theme/color";
 
-const GaleryScreen = () => {
+const ChatListScreen = () => {
     return (
         <View style={styles.screen}>
-            <Text style={styles.text}>Galery Screen</Text>
+            <Text style={styles.text}>Chatlist Screen</Text>
         </View>
     );
 };
@@ -22,4 +22,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default GaleryScreen;
+export default ChatListScreen;
