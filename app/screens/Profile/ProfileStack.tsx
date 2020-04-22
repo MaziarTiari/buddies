@@ -11,7 +11,7 @@ const ProfileStack = () => {
     return (
         <StackNavigator.Navigator>
             <StackNavigator.Screen
-                name={translate("menu_profile")}
+                name="Profile"
                 component={ProfileTab}
                 options={{
                     headerRight: () => (
@@ -21,7 +21,7 @@ const ProfileStack = () => {
                             onPress={() => {}}
                         />
                     ),
-
+                    headerTitle: translate("menu_profile"),
                     headerTintColor: Color.secondaryText,
                     headerStyle: { backgroundColor: Color.navBackground },
                 }}

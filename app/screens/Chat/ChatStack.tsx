@@ -10,9 +10,10 @@ const ChatStack = () => {
     return (
         <StackNavigator.Navigator>
             <StackNavigator.Screen
-                name={translate("menu_chat")}
+                name="Chatlist"
                 component={ChatListScreen}
                 options={{
+                    headerTitle: translate("menu_chat"),
                     headerTintColor: Color.secondaryText,
                     headerStyle: { backgroundColor: Color.navBackground },
                 }}

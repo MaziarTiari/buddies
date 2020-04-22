@@ -1,5 +1,4 @@
 import React from "react";
-import { StyleSheet } from "react-native";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import translate from "../../utils/language/translate";
 import ActivityListScreen from "./ActivityListScreen";
@@ -26,9 +25,7 @@ const ActivitiesTab = () => {
             <TabNavigator.Screen
                 name="ActivityMap"
                 component={ActivityMapScreen}
-                options={{
-                    tabBarLabel: translate("activities_tab_map"),
-                }}
+                options={{ tabBarLabel: translate("activities_tab_map") }}
             />
         </TabNavigator.Navigator>
     );

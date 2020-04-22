@@ -1,5 +1,5 @@
-import React, { ReactPropTypes } from "react";
-import { createStackNavigator, StackNavigationProp } from "@react-navigation/stack";
+import React from "react";
+import { createStackNavigator } from "@react-navigation/stack";
 import translate from "../../utils/language/translate";
 import HeaderButton from "../../components/HeaderButton/HeaderButton";
 import ActivitiesTab from "./ActivitiesTab";
