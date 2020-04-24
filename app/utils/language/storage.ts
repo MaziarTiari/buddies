@@ -15,6 +15,10 @@ const MultiLanguageStorage: IMultiLanguageStorage = {
         en_US: "Activities",
         de_DE: "Aktivitäten",
     },
+    menu_activities_favorites: {
+        en_US: "My Favorites",
+        de_DE: "Meine Favoriten",
+    },
     menu_activities_participated: {
         en_US: "My Activities",
         de_DE: "Meine Aktivitäten",
