@@ -4,7 +4,7 @@ import HeaderButton from "../../components/HeaderButton/HeaderButton";
 import translate from "../../utils/language/translate";
 import ProfileTab from "./ProfileTab";
 import Color from "../../utils/theme/color";
-import { StackNavScreenHeaderStyle } from "../index.style";
+import { StackNavScreenHeaderStyle_ios } from "../index.style";
 
 const StackNavigator = createStackNavigator();
 
@@ -24,7 +24,7 @@ const ProfileStack = () => {
                     ),
                     headerTitle: translate("menu_profile"),
                     headerTintColor: Color.secondaryText,
-                    headerStyle: StackNavScreenHeaderStyle,
+                    headerStyle: StackNavScreenHeaderStyle_ios,
                 }}
             />
         </StackNavigator.Navigator>

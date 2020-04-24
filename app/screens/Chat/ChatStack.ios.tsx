@@ -1,26 +1,26 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import translate from "../../utils/language/translate";
-import FeedScreen from "./FeedScreen";
+import ChatListScreen from "./ChatlistScreen";
 import Color from "../../utils/theme/color";
-import { StackNavScreenHeaderStyle } from "../index.style";
+import { StackNavScreenHeaderStyle_ios } from "../index.style";
 
 const StackNavigator = createStackNavigator();
 
-const FeedStack = () => {
+const ChatStack = () => {
     return (
         <StackNavigator.Navigator>
             <StackNavigator.Screen
-                name="Feed"
-                component={FeedScreen}
+                name="Chatlist"
+                component={ChatListScreen}
                 options={{
-                    headerTitle: translate("menu_feed"),
+                    headerTitle: translate("menu_chat"),
                     headerTintColor: Color.secondaryText,
-                    headerStyle: StackNavScreenHeaderStyle,
+                    headerStyle: StackNavScreenHeaderStyle_ios,
                 }}
             />
         </StackNavigator.Navigator>
     );
 };
 
-export default FeedStack;
+export default ChatStack;
