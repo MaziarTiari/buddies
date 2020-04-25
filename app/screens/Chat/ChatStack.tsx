@@ -3,7 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import translate from "../../utils/language/translate";
 import ChatListScreen from "./ChatlistScreen";
 import Color from "../../utils/theme/color";
-import { StackNavScreenHeaderStyle } from "../index.style";
+import { styles } from "../index.style";
 
 const StackNavigator = createStackNavigator();
 
@@ -16,7 +16,7 @@ const ChatStack = () => {
                 options={{
                     headerTitle: translate("menu_chat"),
                     headerTintColor: Color.secondaryText,
-                    headerStyle: StackNavScreenHeaderStyle,
+                    headerStyle: styles.stackNavScreenHeader,
                 }}
             />
         </StackNavigator.Navigator>

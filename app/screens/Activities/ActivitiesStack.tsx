@@ -1,5 +1,5 @@
 import React from "react";
-import { View } from "react-native";
+import { View, Platform } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import translate from "../../utils/language/translate";
 import HeaderButton from "../../components/HeaderButton/HeaderButton";
@@ -7,7 +7,7 @@ import ActivitiesTab from "./ActivitiesTab";
 import Color from "../../utils/theme/color";
 import ParticipatedActivitiesScreen from "./ParticipatedActivitiesScreen";
 import FavoriteActivitiesScreen from "./FavoriteActivitiesScreen";
-import { StackNavScreenHeaderStyle } from "../index.style";
+import { styles } from "../index.style";
 
 const StackNavigator = createStackNavigator();
 
@@ -40,7 +40,7 @@ const ActivitiesStack = ({ navigation }: ActivitiesStackProps) => {
                         </View>
                     ),
                     headerTintColor: Color.secondaryText,
-                    headerStyle: StackNavScreenHeaderStyle,
+                    headerStyle: styles.stackNavScreenHeader,
                 }}
             />
             <StackNavigator.Screen
@@ -49,7 +49,7 @@ const ActivitiesStack = ({ navigation }: ActivitiesStackProps) => {
                 options={{
                     headerTitle: translate("menu_activities_participated"),
                     headerTintColor: Color.secondaryText,
-                    headerStyle: StackNavScreenHeaderStyle,
+                    headerStyle: styles.stackNavScreenHeader,
                 }}
             />
             <StackNavigator.Screen
@@ -58,7 +58,7 @@ const ActivitiesStack = ({ navigation }: ActivitiesStackProps) => {
                 options={{
                     headerTitle: translate("menu_activities_favorites"),
                     headerTintColor: Color.secondaryText,
-                    headerStyle: StackNavScreenHeaderStyle,
+                    headerStyle: styles.stackNavScreenHeader,
                 }}
             />
         </StackNavigator.Navigator>

@@ -3,7 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import translate from "../../utils/language/translate";
 import FeedScreen from "./FeedScreen";
 import Color from "../../utils/theme/color";
-import { StackNavScreenHeaderStyle } from "../index.style";
+import { styles } from "../index.style";
 
 const StackNavigator = createStackNavigator();
 
@@ -16,7 +16,7 @@ const FeedStack = () => {
                 options={{
                     headerTitle: translate("menu_feed"),
                     headerTintColor: Color.secondaryText,
-                    headerStyle: StackNavScreenHeaderStyle,
+                    headerStyle: styles.stackNavScreenHeader,
                 }}
             />
         </StackNavigator.Navigator>
