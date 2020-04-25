@@ -6,7 +6,7 @@ import FeedScreenNavigator from '../FeedContainer/ScreenNavigator';
 import translate from '../../utils/language/translate';
 import ActivityStackNavigator from '../ActivityContainer/ScreenNavigator/ActivityStackNavigator';
 import ChatStack from '../MessageContainer/ScreenNavigator';
-import ProfileStack from '../ProfileVewContainer/ScreenNavigator/ProfileStack';
+import ProfileStack from '../ProfileViewContainer/ScreenNavigator/ProfileStack';
 import { ButtomStackNavIcon } from '../BottomNavigationIcon/BottomNavigationIcon';
 
 const BottomNavigator = createMaterialBottomTabNavigator();
