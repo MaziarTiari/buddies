@@ -1,23 +1,22 @@
 import React from "react";
 import translate from "../../utils/language/translate";
-import ChatListScreen from "./MessageContainer";
-import Color from "../../utils/theme/color";
+import MessageContainer from "./MessageContainer";
 import StackNavigator from "../StackNavigator/StackNavigator";
 
-const ChatStack = () => {
+const MessageStack = () => {
     return (
-        <StackNavigator 
-            screenDefinitionList= {[
+        <StackNavigator
+            screenDefinitionList={[
                 {
-                    name:"Chatlist",
-                    component:ChatListScreen,
-                    options:{
+                    name: "Chatlist",
+                    component: MessageContainer,
+                    options: {
                         headerTitle: translate("menu_chat"),
-                    }
-                }
+                    },
+                },
             ]}
         />
     );
 };
 
-export default ChatStack;
+export default MessageStack;

@@ -4,6 +4,7 @@ const Color = {
     navBackground: "#212121",
     screenBackground: "#303030",
     dialogBackground: "#424242",
+    onlineDot: "#79C879",
 };
 
 export default Color;
