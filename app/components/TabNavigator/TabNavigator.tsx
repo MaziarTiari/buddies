@@ -1,20 +1,20 @@
-import React from 'react'
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import Color from '../../utils/theme/color';
+import React from "react";
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import Color from "../../utils/theme/color";
 
 const Navigator = createMaterialTopTabNavigator();
 
 interface ScreenTabNavigatorProps {
-    screens: TabNavigatorScreen[]
+    screens: TabNavigatorScreen[];
 }
 
 export interface TabNavigatorScreen {
-    name: string; 
+    name: string;
     component: React.ComponentType<any>;
     tabBarLabel: string;
 }
 
-const TabNavigator = ( {screens}: ScreenTabNavigatorProps ) => {
+const TabNavigator = ({ screens }: ScreenTabNavigatorProps) => {
     return (
         <Navigator.Navigator
             tabBarOptions={{
@@ -24,11 +24,16 @@ const TabNavigator = ( {screens}: ScreenTabNavigatorProps ) => {
                 indicatorStyle: { backgroundColor: Color.primaryText },
             }}
         >
-            {screens.map( (screen, index) => 
-                <Navigator.Screen {...screen} key={index}/>
-            )}
+            {screens.map((screen, index) => (
+                <Navigator.Screen
+                    key={index}
+                    name={screen.name}
+                    component={screen.component}
+                    options={{ tabBarLabel: screen.tabBarLabel }}
+                />
+            ))}
         </Navigator.Navigator>
     );
-}
+};
 
-export default TabNavigator
+export default TabNavigator;
