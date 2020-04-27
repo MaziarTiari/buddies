@@ -1,22 +1,22 @@
 import React, { useState } from "react";
 import { FlatList } from "react-native";
-import AppScreen from "../AppScreen/AppScreen";
 import { FiendList } from "../../../example_data/FetchedFriendList";
 import { FriedListItem } from "../FriendListItem/FriedListItem";
+import ScreenContentContainer from "../ScreenContentContainer/ScreenContentContainer";
 
-const FriedListContainer = () => {
+const FriendListContainer = () => {
     const [items, setItems] = useState(FiendList);
 
     return (
-        <AppScreen>
+        <ScreenContentContainer>
             <FlatList
                 style={{ width: "100%" }}
                 data={items}
                 renderItem={({ item }) => <FriedListItem {...item} />}
                 keyExtractor={(item) => item.id.toString()}
             />
-        </AppScreen>
+        </ScreenContentContainer>
     );
 };
 
-export default FriedListContainer;
+export default FriendListContainer;
