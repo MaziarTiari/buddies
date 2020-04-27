@@ -1,7 +1,7 @@
 import { StyleSheet, Platform } from "react-native";
 import Color from "../../utils/theme/color";
 import { StackNavigationOptions } from "@react-navigation/stack";
-import { MaterialTopTabNavigationOptions, MaterialTopTabBarOptions } from "@react-navigation/material-top-tabs";
+import { MaterialTopTabBarOptions } from "@react-navigation/material-top-tabs";
 
 const styles = StyleSheet.create({
     stackNavScreenHeader: {

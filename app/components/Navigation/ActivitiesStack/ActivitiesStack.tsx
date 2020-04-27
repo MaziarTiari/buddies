@@ -8,6 +8,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { ActivitiesTab } from "./ActivitiesTab";
 import { stackScreenOptionHeaderStyle } from "../navigationStyles";
 import ActivityList from "../../ActivityList/ActivityList";
+import { ActivitiesStackHeaderButtonConainer } from "./HeaderButtonContainer";
 
 const Stack = createStackNavigator();
 
@@ -20,7 +21,8 @@ const ActivitiesStack = ({ navigation }: any) => {
                 component={ActivitiesTab}
                 options={{
                     headerTitle: translate("menu_activities"),
-                    headerRight: () => <HeaderButtons navigation={navigation} />,
+                    headerRight: () => 
+                        <ActivitiesStackHeaderButtonConainer navigation={navigation} />,
                     ...stackScreenOptionHeaderStyle,
                 }}
             />
@@ -35,22 +37,5 @@ const ActivitiesStack = ({ navigation }: any) => {
         </Stack.Navigator>
     );
 };
-
-const HeaderButtons = ({navigation}: any) => (
-    <View style={{ flexDirection: "row" }}>
-        <IconButton
-            color={Color.secondaryText}
-            icon="heart"
-            onPress={() => navigation.navigate(navigationComponentNames.ActivityList)}
-        />
-        <IconButton
-            color={Color.secondaryText}
-            icon="wunderlist"
-            onPress={() =>
-                navigation.navigate(navigationComponentNames.ActivityList)
-            }
-        />
-    </View>
-)
 
 export default ActivitiesStack;
