@@ -8,7 +8,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { ActivitiesTab } from "./ActivitiesTab";
 import { stackScreenOptionHeaderStyle } from "../navigationStyles";
 import ActivityList from "../../ActivityList/ActivityList";
-import { ActivitiesStackHeaderButtonConainer } from "./HeaderButtonContainer";
+import { ActivitiesStackHeaderButtonContainer } from "./HeaderButtonContainer";
 
 const Stack = createStackNavigator();
 
@@ -22,7 +22,7 @@ const ActivitiesStack = ({ navigation }: any) => {
                 options={{
                     headerTitle: translate("menu_activities"),
                     headerRight: () => 
-                        <ActivitiesStackHeaderButtonConainer navigation={navigation} />,
+                        <ActivitiesStackHeaderButtonContainer navigation={navigation} />,
                     ...stackScreenOptionHeaderStyle,
                 }}
             />

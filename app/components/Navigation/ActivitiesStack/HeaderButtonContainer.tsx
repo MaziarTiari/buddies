@@ -4,7 +4,7 @@ import { IconButton } from 'react-native-paper'
 import { navigationComponentNames } from '../componentNames'
 import Color from '../../../utils/theme/color'
 
-export const ActivitiesStackHeaderButtonConainer = ({navigation}: any) => (
+export const ActivitiesStackHeaderButtonContainer = ({navigation}: any) => (
     <View style={{ flexDirection: "row" }}>
         <IconButton
             color={Color.secondaryText}
