@@ -1,8 +1,5 @@
 import React from "react";
-import { View } from "react-native";
 import translate from "../../../utils/language/translate";
-import IconButton from "../../IconButton/IconButton";
-import Color from "../../../utils/theme/color";
 import { navigationComponentNames } from '../componentNames';
 import { createStackNavigator } from "@react-navigation/stack";
 import { ActivitiesTab } from "./ActivitiesTab";
