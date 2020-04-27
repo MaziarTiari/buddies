@@ -47,6 +47,10 @@ const MultiLanguageStorage: IMultiLanguageStorage = {
         en_US: "Galery",
         de_DE: "Galerie",
     },
+    mutual_friends : {
+        en_US: "mutual friends",
+        de_DE: "gemeinsame Freunde",
+    }
 };
 
 export default MultiLanguageStorage;

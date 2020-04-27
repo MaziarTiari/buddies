@@ -1,8 +1,8 @@
 import React from "react";
-import { View, Text, Image } from "react-native";
+import { View, Text } from "react-native";
 import styles from "./MessageListItem.style";
 import translate from "../../utils/language/translate";
-import { TouchableRipple } from "react-native-paper";
+import { ProfileListItem } from "../ProfileListItem/ProfileListItem";
 
 export enum Relation {
     STRANGER,
@@ -20,40 +20,30 @@ export interface MessageListItemProps {
 }
 
 export const MessageListItem = (Props: MessageListItemProps) => {
-    return (
-        <TouchableRipple
-            rippleColor="rgba(0, 0, 0, 0.3)"
-            onPress={() => {}} // todo
-            onLongPress={() => {}} // todo
-        >
-            <View style={styles.container}>
-                <Image
-                    style={styles.profileImage}
-                    source={require("../../../assets/img/defaultProfileImage.png")}
-                />
-                {Props.isOnline && <View style={styles.onlineDot}></View>}
-                <View style={styles.textContainer}>
-                    <Text style={styles.displayText}>{Props.displayName}</Text>
-                    <Text style={styles.statusText}>
-                        {getRelationText(Props.relation)}
-                    </Text>
-                </View>
-                <View style={styles.rightContainer}>
-                    <Text style={styles.lastMessageText}>
-                        {getFormattedDateText(Props.lastMessage)}
-                    </Text>
-                    <View style={styles.unreadContainer}>
-                        {Props.unreadMessages > 0 && (
-                            <View style={styles.unreadDot}>
-                                <Text style={styles.unreadDotText}>
-                                    {Props.unreadMessages}
-                                </Text>
-                            </View>
-                        )}
+    
+    const rightComponent = (
+        <View style={styles.rightContainer}>
+            <Text style={styles.lastMessageText}>
+                {getFormattedDateText(Props.lastMessage)}
+            </Text>
+            <View style={styles.unreadContainer}>
+                {Props.unreadMessages > 0 && (
+                    <View style={styles.unreadDot}>
+                        <Text style={styles.unreadDotText}>
+                            {Props.unreadMessages}
+                        </Text>
                     </View>
-                </View>
+                )}
             </View>
-        </TouchableRipple>
+        </View>
+    );
+    
+    return (
+        <ProfileListItem 
+            uuid={Props.uuid} isOnline={Props.isOnline} rightComponent={rightComponent}
+            title={Props.displayName} subTitle={getRelationText(Props.relation)}
+            onPress={() => {}}
+        />
     );
 };
 

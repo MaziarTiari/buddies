@@ -1,15 +1,16 @@
 import React from "react";
-import { Text } from "react-native";
-import Color from "../../../utils/theme/color";
 import AppScreen from "../../AppScreen/AppScreen";
+import { Button } from "react-native";
 
-const AboutScreen = () => {
+const ProfileInformation = ({navigation}: any) => {
     return (
-        <AppScreen >
-            <Text style={{color: Color.secondaryText}}>About Screen</Text>
+        <AppScreen>
+            <Button 
+                title="Friends" onPress={() => navigation.navigate('FriendListContainer')}
+            />
         </AppScreen>
     );
 };
 
 
-export default AboutScreen;
+export default ProfileInformation;

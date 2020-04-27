@@ -8,20 +8,21 @@ const stackNav = createStackNavigator();
 interface StackNavigatorScreen {
     name: string;
     component: React.ComponentType<any>;
-    options: {
+    options?: {
         headerRight?: ((props: {tintColor?: string | undefined}) => React.ReactNode)
         headerTitle: string;
     }
 }
 
 interface StackNavigatorProps {
+    initialRouteName?: string;
     screenDefinitionList: StackNavigatorScreen[];
 }
 
-const StackNavigator = ( { screenDefinitionList }: StackNavigatorProps ) => {
+const StackNavigator = ( Props: StackNavigatorProps ) => {
     return (
-        <stackNav.Navigator>
-            {screenDefinitionList.map((screen, index) =>
+        <stackNav.Navigator initialRouteName={Props.initialRouteName}>
+            {Props.screenDefinitionList.map((screen, index) =>
                 <stackNav.Screen 
                     key={index} {...screen}
                     options= {{
