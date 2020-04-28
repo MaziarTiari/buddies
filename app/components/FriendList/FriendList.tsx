@@ -4,7 +4,7 @@ import { FiendList } from "../../../example_data/FetchedFriendList";
 import { FriedListItem } from "../FriendListItem/FriedListItem";
 import ScreenContentContainer from "../ScreenContentContainer/ScreenContentContainer";
 
-const FriendListContainer = () => {
+const FriendList = () => {
     const [items, setItems] = useState(FiendList);
 
     return (
@@ -19,4 +19,4 @@ const FriendListContainer = () => {
     );
 };
 
-export default FriendListContainer;
+export default FriendList;

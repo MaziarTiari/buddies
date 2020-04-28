@@ -1,6 +1,13 @@
-import { MessageListItemProps } from "../app/components/MessageListItem/MessageListItem";
+interface IMessageList {
+    uuid: string;
+    displayName: string;
+    isOnline: boolean;
+    unreadMessages: number;
+    relation: number;
+    lastMessage: Date;
+}
 
-export const response: MessageListItemProps[] = [
+export const response: IMessageList[] = [
     {
         uuid: "1",
         displayName: "Billy Wallace",

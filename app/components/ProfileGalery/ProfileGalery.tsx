@@ -3,12 +3,12 @@ import { Text } from "react-native";
 import Color from "../../utils/theme/color";
 import ScreenContentContainer from "../ScreenContentContainer/ScreenContentContainer";
 
-const UserActivityContainer = () => {
+const ProfileGalery = () => {
     return (
         <ScreenContentContainer>
-            <Text style={{color: Color.secondaryText}}>Activity Screen</Text>
+            <Text style={{ color: Color.secondaryText }}>Profile Galery</Text>
         </ScreenContentContainer>
     );
 };
 
-export default UserActivityContainer;
+export default ProfileGalery;
