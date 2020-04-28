@@ -5,6 +5,7 @@ const Color = {
     screenBackground: "#303030",
     dialogBackground: "#424242",
     onlineDot: "#79C879",
+    heartIcon: "#EEEE03"
 };
 
 export default Color;

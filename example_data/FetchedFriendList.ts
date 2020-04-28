@@ -1,6 +1,6 @@
-import { IProfile } from "./FetchedProfile";
+import { IUser } from "./FetchedProfile";
 
-export const FiendList: IProfile[] = [
+export const FiendList: IUser[] = [
     {
         id: 1,
         username: "maziar",

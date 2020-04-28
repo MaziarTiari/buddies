@@ -1,4 +1,4 @@
-export interface IProfile {
+export interface IUser {
     id: number;
     username: string;
     email: string;
@@ -6,6 +6,8 @@ export interface IProfile {
     location: string;
     firstname?: string;
     lastname?: string;
+    sex?: string;
+    birthday?: Date;
     languages?: string[];
     info?: string;
     educationalInstitute?: string;
