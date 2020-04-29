@@ -17,10 +17,11 @@ export interface MessageListItemProps {
     relation: Relation;
     unreadMessages: number;
     lastMessage: Date;
+    onPress: (pressedItem: MessageListItemProps) => void;
+    onLongPress: (pressedItem: MessageListItemProps) => void;
 }
 
 export const MessageListItem = (Props: MessageListItemProps) => {
-    
     const rightComponent = (
         <View style={styles.rightContainer}>
             <Text style={styles.lastMessageText}>
@@ -29,20 +30,22 @@ export const MessageListItem = (Props: MessageListItemProps) => {
             <View style={styles.unreadContainer}>
                 {Props.unreadMessages > 0 && (
                     <View style={styles.unreadDot}>
-                        <Text style={styles.unreadDotText}>
-                            {Props.unreadMessages}
-                        </Text>
+                        <Text style={styles.unreadDotText}>{Props.unreadMessages}</Text>
                     </View>
                 )}
             </View>
         </View>
     );
-    
+
     return (
-        <ProfileListItem 
-            uuid={Props.uuid} isOnline={Props.isOnline} rightComponent={rightComponent}
-            title={Props.displayName} subTitle={getRelationText(Props.relation)}
-            onPress={() => {}}
+        <ProfileListItem
+            uuid={Props.uuid}
+            isOnline={Props.isOnline}
+            rightComponent={rightComponent}
+            title={Props.displayName}
+            subTitle={getRelationText(Props.relation)}
+            onPress={() => Props.onPress(Props)}
+            onLongPress={() => Props.onLongPress(Props)}
         />
     );
 };

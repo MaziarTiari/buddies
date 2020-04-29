@@ -1,27 +1,19 @@
-import { StyleSheet, Platform } from "react-native";
-import Color from "../../utils/theme/color";
+import { Platform } from "react-native";
 import { StackNavigationOptions } from "@react-navigation/stack";
 import { MaterialTopTabBarOptions } from "@react-navigation/material-top-tabs";
+import Color from "./app/utils/theme/color";
 
-const styles = StyleSheet.create({
-    stackNavScreenHeader: {
-        backgroundColor: Color.navBackground,
-        ...Platform.select({
-            ios: {
-                height: 100
-            }
-        })
-    }
-});
-
-export const stackScreenOptionHeaderStyle: StackNavigationOptions = {
+export const screenOptions: StackNavigationOptions = {
     headerTintColor: Color.secondaryText,
-    headerStyle: styles.stackNavScreenHeader
-}
+    headerStyle: {
+        backgroundColor: Color.navBackground,
+        ...Platform.select({ ios: { height: 100 } }),
+    },
+};
 
 export const tabBarOptions: MaterialTopTabBarOptions = {
     activeTintColor: Color.primaryText,
     inactiveTintColor: Color.secondaryText,
     style: { backgroundColor: Color.navBackground },
     indicatorStyle: { backgroundColor: Color.primaryText },
-}
+};

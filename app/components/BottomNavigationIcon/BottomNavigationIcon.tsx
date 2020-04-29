@@ -1,13 +1,13 @@
-import React from 'react'
+import React from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import Color from '../../utils/theme/color';
+import Color from "../../utils/theme/color";
 
-interface ButtomStackNavIconProps {
+interface ButtonNavigationIconProps {
     icon: string;
     focused: boolean;
 }
 
-export const ButtomStackNavIcon = ({icon, focused}: ButtomStackNavIconProps) => {
+export const ButtonNavigationIcon = ({ icon, focused }: ButtonNavigationIconProps) => {
     return (
         <MaterialCommunityIcons
             name={icon}
