@@ -15,7 +15,7 @@ import { IconButton } from "react-native-paper";
 const MIN_INPUT_HEIGHT = 30;
 const MAX_INPUT_HEIGHT = 95;
 
-export interface ChatInputProps extends KeyboardAvoidingViewProps{
+export interface ChatInputProps extends KeyboardAvoidingViewProps {
     onSend: (message: string) => void;
 }
 
@@ -50,35 +50,32 @@ export const ChatInput = (Props: ChatInputProps) => {
         handleRemoveText();
     };
 
-
-
     return (
-        <KeyboardAvoidingView 
-            behavior={Platform.OS == "ios" ? "padding" : "height"} 
-            style={styles.inputContainer}
-        >
-            <IconButton
-                icon="delete"
-                color={Color.secondaryText}
-                size={28}
-                onPress={handleRemoveText}
-            />
-            <TextInput
-                multiline={true}
-                value={inputText}
-                onChangeText={handleChangeText}
-                onContentSizeChange={handleContentSizeChange}
-                style={{
-                    ...styles.textInput,
-                    height: inputHeight,
-                }}
-            />
-            <IconButton
-                icon="send"
-                color={Color.secondaryText}
-                size={28}
-                onPress={handleSendText}
-            />
+        <KeyboardAvoidingView behavior={Platform.OS == "ios" ? "padding" : "height"}>
+            <View style={styles.inputContainer}>
+                <IconButton
+                    icon="delete"
+                    color={Color.secondaryText}
+                    size={28}
+                    onPress={handleRemoveText}
+                />
+                <TextInput
+                    multiline={true}
+                    value={inputText}
+                    onChangeText={handleChangeText}
+                    onContentSizeChange={handleContentSizeChange}
+                    style={{
+                        ...styles.textInput,
+                        height: inputHeight,
+                    }}
+                />
+                <IconButton
+                    icon="send"
+                    color={Color.secondaryText}
+                    size={28}
+                    onPress={handleSendText}
+                />
+            </View>
         </KeyboardAvoidingView>
     );
 };

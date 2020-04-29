@@ -3,8 +3,6 @@ import Color from "../../utils/theme/color";
 
 const styles = StyleSheet.create({
     inputContainer: {
-        flex:1,
-        width: "100%",
         backgroundColor: Color.navBackground,
         flexDirection: "row",
         alignItems: "center",

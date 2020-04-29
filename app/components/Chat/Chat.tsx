@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { FlatList } from "react-native";
 import ScreenContentContainer from "../ScreenContentContainer/ScreenContentContainer";
 import styles from "./Chat.style";
 import ChatInput from "../ChatInput/ChatInput";
@@ -19,10 +19,8 @@ const Chat = ({ route, navigation }: any) => {
 
     return (
         <ScreenContentContainer style={styles.container}>
-                {/* TODO FlatList */}
-            <View style={{flex:1, justifyContent:"flex-end", height:"10%"}}>
-                <ChatInput onSend={handleSend} />
-            </View>
+            <FlatList data={null} renderItem={null} style={styles.list} />
+            <ChatInput onSend={handleSend} />
         </ScreenContentContainer>
     );
 };
