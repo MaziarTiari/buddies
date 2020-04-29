@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import {
     TextInput,
-    View,
     NativeSyntheticEvent,
     TextInputContentSizeChangeEventData,
     KeyboardAvoidingView,
@@ -51,31 +50,32 @@ export const ChatInput = (Props: ChatInputProps) => {
     };
 
     return (
-        <KeyboardAvoidingView behavior={Platform.OS == "ios" ? "padding" : "height"}>
-            <View style={styles.inputContainer}>
-                <IconButton
-                    icon="delete"
-                    color={Color.secondaryText}
-                    size={28}
-                    onPress={handleRemoveText}
-                />
-                <TextInput
-                    multiline={true}
-                    value={inputText}
-                    onChangeText={handleChangeText}
-                    onContentSizeChange={handleContentSizeChange}
-                    style={{
-                        ...styles.textInput,
-                        height: inputHeight,
-                    }}
-                />
-                <IconButton
-                    icon="send"
-                    color={Color.secondaryText}
-                    size={28}
-                    onPress={handleSendText}
-                />
-            </View>
+        <KeyboardAvoidingView
+            behavior={Platform.OS == "ios" ? "padding" : "height"}
+            style={styles.inputContainer}
+        >
+            <IconButton
+                icon="delete"
+                color={Color.secondaryText}
+                size={28}
+                onPress={handleRemoveText}
+            />
+            <TextInput
+                multiline={true}
+                value={inputText}
+                onChangeText={handleChangeText}
+                onContentSizeChange={handleContentSizeChange}
+                style={{
+                    ...styles.textInput,
+                    height: inputHeight,
+                }}
+            />
+            <IconButton
+                icon="send"
+                color={Color.secondaryText}
+                size={28}
+                onPress={handleSendText}
+            />
         </KeyboardAvoidingView>
     );
 };
