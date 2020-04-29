@@ -1,7 +1,8 @@
 import React from "react";
-import { Text } from "react-native";
+import { View } from "react-native";
 import ScreenContentContainer from "../ScreenContentContainer/ScreenContentContainer";
-import { styles } from "../ScreenContentContainer/ScreenContentContainer.style";
+import styles from "./Chat.style";
+import ChatInput from "../ChatInput/ChatInput";
 
 export interface ChatParams {
     title: string;
@@ -9,12 +10,19 @@ export interface ChatParams {
 
 const Chat = ({ route, navigation }: any) => {
     const Params: ChatParams = route.params;
-
     navigation.setOptions({ title: Params.title });
+
+    const handleSend = (message: string) => {
+        // TODO
+        console.log("Sending message: ", message);
+    };
 
     return (
         <ScreenContentContainer>
-            <Text style={styles.text}>ChatContainer</Text>
+            <View style={styles.container}>
+                {/* TODO FlatList */}
+                <ChatInput onSend={handleSend} />
+            </View>
         </ScreenContentContainer>
     );
 };
