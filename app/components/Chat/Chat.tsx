@@ -1,5 +1,5 @@
 import React from "react";
-import { FlatList } from "react-native";
+import { FlatList, KeyboardAvoidingView, Platform } from "react-native";
 import ScreenContentContainer from "../ScreenContentContainer/ScreenContentContainer";
 import styles from "./Chat.style";
 import ChatInput from "../ChatInput/ChatInput";
@@ -19,8 +19,13 @@ const Chat = ({ route, navigation }: any) => {
 
     return (
         <ScreenContentContainer style={styles.container}>
-            <FlatList data={null} renderItem={null} style={styles.list} />
-            <ChatInput onSend={handleSend} />
+            <KeyboardAvoidingView
+                style={{ flex: 1 }}
+                behavior={Platform.OS == "ios" ? "padding" : "height"}
+            >
+                <FlatList data={null} renderItem={null} style={styles.list} />
+                <ChatInput onSend={handleSend} />
+            </KeyboardAvoidingView>
         </ScreenContentContainer>
     );
 };

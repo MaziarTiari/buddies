@@ -3,8 +3,7 @@ import {
     TextInput,
     NativeSyntheticEvent,
     TextInputContentSizeChangeEventData,
-    KeyboardAvoidingView,
-    Platform,
+    View,
     KeyboardAvoidingViewProps,
 } from "react-native";
 import styles from "./ChatInput.style";
@@ -50,10 +49,7 @@ export const ChatInput = (Props: ChatInputProps) => {
     };
 
     return (
-        <KeyboardAvoidingView
-            behavior={Platform.OS == "ios" ? "padding" : "height"}
-            style={styles.inputContainer}
-        >
+        <View style={styles.inputContainer}>
             <IconButton
                 icon="delete"
                 color={Color.secondaryText}
@@ -76,7 +72,7 @@ export const ChatInput = (Props: ChatInputProps) => {
                 size={28}
                 onPress={handleSendText}
             />
-        </KeyboardAvoidingView>
+        </View>
     );
 };
 
