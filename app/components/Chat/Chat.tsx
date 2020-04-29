@@ -3,12 +3,12 @@ import { Text } from "react-native";
 import ScreenContentContainer from "../ScreenContentContainer/ScreenContentContainer";
 import { styles } from "../ScreenContentContainer/ScreenContentContainer.style";
 
-export interface ChatContainerParams {
+export interface ChatParams {
     title: string;
 }
 
-const ChatContainer = ({ route, navigation }: any) => {
-    const Params: ChatContainerParams = route.params;
+const Chat = ({ route, navigation }: any) => {
+    const Params: ChatParams = route.params;
 
     navigation.setOptions({ title: Params.title });
 
@@ -19,4 +19,4 @@ const ChatContainer = ({ route, navigation }: any) => {
     );
 };
 
-export default ChatContainer;
+export default Chat;

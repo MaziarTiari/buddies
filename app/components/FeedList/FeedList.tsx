@@ -6,7 +6,7 @@ import ScreenContentContainer from "../ScreenContentContainer/ScreenContentConta
 const FeedList = () => {
     return (
         <ScreenContentContainer>
-            <Text style={ {color: Color.secondaryText} }>Feed</Text>
+            <Text style={{ color: Color.secondaryText }}>Feed</Text>
         </ScreenContentContainer>
     );
 };

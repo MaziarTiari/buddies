@@ -14,7 +14,6 @@ export interface ProfileListItemProps {
 }
 
 export const ProfileListItem = (Props: ProfileListItemProps) => {
-
     const RightComponent = () => Props.rightComponent;
 
     return (
@@ -31,11 +30,9 @@ export const ProfileListItem = (Props: ProfileListItemProps) => {
                 {Props.isOnline && <View style={styles.onlineDot}></View>}
                 <View style={styles.textContainer}>
                     <Text style={styles.displayText}>{Props.title}</Text>
-                    <Text style={styles.statusText}>
-                        {Props.subTitle}
-                    </Text>
+                    <Text style={styles.statusText}>{Props.subTitle}</Text>
                 </View>
-                <RightComponent {...Props.rightComponent.props}/>
+                <RightComponent {...Props.rightComponent.props} />
             </View>
         </TouchableRipple>
     );

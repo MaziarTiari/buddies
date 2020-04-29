@@ -6,7 +6,7 @@ import ScreenContentContainer from "../ScreenContentContainer/ScreenContentConta
 const ActivityList = () => {
     return (
         <ScreenContentContainer>
-            <Text style={{color: Color.secondaryText}}>Activity List Screen</Text>
+            <Text style={{ color: Color.secondaryText }}>Activity List Screen</Text>
         </ScreenContentContainer>
     );
 };

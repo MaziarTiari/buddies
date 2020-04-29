@@ -6,12 +6,8 @@ interface AppScreenProps {
     children?: ReactNode;
 }
 
-const ScreenContentContainer = ( Props: AppScreenProps ) => {
-    return (
-        <View style={styles.screen}>
-            {Props.children}
-        </View>
-    );
+const ScreenContentContainer = (Props: AppScreenProps) => {
+    return <View style={styles.screen}>{Props.children}</View>;
 };
 
 export default ScreenContentContainer;
