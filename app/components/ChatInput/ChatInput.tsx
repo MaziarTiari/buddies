@@ -4,6 +4,9 @@ import {
     View,
     NativeSyntheticEvent,
     TextInputContentSizeChangeEventData,
+    KeyboardAvoidingView,
+    Platform,
+    KeyboardAvoidingViewProps,
 } from "react-native";
 import styles from "./ChatInput.style";
 import Color from "../../utils/theme/color";
@@ -12,7 +15,7 @@ import { IconButton } from "react-native-paper";
 const MIN_INPUT_HEIGHT = 30;
 const MAX_INPUT_HEIGHT = 95;
 
-export interface ChatInputProps {
+export interface ChatInputProps extends KeyboardAvoidingViewProps{
     onSend: (message: string) => void;
 }
 
@@ -47,8 +50,13 @@ export const ChatInput = (Props: ChatInputProps) => {
         handleRemoveText();
     };
 
+
+
     return (
-        <View style={styles.inputContainer}>
+        <KeyboardAvoidingView 
+            behavior={Platform.OS == "ios" ? "padding" : "height"} 
+            style={styles.inputContainer}
+        >
             <IconButton
                 icon="delete"
                 color={Color.secondaryText}
@@ -71,7 +79,7 @@ export const ChatInput = (Props: ChatInputProps) => {
                 size={28}
                 onPress={handleSendText}
             />
-        </View>
+        </KeyboardAvoidingView>
     );
 };
 

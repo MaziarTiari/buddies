@@ -1,8 +1,8 @@
 import React, { ReactNode } from "react";
-import { View } from "react-native";
+import { View, ViewProps } from "react-native";
 import { styles } from "./ScreenContentContainer.style";
 
-interface AppScreenProps {
+interface AppScreenProps extends ViewProps{
     children?: ReactNode;
 }
 
