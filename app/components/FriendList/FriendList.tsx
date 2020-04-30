@@ -2,20 +2,20 @@ import React, { useState } from "react";
 import { FlatList } from "react-native";
 import { FiendList } from "../../../example_data/FetchedFriendList";
 import { FriedListItem } from "../FriendListItem/FriedListItem";
-import ScreenContentContainer from "../ScreenContentContainer/ScreenContentContainer";
+import Container from "../Container/Container";
 
 const FriendList = () => {
     const [items, setItems] = useState(FiendList);
 
     return (
-        <ScreenContentContainer>
+        <Container layout="screen">
             <FlatList
                 style={{ width: "100%" }}
                 data={items}
                 renderItem={({ item }) => <FriedListItem {...item} />}
                 keyExtractor={(item) => item.id.toString()}
             />
-        </ScreenContentContainer>
+        </Container>
     );
 };
 

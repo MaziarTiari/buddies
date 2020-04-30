@@ -1,78 +1,41 @@
 import React, { useState } from "react";
-import {
-    TextInput,
-    NativeSyntheticEvent,
-    TextInputContentSizeChangeEventData,
-    View,
-    KeyboardAvoidingViewProps,
-} from "react-native";
-import styles from "./ChatInput.style";
+import { NativeSyntheticEvent, TextInputFocusEventData, ViewProps } from "react-native";
 import Color from "../../utils/theme/color";
 import { IconButton } from "react-native-paper";
+import InputField from "../InputField/InputField";
 
-const MIN_INPUT_HEIGHT = 30;
-const MAX_INPUT_HEIGHT = 95;
-
-export interface ChatInputProps extends KeyboardAvoidingViewProps {
+export interface ChatInputProps extends ViewProps {
     onSend: (message: string) => void;
+    onFocus?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
+    onBlur?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
 }
 
 export const ChatInput = (Props: ChatInputProps) => {
     const [inputText, setInputText] = useState("");
-    const [inputHeight, setInputHeight] = useState(MIN_INPUT_HEIGHT);
 
     const handleChangeText = (text: string) => {
         setInputText(text);
     };
 
-    const handleContentSizeChange = (
-        event: NativeSyntheticEvent<TextInputContentSizeChangeEventData>
-    ) => {
-        let inputHeight = event.nativeEvent.contentSize.height;
-        inputHeight =
-            inputHeight < MIN_INPUT_HEIGHT
-                ? MIN_INPUT_HEIGHT
-                : inputHeight > MAX_INPUT_HEIGHT
-                ? MAX_INPUT_HEIGHT
-                : inputHeight;
-        setInputHeight(inputHeight);
-    };
-
-    const handleRemoveText = () => {
-        setInputText("");
-        setInputHeight(MIN_INPUT_HEIGHT);
-    };
-
     const handleSendText = () => {
         Props.onSend(inputText);
-        handleRemoveText();
+        setInputText("");
     };
 
     return (
-        <View style={styles.inputContainer}>
-            <IconButton
-                icon="delete"
-                color={Color.secondaryText}
-                size={28}
-                onPress={handleRemoveText}
-            />
-            <TextInput
-                multiline={true}
-                value={inputText}
-                onChangeText={handleChangeText}
-                onContentSizeChange={handleContentSizeChange}
-                style={{
-                    ...styles.textInput,
-                    height: inputHeight,
-                }}
-            />
-            <IconButton
-                icon="send"
-                color={Color.secondaryText}
-                size={28}
-                onPress={handleSendText}
-            />
-        </View>
+        <InputField
+            textInput={
+                { multiline: true, value:inputText, onChangeText: handleChangeText}
+            }
+            leftComponent={
+                <IconButton icon="delete" color={Color.secondaryText} size={28}
+                            onPress={() => setInputText("")} />
+            }
+            rightComponent={
+                <IconButton icon="send" color={Color.secondaryText} size={28}
+                            onPress={handleSendText} />
+            }
+        />      
     );
 };
 

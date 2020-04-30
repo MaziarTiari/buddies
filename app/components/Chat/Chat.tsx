@@ -1,14 +1,15 @@
 import React from "react";
-import { FlatList, KeyboardAvoidingView, Platform } from "react-native";
-import ScreenContentContainer from "../ScreenContentContainer/ScreenContentContainer";
+import { FlatList } from "react-native";
 import styles from "./Chat.style";
 import ChatInput from "../ChatInput/ChatInput";
+import Container from "../Container/Container";
 
 export interface ChatParams {
     title: string;
 }
 
 const Chat = ({ route, navigation }: any) => {
+
     const Params: ChatParams = route.params;
     navigation.setOptions({ title: Params.title });
 
@@ -16,17 +17,14 @@ const Chat = ({ route, navigation }: any) => {
         // TODO
         console.log("Sending message: ", message);
     };
-
+    
     return (
-        <ScreenContentContainer style={styles.container}>
-            <KeyboardAvoidingView
-                style={{ flex: 1 }}
-                behavior={Platform.OS == "ios" ? "padding" : "height"}
-            >
+        <Container layout="screen">
+            <Container layout="centered_body" keyboardAvoiding>
                 <FlatList data={null} renderItem={null} style={styles.list} />
-                <ChatInput onSend={handleSend} />
-            </KeyboardAvoidingView>
-        </ScreenContentContainer>
+                <ChatInput style={styles.inputField} onSend={handleSend} />
+            </Container>
+        </Container>
     );
 };
 

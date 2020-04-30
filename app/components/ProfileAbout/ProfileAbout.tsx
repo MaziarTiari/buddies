@@ -1,12 +1,12 @@
 import React from "react";
 import { Button } from "react-native";
-import ScreenContentContainer from "../ScreenContentContainer/ScreenContentContainer";
+import Container from "../Container/Container";
 
 const ProfileAbout = ({ navigation }: any) => {
     return (
-        <ScreenContentContainer>
+        <Container layout="screen">
             <Button title="Friends" onPress={() => navigation.navigate("FriendList")} />
-        </ScreenContentContainer>
+        </Container>
     );
 };
 

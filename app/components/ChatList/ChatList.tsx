@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { FlatList } from "react-native";
-import ScreenContentContainer from "../ScreenContentContainer/ScreenContentContainer";
 import { response } from "../../../example_data/MessageListQueryResponse";
 import { ChatParams } from "../Chat/Chat";
 import { RouteName } from "../../utils/navigation/configuration";
 import { ChatListItem, ChatListItemProps } from "../ChatListItem/ChatListItem";
+import Container from "../Container/Container";
 
 const ChatList = ({ navigation }: any) => {
     const [items, setItems] = useState(response);
@@ -17,7 +17,7 @@ const ChatList = ({ navigation }: any) => {
     const handleLongPress = (pressedItem: ChatListItemProps) => {};
 
     return (
-        <ScreenContentContainer>
+        <Container layout="screen">
             <FlatList
                 style={{ width: "100%" }}
                 data={items.sort((a, b) => (b.lastMessage > a.lastMessage ? 1 : -1))}
@@ -35,7 +35,7 @@ const ChatList = ({ navigation }: any) => {
                 )}
                 keyExtractor={(item) => item.uuid}
             />
-        </ScreenContentContainer>
+        </Container>
     );
 };
 
