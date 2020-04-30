@@ -32,6 +32,11 @@ export const InputField = (Props: InputContainerProps) => {
               Props.minInputHeight : MIN_INPUT_HEIGHT,
     [Props.minInputHeight]);
 
+    const maxInputHeight = useMemo(
+        () => Props.maxInputHeight ? 
+              Props.maxInputHeight : MAX_INPUT_HEIGHT,
+    [Props.minInputHeight]);
+
     const [inputHeight, setInputHeight] = useState(minInputHeight);
     const [marginBottom, setMarginBottom] = useState(0)
 
@@ -60,12 +65,10 @@ export const InputField = (Props: InputContainerProps) => {
             (event: NativeSyntheticEvent<TextInputContentSizeChangeEventData>) => {
 
         let inputHeight = event.nativeEvent.contentSize.height;
-        const maxInputHeight = 
-            Props.maxInputHeight ? Props.maxInputHeight : MAX_INPUT_HEIGHT;
         
         inputHeight =
             inputHeight < minInputHeight
-                ? maxInputHeight
+                ? minInputHeight
                 : inputHeight > maxInputHeight
                 ? maxInputHeight
                 : inputHeight;

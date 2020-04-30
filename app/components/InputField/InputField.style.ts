@@ -4,11 +4,10 @@ import Color from "../../utils/theme/color";
 const styles = StyleSheet.create({
     inputContainer: {
         width: "100%",
-        backgroundColor: Color.navBackground,
         flexDirection: "row",
         alignItems: "center",
-        borderRadius: 30,
-        margin: 5,
+        backgroundColor: Color.primaryText,
+        borderRadius: 4,
     },
     textInput: {
         color: Color.secondaryText,

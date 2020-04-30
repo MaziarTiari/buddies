@@ -3,6 +3,7 @@ import { NativeSyntheticEvent, TextInputFocusEventData, ViewProps } from "react-
 import Color from "../../utils/theme/color";
 import { IconButton } from "react-native-paper";
 import InputField from "../InputField/InputField";
+import styles from "./ChatInput.style";
 
 export interface ChatInputProps extends ViewProps {
     onSend: (message: string) => void;
@@ -24,6 +25,7 @@ export const ChatInput = (Props: ChatInputProps) => {
 
     return (
         <InputField
+            style={styles.inputContainer}
             textInput={
                 { multiline: true, value:inputText, onChangeText: handleChangeText}
             }
