@@ -1,9 +1,9 @@
 import React from "react";
 import { IconButton } from "react-native-paper";
 import { ProfileListItem } from "../ProfileListItem/ProfileListItem";
-import { IUser } from "../../../example_data/FetchedProfile";
+import { IProfile } from "../../../example_data/FetchedProfile";
 
-export const FriedListItem = (Props: IUser) => {
+export const FriedListItem = (Props: IProfile) => {
     const rightComponent = (
         <IconButton
             style={{ alignSelf: "center" }}
