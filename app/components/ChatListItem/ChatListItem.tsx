@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text } from "react-native";
 import styles from "./ChatListItem.style";
 import translate from "../../utils/language/translate";
-import { ProfileListItem } from "../ProfileListItem/ProfileListItem";
+import { ProfileListItem, ProfileListItemProps } from "../ProfileListItem/ProfileListItem";
 
 export enum Relation {
     STRANGER,
@@ -10,15 +10,9 @@ export enum Relation {
     BLOCKED,
 }
 
-export interface ChatListItemProps {
-    uuid: string;
-    displayName: string;
-    isOnline: boolean;
-    relation: Relation;
+export interface ChatListItemProps extends ProfileListItemProps{
     unreadMessages: number;
     lastMessage: Date;
-    onPress: (pressedItem: ChatListItemProps) => void;
-    onLongPress: (pressedItem: ChatListItemProps) => void;
 }
 
 export const ChatListItem = (Props: ChatListItemProps) => {
