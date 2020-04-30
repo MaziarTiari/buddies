@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text } from "react-native";
 import styles from "./ChatListItem.style";
 import translate from "../../utils/language/translate";
-import { ProfileListItem } from "../ProfileListItem/ProfileListItem";
+import { ProfileListItem, ProfileListItemProps } from "../ProfileListItem/ProfileListItem";
 
 export enum Relation {
     STRANGER,
@@ -10,15 +10,10 @@ export enum Relation {
     BLOCKED,
 }
 
-export interface ChatListItemProps {
-    uuid: string;
-    displayName: string;
-    isOnline: boolean;
+export interface ChatListItemProps extends ProfileListItemProps{
     relation: Relation;
     unreadMessages: number;
     lastMessage: Date;
-    onPress: (pressedItem: ChatListItemProps) => void;
-    onLongPress: (pressedItem: ChatListItemProps) => void;
 }
 
 export const ChatListItem = (Props: ChatListItemProps) => {
@@ -42,10 +37,10 @@ export const ChatListItem = (Props: ChatListItemProps) => {
             uuid={Props.uuid}
             isOnline={Props.isOnline}
             rightComponent={rightComponent}
-            title={Props.displayName}
+            title={Props.title}
             subTitle={getRelationText(Props.relation)}
-            onPress={() => Props.onPress(Props)}
-            onLongPress={() => Props.onLongPress(Props)}
+            onPress={Props.onPress}
+            onLongPress={() => Props.onLongPress}
         />
     );
 };

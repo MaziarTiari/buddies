@@ -19,8 +19,8 @@ export const ProfileListItem = (Props: ProfileListItemProps) => {
     return (
         <TouchableRipple
             rippleColor="rgba(0, 0, 0, 0.3)"
-            onPress={Props.onPress} // todo
-            onLongPress={Props.onLongPress} // todo
+            onPress={Props.onPress}
+            onLongPress={Props.onLongPress}
         >
             <View style={styles.container}>
                 <Image
@@ -29,8 +29,12 @@ export const ProfileListItem = (Props: ProfileListItemProps) => {
                 />
                 {Props.isOnline && <View style={styles.onlineDot}></View>}
                 <View style={styles.textContainer}>
-                    <Text style={styles.displayText}>{Props.title}</Text>
-                    <Text style={styles.statusText}>{Props.subTitle}</Text>
+                    <Text numberOfLines={1} style={styles.displayText}>
+                        {Props.title}
+                    </Text>
+                    <Text numberOfLines={1} style={styles.statusText}>
+                        {Props.subTitle}
+                    </Text>
                 </View>
                 <RightComponent {...Props.rightComponent.props} />
             </View>
