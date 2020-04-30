@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import React from 'react'
 import { View, Image, StyleSheet, Text } from 'react-native'
 import { IActivity } from '../../../example_data/fetchedActivityList'
 import { IconButton, Headline } from 'react-native-paper'

@@ -1,11 +1,8 @@
-import React from 'react'
-import { View } from 'react-native'
+import React from "react";
+import { View } from "react-native";
 
 const ActivityMapItem = () => {
-    return (
-        <View>
-        </View>
-    )
-}
+    return <View></View>;
+};
 
-export default ActivityMapItem
+export default ActivityMapItem;

@@ -1,31 +1,28 @@
 import React, { useState } from "react";
 import { FlatList } from "react-native";
-import ScreenContentContainer from "../ScreenContentContainer/ScreenContentContainer";
-import {
-    MessageListItem,
-    MessageListItemProps,
-} from "../MessageListItem/MessageListItem";
 import { response } from "../../../example_data/MessageListQueryResponse";
-import { ChatContainerParams } from "../ChatContainer/ChatContainer";
-import { RouteName } from "../../../App";
+import { ChatParams } from "../Chat/Chat";
+import { RouteName } from "../../utils/navigation/configuration";
+import { ChatListItem, ChatListItemProps } from "../ChatListItem/ChatListItem";
+import Container from "../Container/Container";
 
 const ChatList = ({ navigation }: any) => {
     const [items, setItems] = useState(response);
 
-    const handlePress = (pressedItem: MessageListItemProps) => {
-        const params: ChatContainerParams = { title: pressedItem.displayName };
+    const handlePress = (pressedItem: ChatListItemProps) => {
+        const params: ChatParams = { title: pressedItem.displayName };
         navigation.navigate(RouteName.Chat.Chat, { ...params });
     };
 
-    const handleLongPress = (pressedItem: MessageListItemProps) => {};
+    const handleLongPress = (pressedItem: ChatListItemProps) => {};
 
     return (
-        <ScreenContentContainer>
+        <Container layout="screen_centered">
             <FlatList
                 style={{ width: "100%" }}
                 data={items.sort((a, b) => (b.lastMessage > a.lastMessage ? 1 : -1))}
                 renderItem={({ item }) => (
-                    <MessageListItem
+                    <ChatListItem
                         displayName={item.displayName}
                         isOnline={item.isOnline}
                         lastMessage={item.lastMessage}
@@ -38,7 +35,7 @@ const ChatList = ({ navigation }: any) => {
                 )}
                 keyExtractor={(item) => item.uuid}
             />
-        </ScreenContentContainer>
+        </Container>
     );
 };
 

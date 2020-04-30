@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text } from "react-native";
-import styles from "./MessageListItem.style";
+import styles from "./ChatListItem.style";
 import translate from "../../utils/language/translate";
 import { ProfileListItem } from "../ProfileListItem/ProfileListItem";
 
@@ -10,18 +10,18 @@ export enum Relation {
     BLOCKED,
 }
 
-export interface MessageListItemProps {
+export interface ChatListItemProps {
     uuid: string;
     displayName: string;
     isOnline: boolean;
     relation: Relation;
     unreadMessages: number;
     lastMessage: Date;
-    onPress: (pressedItem: MessageListItemProps) => void;
-    onLongPress: (pressedItem: MessageListItemProps) => void;
+    onPress: (pressedItem: ChatListItemProps) => void;
+    onLongPress: (pressedItem: ChatListItemProps) => void;
 }
 
-export const MessageListItem = (Props: MessageListItemProps) => {
+export const ChatListItem = (Props: ChatListItemProps) => {
     const rightComponent = (
         <View style={styles.rightContainer}>
             <Text style={styles.lastMessageText}>
