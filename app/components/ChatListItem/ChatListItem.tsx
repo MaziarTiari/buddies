@@ -11,6 +11,7 @@ export enum Relation {
 }
 
 export interface ChatListItemProps extends ProfileListItemProps{
+    relation: Relation;
     unreadMessages: number;
     lastMessage: Date;
 }
@@ -36,10 +37,10 @@ export const ChatListItem = (Props: ChatListItemProps) => {
             uuid={Props.uuid}
             isOnline={Props.isOnline}
             rightComponent={rightComponent}
-            title={Props.displayName}
+            title={Props.title}
             subTitle={getRelationText(Props.relation)}
-            onPress={() => Props.onPress(Props)}
-            onLongPress={() => Props.onLongPress(Props)}
+            onPress={Props.onPress}
+            onLongPress={() => Props.onLongPress}
         />
     );
 };
