@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import Container from "../Container/Container";
 import { FlatList } from "react-native-gesture-handler";
 import ActivityListItem from "../ActivityListItem/ActivityListItem";
+import { activities } from "../../../example_data/fetchedActivityList";
 
 const ActivityList = () => {
     const [allActivities, setAllActivities] = useState(activities)
