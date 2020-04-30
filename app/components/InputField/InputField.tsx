@@ -9,7 +9,7 @@ import {
     Platform,
     StyleProp,
     ViewStyle,
-    TextStyle,
+    TextInputProps,
 } from "react-native";
 import styles from "./InputField.style";
 
@@ -18,18 +18,14 @@ interface IDynamicHeight {
     max: number;
 }
 
-export interface InputFieldProps {
+export interface InputFieldProps extends TextInputProps {
     dynamicHeight?: IDynamicHeight;
     leftComponent?: JSX.Element;
     rightComponent?: JSX.Element;
     containerStyle?: StyleProp<ViewStyle>;
-    textInputStyle?: StyleProp<TextStyle>;
-    multiline?: boolean;
-    onChangeText?: (text: string) => void;
-    value: string;
 }
 
-export const InputField = (Props: InputFieldProps) => {
+export const InputField = ({style, ...Props}: InputFieldProps) => {
     const [inputHeight, setInputHeight] = useState(Props.dynamicHeight?.min);
     const [marginBottom, setMarginBottom] = useState(0);
 
@@ -80,14 +76,12 @@ export const InputField = (Props: InputFieldProps) => {
             <LeftComponent {...Props.leftComponent?.props} />
             <TextInput
                 onContentSizeChange={Props.dynamicHeight && handleContentSizeChange}
-                onChangeText={Props.onChangeText}
-                multiline={Props.multiline}
+                {...Props}
                 style={[
                     styles.textInput,
-                    Props.textInputStyle,
+                    style,
                     Props.dynamicHeight && { height: inputHeight },
                 ]}
-                value={Props.value}
             />
             <RightComponent {...Props.rightComponent?.props} />
         </View>
