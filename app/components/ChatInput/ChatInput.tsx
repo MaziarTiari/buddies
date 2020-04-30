@@ -25,19 +25,28 @@ export const ChatInput = (Props: ChatInputProps) => {
 
     return (
         <InputField
-            style={styles.inputContainer}
-            textInput={
-                { multiline: true, value:inputText, onChangeText: handleChangeText}
-            }
+            containerStyle={styles.inputContainer}
+            dynamicHeight={{ min: 30, max: 95 }}
+            multiline={true}
+            value={inputText}
+            onChangeText={handleChangeText}
             leftComponent={
-                <IconButton icon="delete" color={Color.secondaryText} size={28}
-                            onPress={() => setInputText("")} />
+                <IconButton
+                    icon="delete"
+                    color={Color.secondaryText}
+                    size={28}
+                    onPress={() => setInputText("")}
+                />
             }
             rightComponent={
-                <IconButton icon="send" color={Color.secondaryText} size={28}
-                            onPress={handleSendText} />
+                <IconButton
+                    icon="send"
+                    color={Color.secondaryText}
+                    size={28}
+                    onPress={handleSendText}
+                />
             }
-        />      
+        />
     );
 };
 

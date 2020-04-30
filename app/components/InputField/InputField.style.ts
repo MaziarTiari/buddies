@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
         width: "100%",
         flexDirection: "row",
         alignItems: "center",
-        backgroundColor: Color.primaryText,
+        backgroundColor: Color.inputBackground,
         borderRadius: 4,
     },
     textInput: {

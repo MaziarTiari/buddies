@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import {
     TextInput,
     NativeSyntheticEvent,
@@ -7,51 +7,44 @@ import {
     Keyboard,
     KeyboardEvent,
     Platform,
-    TextInputProps,
     StyleProp,
     ViewStyle,
+    TextStyle,
 } from "react-native";
 import styles from "./InputField.style";
 
-const MIN_INPUT_HEIGHT = 30;
-const MAX_INPUT_HEIGHT = 90;
-
-export interface InputContainerProps  {
-    minInputHeight?: number;
-    maxInputHeight?: number;
-    leftComponent?: JSX.Element;
-    rightComponent?: JSX.Element; 
-    style?: StyleProp<ViewStyle>;
-    textInput?: TextInputProps;
+interface IDynamicHeight {
+    min: number;
+    max: number;
 }
 
-export const InputField = (Props: InputContainerProps) => {
+export interface InputFieldProps {
+    dynamicHeight?: IDynamicHeight;
+    leftComponent?: JSX.Element;
+    rightComponent?: JSX.Element;
+    containerStyle?: StyleProp<ViewStyle>;
+    textInputStyle?: StyleProp<TextStyle>;
+    multiline?: boolean;
+    onChangeText?: (text: string) => void;
+    value: string;
+}
 
-    const minInputHeight = useMemo(
-        () => Props.minInputHeight ? 
-              Props.minInputHeight : MIN_INPUT_HEIGHT,
-    [Props.minInputHeight]);
+export const InputField = (Props: InputFieldProps) => {
+    const [inputHeight, setInputHeight] = useState(Props.dynamicHeight?.min);
+    const [marginBottom, setMarginBottom] = useState(0);
 
-    const maxInputHeight = useMemo(
-        () => Props.maxInputHeight ? 
-              Props.maxInputHeight : MAX_INPUT_HEIGHT,
-    [Props.minInputHeight]);
-
-    const [inputHeight, setInputHeight] = useState(minInputHeight);
-    const [marginBottom, setMarginBottom] = useState(0)
-
-    const LeftComponent = () => Props.leftComponent ? Props.leftComponent : <View/>;
-    const RightComponent = () => Props.rightComponent ? Props.rightComponent : <View/>;
+    const LeftComponent = () => (Props.leftComponent ? Props.leftComponent : null);
+    const RightComponent = () => (Props.rightComponent ? Props.rightComponent : null);
 
     useEffect(() => {
-        if(Platform.OS !== 'ios') return;
-        Keyboard.addListener('keyboardWillShow', _keyboardWillShow);
-        Keyboard.addListener('keyboardWillHide', _keyboardWillHide);
+        if (Platform.OS !== "ios") return;
+        Keyboard.addListener("keyboardWillShow", _keyboardWillShow);
+        Keyboard.addListener("keyboardWillHide", _keyboardWillHide);
         return () => {
-            Keyboard.removeListener('keyboardWillShow', _keyboardWillShow);
-            Keyboard.removeListener('keyboardWillHide', _keyboardWillHide);
-        }
-    }, [])
+            Keyboard.removeListener("keyboardWillShow", _keyboardWillShow);
+            Keyboard.removeListener("keyboardWillHide", _keyboardWillHide);
+        };
+    }, []);
 
     const _keyboardWillShow = (event: KeyboardEvent) => {
         setMarginBottom(event.endCoordinates.height * 0.31);
@@ -61,31 +54,40 @@ export const InputField = (Props: InputContainerProps) => {
         setMarginBottom(0);
     };
 
-    const handleContentSizeChange = 
-            (event: NativeSyntheticEvent<TextInputContentSizeChangeEventData>) => {
-
-        let inputHeight = event.nativeEvent.contentSize.height;
-        
-        inputHeight =
-            inputHeight < minInputHeight
-                ? minInputHeight
-                : inputHeight > maxInputHeight
-                ? maxInputHeight
-                : inputHeight;
-        setInputHeight(inputHeight);
+    const handleContentSizeChange = (
+        event: NativeSyntheticEvent<TextInputContentSizeChangeEventData>
+    ) => {
+        if (Props.dynamicHeight) {
+            let inputHeight = event.nativeEvent.contentSize.height;
+            inputHeight =
+                inputHeight < Props.dynamicHeight.min
+                    ? Props.dynamicHeight.min
+                    : inputHeight > Props.dynamicHeight.max
+                    ? Props.dynamicHeight.max
+                    : inputHeight;
+            setInputHeight(inputHeight);
+        }
     };
 
     return (
-        <View style={[styles.inputContainer, Props.style, {marginBottom:marginBottom}]}>
-            <LeftComponent {...Props.leftComponent?.props}/>
+        <View
+            style={[
+                styles.inputContainer,
+                Props.containerStyle,
+                { marginBottom: marginBottom },
+            ]}
+        >
+            <LeftComponent {...Props.leftComponent?.props} />
             <TextInput
-                onContentSizeChange={handleContentSizeChange}
+                onContentSizeChange={Props.dynamicHeight && handleContentSizeChange}
+                onChangeText={Props.onChangeText}
+                multiline={Props.multiline}
                 style={[
                     styles.textInput,
-                    {height: inputHeight},
-                    Props.textInput?.style,
+                    Props.textInputStyle,
+                    Props.dynamicHeight && { height: inputHeight },
                 ]}
-                {...Props.textInput}
+                value={Props.value}
             />
             <RightComponent {...Props.rightComponent?.props} />
         </View>
