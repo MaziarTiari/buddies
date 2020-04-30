@@ -5,7 +5,7 @@ import Container from "../Container/Container";
 
 const FeedList = () => {
     return (
-        <Container layout="screen">
+        <Container layout="screen_centered">
             <Text style={{ color: Color.secondaryText }}>Feed</Text>
         </Container>
     );

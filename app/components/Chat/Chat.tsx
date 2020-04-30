@@ -1,5 +1,5 @@
 import React from "react";
-import { FlatList } from "react-native";
+import { FlatList, View, Platform } from "react-native";
 import styles from "./Chat.style";
 import ChatInput from "../ChatInput/ChatInput";
 import Container from "../Container/Container";
@@ -19,11 +19,9 @@ const Chat = ({ route, navigation }: any) => {
     };
     
     return (
-        <Container layout="screen">
-            <Container layout="centered_body" keyboardAvoiding>
-                <FlatList data={null} renderItem={null} style={styles.list} />
-                <ChatInput style={styles.inputField} onSend={handleSend} />
-            </Container>
+        <Container layout="screen_centered" keyboardAvoiding style={styles.container}>
+            <FlatList data={null} renderItem={null} style={styles.list} />
+            <ChatInput style={styles.inputField} onSend={handleSend} />
         </Container>
     );
 };

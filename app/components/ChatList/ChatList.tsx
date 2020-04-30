@@ -17,7 +17,7 @@ const ChatList = ({ navigation }: any) => {
     const handleLongPress = (pressedItem: ChatListItemProps) => {};
 
     return (
-        <Container layout="screen">
+        <Container layout="screen_centered">
             <FlatList
                 style={{ width: "100%" }}
                 data={items.sort((a, b) => (b.lastMessage > a.lastMessage ? 1 : -1))}

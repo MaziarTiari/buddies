@@ -4,7 +4,7 @@ import Container from "../Container/Container";
 
 const ProfileAbout = ({ navigation }: any) => {
     return (
-        <Container layout="screen">
+        <Container layout="screen_centered">
             <Button title="Friends" onPress={() => navigation.navigate("FriendList")} />
         </Container>
     );
