@@ -7,7 +7,7 @@ export interface IActivity {
     allowedApplyNumber: number;
     membersUserIds?: number[];
     subjects?: string[];
-    imagePath?: ImageSourcePropType;
+    imageName: string;
     description?: string;
     startDate?: Date;
     endDate?: Date;
@@ -36,7 +36,7 @@ export const activities: IActivity[] = [
         title: "Mountain Bike",
         location: "Heidelberg, Pholosophenweg",
         allowedApplyNumber: 6,
-        imagePath: {uri: 'https://wallpaperaccess.com/full/28991.jpg'},
+        imageName: "mountain-bike.jpg",
         membersUserIds: [1,2]
     },
     {
@@ -44,9 +44,7 @@ export const activities: IActivity[] = [
         title: "Meditation",
         location: "Worms",
         allowedApplyNumber: 10,
-        imagePath: {
-            uri: 'https://www.engelmagazin.de/wp-content/uploads/2019/11/' +
-                  'michaela-merten-meditation-achtsamkeit-veraenderung-660x330.jpg'},
+        imageName: "meditation.jpg",
         membersUserIds: [1,2]
     }
 ]

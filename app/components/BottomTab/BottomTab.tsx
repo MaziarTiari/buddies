@@ -42,7 +42,7 @@ function getBottomIcon(icon: string, focused: boolean): React.ReactNode {
     return (
         <MaterialCommunityIcons
             name={icon}
-            color={focused ? Color.primaryText : Color.secondaryText}
+            color={focused ? Color.basicButton : Color.secondColor}
             size={26}
         />
     );
@@ -56,6 +56,11 @@ const BottomTab = ({ navigation, route }: any) => {
         navigation.setOptions({
             headerTitle: getHeaderTitle(routeName),
             headerRight: getHeaderRight(routeName, navigation),
+            headerTintColor: Color.secondColor,
+            headerTitleStyle: {
+                fontSize: 20,
+            },
+            headerTitleAlign: 'left',
         });
     }, [navigation, route]);
 
