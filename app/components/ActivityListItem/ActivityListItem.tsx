@@ -23,11 +23,12 @@ const ActivityListItem = (Props: IActivity) => {
             <View style={styles.header}>
                 <IconButton 
                     icon="heart" onPress={()=>{}} style={styles.leftHeaderButton} 
-                    color={Color.contentButtons}
+                    color={Color.Theme.contentBasicButton}
                 />
                 <IconButton 
                     icon="dots-horizontal" onPress={()=>{}} 
-                    style={styles.rightHeaderButton} color={Color.contentButtons}
+                    style={styles.rightHeaderButton}
+                    color={Color.Theme.contentBasicButton}
                 />
             </View>
             <TouchableOpacity style={styles.activityContainer}>
@@ -57,7 +58,7 @@ const styles = StyleSheet.create({
         flexDirection:"column", 
         justifyContent:'center', 
         borderBottomWidth:1, 
-        borderBottomColor: Color.secondColor
+        borderBottomColor: Color.Theme.basicItem
     },
     header: {
         flex:1, 
@@ -91,11 +92,11 @@ const styles = StyleSheet.create({
     },
     activityInfoHeader: {
         fontWeight: "700",
-        color: Color.primaryText,
+        color: Color.Theme.primaryText,
     },
     activityInfoContent: {
         fontWeight: "600",
-        color:Color.primaryText,
+        color:Color.Theme.primaryText,
     }
 });
 

@@ -4,7 +4,7 @@ import Color from '../../utils/theme/color';
 export const styles = StyleSheet.create({
     screen_centered: {
         flex: 1,
-        backgroundColor: Color.screenBackground,
+        backgroundColor: Color.Theme.screenBackground,
         alignItems: "center",
         width: "100%",
         paddingHorizontal: 10,

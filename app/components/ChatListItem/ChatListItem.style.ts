@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
     },
     lastMessageText: {
         fontSize: 14,
-        color: Color.secondaryText,
+        color: Color.Theme.secondaryText,
     },
     unreadContainer: {
         height: 28,
@@ -21,12 +21,12 @@ const styles = StyleSheet.create({
         width: 22,
         height: 22,
         borderRadius: 11,
-        backgroundColor: Color.primaryText,
+        backgroundColor: Color.Theme.primaryText,
         justifyContent: "center",
         alignItems: "center",
     },
     unreadDotText: {
-        color: Color.screenBackground,
+        color: Color.Theme.screenBackground,
         fontSize: 16,
     },
 });

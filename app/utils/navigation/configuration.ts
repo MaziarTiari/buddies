@@ -27,16 +27,16 @@ export const RouteName = {
 };
 
 export const screenOptions: StackNavigationOptions = {
-    headerTintColor: Color.secondaryText,
+    headerTintColor: Color.Theme.secondaryText,
     headerStyle: {
-        backgroundColor: Color.navBackground,
+        backgroundColor: Color.Theme.layoutBackground,
         ...Platform.select({ ios: { height: 100 } }),
     },
 };
 
 export const tabBarOptions: MaterialTopTabBarOptions = {
-    activeTintColor: Color.primaryText,
-    inactiveTintColor: Color.secondaryText,
-    style: { backgroundColor: Color.navBackground },
-    indicatorStyle: { backgroundColor: Color.primaryText },
+    activeTintColor: Color.Theme.primaryText,
+    inactiveTintColor: Color.Theme.secondaryText,
+    style: { backgroundColor: Color.Theme.layoutBackground },
+    indicatorStyle: { backgroundColor: Color.Theme.primaryText },
 };

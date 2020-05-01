@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomStartRadius: 40,
         borderBottomEndRadius: 40,
-        borderColor: Color.navBackground,
+        borderColor: Color.Theme.layoutBackground,
     },
     profileImage: {
         height: 50,
@@ -21,11 +21,11 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
     displayText: {
-        color: Color.secondaryText,
+        color: Color.Theme.secondaryText,
         fontSize: 20,
     },
     statusText: {
-        color: Color.secondaryText,
+        color: Color.Theme.secondaryText,
         fontSize: 14,
     },
     onlineDot: {
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
         width: 20,
         height: 20,
         borderRadius: 10,
-        backgroundColor: Color.onlineDot,
+        backgroundColor: Color.Theme.profileIsOnlineDot,
     },
 });
 

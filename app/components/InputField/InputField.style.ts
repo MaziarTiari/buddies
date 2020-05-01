@@ -6,11 +6,11 @@ const styles = StyleSheet.create({
         width: "100%",
         flexDirection: "row",
         alignItems: "center",
-        backgroundColor: Color.inputBackground,
+        backgroundColor: Color.Theme.primaryText,
         borderRadius: 4,
     },
     textInput: {
-        color: Color.secondaryText,
+        color: Color.Theme.secondaryText,
         borderWidth: 0,
         fontSize: 16,
         flex: 1,

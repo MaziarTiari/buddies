@@ -1,16 +1,17 @@
 const Color = {
-    primaryText: "#FFFFFF",
-    basicButton: "#FFAD1E",
-    contentButtons: "#C7D0E5",
-    secondColor: "#CAE6D8",
-    secondaryText: "#B3B3B3",
-    navBackground: "#121618",
-    screenBackground: "#1C2329",
-    dialogBackground: "#424242",
-    onlineDot: "#79C879",
-    heartIconOn: "#FBCF07",
-    heartIconOf: "#B5AD89",
-    inputBackground: "#FFFFFF",
+    Theme: {
+        primaryText: "#FFFFFF",
+        secondaryText: "#B3B3B3",
+        primaryItem: "#FFAD1E",
+        layoutBackground: "#121618",
+        screenBackground: "#1C2329",
+        contentBasicButton: "#C7D0E5",
+        basicItem: "#CAE6D8",
+        profileIsOnlineDot: "#79C879",
+    },
+    ActivityListItem: {
+        heartIconOn: "#FBCF07",
+    }
 };
 
 export default Color;
