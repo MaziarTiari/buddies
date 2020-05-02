@@ -1,103 +1,107 @@
 import React, { useMemo } from 'react'
-import { View, Image, StyleSheet, Text } from 'react-native'
-import { IActivity } from '../../../example_data/fetchedActivityList'
-import { IconButton, Headline } from 'react-native-paper'
+import { View, Image, Text, GestureResponderEvent } from 'react-native'
+import { IActivity } from '../../../example_data/fetchedActivityList';
+import { IconButton, Headline, TouchableRipple } from 'react-native-paper'
 import Color from '../../utils/theme/color';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { fontsizes } from '../../utils/theme/font';
+import { users } from '../../../example_data/users';
+import { IProfile } from '../../../example_data/FetchedProfile';
+import { styles } from './ActivityListItem.style'
+import { Device } from '../../utils/class/Device';
 const defaultImg = require('../../../assets/img/default-activity-img.jpg');
 
+const device = new Device();
+
 const ActivityListItem = (Props: IActivity) => {
-    const imageSource = useMemo(() => {
-        switch(Props.imageName) {
-            case 'meditation.jpg':
-                return require('../../../assets/img/meditation.jpg');
-            case 'mountain-bike.jpg':
-                return require('../../../assets/img/mountain-bike.jpg');
-            default:
-                return defaultImg;
-        }
-    },[]);
+    
+    const owner = users.find( user => user.id === Props.ownerUserId ) as IProfile;
+    const ownerName = owner.firstname ? owner.firstname + " " + owner.lastname
+                                      : owner.username;
+    const participatesCount = Props.membersUserIds?.length + "/" + 
+                              Props.allowedApplyNumber
+    const titleContent = Props.title + " Hallo das soll ein sehr langer Text sein";
+    const imageSource = getImageSource(Props.imageName);
+    const dateScale = getDateScale(Props.startDate, Props.endDate);
+    const timeScale = getTimeScale(Props.startTime, Props.endTime);
+
+    const onPress = () => {}
+    const onParticipates = () => {}
+    const onChat = (event?: GestureResponderEvent) => {}
+    const onFavorite = () => {}
 
     return (
-        <View style={styles.root}>
-            <View style={styles.header}>
-                <IconButton 
-                    icon="heart" onPress={()=>{}} style={styles.leftHeaderButton} 
-                    color={Color.Theme.contentBasicButton}
-                />
-                <IconButton 
-                    icon="dots-horizontal" onPress={()=>{}} 
-                    style={styles.rightHeaderButton}
-                    color={Color.Theme.contentBasicButton}
-                />
-            </View>
-            <TouchableOpacity style={styles.activityContainer}>
-                <Image 
-                    onError={e => console.log(e)} style={styles.activityImage}
-                    source={imageSource} 
-                />
-                <View style={styles.activityInfoContainer}>
-                    <Headline style={styles.activityInfoHeader}>
-                        {Props.title + " - " + Props.membersUserIds?.length + "/"} 
-                        {Props.allowedApplyNumber}
-                    </Headline>
-                    <Text style={styles.activityInfoContent}>{Props.location}</Text>
-                    {
-                    (Props.startDate || Props.endDate) && 
-                    <Text>{Props.startDate + '-' + Props.endDate}</Text>
-                    }
+        <TouchableRipple style={styles.root} onPress={onPress}>
+            <View>
+                <View style={styles.header}>
+                    <View style={styles.header}>
+                        <IconButton 
+                            icon="chat" color={Color.Theme.basicItem}
+                            size={fontsizes.icon} style={styles.icon} onPress={onChat}
+                        />
+                        <Text style={styles.ownerName}>{ownerName}</Text>
+                    </View>
+                    <View style={styles.header}>
+                        <Text
+                            style={{color:Color.Theme.basicItem}}>
+                                {participatesCount}
+                        </Text>
+                        <IconButton icon='account-group' color={Color.Theme.basicItem} 
+                                    size={fontsizes.icon} onPress={onParticipates}
+                                    style={[styles.icon, {marginLeft:0}]}/>
+                    </View>
                 </View>
-            </TouchableOpacity>
-        </View>
-    )
+                <View style={styles.container}>
+                    <Image style={styles.image} source={imageSource} />
+                    <View style={styles.inforContainer}>
+                        <Headline numberOfLines={2} style={styles.title}>
+                            {titleContent}
+                        </Headline>
+                        <View>
+                            <Text numberOfLines={2} style={styles.info}>
+                                {Props.location}
+                            </Text>
+                            {
+                            (Props.startDate || Props.endDate) && 
+                                <Text style={styles.info}>{dateScale}</Text>
+                            }
+                            {
+                            (Props.startTime || Props.endTime) && 
+                                <Text style={styles.info}>{timeScale}</Text>
+                            }
+                        </View>
+                    </View>
+                </View>
+                <IconButton 
+                    icon="star-outline" color={Color.Theme.basicItem} onPress={onFavorite}
+                    size={fontsizes.icon} style={[styles.icon, styles.bottomRightIcon]}/>
+            </View>
+        </TouchableRipple>
+    );
 }
 
-const styles = StyleSheet.create({
-    root: {
-        flex:1, 
-        flexDirection:"column", 
-        justifyContent:'center', 
-        borderBottomWidth:1, 
-        borderBottomColor: Color.Theme.basicItem
-    },
-    header: {
-        flex:1, 
-        flexDirection:"row", 
-        justifyContent:"space-between"
-    },
-    leftHeaderButton: {
-        alignSelf:'flex-start',
-    },
-    rightHeaderButton: {
-        alignSelf:'flex-end',
-    },
-    activityContainer: {
-        flex: 1,
-        borderBottomLeftRadius:4, 
-        borderBottomRightRadius:4
-    },
-    activityImage: {
-        width: "100%",
-        height:250, 
-        borderTopLeftRadius:10, 
-        borderTopRightRadius:10
-    },
-    activityInfoContainer: {
-        flex:1, 
-        paddingTop: 10, 
-        alignSelf:'stretch',
-        paddingHorizontal:10, 
-        height:100, 
-        alignContent:"flex-start"
-    },
-    activityInfoHeader: {
-        fontWeight: "700",
-        color: Color.Theme.primaryText,
-    },
-    activityInfoContent: {
-        fontWeight: "600",
-        color:Color.Theme.primaryText,
+const getDateScale = (startDate?: Date, endDate?: Date) => {
+    const start = startDate?.toLocaleDateString();
+    const end = endDate?.toLocaleDateString();
+    if( (start === end) || !end ) return start;
+    return start + " - " + end;
+}
+
+const getTimeScale = (startTime?: Date, endTime?: Date) => {
+    const start = startTime?.toLocaleTimeString();
+    const end = endTime?.toLocaleTimeString();
+    if( (start === end) || !end ) return start;
+    return start + " - " + end;
+}
+
+const getImageSource = (title: string) => {
+    switch(title) {
+        case 'meditation.jpg':
+            return require('../../../assets/img/meditation.jpg');
+        case 'mountain-bike.jpg':
+            return require('../../../assets/img/mountain-bike.jpg');
+        default:
+            return defaultImg;
     }
-});
+}
 
 export default ActivityListItem

@@ -12,15 +12,15 @@ export const FriedListItem = (Props: IProfile) => {
         />
     );
 
-    const subTitle = "" + Props.firstname + Props.lastname;
+    const subTitle = "" + Props.firstname + " " + Props.lastname;
 
     return (
         <ProfileListItem
             uuid={Props.id.toString()}
             isOnline={false}
             rightComponent={rightComponent}
-            title={Props.username}
-            subTitle={subTitle}
+            title={subTitle}
+            subTitle={Props.username}
             onPress={() => {}}
         />
     );
