@@ -1,26 +1,45 @@
-import React from "react";
-import { FlatList, View, Platform } from "react-native";
+import React, { useState, useMemo } from "react";
+import { FlatList } from "react-native";
 import styles from "./Chat.style";
 import ChatInput from "../ChatInput/ChatInput";
 import Container from "../Container/Container";
+import { exampleResponse, IChatMessage } from "../../../example_data/ChatReponse";
+import ChatItem from "../ChatItem/ChatItem";
 
-export interface ChatParams {
-    title: string;
-}
+const OWN_UUID = "2"; // TODO REMOVE LATER !!!
 
 const Chat = ({ route, navigation }: any) => {
+    const { isGroup, displayName } = route.params;
+    navigation.setOptions({ title: displayName });
 
-    const Params: ChatParams = route.params;
-    navigation.setOptions({ title: Params.title });
+    const [messages, setMessages] = useState<IChatMessage[]>(exampleResponse);
+
+    const sortedMessages = useMemo<IChatMessage[]>(
+        () => messages.sort((a, b) => (b.date > a.date ? 1 : -1)),
+        [messages]
+    );
 
     const handleSend = (message: string) => {
-        // TODO
-        console.log("Sending message: ", message);
+        if (message.trim().length === 0) return;
+        // TODO sending the message ...
     };
-    
+
     return (
         <Container layout="screen_centered" keyboardAvoiding style={styles.container}>
-            <FlatList data={null} renderItem={null} style={styles.list} />
+            <FlatList
+                data={sortedMessages}
+                renderItem={({ item: message }) => (
+                    <ChatItem
+                        sender={isGroup ? message.senderDisplayName : undefined}
+                        message={message.message}
+                        self={message.senderUuid === OWN_UUID}
+                        date={message.date}
+                    />
+                )}
+                style={styles.list}
+                keyExtractor={(item) => item.uuid}
+                inverted
+            />
             <ChatInput style={styles.inputField} onSend={handleSend} />
         </Container>
     );

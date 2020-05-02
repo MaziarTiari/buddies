@@ -2,30 +2,27 @@ import React from "react";
 import { View, Text } from "react-native";
 import styles from "./ChatListItem.style";
 import translate from "../../utils/language/translate";
-import { ProfileListItem, ProfileListItemProps } from "../ProfileListItem/ProfileListItem";
+import { ProfileListItem } from "../ProfileListItem/ProfileListItem";
+import { IChatPartner, Relation } from "../../../example_data/MessageListQueryResponse";
 
-export enum Relation {
-    STRANGER,
-    FRIEND,
-    BLOCKED,
-}
-
-export interface ChatListItemProps extends ProfileListItemProps{
-    relation: Relation;
-    unreadMessages: number;
-    lastMessage: Date;
+export interface ChatListItemProps {
+    chatPartner: IChatPartner;
+    onPress?: () => void;
+    onLongPress?: () => void;
 }
 
 export const ChatListItem = (Props: ChatListItemProps) => {
     const rightComponent = (
         <View style={styles.rightContainer}>
             <Text style={styles.lastMessageText}>
-                {getFormattedDateText(Props.lastMessage)}
+                {getFormattedDateText(Props.chatPartner.lastMessage)}
             </Text>
             <View style={styles.unreadContainer}>
-                {Props.unreadMessages > 0 && (
+                {Props.chatPartner.unreadMessages > 0 && (
                     <View style={styles.unreadDot}>
-                        <Text style={styles.unreadDotText}>{Props.unreadMessages}</Text>
+                        <Text style={styles.unreadDotText}>
+                            {Props.chatPartner.unreadMessages}
+                        </Text>
                     </View>
                 )}
             </View>
@@ -34,13 +31,13 @@ export const ChatListItem = (Props: ChatListItemProps) => {
 
     return (
         <ProfileListItem
-            uuid={Props.uuid}
-            isOnline={Props.isOnline}
+            uuid={Props.chatPartner.uuid}
+            isOnline={Props.chatPartner.isOnline}
             rightComponent={rightComponent}
-            title={Props.title}
-            subTitle={getRelationText(Props.relation)}
+            title={Props.chatPartner.displayName}
+            subTitle={getRelationText(Props.chatPartner.relation)}
             onPress={Props.onPress}
-            onLongPress={() => Props.onLongPress}
+            onLongPress={Props.onLongPress}
         />
     );
 };
@@ -53,6 +50,8 @@ function getRelationText(relation: Relation): string {
             return translate("message_relation_stranger");
         case Relation.BLOCKED:
             return translate("message_relation_blocked");
+        case Relation.GROUP:
+            return translate("message_relation_group");
     }
 }
 
