@@ -18,9 +18,9 @@ export const styles = StyleSheet.create({
         justifyContent:"space-between",
         alignItems:"center",
     },
-    ownerName: {
-        fontSize:fontsizes.medium, 
-        color:Color.Theme.basicItem, 
+    iconText: {
+        color: Color.Theme.basicItem,
+        fontSize: fontsizes.medium,
     },
     container: {
         flexDirection: "row",

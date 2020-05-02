@@ -38,16 +38,16 @@ const ActivityListItem = (Props: IActivity) => {
                             icon="chat" color={Color.Theme.basicItem}
                             size={fontsizes.icon} style={styles.icon} onPress={onChat}
                         />
-                        <Text style={styles.ownerName}>{ownerName}</Text>
+                        <Text style={styles.iconText}>{ownerName}</Text>
                     </View>
                     <View style={styles.header}>
                         <Text
-                            style={{color:Color.Theme.basicItem}}>
+                            style={styles.iconText}>
                                 {participatesCount}
                         </Text>
                         <IconButton icon='account-group' color={Color.Theme.basicItem} 
                                     size={fontsizes.icon} onPress={onParticipates}
-                                    style={[styles.icon, {marginLeft:0}]}/>
+                                    style={styles.icon}/>
                     </View>
                 </View>
                 <View style={styles.container}>
