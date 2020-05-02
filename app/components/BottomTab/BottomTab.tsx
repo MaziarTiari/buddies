@@ -1,7 +1,7 @@
 import React, { useLayoutEffect } from "react";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
-import { RouteName } from "../../utils/navigation/configuration";
-import translate from "../../utils/language/translate";
+import { RouteName } from "../../utils/function/navigation/configuration";
+import translate from "../../utils/function/language/translate";
 import ActivityHeader from "../ActivityHeader/ActivityHeader";
 import Color from "../../utils/theme/color";
 import FeedList from "../FeedList/FeedList";
@@ -10,6 +10,7 @@ import ChatList from "../ChatList/ChatList";
 import ProfileTab from "../ProfileTab/ProfileTab";
 import ProfileHeader from "../ProfileHeader/ProfileHeader";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { fontsizes } from "../../utils/theme/font";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -43,7 +44,7 @@ function getBottomIcon(icon: string, focused: boolean): React.ReactNode {
         <MaterialCommunityIcons
             name={icon}
             color={focused ? Color.Theme.primaryItem : Color.Theme.basicItem}
-            size={26}
+            size={fontsizes.large}
         />
     );
 }
@@ -58,7 +59,7 @@ const BottomTab = ({ navigation, route }: any) => {
             headerRight: getHeaderRight(routeName, navigation),
             headerTintColor: Color.Theme.basicItem,
             headerTitleStyle: {
-                fontSize: 20,
+                fontSize: fontsizes.medium,
             },
             headerTitleAlign: 'left',
         });

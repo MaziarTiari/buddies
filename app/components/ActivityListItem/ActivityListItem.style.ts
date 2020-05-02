@@ -8,7 +8,7 @@ const device = new Device();
 export const styles = StyleSheet.create({
     root: {
         flex: 1,
-        paddingTop: device.height * 0.035,
+        paddingTop: fontsizes.large,
         paddingBottom: 10,
         borderBottomWidth: 1,
         borderColor: Color.Theme.secondaryText,
@@ -19,7 +19,7 @@ export const styles = StyleSheet.create({
         alignItems:"center",
     },
     ownerName: {
-        fontSize:fontsizes.header_1, 
+        fontSize:fontsizes.medium, 
         color:Color.Theme.basicItem, 
     },
     container: {
@@ -29,24 +29,23 @@ export const styles = StyleSheet.create({
         width: device.width * 0.30,
         height: device.width * 0.30,
         alignSelf:"center",
-        borderRadius: 25,
+        borderRadius: device.width * 0.07,
     },
     inforContainer: {
         width: device.width * 0.6,
-        paddingHorizontal: 15,
-        paddingVertical: 10,
+        paddingHorizontal: fontsizes.small,
         justifyContent:"space-evenly",
     },
     title: {
         color: Color.Theme.primaryText,
-        fontSize: fontsizes.header_1,
+        fontSize: fontsizes.medium,
         fontWeight: '700',
-        lineHeight: fontsizes.header_1 + 3,
+        lineHeight: fontsizes.medium + 3,
     },
     info: {
         color: Color.Theme.primaryText,
-        fontSize: fontsizes.content,
-        lineHeight: fontsizes.content + 5
+        fontSize: fontsizes.small,
+        lineHeight: fontsizes.small + 5
     },
     iconContainer: {
         flexDirection:"row",

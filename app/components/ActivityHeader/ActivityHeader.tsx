@@ -2,7 +2,7 @@ import React from "react";
 import { View } from "react-native";
 import { IconButton } from "react-native-paper";
 import Color from "../../utils/theme/color";
-import { RouteName } from "../../utils/navigation/configuration";
+import { RouteName } from "../../utils/function/navigation/configuration";
 
 const ActivityHeader = ({ navigation }: any) => (
     <View style={{ flexDirection: "row" }}>

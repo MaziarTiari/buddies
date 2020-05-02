@@ -23,11 +23,13 @@ export const ProfileListItem = (Props: ProfileListItemProps) => {
             onLongPress={Props.onLongPress}
         >
             <View style={styles.container}>
-                <Image
-                    style={styles.profileImage}
-                    source={require("../../../assets/img/defaultProfileImage.png")}
-                />
-                {Props.isOnline && <View style={styles.onlineDot}></View>}
+                <View style={styles.profileImageContainer}>
+                    <Image
+                        style={styles.profileImage}
+                        source={require("../../../assets/img/defaultProfileImage.png")}
+                    />
+                    {Props.isOnline && <View style={styles.onlineDot}></View>}
+                </View>
                 <View style={styles.textContainer}>
                     <Text numberOfLines={1} style={styles.displayText}>
                         {Props.title}

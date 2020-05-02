@@ -4,7 +4,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import ActivityList from "./app/components/ActivityList/ActivityList";
 import FriendList from "./app/components/FriendList/FriendList";
 import Chat from "./app/components/Chat/Chat";
-import { RouteName, screenOptions } from "./app/utils/navigation/configuration";
+import { RouteName, screenOptions } from "./app/utils/function/navigation/configuration";
 import BottomTab from "./app/components/BottomTab/BottomTab";
 
 const Stack = createStackNavigator();

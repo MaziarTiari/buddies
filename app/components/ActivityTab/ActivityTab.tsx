@@ -2,8 +2,8 @@ import React from "react";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import ActivityList from "../ActivityList/ActivityList";
 import ActivityMap from "../ActivityMap/ActivityMap";
-import translate from "../../utils/language/translate";
-import { tabBarOptions, RouteName } from "../../utils/navigation/configuration";
+import translate from "../../utils/function/language/translate";
+import { tabBarOptions, RouteName } from "../../utils/function/navigation/configuration";
 
 const Tab = createMaterialTopTabNavigator();
 

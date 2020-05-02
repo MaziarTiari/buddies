@@ -1,13 +1,15 @@
 import { StyleSheet, Platform } from 'react-native'
 import Color from '../../utils/theme/color';
+import { Device } from '../../utils/class/Device';
+
+const device = new Device();
 
 export const styles = StyleSheet.create({
     screen_centered: {
         flex: 1,
         backgroundColor: Color.Theme.screenBackground,
         alignItems: "center",
-        width: "100%",
-        paddingHorizontal: 10,
+        paddingHorizontal: device.width * 0.03,
     },
     body_centered : {
         flex: 1,

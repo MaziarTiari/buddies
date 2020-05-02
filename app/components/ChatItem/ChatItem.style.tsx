@@ -1,39 +1,46 @@
 import { StyleSheet } from "react-native";
 import Color from "../../utils/theme/color";
+import { fontsizes } from "../../utils/theme/font";
+import { Device } from "../../utils/class/Device";
+
+const device = new Device();
+const roundMessageBorderRadius = device.width * 0.065;
+
 
 const styles = StyleSheet.create({
     messageContainer: {
-        borderTopRightRadius: 20,
-        borderTopLeftRadius: 20,
-        padding: 10,
-        margin: 5,
-        minWidth: "20%",
-        maxWidth: "80%",
+        borderTopRightRadius: roundMessageBorderRadius,
+        borderTopLeftRadius: roundMessageBorderRadius,
+        padding: fontsizes.small,
+        margin: device.width * 0.016,
+        minWidth: device.width * 0.2,
     },
     messageContainerSelf: {
-        backgroundColor: "green", // TODO CHANGE
-        borderBottomLeftRadius: 20,
+        backgroundColor: Color.ChatItem.sentMsgBackground,
+        borderBottomLeftRadius: roundMessageBorderRadius,
         alignSelf: "flex-end",
+        marginLeft: "10%",
     },
     messageContainerOther: {
-        backgroundColor: "#444", // TODO CHANGE
-        borderBottomRightRadius: 20,
+        backgroundColor: Color.ChatItem.recievedMsgBackground,
+        borderBottomRightRadius: roundMessageBorderRadius,
         alignSelf: "flex-start",
+        marginRight: "10%",
     },
     nameText: {
-        fontSize: 16,
+        fontSize: fontsizes.medium,
         fontWeight: "bold",
-        color: Color.primaryText,
+        color: Color.Theme.primaryText,
     },
     messageText: {
-        fontSize: 16,
-        color: Color.primaryText,
+        fontSize: fontsizes.medium,
+        color: Color.Theme.primaryText,
     },
     dateText: {
-        fontSize: 12,
-        marginTop: 5,
+        fontSize: fontsizes.small,
+        marginTop: fontsizes.small * 0.3,
         textAlign: "right",
-        color: Color.secondaryText,
+        color: Color.Theme.basicItem,
     },
 });
 

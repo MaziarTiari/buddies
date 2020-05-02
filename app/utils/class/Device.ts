@@ -10,13 +10,8 @@ export class Device {
 
     constructor() {
         const dimension = Dimensions.get('screen');
-        const isLandscape = this.isLandscape();
+        const isLandscape = dimension.width > dimension.height ? true : false;
         this.width = isLandscape ? dimension.height : dimension.width;
         this.height = isLandscape ? dimension.width : dimension.height;
-    }
-
-    public isLandscape = () => {
-        const d = Dimensions.get('screen');
-        return d.width > d.height ? true : false;
     }
 }

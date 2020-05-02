@@ -3,7 +3,7 @@ import { FlatList } from "react-native";
 import styles from "./Chat.style";
 import ChatInput from "../ChatInput/ChatInput";
 import Container from "../Container/Container";
-import { exampleResponse, IChatMessage } from "../../../example_data/ChatReponse";
+import { exampleResponse, IChatMessage } from "../../dev/example_data/ChatReponse";
 import ChatItem from "../ChatItem/ChatItem";
 
 const OWN_UUID = "2"; // TODO REMOVE LATER !!!

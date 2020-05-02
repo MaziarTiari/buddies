@@ -1,11 +1,9 @@
 import React, { useState, useMemo } from "react";
 import { FlatList } from "react-native";
-import {
-    exampleResponse,
-    IChatPartner,
-    Relation,
-} from "../../../example_data/MessageListQueryResponse";
-import { RouteName } from "../../utils/navigation/configuration";
+import { 
+    exampleResponse, IChatPartner, Relation,
+} from "../../dev/example_data/MessageListQueryResponse";
+import { RouteName } from "../../utils/function/navigation/configuration";
 import { ChatListItem } from "../ChatListItem/ChatListItem";
 import Container from "../Container/Container";
 
@@ -31,7 +29,7 @@ const ChatList = ({ navigation }: any) => {
     return (
         <Container layout="screen_centered">
             <FlatList
-                style={{ width: "100%" }}
+                style={{ flex: 1, alignSelf:"stretch" }}
                 data={sortedChatPartners}
                 renderItem={({ item: chatPartner }) => (
                     <ChatListItem

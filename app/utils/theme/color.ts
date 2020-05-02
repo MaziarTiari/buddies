@@ -11,7 +11,11 @@ const Color = {
     },
     ActivityListItem: {
         heartIconOn: "#FBCF07",
-    }
+    },
+    ChatItem: {
+        sentMsgBackground: "#227E62",
+        recievedMsgBackground: "#45535F"
+    },
 };
 
 export default Color;

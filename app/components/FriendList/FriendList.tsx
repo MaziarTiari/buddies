@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FlatList } from "react-native";
-import { users } from "../../../example_data/users";
+import { users } from "../../dev/example_data/users";
 import { FriedListItem } from "../FriendListItem/FriedListItem";
 import Container from "../Container/Container";
 
@@ -10,7 +10,7 @@ const FriendList = () => {
     return (
         <Container layout="screen_centered">
             <FlatList
-                style={{ width: "100%" }}
+                style={{ flex: 1, alignSelf:"stretch" }}
                 data={items}
                 renderItem={({ item }) => <FriedListItem {...item} />}
                 keyExtractor={(item) => item.id.toString()}

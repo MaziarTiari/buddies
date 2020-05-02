@@ -1,18 +1,18 @@
 import { StyleSheet } from "react-native";
 import Color from "../../utils/theme/color";
+import { fontsizes } from "../../utils/theme/font";
 
 const styles = StyleSheet.create({
     inputContainer: {
-        width: "100%",
         flexDirection: "row",
         alignItems: "center",
         backgroundColor: Color.Theme.primaryText,
-        borderRadius: 4,
+        borderRadius: fontsizes.xsmall,
     },
     textInput: {
         color: Color.Theme.secondaryText,
         borderWidth: 0,
-        fontSize: 16,
+        fontSize: fontsizes.medium,
         flex: 1,
         marginVertical: 10,
     },

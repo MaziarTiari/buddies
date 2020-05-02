@@ -1,11 +1,11 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import { View, Image, Text, GestureResponderEvent } from 'react-native'
-import { IActivity } from '../../../example_data/fetchedActivityList';
+import { IActivity } from '../../dev/example_data/fetchedActivityList';
 import { IconButton, Headline, TouchableRipple } from 'react-native-paper'
 import Color from '../../utils/theme/color';
 import { fontsizes } from '../../utils/theme/font';
-import { users } from '../../../example_data/users';
-import { IProfile } from '../../../example_data/FetchedProfile';
+import { users } from '../../dev/example_data/users';
+import { IProfile } from '../../dev/example_data/FetchedProfile';
 import { styles } from './ActivityListItem.style'
 import { Device } from '../../utils/class/Device';
 const defaultImg = require('../../../assets/img/default-activity-img.jpg');

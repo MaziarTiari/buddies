@@ -5,7 +5,10 @@ const device = new Device();
 export const getResponsiveFontsize = (value: number) => value * device.width / 450;
 
 export const fontsizes = {
-    header_1: getResponsiveFontsize(20),
-    content: getResponsiveFontsize(15),
-    icon: getResponsiveFontsize(30)
+    large: getResponsiveFontsize(26),
+    medium: getResponsiveFontsize(20),
+    small: getResponsiveFontsize(15),
+    xsmall: getResponsiveFontsize(12),
+    icon: getResponsiveFontsize(30),
+    icon_m: getResponsiveFontsize(40),
 }

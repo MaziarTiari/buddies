@@ -1,7 +1,7 @@
 import { Platform } from "react-native";
 import { StackNavigationOptions } from "@react-navigation/stack";
 import { MaterialTopTabBarOptions } from "@react-navigation/material-top-tabs";
-import Color from "../theme/color";
+import Color from "../../theme/color";
 
 export const RouteName = {
     Root: "Root",
@@ -35,8 +35,8 @@ export const screenOptions: StackNavigationOptions = {
 };
 
 export const tabBarOptions: MaterialTopTabBarOptions = {
-    activeTintColor: Color.Theme.primaryText,
+    activeTintColor: Color.Theme.primaryItem,
     inactiveTintColor: Color.Theme.secondaryText,
     style: { backgroundColor: Color.Theme.layoutBackground },
-    indicatorStyle: { backgroundColor: Color.Theme.primaryText },
+    indicatorStyle: { backgroundColor: Color.Theme.primaryItem },
 };

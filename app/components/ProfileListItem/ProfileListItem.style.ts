@@ -1,19 +1,27 @@
 import { StyleSheet } from "react-native";
 import Color from "../../utils/theme/color";
+import { Device } from "../../utils/class/Device";
+import { fontsizes } from "../../utils/theme/font";
+
+const device = new Device();
+
+const imageSize = device.width * 0.15;
 
 const styles = StyleSheet.create({
     container: {
-        height: 80,
         flexDirection: "row",
         borderBottomWidth: 1,
-        borderBottomStartRadius: 40,
-        borderBottomEndRadius: 40,
+        borderBottomStartRadius: device.width * 0.08,
+        borderBottomEndRadius: device.width * 0.08,
         borderColor: Color.Theme.layoutBackground,
     },
+    profileImageContainer: {
+        position:"relative"
+    },
     profileImage: {
-        height: 50,
-        width: 50,
-        borderRadius: 25,
+        height: imageSize,
+        width: imageSize,
+        borderRadius: imageSize,
         margin: 15,
     },
     textContainer: {
@@ -22,19 +30,19 @@ const styles = StyleSheet.create({
     },
     displayText: {
         color: Color.Theme.secondaryText,
-        fontSize: 20,
+        fontSize: fontsizes.medium + 2,
     },
     statusText: {
         color: Color.Theme.secondaryText,
-        fontSize: 14,
+        fontSize: fontsizes.small + 1,
     },
     onlineDot: {
-        left: 45,
-        top: 45,
+        left: "60%",
+        top: "60%",
         position: "absolute",
-        width: 20,
-        height: 20,
-        borderRadius: 10,
+        width: imageSize * 0.35,
+        height: imageSize * 0.35,
+        borderRadius: imageSize * 0.35,
         backgroundColor: Color.Theme.profileIsOnlineDot,
     },
 });

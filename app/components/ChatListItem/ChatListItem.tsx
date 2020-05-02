@@ -1,9 +1,9 @@
 import React from "react";
 import { View, Text } from "react-native";
 import styles from "./ChatListItem.style";
-import translate from "../../utils/language/translate";
+import translate from "../../utils/function/language/translate";
 import { ProfileListItem } from "../ProfileListItem/ProfileListItem";
-import { IChatPartner, Relation } from "../../../example_data/MessageListQueryResponse";
+import { IChatPartner, Relation } from "../../dev/example_data/MessageListQueryResponse";
 
 export interface ChatListItemProps {
     chatPartner: IChatPartner;

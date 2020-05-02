@@ -3,8 +3,8 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 import ProfileAbout from "../ProfileAbout/ProfileAbout";
 import ProfileActivity from "../ProfileActivity/ProfileActivity";
 import ProfileGalery from "../ProfileGalery/ProfileGalery";
-import translate from "../../utils/language/translate";
-import { tabBarOptions, RouteName } from "../../utils/navigation/configuration";
+import translate from "../../utils/function/language/translate";
+import { tabBarOptions, RouteName } from "../../utils/function/navigation/configuration";
 
 const Tab = createMaterialTopTabNavigator();
 

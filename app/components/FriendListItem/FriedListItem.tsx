@@ -1,7 +1,7 @@
 import React from "react";
 import { IconButton } from "react-native-paper";
 import { ProfileListItem } from "../ProfileListItem/ProfileListItem";
-import { IProfile } from "../../../example_data/FetchedProfile";
+import { IProfile } from "../../dev/example_data/FetchedProfile";
 
 export const FriedListItem = (Props: IProfile) => {
     const rightComponent = (
