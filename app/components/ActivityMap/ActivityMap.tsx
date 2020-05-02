@@ -6,7 +6,7 @@ import Container from "../Container/Container";
 const ActivityMap = () => {
     return (
         <Container layout="screen_centered">
-            <Text style={{ color: Color.secondaryText }}>Activity Map Screen</Text>
+            <Text style={{ color: Color.Theme.secondaryText }}>Activity Map Screen</Text>
         </Container>
     );
 };

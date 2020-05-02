@@ -33,7 +33,7 @@ export const ChatInput = (Props: ChatInputProps) => {
             leftComponent={
                 <IconButton
                     icon="delete"
-                    color={Color.secondaryText}
+                    color={Color.Theme.secondaryText}
                     size={28}
                     onPress={() => setInputText("")}
                 />
@@ -41,7 +41,7 @@ export const ChatInput = (Props: ChatInputProps) => {
             rightComponent={
                 <IconButton
                     icon="send"
-                    color={Color.secondaryText}
+                    color={Color.Theme.secondaryText}
                     size={28}
                     onPress={handleSendText}
                 />

@@ -6,7 +6,7 @@ import Color from "../../utils/theme/color";
 const ProfileHeader = ({ navigation }: any) => (
     <View>
         <IconButton
-            color={Color.secondaryText}
+            color={Color.Theme.secondaryText}
             icon="dots-vertical-circle-outline"
             onPress={() => {}} // tood
         />

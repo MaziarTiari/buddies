@@ -6,6 +6,8 @@ export interface IProfile {
     location: string;
     firstname?: string;
     lastname?: string;
+    sex?: string;
+    birthday?: Date;
     languages?: string[];
     info?: string;
     educationalInstitute?: string;

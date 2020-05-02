@@ -7,12 +7,12 @@ import { RouteName } from "../../utils/navigation/configuration";
 const ActivityHeader = ({ navigation }: any) => (
     <View style={{ flexDirection: "row" }}>
         <IconButton
-            color={Color.secondaryText}
+            color={Color.Theme.contentBasicButton}
             icon="heart"
             onPress={() => navigation.navigate(RouteName.Activity.MyFavorite)}
         />
         <IconButton
-            color={Color.secondaryText}
+            color={Color.Theme.contentBasicButton}
             icon="wunderlist"
             onPress={() => navigation.navigate(RouteName.Activity.MyList)}
         />

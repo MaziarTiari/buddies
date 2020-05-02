@@ -1,11 +1,17 @@
 const Color = {
-    primaryText: "#FFFFFF",
-    secondaryText: "#B3B3B3",
-    navBackground: "#212121",
-    screenBackground: "#303030",
-    dialogBackground: "#424242",
-    onlineDot: "#79C879",
-    inputBackground: "#FFFFFF",
+    Theme: {
+        primaryText: "#FFFFFF",
+        secondaryText: "#B3B3B3",
+        primaryItem: "#FFAD1E",
+        layoutBackground: "#121618",
+        screenBackground: "#1C2329",
+        contentBasicButton: "#C7D0E5",
+        basicItem: "#CAE6D8",
+        profileIsOnlineDot: "#79C879",
+    },
+    ActivityListItem: {
+        heartIconOn: "#FBCF07",
+    }
 };
 
 export default Color;

@@ -3,7 +3,7 @@ import Color from "../../utils/theme/color";
 
 const styles = StyleSheet.create({
     inputContainer: {
-        backgroundColor: Color.navBackground,
+        backgroundColor: Color.Theme.layoutBackground,
         borderRadius: 30,
     },
 });
