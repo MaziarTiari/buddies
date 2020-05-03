@@ -11,7 +11,6 @@ export interface ChatItemProps {
 }
 
 const ChatItem = (Props: ChatItemProps) => {
-    const screenDimension = useScreenDimension();
     return (
         <View
             style={[

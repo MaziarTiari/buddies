@@ -7,10 +7,7 @@ import { fontsizes } from '../../utils/theme/font';
 import { users } from '../../dev/example_data/users';
 import { IProfile } from '../../dev/example_data/FetchedProfile';
 import { styles } from './ActivityListItem.style'
-import { Device } from '../../utils/class/Device';
 const defaultImg = require('../../../assets/img/default-activity-img.jpg');
-
-const device = new Device();
 
 const ActivityListItem = (Props: IActivity) => {
     
