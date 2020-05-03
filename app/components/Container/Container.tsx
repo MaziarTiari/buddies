@@ -5,7 +5,7 @@ import { styles } from './Container.style';
 
 interface ContainerProps extends ViewProps{ 
     keyboardAvoiding?: boolean
-    layout: 'screen_centered' | 'body_centered';
+    layout: 'screen_centered' | 'body_centered' | 'component_container' | 'screend_body';
     children?: ReactNode;
 }
 

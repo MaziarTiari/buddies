@@ -8,10 +8,12 @@ const ActivityList = () => {
     const [allActivities, setAllActivities] = useState(activities)
     return (
         <Container layout="screen_centered">
+            <Container layout="screend_body">
             <FlatList data={allActivities}
                 renderItem={ ({item}) => <ActivityListItem {...item} />}
                 keyExtractor={item => item.id.toString()}
             />
+            </Container>
         </Container>
     );
 };

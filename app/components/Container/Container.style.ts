@@ -9,10 +9,21 @@ export const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: Color.Theme.screenBackground,
         alignItems: "center",
-        paddingHorizontal: device.width * 0.03,
+    },
+    screend_body: {
+        flex: 1,
+        alignItems: "stretch",
+        alignSelf:"stretch",
+    },
+    component_container: {
+        flex: 1,
+        marginHorizontal: device.width * 0.03,
+        paddingTop: 30,
+        paddingBottom: Platform.OS === 'ios' ? 20 : 10
     },
     body_centered : {
         flex: 1,
+        marginHorizontal: device.width * 0.03,
         alignItems: "center",
         paddingTop: 30,
         paddingBottom: Platform.OS === 'ios' ? 20 : 10

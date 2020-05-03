@@ -7,6 +7,7 @@ import { fontsizes } from '../../utils/theme/font';
 import { users } from '../../dev/example_data/users';
 import { IProfile } from '../../dev/example_data/FetchedProfile';
 import { styles } from './ActivityListItem.style'
+import Container from '../Container/Container';
 const defaultImg = require('../../../assets/img/default-activity-img.jpg');
 
 const ActivityListItem = (Props: IActivity) => {
@@ -28,7 +29,7 @@ const ActivityListItem = (Props: IActivity) => {
 
     return (
         <TouchableRipple style={styles.root} onPress={onPress}>
-            <View>
+            <Container layout="component_container">
                 <View style={styles.header}>
                     <View style={styles.header}>
                         <IconButton 
@@ -71,7 +72,7 @@ const ActivityListItem = (Props: IActivity) => {
                 <IconButton 
                     icon="star-outline" color={Color.Theme.basicItem} onPress={onFavorite}
                     size={fontsizes.icon} style={[styles.icon, styles.bottomRightIcon]}/>
-            </View>
+            </Container>
         </TouchableRipple>
     );
 }
