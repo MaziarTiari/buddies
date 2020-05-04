@@ -7,13 +7,21 @@ import { LanguageContext } from '../../../state-management-dev/LanguageContext'
 const FeedList = () => {
     return (
         <Container layout="screen_centered" style={{paddingTop:40}}>
-            <Text style={{ color: Color.Theme.secondaryText }}>Select Language:</Text>
+            <Text style={{ color: Color.Theme.secondaryText }}><Headline /></Text>
             <LanguageSelector />
-            <Text style={{ color: Color.Theme.secondaryText }}><Greeting /></Text>
-            {/* <Text style={{ color: Color.Theme.secondaryText }}>Feed</Text> */}
+            <GreetingTranslator element={<Greeting />}/>
         </Container>
     );
 };
+
+interface Props{
+    element: JSX.Element
+}
+const GreetingTranslator = (Props: Props) => 
+    <Text style={{ color: Color.Theme.secondaryText }}>
+        {Props.element}
+    </Text>
+
 
 export const Greeting = () => (
     <LanguageContext.Consumer>
