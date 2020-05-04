@@ -1,6 +1,6 @@
 import React, { useLayoutEffect } from "react";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
-import { RouteName } from "../../utils/function/navigation/configuration";
+import { RouteName, bottomTabBarConfig } from "../../utils/function/navigation/configuration";
 import translate from "../../utils/function/language/translate";
 import ActivityHeader from "../ActivityHeader/ActivityHeader";
 import Color from "../../utils/theme/color";
@@ -9,8 +9,8 @@ import ActivitiesTab from "../ActivityTab/ActivityTab";
 import ChatList from "../ChatList/ChatList";
 import ProfileTab from "../ProfileTab/ProfileTab";
 import ProfileHeader from "../ProfileHeader/ProfileHeader";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { fontsizes } from "../../utils/theme/font";
+import { fontsizes, getResponsiveSize } from "../../utils/theme/font";
+import { IconButton } from "react-native-paper";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -41,10 +41,10 @@ function getHeaderRight(routeName: string, navigation: any): (() => JSX.Element)
 
 function getBottomIcon(icon: string, focused: boolean): React.ReactNode {
     return (
-        <MaterialCommunityIcons
-            name={icon}
+        <IconButton
+            icon={icon} style={{margin:0, flex:1}}
             color={focused ? Color.Theme.primaryItem : Color.Theme.basicItem}
-            size={fontsizes.large}
+            size={getResponsiveSize(30)}
         />
     );
 }
@@ -62,15 +62,12 @@ const BottomTab = ({ navigation, route }: any) => {
                 fontSize: fontsizes.medium,
             },
             headerTitleAlign: 'left',
+            
         });
     }, [navigation, route]);
 
     return (
-        <Tab.Navigator
-            initialRouteName={RouteName.FeedList}
-            screenOptions={{ tabBarColor: Color.Theme.layoutBackground }}
-            labeled={false}
-        >
+        <Tab.Navigator initialRouteName={RouteName.FeedList} {...bottomTabBarConfig}>
             <Tab.Screen
                 name={RouteName.FeedList}
                 component={FeedList}

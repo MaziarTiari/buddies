@@ -8,7 +8,7 @@ const FriendList = () => {
     const [items, setItems] = useState(users);
 
     return (
-        <Container layout="screen_centered">
+        <Container type="screen" layout="root">
             <FlatList
                 style={{ flex: 1, alignSelf:"stretch" }}
                 data={items}

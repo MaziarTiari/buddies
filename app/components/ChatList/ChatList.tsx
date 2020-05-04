@@ -27,19 +27,20 @@ const ChatList = ({ navigation }: any) => {
     };
 
     return (
-        <Container layout="screen_centered">
-            <FlatList
-                style={{ flex: 1, alignSelf:"stretch" }}
-                data={sortedChatPartners}
-                renderItem={({ item: chatPartner }) => (
-                    <ChatListItem
-                        chatPartner={chatPartner}
-                        onPress={() => handlePress(chatPartner)}
-                        onLongPress={() => handleLongPress(chatPartner)}
-                    />
-                )}
-                keyExtractor={(chatPartner) => chatPartner.uuid}
-            />
+        <Container type="screen" layout="root">
+            <Container  type='screen' layout='body'>
+                <FlatList
+                    data={sortedChatPartners}
+                    renderItem={({ item: chatPartner }) => (
+                        <ChatListItem
+                            chatPartner={chatPartner}
+                            onPress={() => handlePress(chatPartner)}
+                            onLongPress={() => handleLongPress(chatPartner)}
+                        />
+                    )}
+                    keyExtractor={(chatPartner) => chatPartner.uuid}
+                />
+            </Container>
         </Container>
     );
 };

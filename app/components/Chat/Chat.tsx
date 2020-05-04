@@ -25,7 +25,7 @@ const Chat = ({ route, navigation }: any) => {
     };
 
     return (
-        <Container layout="screen_centered" keyboardAvoiding style={styles.container}>
+        <Container type="screen" layout="root" keyboardAvoiding style={styles.container}>
             <FlatList
                 data={sortedMessages}
                 renderItem={({ item: message }) => (

@@ -2,13 +2,17 @@ import { Device } from "../class/Device"
 
 const device = new Device();
 
-export const getResponsiveFontsize = (value: number) => value * device.width / 450;
+export const getResponsiveSize = (value: number) => {
+    const maxSize = value * 1.35;
+    const responsiveSize = value * device.width / 450;
+    return responsiveSize > maxSize ? maxSize : responsiveSize;
+}
 
 export const fontsizes = {
-    large: getResponsiveFontsize(26),
-    medium: getResponsiveFontsize(20),
-    small: getResponsiveFontsize(15),
-    xsmall: getResponsiveFontsize(12),
-    icon: getResponsiveFontsize(30),
-    icon_m: getResponsiveFontsize(40),
+    large: getResponsiveSize(26),
+    medium: getResponsiveSize(20),
+    small: getResponsiveSize(15),
+    xsmall: getResponsiveSize(12),
+    icon: getResponsiveSize(30),
+    icon_m: getResponsiveSize(40),
 }

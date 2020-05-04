@@ -1,27 +1,29 @@
 import { StyleSheet, Platform } from 'react-native'
 import Color from '../../utils/theme/color';
 import { Device } from '../../utils/class/Device';
+import { getResponsiveSize } from '../../utils/theme/font';
 
 const device = new Device();
 
-export const styles = StyleSheet.create({
-    screen_centered: {
+const screen = StyleSheet.create({
+    root: {
         flex: 1,
         backgroundColor: Color.Theme.screenBackground,
         alignItems: "center",
     },
-    screend_body: {
+    body: {
         flex: 1,
         alignItems: "stretch",
         alignSelf:"stretch",
-    },
-    component_container: {
+    }
+});
+
+const component = StyleSheet.create({
+    root: {
         flex: 1,
         marginHorizontal: device.width * 0.03,
-        paddingTop: 30,
-        paddingBottom: Platform.OS === 'ios' ? 20 : 10
     },
-    body_centered : {
+    root_center : {
         flex: 1,
         marginHorizontal: device.width * 0.03,
         alignItems: "center",
@@ -29,3 +31,5 @@ export const styles = StyleSheet.create({
         paddingBottom: Platform.OS === 'ios' ? 20 : 10
     }
 });
+
+export const styles = { screen: screen, component: component };

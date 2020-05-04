@@ -1,28 +1,33 @@
 import { StyleSheet } from "react-native";
 import Color from "../../utils/theme/color";
 import { Device } from "../../utils/class/Device";
-import { fontsizes } from "../../utils/theme/font";
+import { fontsizes, getResponsiveSize } from "../../utils/theme/font";
 
 const device = new Device();
 
-const imageSize = device.width * 0.15;
+const tmpImageSize = device.width * 0.15
+const imageSize = tmpImageSize > 100 ? 100 : tmpImageSize;
 
 const styles = StyleSheet.create({
-    container: {
-        flexDirection: "row",
+    root: {
         borderBottomWidth: 1,
         borderBottomStartRadius: device.width * 0.08,
         borderBottomEndRadius: device.width * 0.08,
         borderColor: Color.Theme.layoutBackground,
     },
+    container: {
+        alignItems:"center",
+        flexDirection: "row",
+        marginVertical: getResponsiveSize(20),
+    },
     profileImageContainer: {
-        position:"relative"
+        position:"relative",
+        marginRight: getResponsiveSize(15),
     },
     profileImage: {
         height: imageSize,
         width: imageSize,
         borderRadius: imageSize,
-        margin: 15,
     },
     textContainer: {
         flex: 1,

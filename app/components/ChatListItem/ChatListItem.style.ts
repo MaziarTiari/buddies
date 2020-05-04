@@ -7,9 +7,10 @@ const device = new Device();
 
 const styles = StyleSheet.create({
     rightContainer: {
-        margin: device.width * 0.03,
+        flexDirection:"column",
         alignItems: "center",
         justifyContent: "space-evenly",
+        alignSelf:"stretch"
     },
     lastMessageText: {
         fontSize: fontsizes.small,

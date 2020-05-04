@@ -29,7 +29,7 @@ const ActivityListItem = (Props: IActivity) => {
 
     return (
         <TouchableRipple style={styles.root} onPress={onPress}>
-            <Container layout="component_container">
+            <Container type='component' layout="root">
                 <View style={styles.header}>
                     <View style={styles.header}>
                         <IconButton 
@@ -70,8 +70,8 @@ const ActivityListItem = (Props: IActivity) => {
                     </View>
                 </View>
                 <IconButton 
-                    icon="star-outline" color={Color.Theme.basicItem} onPress={onFavorite}
-                    size={fontsizes.icon} style={[styles.icon, styles.bottomRightIcon]}/>
+                        icon="star-outline" color={Color.Theme.basicItem} onPress={onFavorite}
+                        size={fontsizes.icon} style={[styles.icon, styles.bottomRightIcon]}/>
             </Container>
         </TouchableRipple>
     );
