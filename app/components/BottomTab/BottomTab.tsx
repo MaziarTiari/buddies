@@ -1,6 +1,6 @@
 import React, { useLayoutEffect } from "react";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
-import { RouteName, bottomTabBarConfig } from "../../utils/function/navigation/configuration";
+import { RouteName, screenOptions } from "../../utils/function/navigation/configuration";
 import translate from "../../utils/function/language/translate";
 import ActivityHeader from "../ActivityHeader/ActivityHeader";
 import Color from "../../utils/theme/color";
@@ -9,8 +9,7 @@ import ActivitiesTab from "../ActivityTab/ActivityTab";
 import ChatList from "../ChatList/ChatList";
 import ProfileTab from "../ProfileTab/ProfileTab";
 import ProfileHeader from "../ProfileHeader/ProfileHeader";
-import { fontsizes, getResponsiveSize } from "../../utils/theme/font";
-import { IconButton } from "react-native-paper";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -41,10 +40,10 @@ function getHeaderRight(routeName: string, navigation: any): (() => JSX.Element)
 
 function getBottomIcon(icon: string, focused: boolean): React.ReactNode {
     return (
-        <IconButton
-            icon={icon} style={{margin:0, flex:1}}
+        <MaterialCommunityIcons
+            name={icon}
             color={focused ? Color.Theme.primaryItem : Color.Theme.basicItem}
-            size={getResponsiveSize(30)}
+            size={26}
         />
     );
 }
@@ -57,17 +56,16 @@ const BottomTab = ({ navigation, route }: any) => {
         navigation.setOptions({
             headerTitle: getHeaderTitle(routeName),
             headerRight: getHeaderRight(routeName, navigation),
-            headerTintColor: Color.Theme.basicItem,
-            headerTitleStyle: {
-                fontSize: fontsizes.medium,
-            },
-            headerTitleAlign: 'left',
-            
+            screenOptions: screenOptions,
         });
     }, [navigation, route]);
 
     return (
-        <Tab.Navigator initialRouteName={RouteName.FeedList} {...bottomTabBarConfig}>
+        <Tab.Navigator
+            initialRouteName={RouteName.FeedList}
+            screenOptions={{ tabBarColor: Color.Theme.layoutBackground }}
+            labeled={false}
+        >
             <Tab.Screen
                 name={RouteName.FeedList}
                 component={FeedList}

@@ -3,8 +3,6 @@ import { StackNavigationOptions } from "@react-navigation/stack";
 import { MaterialTopTabBarOptions } from "@react-navigation/material-top-tabs";
 import Color from "../../theme/color";
 import { fontsizes, getResponsiveSize } from "../../theme/font";
-import { MaterialBottomTabNavigationOptions, MaterialBottomTabNavigationProp } from "@react-navigation/material-bottom-tabs";
-import { MaterialBottomTabNavigationConfig } from "@react-navigation/material-bottom-tabs/lib/typescript/src/types";
 
 export const RouteName = {
     Root: "Root",
@@ -40,10 +38,6 @@ export const screenOptions: StackNavigationOptions = {
     },
 };
 
-export const bottomTabBarOptions: MaterialBottomTabNavigationOptions = {
-    tabBarColor: Color.Theme.layoutBackground
-}
-
 export const tabBarOptions: MaterialTopTabBarOptions = {
     activeTintColor: Color.Theme.primaryItem,
     inactiveTintColor: Color.Theme.basicItem,
@@ -51,13 +45,3 @@ export const tabBarOptions: MaterialTopTabBarOptions = {
     indicatorStyle: { backgroundColor: Color.Theme.primaryItem },
     allowFontScaling: true,
 };
-
-export const bottomTabBarConfig: MaterialBottomTabNavigationConfig = {
-    barStyle:{
-        backgroundColor:Color.Theme.layoutBackground, 
-        height: getResponsiveSize(70), 
-        justifyContent:"center", 
-    },
-    style:{flex:1,padding:0, margin:0},
-    labeled:false
-}

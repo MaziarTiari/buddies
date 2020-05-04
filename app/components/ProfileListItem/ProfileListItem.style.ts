@@ -1,53 +1,49 @@
 import { StyleSheet } from "react-native";
 import Color from "../../utils/theme/color";
-import { Device } from "../../utils/class/Device";
-import { fontsizes, getResponsiveSize } from "../../utils/theme/font";
-
-const device = new Device();
-
-const tmpImageSize = device.width * 0.15
-const imageSize = tmpImageSize > 100 ? 100 : tmpImageSize;
+import { fontsizes, getResponsiveSize, lineheights } from "../../utils/theme/font";
 
 const styles = StyleSheet.create({
     root: {
         borderBottomWidth: 1,
-        borderBottomStartRadius: device.width * 0.08,
-        borderBottomEndRadius: device.width * 0.08,
+        borderBottomStartRadius: getResponsiveSize(25),
+        borderBottomEndRadius: getResponsiveSize(25),
         borderColor: Color.Theme.layoutBackground,
     },
     container: {
-        alignItems:"center",
+        alignItems: "center",
         flexDirection: "row",
         marginVertical: getResponsiveSize(20),
     },
     profileImageContainer: {
-        position:"relative",
+        position: "relative",
         marginRight: getResponsiveSize(15),
     },
     profileImage: {
-        height: imageSize,
-        width: imageSize,
-        borderRadius: imageSize,
+        height: getResponsiveSize(60),
+        width: getResponsiveSize(60),
+        borderRadius: getResponsiveSize(30),
     },
     textContainer: {
         flex: 1,
         justifyContent: "center",
     },
     displayText: {
-        color: Color.Theme.secondaryText,
-        fontSize: fontsizes.medium + 2,
+        color: Color.Theme.primaryText,
+        fontSize: fontsizes.medium,
+        lineHeight: lineheights.medium,
     },
     statusText: {
         color: Color.Theme.secondaryText,
-        fontSize: fontsizes.small + 1,
+        fontSize: fontsizes.small,
+        lineHeight: lineheights.small,
     },
     onlineDot: {
         left: "60%",
         top: "60%",
         position: "absolute",
-        width: imageSize * 0.35,
-        height: imageSize * 0.35,
-        borderRadius: imageSize * 0.35,
+        width: getResponsiveSize(25),
+        height: getResponsiveSize(25),
+        borderRadius: getResponsiveSize(12.5),
         backgroundColor: Color.Theme.profileIsOnlineDot,
     },
 });
