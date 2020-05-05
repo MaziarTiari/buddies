@@ -1,7 +1,8 @@
 import { Platform } from "react-native";
 import { StackNavigationOptions } from "@react-navigation/stack";
 import { MaterialTopTabBarOptions } from "@react-navigation/material-top-tabs";
-import Color from "../theme/color";
+import Color from "../../theme/color";
+import { fontsizes, getResponsiveSize } from "../../theme/font";
 
 export const RouteName = {
     Root: "Root",
@@ -27,16 +28,20 @@ export const RouteName = {
 };
 
 export const screenOptions: StackNavigationOptions = {
-    headerTintColor: Color.secondaryText,
+    headerTintColor: Color.Theme.basicItem,
+    headerTitleStyle: {
+        fontSize: fontsizes.medium,
+    },
     headerStyle: {
-        backgroundColor: Color.navBackground,
-        ...Platform.select({ ios: { height: 100 } }),
+        backgroundColor: Color.Theme.layoutBackground,
+        ...Platform.select({ ios: { height: getResponsiveSize(100) } }),
     },
 };
 
 export const tabBarOptions: MaterialTopTabBarOptions = {
-    activeTintColor: Color.primaryText,
-    inactiveTintColor: Color.secondaryText,
-    style: { backgroundColor: Color.navBackground },
-    indicatorStyle: { backgroundColor: Color.primaryText },
+    activeTintColor: Color.Theme.primaryItem,
+    inactiveTintColor: Color.Theme.basicItem,
+    style: { backgroundColor: Color.Theme.layoutBackground },
+    indicatorStyle: { backgroundColor: Color.Theme.primaryItem },
+    allowFontScaling: true,
 };

@@ -1,0 +1,71 @@
+import { StyleSheet } from "react-native";
+import Color from "../../utils/theme/color";
+import { fontsizes, getResponsiveSize, getLineHeight } from "../../utils/theme/font";
+
+export const styles = StyleSheet.create({
+    root: {
+        flex: 1,
+        borderBottomWidth: 1,
+        borderColor: Color.Theme.layoutBackground,
+        borderBottomStartRadius: getResponsiveSize(25),
+        borderBottomEndRadius: getResponsiveSize(25),
+        paddingTop: getResponsiveSize(20),
+        paddingBottom: getResponsiveSize(45),
+    },
+    container: {
+        position:"relative"
+    },
+    headerContainer: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+    },
+    iconText: {
+        color: Color.Theme.basicItem,
+        fontSize: fontsizes.medium,
+        lineHeight: getLineHeight(fontsizes.medium),
+    },
+    bodyContainer: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+    },
+    image: {
+        width: getResponsiveSize(150),
+        height: getResponsiveSize(150),
+        alignSelf: "center",
+        borderRadius: getResponsiveSize(25),
+    },
+    infoContainer: {
+        flex: 1,
+        marginLeft: getResponsiveSize(15),
+        justifyContent: "space-between",
+        marginRight:getResponsiveSize(4)
+    },
+    title: {
+        color: Color.Theme.primaryText,
+        fontSize: fontsizes.medium,
+        fontWeight: "bold",
+        lineHeight: getLineHeight(fontsizes.medium),
+    },
+    address: {
+        marginBottom: getResponsiveSize(4)
+    },
+    info: {
+        color: Color.Theme.primaryText,
+        fontSize: fontsizes.small,
+        lineHeight: getLineHeight(fontsizes.small),
+    },
+    iconContainer: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignSelf: "stretch",
+    },
+    icon: {
+        margin: 0,
+        alignSelf: "flex-end",
+    },
+    favoriteIcon: {
+        position:"absolute",
+        top:"97%"
+    }
+});

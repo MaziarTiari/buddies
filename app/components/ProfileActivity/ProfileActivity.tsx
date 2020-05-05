@@ -5,8 +5,8 @@ import Container from "../Container/Container";
 
 const ProfileActivity = () => {
     return (
-        <Container layout="screen_centered">
-            <Text style={{ color: Color.secondaryText }}>Profile Activity</Text>
+        <Container type="screen" layout="root">
+            <Text style={{ color: Color.Theme.secondaryText }}>Profile Activity</Text>
         </Container>
     );
 };

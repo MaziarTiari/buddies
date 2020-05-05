@@ -1,13 +1,20 @@
-interface IMessageList {
+export enum Relation {
+    STRANGER,
+    FRIEND,
+    BLOCKED,
+    GROUP,
+}
+
+export interface IChatPartner {
     uuid: string;
     displayName: string;
     isOnline: boolean;
     unreadMessages: number;
-    relation: number;
+    relation: Relation;
     lastMessage: Date;
 }
 
-export const response: IMessageList[] = [
+export const exampleResponse: IChatPartner[] = [
     {
         uuid: "1",
         displayName: "Billy Wallace",
@@ -87,5 +94,13 @@ export const response: IMessageList[] = [
         relation: 0,
         unreadMessages: 0,
         lastMessage: new Date(2020, 1, 18, 19, 42),
+    },
+    {
+        uuid: "11",
+        displayName: "Die Heidelberger",
+        isOnline: false,
+        relation: 3,
+        unreadMessages: 2,
+        lastMessage: new Date(2020, 4, 1, 19, 42),
     },
 ];

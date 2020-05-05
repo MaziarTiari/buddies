@@ -1,40 +1,46 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { FlatList } from "react-native";
-import { response } from "../../../example_data/MessageListQueryResponse";
-import { ChatParams } from "../Chat/Chat";
-import { RouteName } from "../../utils/navigation/configuration";
-import { ChatListItem, ChatListItemProps } from "../ChatListItem/ChatListItem";
+import { 
+    exampleResponse, IChatPartner, Relation,
+} from "../../dev/example_data/MessageListQueryResponse";
+import { RouteName } from "../../utils/function/navigation/configuration";
+import { ChatListItem } from "../ChatListItem/ChatListItem";
 import Container from "../Container/Container";
 
 const ChatList = ({ navigation }: any) => {
-    const [items, setItems] = useState(response);
+    const [chatPartners, setChatPartners] = useState<IChatPartner[]>(exampleResponse);
+    const sortedChatPartners = useMemo<IChatPartner[]>(
+        () => chatPartners.sort((a, b) => (b.lastMessage > a.lastMessage ? 1 : -1)),
+        [chatPartners]
+    );
 
-    const handlePress = (pressedItem: ChatListItemProps) => {
-        const params: ChatParams = { title: pressedItem.displayName };
-        navigation.navigate(RouteName.Chat.Chat, { ...params });
+    const handlePress = (chatPartner: IChatPartner) => {
+        navigation.navigate(RouteName.Chat.Chat, {
+            isGroup: chatPartner.relation == Relation.GROUP,
+            displayName: chatPartner.displayName,
+        });
     };
 
-    const handleLongPress = (pressedItem: ChatListItemProps) => {};
+    const handleLongPress = (chatPartner: IChatPartner) => {
+        // TODO Open Modal Menu
+        console.log("Long Pressed: ", chatPartner.displayName);
+    };
 
     return (
-        <Container layout="screen_centered">
-            <FlatList
-                style={{ width: "100%" }}
-                data={items.sort((a, b) => (b.lastMessage > a.lastMessage ? 1 : -1))}
-                renderItem={({ item }) => (
-                    <ChatListItem
-                        displayName={item.displayName}
-                        isOnline={item.isOnline}
-                        lastMessage={item.lastMessage}
-                        unreadMessages={item.unreadMessages}
-                        uuid={item.uuid}
-                        relation={item.relation}
-                        onPress={handlePress}
-                        onLongPress={handleLongPress}
-                    />
-                )}
-                keyExtractor={(item) => item.uuid}
-            />
+        <Container type="screen" layout="root">
+            <Container  type='screen' layout='body'>
+                <FlatList
+                    data={sortedChatPartners}
+                    renderItem={({ item: chatPartner }) => (
+                        <ChatListItem
+                            chatPartner={chatPartner}
+                            onPress={() => handlePress(chatPartner)}
+                            onLongPress={() => handleLongPress(chatPartner)}
+                        />
+                    )}
+                    keyExtractor={(chatPartner) => chatPartner.uuid}
+                />
+            </Container>
         </Container>
     );
 };

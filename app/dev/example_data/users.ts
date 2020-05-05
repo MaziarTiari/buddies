@@ -1,6 +1,6 @@
 import { IProfile } from "./FetchedProfile";
 
-export const FiendList: IProfile[] = [
+export const users: IProfile[] = [
     {
         id: 1,
         username: "maziar",
@@ -18,5 +18,14 @@ export const FiendList: IProfile[] = [
         phone: "01785219400",
         firstname: "Nico",
         lastname: "Hofmann"
+    },
+    {
+        id: 3,
+        username: "milad",
+        email: "milad@email.com",
+        location: "Heidelber",
+        phone: "01785219400",
+        firstname: "Milad",
+        lastname: "Tiari"
     }
 ]

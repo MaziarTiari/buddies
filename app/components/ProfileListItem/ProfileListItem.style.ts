@@ -1,41 +1,50 @@
 import { StyleSheet } from "react-native";
 import Color from "../../utils/theme/color";
+import { fontsizes, getResponsiveSize, getLineHeight } from "../../utils/theme/font";
 
 const styles = StyleSheet.create({
-    container: {
-        height: 80,
-        flexDirection: "row",
+    root: {
         borderBottomWidth: 1,
-        borderBottomStartRadius: 40,
-        borderBottomEndRadius: 40,
-        borderColor: Color.navBackground,
+        borderBottomStartRadius: getResponsiveSize(25),
+        borderBottomEndRadius: getResponsiveSize(25),
+        borderColor: Color.Theme.layoutBackground,
+    },
+    container: {
+        alignItems: "center",
+        flexDirection: "row",
+        marginVertical: getResponsiveSize(20),
+    },
+    profileImageContainer: {
+        position: "relative",
+        marginRight: getResponsiveSize(15),
     },
     profileImage: {
-        height: 50,
-        width: 50,
-        borderRadius: 25,
-        margin: 15,
+        height: getResponsiveSize(60),
+        width: getResponsiveSize(60),
+        borderRadius: getResponsiveSize(30),
     },
     textContainer: {
         flex: 1,
         justifyContent: "center",
     },
     displayText: {
-        color: Color.secondaryText,
-        fontSize: 20,
+        color: Color.Theme.primaryText,
+        fontSize: fontsizes.medium,
+        lineHeight: getLineHeight(fontsizes.medium),
     },
     statusText: {
-        color: Color.secondaryText,
-        fontSize: 14,
+        color: Color.Theme.secondaryText,
+        fontSize: fontsizes.small,
+        lineHeight: getLineHeight(fontsizes.small),
     },
     onlineDot: {
-        left: 45,
-        top: 45,
+        left: "60%",
+        top: "60%",
         position: "absolute",
-        width: 20,
-        height: 20,
-        borderRadius: 10,
-        backgroundColor: Color.onlineDot,
+        width: getResponsiveSize(25),
+        height: getResponsiveSize(25),
+        borderRadius: getResponsiveSize(12.5),
+        backgroundColor: Color.Theme.profileIsOnlineDot,
     },
 });
 

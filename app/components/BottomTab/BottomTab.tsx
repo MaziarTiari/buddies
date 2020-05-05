@@ -1,7 +1,7 @@
 import React, { useLayoutEffect } from "react";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
-import { RouteName } from "../../utils/navigation/configuration";
-import translate from "../../utils/language/translate";
+import { RouteName, screenOptions } from "../../utils/function/navigation/configuration";
+import translate from "../../utils/function/language/translate";
 import ActivityHeader from "../ActivityHeader/ActivityHeader";
 import Color from "../../utils/theme/color";
 import FeedList from "../FeedList/FeedList";
@@ -42,7 +42,7 @@ function getBottomIcon(icon: string, focused: boolean): React.ReactNode {
     return (
         <MaterialCommunityIcons
             name={icon}
-            color={focused ? Color.primaryText : Color.secondaryText}
+            color={focused ? Color.Theme.primaryItem : Color.Theme.basicItem}
             size={26}
         />
     );
@@ -56,13 +56,14 @@ const BottomTab = ({ navigation, route }: any) => {
         navigation.setOptions({
             headerTitle: getHeaderTitle(routeName),
             headerRight: getHeaderRight(routeName, navigation),
+            screenOptions: screenOptions,
         });
     }, [navigation, route]);
 
     return (
         <Tab.Navigator
             initialRouteName={RouteName.FeedList}
-            screenOptions={{ tabBarColor: Color.navBackground }}
+            screenOptions={{ tabBarColor: Color.Theme.layoutBackground }}
             labeled={false}
         >
             <Tab.Screen

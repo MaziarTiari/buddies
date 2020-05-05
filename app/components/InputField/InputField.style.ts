@@ -1,18 +1,18 @@
 import { StyleSheet } from "react-native";
 import Color from "../../utils/theme/color";
+import { fontsizes, getLineHeight } from "../../utils/theme/font";
 
 const styles = StyleSheet.create({
     inputContainer: {
-        width: "100%",
         flexDirection: "row",
         alignItems: "center",
-        backgroundColor: Color.inputBackground,
-        borderRadius: 4,
+        backgroundColor: Color.Theme.primaryText,
     },
     textInput: {
-        color: Color.secondaryText,
+        color: Color.Theme.secondaryText,
         borderWidth: 0,
-        fontSize: 16,
+        fontSize: fontsizes.medium,
+        lineHeight: getLineHeight(fontsizes.medium),
         flex: 1,
         marginVertical: 10,
     },
