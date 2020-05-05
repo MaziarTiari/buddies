@@ -61,7 +61,7 @@ const ActivityListItem = (Props: IActivity) => {
                         <View style={styles.bodyContainer}>
                             <View>
                                 <Text numberOfLines={2} style={[styles.info, styles.address]}>
-                                    {Props.location}jkdhfjshjdhkfhdskfhjkdshfashdkf jsjfhaksdhfjhsfasf
+                                    {Props.location}
                                 </Text>
                                 {(Props.startDate || Props.endDate) && (
                                     <Text style={styles.info}>{dateScale}</Text>
