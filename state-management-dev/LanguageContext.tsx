@@ -27,12 +27,14 @@ const translationStore: TranslationStore = {
 const defaultLanguage: Language = "de";
   
 interface ILanguageContext {
+    availableLanguages: Language[];
     changeLanguage: (newLanguage: Language) => void;
     language: Language;
     translations: IMultiLangLineList;
 }
 
 const defaultLanguageContextValue: ILanguageContext = {
+    availableLanguages: Object.keys(translationStore) as Language[],
     changeLanguage: () => {
       console.warn("Funktion changeLanguage() nicht implementiert!");
     },
