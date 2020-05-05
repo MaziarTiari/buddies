@@ -5,7 +5,7 @@ import Container from "../Container/Container";
 
 const ProfileGalery = () => {
     return (
-        <Container layout="screen_centered">
+        <Container type="screen" layout="root">
             <Text style={{ color: Color.Theme.secondaryText }}>Profile Galery</Text>
         </Container>
     );

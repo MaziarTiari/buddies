@@ -39,17 +39,27 @@ export const activities: IActivity[] = [
         location: "Heidelberg, Pholosophenweg",
         allowedApplyNumber: 6,
         imageName: "mountain-bike.jpg",
-        membersUserIds: [1,2],
+        membersUserIds: [1, 2],
         startDate: new Date(2020, 26, 5, 6, 50),
         endDate: new Date(2020, 26, 5, 16, 0),
     },
     {
         ownerUserId: 1,
         id: 2,
-        title: "Meditation",
+        title:
+            "Meditation mit einem sehr langen Text als Titel der dann evtl abgeschnitten wird",
         location: "Worms",
         allowedApplyNumber: 10,
         imageName: "meditation.jpg",
-        membersUserIds: [1,2]
-    }
-]
+        membersUserIds: [1, 2],
+    },
+    {
+        ownerUserId: 1,
+        id: 3,
+        title: "kleiner Text",
+        location: "Worms",
+        allowedApplyNumber: 3,
+        imageName: "meditation.jpg",
+        membersUserIds: [1, 2],
+    },
+];

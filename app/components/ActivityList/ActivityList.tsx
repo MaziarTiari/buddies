@@ -7,11 +7,13 @@ import { activities } from "../../dev/example_data/fetchedActivityList";
 const ActivityList = () => {
     const [allActivities, setAllActivities] = useState(activities)
     return (
-        <Container layout="screen_centered">
+        <Container type='screen' layout='root'>
+            <Container type='screen' layout="body">
             <FlatList data={allActivities}
                 renderItem={ ({item}) => <ActivityListItem {...item} />}
                 keyExtractor={item => item.id.toString()}
             />
+            </Container>
         </Container>
     );
 };

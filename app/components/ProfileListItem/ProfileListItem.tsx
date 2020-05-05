@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, Image, GestureResponderEvent } from "react-native";
 import styles from "./ProfileListItem.style";
 import { TouchableRipple } from "react-native-paper";
+import Container from "../Container/Container";
 
 export interface ProfileListItemProps {
     uuid: string;
@@ -22,6 +23,7 @@ export const ProfileListItem = (Props: ProfileListItemProps) => {
             onPress={Props.onPress}
             onLongPress={Props.onLongPress}
         >
+            <Container type="component" layout="root" style={styles.root}>
             <View style={styles.container}>
                 <View style={styles.profileImageContainer}>
                     <Image
@@ -40,6 +42,7 @@ export const ProfileListItem = (Props: ProfileListItemProps) => {
                 </View>
                 <RightComponent {...Props.rightComponent.props} />
             </View>
+            </Container>
         </TouchableRipple>
     );
 };

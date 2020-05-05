@@ -1,6 +1,6 @@
 import React, { createContext, Component } from "react";
 import { Language, translationStore } from "./translationStore";
-import { languageContextInitialState, ILanguageContextState } from './initialState'
+import { languageContextInitialState, ILanguageContextState } from './stateFrame'
 
 export const LanguageContext = createContext(languageContextInitialState);
   

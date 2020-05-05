@@ -1,62 +1,71 @@
 import { StyleSheet } from "react-native";
-import { Device } from "../../utils/class/Device";
 import Color from "../../utils/theme/color";
-import { fontsizes } from "../../utils/theme/font";
-
-const device = new Device();
+import { fontsizes, getResponsiveSize, getLineHeight } from "../../utils/theme/font";
 
 export const styles = StyleSheet.create({
     root: {
         flex: 1,
-        paddingTop: fontsizes.large,
-        paddingBottom: 10,
         borderBottomWidth: 1,
-        borderColor: Color.Theme.secondaryText,
+        borderColor: Color.Theme.layoutBackground,
+        borderBottomStartRadius: getResponsiveSize(25),
+        borderBottomEndRadius: getResponsiveSize(25),
+        paddingTop: getResponsiveSize(20),
+        paddingBottom: getResponsiveSize(45),
     },
-    header: {
-        flexDirection:"row", 
-        justifyContent:"space-between",
-        alignItems:"center",
+    container: {
+        position:"relative"
+    },
+    headerContainer: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
     },
     iconText: {
         color: Color.Theme.basicItem,
         fontSize: fontsizes.medium,
+        lineHeight: getLineHeight(fontsizes.medium),
     },
-    container: {
+    bodyContainer: {
         flexDirection: "row",
+        justifyContent: "space-between",
     },
     image: {
-        width: device.width * 0.30,
-        height: device.width * 0.30,
-        alignSelf:"center",
-        borderRadius: device.width * 0.07,
+        width: getResponsiveSize(150),
+        height: getResponsiveSize(150),
+        alignSelf: "center",
+        borderRadius: getResponsiveSize(25),
     },
-    inforContainer: {
-        width: device.width * 0.6,
-        paddingHorizontal: fontsizes.small,
-        justifyContent:"space-evenly",
+    infoContainer: {
+        flex: 1,
+        marginLeft: getResponsiveSize(15),
+        justifyContent: "space-between",
+        marginRight:getResponsiveSize(4)
     },
     title: {
         color: Color.Theme.primaryText,
         fontSize: fontsizes.medium,
-        fontWeight: '700',
-        lineHeight: fontsizes.medium + 3,
+        fontWeight: "bold",
+        lineHeight: getLineHeight(fontsizes.medium),
+    },
+    address: {
+        marginBottom: getResponsiveSize(4)
     },
     info: {
         color: Color.Theme.primaryText,
         fontSize: fontsizes.small,
-        lineHeight: fontsizes.small + 5
+        lineHeight: getLineHeight(fontsizes.small),
     },
     iconContainer: {
-        flexDirection:"row",
-        justifyContent:"space-between", 
-        alignSelf:"stretch", 
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignSelf: "stretch",
     },
     icon: {
-        margin:0,    
-        alignSelf:"flex-end",
+        margin: 0,
+        alignSelf: "flex-end",
     },
-    bottomRightIcon: {
-        bottom: 10,
+    favoriteIcon: {
+        position:"absolute",
+        top:"97%"
     }
 });

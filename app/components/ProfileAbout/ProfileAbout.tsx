@@ -7,9 +7,9 @@ import Color from "../../utils/theme/color";
 const ProfileAbout = ({ navigation }: any) => {
     const lang = useContext(LanguageContext);
     return (
-        <Container layout="screen_centered">
+        <Container type="screen" layout="root">
             <Text style={{ color: Color.Theme.secondaryText, marginVertical: 30 }}>
-                {lang.translations.headline}
+                {lang.translations.menu_activities}
             </Text>
             <Button title="Friends" onPress={() => navigation.navigate("FriendList")} />
         </Container>

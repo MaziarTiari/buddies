@@ -7,12 +7,14 @@ import Chat from "./app/components/Chat/Chat";
 import { RouteName, screenOptions } from "./app/utils/function/navigation/configuration";
 import BottomTab from "./app/components/BottomTab/BottomTab";
 import { LanguageContextProvider } from "./app/context/LanguageContext/LanguageContext";
+import ThemeContextProvider from "./app/context/ThemeContext/ThemeContext";
 
 const Stack = createStackNavigator();
 
 const App = () => {
     return (
         <LanguageContextProvider>
+        <ThemeContextProvider>
         <NavigationContainer>
             <Stack.Navigator
                 screenOptions={screenOptions}
@@ -31,6 +33,7 @@ const App = () => {
                 <Stack.Screen name={RouteName.Activity.MyList} component={ActivityList} />
             </Stack.Navigator>
         </NavigationContainer>
+        </ThemeContextProvider>
         </LanguageContextProvider>
     );
 };
