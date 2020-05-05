@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 import Color from "../../utils/theme/color";
-import { fontsizes, getResponsiveSize, lineheights } from "../../utils/theme/font";
+import { fontsizes, getResponsiveSize, getLineHeight } from "../../utils/theme/font";
 
 const roundMessageBorderRadius = getResponsiveSize(25);
 
@@ -26,13 +26,13 @@ const styles = StyleSheet.create({
     },
     nameText: {
         fontSize: fontsizes.medium,
-        lineHeight: lineheights.medium,
+        lineHeight: getLineHeight(fontsizes.medium),
         fontWeight: "bold",
         color: Color.Theme.primaryText,
     },
     messageText: {
         fontSize: fontsizes.medium,
-        lineHeight: lineheights.medium,
+        lineHeight: getLineHeight(fontsizes.medium),
         color: Color.Theme.primaryText,
     },
     dateText: {

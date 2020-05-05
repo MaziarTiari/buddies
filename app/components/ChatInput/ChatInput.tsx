@@ -4,7 +4,7 @@ import Color from "../../utils/theme/color";
 import { IconButton } from "react-native-paper";
 import InputField from "../InputField/InputField";
 import styles from "./ChatInput.style";
-import { fontsizes, lineheights } from "../../utils/theme/font";
+import { fontsizes, getLineHeight } from "../../utils/theme/font";
 
 export interface ChatInputProps extends ViewProps {
     onSend: (message: string) => void;
@@ -12,8 +12,8 @@ export interface ChatInputProps extends ViewProps {
     onBlur?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
 }
 
-const MIN_HEIGHT = lineheights.medium;
-const MAX_HEIGHT = lineheights.medium * 5;
+const MIN_HEIGHT = getLineHeight(fontsizes.medium);
+const MAX_HEIGHT = getLineHeight(fontsizes.medium * 5);
 
 export const ChatInput = (Props: ChatInputProps) => {
     const [inputText, setInputText] = useState("");

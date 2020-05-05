@@ -29,9 +29,9 @@ const ActivityListItem = (Props: IActivity) => {
 
     return (
         <TouchableRipple style={styles.root} onPress={onPress}>
-            <Container type="component" layout="root">
-                <View style={styles.header}>
-                    <View style={styles.header}>
+            <Container type="component" layout="root" style={styles.container}>
+                <View style={styles.headerContainer}>
+                    <View style={styles.headerContainer}>
                         <IconButton
                             icon="chat"
                             color={Color.Theme.basicItem}
@@ -41,7 +41,7 @@ const ActivityListItem = (Props: IActivity) => {
                         />
                         <Text style={styles.iconText}>{ownerName}</Text>
                     </View>
-                    <View style={styles.header}>
+                    <View style={styles.headerContainer}>
                         <Text style={styles.iconText}>{participatesCount}</Text>
                         <IconButton
                             icon="account-group"
@@ -52,16 +52,16 @@ const ActivityListItem = (Props: IActivity) => {
                         />
                     </View>
                 </View>
-                <View style={styles.container}>
+                <View style={styles.bodyContainer}>
                     <Image style={styles.image} source={imageSource} />
-                    <View style={styles.inforContainer}>
+                    <View style={styles.infoContainer}>
                         <Headline numberOfLines={2} style={styles.title}>
                             {titleContent}
                         </Headline>
-                        <View style={styles.container}>
+                        <View style={styles.bodyContainer}>
                             <View>
-                                <Text numberOfLines={2} style={styles.info}>
-                                    {Props.location}
+                                <Text numberOfLines={2} style={[styles.info, styles.address]}>
+                                    {Props.location}jkdhfjshjdhkfhdskfhjkdshfashdkf jsjfhaksdhfjhsfasf
                                 </Text>
                                 {(Props.startDate || Props.endDate) && (
                                     <Text style={styles.info}>{dateScale}</Text>
@@ -70,16 +70,16 @@ const ActivityListItem = (Props: IActivity) => {
                                     <Text style={styles.info}>{timeScale}</Text>
                                 )}
                             </View>
-                            <IconButton
-                                icon="star-outline"
-                                color={Color.Theme.basicItem}
-                                onPress={onFavorite}
-                                size={fontsizes.icon}
-                                style={styles.icon}
-                            />
                         </View>
                     </View>
                 </View>
+                <IconButton
+                    icon="star-outline"
+                    color={Color.Theme.basicItem}
+                    onPress={onFavorite}
+                    size={fontsizes.icon}
+                    style={[styles.icon, styles.favoriteIcon]}
+                />
             </Container>
         </TouchableRipple>
     );

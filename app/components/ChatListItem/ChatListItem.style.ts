@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
 import Color from "../../utils/theme/color";
 import { Device } from "../../utils/class/Device";
-import { fontsizes, lineheights } from "../../utils/theme/font";
+import { fontsizes, getLineHeight } from "../../utils/theme/font";
 
 const device = new Device();
 
@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     lastMessageText: {
         fontSize: fontsizes.small,
         color: Color.Theme.secondaryText,
-        lineHeight: lineheights.small,
+        lineHeight: getLineHeight(fontsizes.small),
     },
     unreadContainer: {
         height: fontsizes.medium * 1.5, // scaling medium font for the dot container

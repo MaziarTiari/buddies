@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 import Color from "../../utils/theme/color";
-import { fontsizes, getResponsiveSize, lineheights } from "../../utils/theme/font";
+import { fontsizes, getResponsiveSize, getLineHeight } from "../../utils/theme/font";
 
 const styles = StyleSheet.create({
     root: {
@@ -30,12 +30,12 @@ const styles = StyleSheet.create({
     displayText: {
         color: Color.Theme.primaryText,
         fontSize: fontsizes.medium,
-        lineHeight: lineheights.medium,
+        lineHeight: getLineHeight(fontsizes.medium),
     },
     statusText: {
         color: Color.Theme.secondaryText,
         fontSize: fontsizes.small,
-        lineHeight: lineheights.small,
+        lineHeight: getLineHeight(fontsizes.small),
     },
     onlineDot: {
         left: "60%",
