@@ -2,28 +2,21 @@ import React, { useContext } from "react";
 import { Text, Picker } from "react-native";
 import Color from "../../utils/theme/color";
 import Container from "../Container/Container";
-import { LanguageContext } from '../../../state-management-dev/LanguageContext'
+import { LanguageContext } from "../../context/LanguageContext/LanguageContext";
 
 const FeedList = () => {
     const lang = useContext(LanguageContext);
     return (
         <Container layout="screen_centered" style={{paddingTop:40}}>
             <Text style={{ color: Color.Theme.secondaryText }}>
-              {lang.translations.headline}
+              {lang.translations.menu_activities}
             </Text>
             <LanguageSelector />
             <Text style={{ color: Color.Theme.secondaryText }}>
-              <Greeting />
             </Text>
         </Container>
     );
 };
-
-export const Greeting = () => (
-    <LanguageContext.Consumer>
-      {contextValue => contextValue.translations.greeting}
-    </LanguageContext.Consumer>
-);
   
 export const LanguageSelector = () => {
   const lang = useContext(LanguageContext);

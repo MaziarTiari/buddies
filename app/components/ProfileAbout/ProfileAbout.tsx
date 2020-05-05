@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { Button, Text } from "react-native";
 import Container from "../Container/Container";
-import { LanguageContext } from "../../../state-management-dev/LanguageContext";
+import { LanguageContext } from "../../context/LanguageContext/LanguageContext";
 import Color from "../../utils/theme/color";
 
 const ProfileAbout = ({ navigation }: any) => {

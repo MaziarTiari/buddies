@@ -6,13 +6,13 @@ import FriendList from "./app/components/FriendList/FriendList";
 import Chat from "./app/components/Chat/Chat";
 import { RouteName, screenOptions } from "./app/utils/function/navigation/configuration";
 import BottomTab from "./app/components/BottomTab/BottomTab";
-import { Localized } from "./state-management-dev/LanguageContext";
+import { LanguageContextProvider } from "./app/context/LanguageContext/LanguageContext";
 
 const Stack = createStackNavigator();
 
 const App = () => {
     return (
-        <Localized>
+        <LanguageContextProvider>
         <NavigationContainer>
             <Stack.Navigator
                 screenOptions={screenOptions}
@@ -31,7 +31,7 @@ const App = () => {
                 <Stack.Screen name={RouteName.Activity.MyList} component={ActivityList} />
             </Stack.Navigator>
         </NavigationContainer>
-        </Localized>
+        </LanguageContextProvider>
     );
 };
 
