@@ -11,6 +11,10 @@ export interface IMultiLangLineList {
     profile_tab_activity: string;
     profile_tab_galery: string;
     mutual_friends: string;
+    message_relation_friend: string;
+    message_relation_stranger: string;
+    message_relation_blocked: string;
+    message_relation_group: string;
   }
   
   export type Language = 'de' | 'en';
@@ -34,6 +38,10 @@ export interface IMultiLangLineList {
         profile_tab_activity: "Aktivitäten",
         profile_tab_galery: "Galerie",
         mutual_friends : "gemeinsame Freunde",
+        message_relation_friend: "mit dir befreundet",
+        message_relation_stranger: "nicht befreundet",
+        message_relation_blocked: "ist blockiert",
+        message_relation_group: "in gemeinsamer Gruppe",    
       },
       en: {
         menu_profile: "Profile",
@@ -48,5 +56,9 @@ export interface IMultiLangLineList {
         profile_tab_activity: "Activities",
         profile_tab_galery: "Galery",
         mutual_friends : "mutual friends",
+        message_relation_friend: "you are friends",
+        message_relation_stranger: "not your friend",
+        message_relation_blocked: "is blocked",
+        message_relation_group: "in same group",
       }
   };

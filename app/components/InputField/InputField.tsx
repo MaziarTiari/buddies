@@ -11,7 +11,7 @@ import {
     ViewStyle,
     TextInputProps,
 } from "react-native";
-import styles from "./InputField.style";
+import useStyle from "./InputField.style";
 
 interface IDynamicHeight {
     min: number;
@@ -26,6 +26,8 @@ export interface InputFieldProps extends TextInputProps {
 }
 
 export const InputField = ({style, ...Props}: InputFieldProps) => {
+    const styles = useStyle();
+
     const [inputHeight, setInputHeight] = useState(Props.dynamicHeight?.min);
     const [marginBottom, setMarginBottom] = useState(0);
 

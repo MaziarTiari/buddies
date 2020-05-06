@@ -1,32 +1,41 @@
 import { StyleSheet, Platform } from "react-native";
-import Color from "../../utils/theme/color";
-import { getResponsiveSize } from "../../utils/theme/font";
+import { getResponsiveSize } from "../../utils/font/font";
+import { useContext } from "react";
+import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
 
-const screen = StyleSheet.create({
-    root: {
-        flex: 1,
-        backgroundColor: Color.Theme.screenBackground,
-        alignItems: "center",
-    },
-    body: {
-        flex: 1,
-        alignItems: "stretch",
-        alignSelf: "stretch",
-    },
-});
 
-const component = StyleSheet.create({
-    root: {
-        flex: 1,
-        marginHorizontal: getResponsiveSize(15),
-    },
-    root_center: {
-        flex: 1,
-        marginHorizontal: getResponsiveSize(15),
-        alignItems: "center",
-        paddingTop: 30,
-        paddingBottom: Platform.OS === "ios" ? 20 : 10,
-    },
-});
+export const useStyle = () => {
+    const theme = useContext(ThemeContext).theme;
 
-export const styles = { screen: screen, component: component };
+    const screen = StyleSheet.create({
+        root: {
+            flex: 1,
+            backgroundColor: theme.App.screenBackground,
+            alignItems: "center",
+        },
+        body: {
+            flex: 1,
+            alignItems: "stretch",
+            alignSelf: "stretch",
+        },
+    });
+
+    const component = StyleSheet.create({
+        root: {
+            flex: 1,
+            marginHorizontal: getResponsiveSize(15),
+        },
+        root_center: {
+            flex: 1,
+            marginHorizontal: getResponsiveSize(15),
+            alignItems: "center",
+            paddingTop: 30,
+            paddingBottom: Platform.OS === "ios" ? 20 : 10,
+        },
+    });
+
+    const styles = { screen: screen, component: component };
+
+    return styles
+}
+

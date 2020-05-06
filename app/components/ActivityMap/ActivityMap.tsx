@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Text } from "react-native";
-import Color from "../../utils/theme/color";
 import Container from "../Container/Container";
+import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
 
 const ActivityMap = () => {
+    const theme = useContext(ThemeContext).theme;
     return (
         <Container type="screen" layout="root">
-            <Text style={{ color: Color.Theme.secondaryText }}>Activity Map Screen</Text>
+            <Text style={{ color: theme.App.secondaryText }}>Activity Map Screen</Text>
         </Container>
     );
 };

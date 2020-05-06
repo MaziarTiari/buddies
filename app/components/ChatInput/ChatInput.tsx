@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { NativeSyntheticEvent, TextInputFocusEventData, ViewProps } from "react-native";
-import Color from "../../utils/theme/color";
 import { IconButton } from "react-native-paper";
 import InputField from "../InputField/InputField";
-import styles from "./ChatInput.style";
-import { fontsizes, getLineHeight } from "../../utils/theme/font";
+import useStyle from "./ChatInput.style";
+import { fontsizes, getLineHeight } from "../../utils/font/font";
 
 export interface ChatInputProps extends ViewProps {
     onSend: (message: string) => void;
@@ -16,6 +15,7 @@ const MIN_HEIGHT = getLineHeight(fontsizes.medium);
 const MAX_HEIGHT = getLineHeight(fontsizes.medium * 5);
 
 export const ChatInput = (Props: ChatInputProps) => {
+    const { theme, styles } = useStyle();
     const [inputText, setInputText] = useState("");
 
     const handleChangeText = (text: string) => {
@@ -37,7 +37,7 @@ export const ChatInput = (Props: ChatInputProps) => {
             leftComponent={
                 <IconButton
                     icon="delete"
-                    color={Color.Theme.secondaryText}
+                    color={theme.App.secondaryText}
                     size={fontsizes.icon}
                     onPress={() => setInputText("")}
                 />
@@ -45,7 +45,7 @@ export const ChatInput = (Props: ChatInputProps) => {
             rightComponent={
                 <IconButton
                     icon="send"
-                    color={Color.Theme.secondaryText}
+                    color={theme.App.secondaryText}
                     size={fontsizes.icon}
                     onPress={handleSendText}
                 />

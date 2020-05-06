@@ -2,15 +2,16 @@ import React from "react";
 import { View, Image, Text, GestureResponderEvent } from "react-native";
 import { IActivity } from "../../dev/example_data/fetchedActivityList";
 import { IconButton, Headline, TouchableRipple } from "react-native-paper";
-import Color from "../../utils/theme/color";
-import { fontsizes } from "../../utils/theme/font";
+import { fontsizes } from "../../utils/font/font";
 import { users } from "../../dev/example_data/users";
 import { IProfile } from "../../dev/example_data/FetchedProfile";
-import { styles } from "./ActivityListItem.style";
+import { useStyle } from "./ActivityListItem.style";
 import Container from "../Container/Container";
 const defaultImg = require("../../../assets/img/default-activity-img.jpg");
 
 const ActivityListItem = (Props: IActivity) => {
+    const { styles, theme } = useStyle();
+
     const owner = users.find((user) => user.id === Props.ownerUserId) as IProfile;
     const ownerName = owner.firstname
         ? owner.firstname + " " + owner.lastname
@@ -34,7 +35,7 @@ const ActivityListItem = (Props: IActivity) => {
                     <View style={styles.headerContainer}>
                         <IconButton
                             icon="chat"
-                            color={Color.Theme.basicItem}
+                            color={theme.App.basicItem}
                             size={fontsizes.icon}
                             style={styles.icon}
                             onPress={onChat}
@@ -45,7 +46,7 @@ const ActivityListItem = (Props: IActivity) => {
                         <Text style={styles.iconText}>{participatesCount}</Text>
                         <IconButton
                             icon="account-group"
-                            color={Color.Theme.basicItem}
+                            color={theme.App.basicItem}
                             size={fontsizes.icon}
                             onPress={onParticipates}
                             style={styles.icon}
@@ -75,7 +76,7 @@ const ActivityListItem = (Props: IActivity) => {
                 </View>
                 <IconButton
                     icon="star-outline"
-                    color={Color.Theme.basicItem}
+                    color={theme.App.basicItem}
                     onPress={onFavorite}
                     size={fontsizes.icon}
                     style={[styles.icon, styles.favoriteIcon]}

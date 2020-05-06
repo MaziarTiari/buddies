@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Text } from "react-native";
-import Color from "../../utils/theme/color";
 import Container from "../Container/Container";
+import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
 
 const ProfileGalery = () => {
+    const theme = useContext(ThemeContext).theme;
+
     return (
         <Container type="screen" layout="root">
-            <Text style={{ color: Color.Theme.secondaryText }}>Profile Galery</Text>
+            <Text style={{ color: theme.App.secondaryText }}>Profile Galery</Text>
         </Container>
     );
 };

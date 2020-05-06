@@ -1,12 +1,17 @@
 import { StyleSheet } from "react-native";
-import Color from "../../utils/theme/color";
-import { fontsizes } from "../../utils/theme/font";
+import { fontsizes } from "../../utils/font/font";
+import { useContext } from "react";
+import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
 
-const styles = StyleSheet.create({
-    inputContainer: {
-        backgroundColor: Color.Theme.layoutBackground,
-        borderRadius: fontsizes.icon,
-    },
-});
+const useStyle = () => {
+    const theme = useContext(ThemeContext).theme;
+    const styles = StyleSheet.create({
+        inputContainer: {
+            backgroundColor: theme.App.layoutBackground,
+            borderRadius: fontsizes.icon,
+        },
+    });
+    return {theme: theme, styles: styles}
+}
 
-export default styles;
+export default useStyle;

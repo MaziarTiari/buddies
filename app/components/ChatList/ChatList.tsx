@@ -3,12 +3,12 @@ import { FlatList } from "react-native";
 import { 
     exampleResponse, IChatPartner, Relation,
 } from "../../dev/example_data/MessageListQueryResponse";
-import { RouteName } from "../../utils/function/navigation/configuration";
+import { RouteName } from "../../navigation/Navigation.config";
 import { ChatListItem } from "../ChatListItem/ChatListItem";
 import Container from "../Container/Container";
 
 const ChatList = ({ navigation }: any) => {
-    const [chatPartners, setChatPartners] = useState<IChatPartner[]>(exampleResponse);
+    const chatPartners = useState<IChatPartner[]>(exampleResponse)[0];
     const sortedChatPartners = useMemo<IChatPartner[]>(
         () => chatPartners.sort((a, b) => (b.lastMessage > a.lastMessage ? 1 : -1)),
         [chatPartners]

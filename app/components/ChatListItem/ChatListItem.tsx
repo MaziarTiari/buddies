@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import { View, Text } from "react-native";
-import styles from "./ChatListItem.style";
-import translate from "../../utils/function/language/translate";
+import useStyle from "./ChatListItem.style";
 import { ProfileListItem } from "../ProfileListItem/ProfileListItem";
 import { IChatPartner, Relation } from "../../dev/example_data/MessageListQueryResponse";
+import { LanguageContext } from "../../context/LanguageContext/LanguageContext";
 
 export interface ChatListItemProps {
     chatPartner: IChatPartner;
@@ -12,6 +12,22 @@ export interface ChatListItemProps {
 }
 
 export const ChatListItem = (Props: ChatListItemProps) => {
+    const translate = useContext(LanguageContext).translations;
+
+    function getRelationText(relation: Relation): string {
+        switch (relation) {
+            case Relation.FRIEND:
+                return translate.message_relation_friend;
+            case Relation.STRANGER:
+                return translate.message_relation_stranger;
+            case Relation.BLOCKED:
+                return translate.message_relation_blocked;
+            case Relation.GROUP:
+                return translate.message_relation_group;
+        }
+    }
+
+    const styles = useStyle();
     const rightComponent = (
         <View style={styles.rightContainer}>
             <Text style={styles.lastMessageText}>
@@ -41,19 +57,6 @@ export const ChatListItem = (Props: ChatListItemProps) => {
         />
     );
 };
-
-function getRelationText(relation: Relation): string {
-    switch (relation) {
-        case Relation.FRIEND:
-            return translate("message_relation_friend");
-        case Relation.STRANGER:
-            return translate("message_relation_stranger");
-        case Relation.BLOCKED:
-            return translate("message_relation_blocked");
-        case Relation.GROUP:
-            return translate("message_relation_group");
-    }
-}
 
 function getFormattedDateText(date: Date): string {
     return date.getDate() == new Date().getDate()

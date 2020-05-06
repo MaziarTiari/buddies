@@ -12,7 +12,7 @@ const Chat = ({ route, navigation }: any) => {
     const { isGroup, displayName } = route.params;
     navigation.setOptions({ title: displayName });
 
-    const [messages, setMessages] = useState<IChatMessage[]>(exampleResponse);
+    const messages = useState<IChatMessage[]>(exampleResponse)[0];
 
     const sortedMessages = useMemo<IChatMessage[]>(
         () => messages.sort((a, b) => (b.date > a.date ? 1 : -1)),

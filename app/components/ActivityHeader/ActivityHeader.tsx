@@ -1,22 +1,26 @@
-import React from "react";
+import React, { useContext } from "react";
 import { View } from "react-native";
 import { IconButton } from "react-native-paper";
-import Color from "../../utils/theme/color";
-import { RouteName } from "../../utils/function/navigation/configuration";
+import { RouteName } from "../../navigation/Navigation.config";
+import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
 
-const ActivityHeader = ({ navigation }: any) => (
-    <View style={{ flexDirection: "row" }}>
-        <IconButton
-            color={Color.Theme.contentBasicButton}
-            icon="heart"
-            onPress={() => navigation.navigate(RouteName.Activity.MyFavorite)}
-        />
-        <IconButton
-            color={Color.Theme.contentBasicButton}
-            icon="wunderlist"
-            onPress={() => navigation.navigate(RouteName.Activity.MyList)}
-        />
-    </View>
-);
+const ActivityHeader = ({ navigation }: any) => {
+    const theme = useContext(ThemeContext).theme;
+
+    return (
+        <View style={{ flexDirection: "row" }}>
+            <IconButton
+                color={theme.App.contentBasicButton}
+                icon="heart"
+                onPress={() => navigation.navigate(RouteName.Activity.MyFavorite)}
+            />
+            <IconButton
+                color={theme.App.contentBasicButton}
+                icon="wunderlist"
+                onPress={() => navigation.navigate(RouteName.Activity.MyList)}
+            />
+        </View>
+    );
+}
 
 export default ActivityHeader;

@@ -1,32 +1,17 @@
-import React, { useLayoutEffect } from "react";
+import React, { useLayoutEffect, useContext } from "react";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
-import { RouteName, screenOptions } from "../../utils/function/navigation/configuration";
-import translate from "../../utils/function/language/translate";
+import { RouteName, useNavOption } from "../../navigation/Navigation.config";
 import ActivityHeader from "../ActivityHeader/ActivityHeader";
-import Color from "../../utils/theme/color";
 import FeedList from "../FeedList/FeedList";
 import ActivitiesTab from "../ActivityTab/ActivityTab";
 import ChatList from "../ChatList/ChatList";
 import ProfileTab from "../ProfileTab/ProfileTab";
 import ProfileHeader from "../ProfileHeader/ProfileHeader";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
+import { LanguageContext } from "../../context/LanguageContext/LanguageContext";
 
 const Tab = createMaterialBottomTabNavigator();
-
-function getHeaderTitle(routeName: string): string {
-    switch (routeName) {
-        case RouteName.Root:
-        case RouteName.FeedList:
-            return translate("menu_feed");
-        case RouteName.Profile.Tab:
-            return translate("menu_profile");
-        case RouteName.Activity.Tab:
-            return translate("menu_activities");
-        case RouteName.Chat.List:
-            return translate("menu_chat");
-    }
-    return "unknown_route";
-}
 
 function getHeaderRight(routeName: string, navigation: any): (() => JSX.Element) | null {
     switch (routeName) {
@@ -38,17 +23,28 @@ function getHeaderRight(routeName: string, navigation: any): (() => JSX.Element)
     return null;
 }
 
-function getBottomIcon(icon: string, focused: boolean): React.ReactNode {
-    return (
-        <MaterialCommunityIcons
-            name={icon}
-            color={focused ? Color.Theme.primaryItem : Color.Theme.basicItem}
-            size={26}
-        />
-    );
-}
-
 const BottomTab = ({ navigation, route }: any) => {
+    const theme = useContext(ThemeContext).theme;
+    const screenOptions = useNavOption().screen;
+    const translations = useContext(LanguageContext).translations;
+
+    // TODO: find nicer solution - maybe HOC or FAC
+    const getHeaderTitle = (routeName: string): string => {
+        switch (routeName) {
+            case RouteName.Root:
+            case RouteName.FeedList:
+                return translations.menu_feed;
+            case RouteName.Profile.Tab:
+                return translations.menu_profile;
+            case RouteName.Activity.Tab:
+                return translations.menu_activities;
+            case RouteName.Chat.List:
+                return translations.menu_chat;
+            default:
+                return "unknown_route";
+        }
+    }
+
     useLayoutEffect(() => {
         const routeName = route.state
             ? route.state.routes[route.state.index].name
@@ -60,10 +56,17 @@ const BottomTab = ({ navigation, route }: any) => {
         });
     }, [navigation, route]);
 
+    const getBottomIcon = (icon: string, focused: boolean): React.ReactNode => (
+        <MaterialCommunityIcons 
+            name={icon} size={26}
+            color={focused ? theme.App.primaryItem : theme.App.basicItem}
+        />
+    );
+
     return (
         <Tab.Navigator
             initialRouteName={RouteName.FeedList}
-            screenOptions={{ tabBarColor: Color.Theme.layoutBackground }}
+            screenOptions={{ tabBarColor: theme.App.layoutBackground }}
             labeled={false}
         >
             <Tab.Screen

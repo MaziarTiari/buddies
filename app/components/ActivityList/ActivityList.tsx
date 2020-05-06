@@ -5,7 +5,7 @@ import ActivityListItem from "../ActivityListItem/ActivityListItem";
 import { activities } from "../../dev/example_data/fetchedActivityList";
 
 const ActivityList = () => {
-    const [allActivities, setAllActivities] = useState(activities)
+    const allActivities = useState(activities)[0];
     return (
         <Container type='screen' layout='root'>
             <Container type='screen' layout="body">

@@ -1,7 +1,6 @@
 import React from "react";
 import { View, Text } from "react-native";
-import styles from "./ChatItem.style";
-import { useScreenDimension } from "../../utils/function/ScreenDimension";
+import useStyle from "./ChatItem.style";
 
 export interface ChatItemProps {
     message: string;
@@ -11,6 +10,7 @@ export interface ChatItemProps {
 }
 
 const ChatItem = (Props: ChatItemProps) => {
+    const styles = useStyle();
     return (
         <View
             style={[

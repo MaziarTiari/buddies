@@ -1,17 +1,17 @@
-import { ITheme, IThemeStyle, themeStore } from './themeStore';
+import { IThemeType, ITheme, themeStore } from './themeStore';
 
 export interface IThemeContextState {
-    availableThemes: ITheme[];
-    theme: ITheme;
-    changeTheme: (newTheme: ITheme) => void;
-    style: IThemeStyle
+    availableThemeTypes: IThemeType[];
+    themeType: IThemeType;
+    changeTheme: (newTheme: IThemeType) => void;
+    theme: ITheme
 }
 
-const defaultTheme: ITheme = "dark";
+const defaultTheme: IThemeType = "dark";
 
 export const initialThemeContextState: IThemeContextState = {
-    availableThemes: Object.keys(themeStore) as ITheme[],
-    theme: defaultTheme,
+    availableThemeTypes: Object.keys(themeStore) as IThemeType[],
+    themeType: defaultTheme,
     changeTheme: () => console.warn('Function changeTheme not implemented'),
-    style: themeStore[defaultTheme],
+    theme: themeStore[defaultTheme],
 };

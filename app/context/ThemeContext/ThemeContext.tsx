@@ -1,15 +1,15 @@
 import React, { Component } from 'react'
 import { createContext } from "react";
-import { ITheme, themeStore } from './themeStore';
+import { IThemeType, themeStore } from './themeStore';
 import { initialThemeContextState, IThemeContextState } from './stateFrame';
 
 export const ThemeContext = createContext(initialThemeContextState);
 
 export default class ThemeContextProvider extends Component {
-    changeTheme(newTheme: ITheme) {
+    changeTheme = (newTheme: IThemeType) => {
         this.setState({
-            theme: newTheme,
-            style: themeStore[newTheme]
+            theme: themeStore[newTheme],
+            themeType: newTheme 
         })
     }
 

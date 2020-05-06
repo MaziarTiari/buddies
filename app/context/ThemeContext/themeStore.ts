@@ -1,4 +1,4 @@
-export interface IThemeStyle {
+export interface ITheme {
     App: {
         primaryText: string;
         secondaryText: string;
@@ -18,11 +18,11 @@ export interface IThemeStyle {
     };
 }
 
-export type ITheme = 'dark' | 'light';
+export type IThemeType = 'dark' | 'light';
 
 interface IThemeStore {
-    dark: IThemeStyle;
-    light: IThemeStyle;
+    dark: ITheme;
+    light: ITheme;
 }
 
 export const themeStore: IThemeStore = {
@@ -47,13 +47,13 @@ export const themeStore: IThemeStore = {
     },
     light: {
         App: {
-            primaryText: "#FFFFFF",
-            secondaryText: "#B3B3B3",
+            primaryText: "#000000",
+            secondaryText: "#757575",
             primaryItem: "#FFAD1E",
-            layoutBackground: "#121618",
-            screenBackground: "#1C2329",
-            contentBasicButton: "#C7D0E5",
-            basicItem: "#CAE6D8",
+            layoutBackground: "#1CAB7F",
+            screenBackground: "#FFFFFF",
+            contentBasicButton: "#979797",
+            basicItem: "#645D64",
             profileIsOnlineDot: "#79C879",
         },
         ActivityListItem: {

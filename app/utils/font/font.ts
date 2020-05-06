@@ -1,4 +1,4 @@
-import { Device } from "../class/Device";
+import { Device } from "../device/Device";
 
 const device = new Device();
 const maxScaling = 1.3;

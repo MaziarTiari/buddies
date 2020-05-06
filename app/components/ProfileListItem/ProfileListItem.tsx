@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, Image, GestureResponderEvent } from "react-native";
-import styles from "./ProfileListItem.style";
+import useStyle from "./ProfileListItem.style";
 import { TouchableRipple } from "react-native-paper";
 import Container from "../Container/Container";
 
@@ -15,6 +15,7 @@ export interface ProfileListItemProps {
 }
 
 export const ProfileListItem = (Props: ProfileListItemProps) => {
+    const styles = useStyle();
     const RightComponent = () => Props.rightComponent;
 
     return (
