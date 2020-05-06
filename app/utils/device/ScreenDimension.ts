@@ -16,4 +16,4 @@ export const useScreenDimension = () => {
       ...screenData,
       isLandscape: screenData.width > screenData.height,
     };
-  };
+};

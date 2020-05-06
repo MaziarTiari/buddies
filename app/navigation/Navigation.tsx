@@ -1,6 +1,6 @@
 import React from 'react'
 import { useNavOption, RouteName } from './Navigation.config';
-import BottomTab from '../components/BottomTab/BottomTab';
+import BottomTab from './BottomTab';
 import FriendList from '../components/FriendList/FriendList';
 import Chat from '../components/Chat/Chat';
 import ActivityList from '../components/ActivityList/ActivityList';

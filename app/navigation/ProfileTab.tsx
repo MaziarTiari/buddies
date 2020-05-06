@@ -1,10 +1,10 @@
 import React, { useContext } from "react";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import ProfileAbout from "../ProfileAbout/ProfileAbout";
-import ProfileActivity from "../ProfileActivity/ProfileActivity";
-import ProfileGalery from "../ProfileGalery/ProfileGalery";
-import { useNavOption, RouteName } from "../../navigation/Navigation.config";
-import { LanguageContext } from "../../context/LanguageContext/LanguageContext";
+import ProfileAbout from "../components/ProfileAbout/ProfileAbout";
+import ProfileActivity from "../components/ProfileActivity/ProfileActivity";
+import ProfileGalery from "../components/ProfileGalery/ProfileGalery";
+import { useNavOption, RouteName } from "./Navigation.config";
+import { LanguageContext } from "../context/LanguageContext/LanguageContext";
 
 const Tab = createMaterialTopTabNavigator();
 

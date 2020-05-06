@@ -1,15 +1,15 @@
 import React, { useLayoutEffect, useContext } from "react";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
-import { RouteName, useNavOption } from "../../navigation/Navigation.config";
-import ActivityHeader from "../ActivityHeader/ActivityHeader";
-import FeedList from "../FeedList/FeedList";
-import ActivitiesTab from "../ActivityTab/ActivityTab";
-import ChatList from "../ChatList/ChatList";
-import ProfileTab from "../ProfileTab/ProfileTab";
-import ProfileHeader from "../ProfileHeader/ProfileHeader";
+import { RouteName, useNavOption } from "./Navigation.config";
+import ActivityHeader from "../components/ActivityHeader/ActivityHeader";
+import FeedList from "../components/FeedList/FeedList";
+import ActivitiesTab from "./ActivityTab";
+import ChatList from "../components/ChatList/ChatList";
+import ProfileTab from "./ProfileTab";
+import ProfileHeader from "../components/ProfileHeader/ProfileHeader";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
-import { LanguageContext } from "../../context/LanguageContext/LanguageContext";
+import { ThemeContext } from "../context/ThemeContext/ThemeContext";
+import { LanguageContext } from "../context/LanguageContext/LanguageContext";
 
 const Tab = createMaterialBottomTabNavigator();
 

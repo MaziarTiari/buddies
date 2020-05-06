@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import ActivityList from "../ActivityList/ActivityList";
-import ActivityMap from "../ActivityMap/ActivityMap";
-import { useNavOption, RouteName } from "../../navigation/Navigation.config";
-import { LanguageContext } from "../../context/LanguageContext/LanguageContext";
+import ActivityList from "../components/ActivityList/ActivityList";
+import ActivityMap from "../components/ActivityMap/ActivityMap";
+import { useNavOption, RouteName } from "./Navigation.config";
+import { LanguageContext } from "../context/LanguageContext/LanguageContext";
 
 const Tab = createMaterialTopTabNavigator();
 
