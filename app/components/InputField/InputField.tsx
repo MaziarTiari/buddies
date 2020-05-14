@@ -23,6 +23,7 @@ export interface InputFieldProps extends TextInputProps {
     leftComponent?: JSX.Element;
     rightComponent?: JSX.Element;
     containerStyle?: StyleProp<ViewStyle>;
+    withKeyboardReaction?: boolean;
 }
 
 export const InputField = ({style, ...Props}: InputFieldProps) => {
@@ -35,6 +36,7 @@ export const InputField = ({style, ...Props}: InputFieldProps) => {
     const RightComponent = () => (Props.rightComponent ? Props.rightComponent : null);
 
     useEffect(() => {
+        if(!Props.withKeyboardReaction) return;
         if (Platform.OS !== "ios") return;
         Keyboard.addListener("keyboardWillShow", _keyboardWillShow);
         Keyboard.addListener("keyboardWillHide", _keyboardWillHide);

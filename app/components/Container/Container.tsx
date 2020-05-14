@@ -1,9 +1,11 @@
 import React, { ReactNode } from 'react'
 import { View, ViewProps, KeyboardAvoidingView, Platform, StyleSheet } from 'react-native'
 import { useStyle } from './Container.style';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 interface ContainerProps extends ViewProps{
     keyboardAvoiding?: boolean
+    keyboardAwareScrollView?: boolean;
     children?: ReactNode;
 }
 
@@ -20,8 +22,9 @@ interface ComponentContainerProps extends ContainerProps {
 type ScreenLayout = 'root' | 'body';
 type ComponentLayout = 'root' | 'root_center';
 
-const Container = ( {layout, type, style, keyboardAvoiding, ...Props}: 
-        ComponentContainerProps | ScreenContainerProps) => {
+const Container = ( {
+            layout, type, style, keyboardAvoiding, keyboardAwareScrollView ,...Props
+        }: ComponentContainerProps | ScreenContainerProps) => {
 
     const styles = useStyle();
 
@@ -29,15 +32,17 @@ const Container = ( {layout, type, style, keyboardAvoiding, ...Props}:
                    ? styles.component[ layout as ComponentLayout ]
                    : styles.screen[ layout as ScreenLayout ];
 
-    return (
-        keyboardAvoiding 
-        ?   <View style={[ style, containerStyle ]} {...Props}>
-                <KeyboardAvoidingView
-                    children={Props.children}
-                    behavior={Platform.select({android: undefined, ios: 'padding'})}
-                />
-            </View>
-        :   <View style={[ style, containerStyle ]} {...Props} />
-    )
+    if(keyboardAvoiding)
+            return <KeyboardAvoidingView
+                        style={[ style, containerStyle ]} {...Props}
+                        behavior={Platform.select({android: undefined, ios: 'padding'})}
+                    />
+    else if(keyboardAwareScrollView)
+            return <KeyboardAwareScrollView
+                        resetScrollToCoords={{ x: 0, y: 0 }} style={style}
+                        contentContainerStyle={containerStyle} {...Props}
+                    />
+    else
+            return <View style={[ style, containerStyle ]} {...Props} />
 }
 export default Container
