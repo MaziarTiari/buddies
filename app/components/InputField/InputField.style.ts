@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { fontsizes, getLineHeight } from "../../utils/font/font";
+import { fontsizes, getLineHeight, getResponsiveSize } from "../../utils/font/font";
 import { useContext } from "react";
 import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
 
@@ -17,7 +17,7 @@ const useStyle = () => {
             fontSize: fontsizes.medium,
             lineHeight: getLineHeight(fontsizes.medium),
             flex: 1,
-            marginVertical: 10,
+            marginVertical: getResponsiveSize(10),
         },
     });
 }

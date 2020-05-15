@@ -9,7 +9,9 @@ const App = () => {
 
     return (
         <RootContextProvider>
+            {!isAuthorized &&
             <LoginForm/>
+            }
             {isAuthorized &&
             <NavigationContainer>
                 <Navigation />

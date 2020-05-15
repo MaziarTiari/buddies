@@ -1,11 +1,15 @@
-import React, { useEffect } from 'react'
-import { StyleSheet } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { 
+    StyleSheet, NativeSyntheticEvent, TextInputFocusEventData 
+} from 'react-native'
 import Container from '../Container/Container'
 import { useForm } from 'react-hook-form'
 import InputField, { InputFieldProps } from '../InputField/InputField'
 import { Headline } from 'react-native-paper'
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Button from '../Button/Button'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { getResponsiveSize, fontsizes } from '../../utils/font/font'
 
 const LoginForm = () => {
     const {register, handleSubmit, setValue} = useForm();
@@ -18,25 +22,31 @@ const LoginForm = () => {
         register("city")
         register("birthDate")
     },[register]);
+
+    const onFocus = (e: NativeSyntheticEvent<TextInputFocusEventData>) => {
+        
+    }
     
     // TODO fix android
     return (
-        <Container keyboardAwareScrollView type="screen" layout="root">
-            <Container 
-                type="component" layout="root_center" style={{justifyContent:"center"}}
-            >
+        <Container type="screen" layout="root" style={{paddingTop:"10%"}}>
+            <Container type="component" layout="root_center" style={{alignSelf:"stretch", justifyContent:"center",}}>
+            <KeyboardAwareScrollView resetScrollToCoords={{ x: 0, y: 0 }} enableOnAndroid
+                style={{alignSelf:"stretch"}} extraHeight={getResponsiveSize(20)}>
                 <Headline style={{color:"#fff", fontWeight:"700"}}>Register</Headline>
-                <LoginInputField iconName="face-profile" placeholder="Username"/>
+                <LoginInputField onFocus={onFocus} iconName="face-profile" placeholder="Username"/>
                 <LoginInputField iconName="email" placeholder="Email"/>
                 <LoginInputField iconName="cellphone" placeholder="Phone"/>
                 <LoginInputField iconName="calendar" placeholder="Birth date"/>
                 <LoginInputField iconName="city" placeholder="City"/>
                 <LoginInputField iconName="onepassword" secureTextEntry placeholder="Password"/>
                 <LoginInputField iconName="onepassword" secureTextEntry 
-                                 placeholder="Repeat password"/>
+                                placeholder="Repeat password"/>
                 <Button onPress={()=>{}} title="Register" style={{marginVertical:"5%"}}/>
+                </KeyboardAwareScrollView>
             </Container>
         </Container>
+
     )
 }
 
@@ -55,13 +65,13 @@ interface LoginInputFieldProps extends InputFieldProps{
 class LoginInputField extends React.Component<LoginInputFieldProps> {
     render() {
         return <InputField 
-                    {...this.props} style={{color:"#000000"}}
+                    {...this.props} style={{color:"#000000", fontSize:fontsizes.medium}}
                     containerStyle={
-                        {borderRadius:8, marginVertical:"5%", paddingHorizontal: 9,}}
+                        {borderRadius:getResponsiveSize(8), marginVertical:getResponsiveSize(10), paddingHorizontal: getResponsiveSize(9),}}
                     leftComponent={
                         <MaterialCommunityIcons 
                             style={{marginRight:10}} name={this.props.iconName} 
-                            size={22}/>
+                            size={getResponsiveSize(24)}/>
                     }
                 />
     }

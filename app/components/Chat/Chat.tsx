@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from "react";
-import { FlatList } from "react-native";
+import { FlatList, View } from "react-native";
 import styles from "./Chat.style";
 import ChatInput from "../ChatInput/ChatInput";
 import Container from "../Container/Container";
@@ -41,6 +41,7 @@ const Chat = ({ route, navigation }: any) => {
                 inverted
             />
             <ChatInput style={styles.inputField} onSend={handleSend} />
+            <View style={{height:600}} />
         </Container>
     );
 };
