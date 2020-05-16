@@ -139,8 +139,8 @@ const ProfileAbout = ({ navigation }: any) => {
                         <Text style={style.headline}>
                             {translations.profile_employments}
                         </Text>
-                        {profile.employments.map((employment) => (
-                            <Text style={style.text}>
+                        {profile.employments.map((employment, index) => (
+                            <Text style={style.text} key={index}>
                                 {employment.position}{" "}
                                 {translations.profile_employment_preposition}{" "}
                                 {employment.institution}
@@ -185,8 +185,8 @@ const renderHobbies = (hobbies: IHobby[], style: any): JSX.Element[] => {
     hobbies.forEach((hobby) => {
         if (categories.indexOf(hobby.category) === -1) categories.push(hobby.category);
     });
-    return categories.map((category) => (
-        <View style={style.columnContainer}>
+    return categories.map((category, index) => (
+        <View style={style.columnContainer} key={index}>
             <Text style={[style.smallHeadline, style.column, { width: "30%" }]}>
                 {category + ":"}
             </Text>
