@@ -15,17 +15,30 @@ export interface IMultiLangLineList {
     message_relation_stranger: string;
     message_relation_blocked: string;
     message_relation_group: string;
-  }
-  
-  export type Language = 'de' | 'en';
-  
-  export interface TranslationStore {
-      de: IMultiLangLineList;
-      en: IMultiLangLineList;
-  }
-  
-  export const translationStore: TranslationStore = {
-      de: {
+    profile_friends: string;
+    profile_groups: string;
+    profile_personal_info: string;
+    profile_name: string;
+    profile_location: string;
+    profile_birthday: string;
+    profile_relationshipstate: string;
+    profile_sex: string;
+    profile_languages: string;
+    profile_employments: string;
+    profile_employment_preposition: string;
+    profile_hobbies: string;
+    profile_about_me: string;
+}
+
+export type Language = "de" | "en";
+
+export interface TranslationStore {
+    de: IMultiLangLineList;
+    en: IMultiLangLineList;
+}
+
+export const translationStore: TranslationStore = {
+    de: {
         menu_profile: "Profil",
         menu_feed: "Buddies",
         menu_activities: "Aktivitäten",
@@ -37,13 +50,26 @@ export interface IMultiLangLineList {
         profile_tab_about: "Über mich",
         profile_tab_activity: "Aktivitäten",
         profile_tab_galery: "Galerie",
-        mutual_friends : "gemeinsame Freunde",
+        mutual_friends: "gemeinsame Freunde",
         message_relation_friend: "mit dir befreundet",
         message_relation_stranger: "nicht befreundet",
         message_relation_blocked: "ist blockiert",
-        message_relation_group: "in gemeinsamer Gruppe",    
-      },
-      en: {
+        message_relation_group: "in gemeinsamer Gruppe",
+        profile_friends: "Freunde",
+        profile_groups: "Gruppen",
+        profile_personal_info: "Persönliches",
+        profile_name: "Name",
+        profile_location: "Wohnort",
+        profile_birthday: "Geburtstag",
+        profile_relationshipstate: "Beziehnungsstatus",
+        profile_sex: "Geschlecht",
+        profile_languages: "Sprachen",
+        profile_employments: "Tätigenkeiten",
+        profile_employment_preposition: "bei",
+        profile_hobbies: "Interessen",
+        profile_about_me: "Über mich",
+    },
+    en: {
         menu_profile: "Profile",
         menu_feed: "Buddies",
         menu_activities: "Activities",
@@ -55,10 +81,23 @@ export interface IMultiLangLineList {
         profile_tab_about: "About",
         profile_tab_activity: "Activities",
         profile_tab_galery: "Galery",
-        mutual_friends : "mutual friends",
+        mutual_friends: "mutual friends",
         message_relation_friend: "you are friends",
         message_relation_stranger: "not your friend",
         message_relation_blocked: "is blocked",
         message_relation_group: "in same group",
-      }
-  };
+        profile_friends: "Friends",
+        profile_groups: "Groups",
+        profile_personal_info: "Personal Information",
+        profile_name: "Name",
+        profile_location: "Home",
+        profile_birthday: "Birthday",
+        profile_relationshipstate: "Relationship State",
+        profile_sex: "Sex",
+        profile_languages: "Languages",
+        profile_employments: "Employments",
+        profile_employment_preposition: "at",
+        profile_hobbies: "Interests",
+        profile_about_me: "About Me",
+    },
+};

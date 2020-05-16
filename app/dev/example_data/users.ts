@@ -8,7 +8,9 @@ export const users: IProfile[] = [
         location: "Heidelberg",
         phone: "01785219400",
         firstname: "Maziar",
-        lastname: "Tiari"
+        lastname: "Tiari",
+        birthday: new Date(1990, 1, 1),
+        sex: "male",
     },
     {
         id: 2,
@@ -17,7 +19,9 @@ export const users: IProfile[] = [
         location: "Worms",
         phone: "01785219400",
         firstname: "Nico",
-        lastname: "Hofmann"
+        lastname: "Hofmann",
+        birthday: new Date(1990, 1, 1),
+        sex: "male",
     },
     {
         id: 3,
@@ -26,6 +30,46 @@ export const users: IProfile[] = [
         location: "Heidelber",
         phone: "01785219400",
         firstname: "Milad",
-        lastname: "Tiari"
-    }
-]
+        lastname: "Tiari",
+        birthday: new Date(1990, 1, 1),
+        sex: "male",
+    },
+    {
+        id: 4,
+        username: "max_mustermann",
+        firstname: "Maximilian",
+        lastname: "Mustermann",
+        birthday: new Date(1998, 3, 15),
+        location: "Heidelberg (DE)",
+        sex: "male",
+        email: "max@mustermann.de",
+        phone: "012345789",
+        employments: [
+            { institution: "Hochschule Worms", position: "Student" },
+            { institution: "Musterfirma GmbH", position: "Angestellter" },
+            { institution: "Kindergarten Heidelberg", position: "Angestellter" },
+        ],
+        hobbies: [
+            { category: "Sport", name: "Fußball" },
+            { category: "Sport", name: "Handball" },
+            { category: "Technik", name: "Softwareentwicklung" },
+            { category: "Technik", name: "Autos" },
+            { category: "Gaming", name: "Shooter" },
+            { category: "Gaming", name: "Strategiespiele" },
+            { category: "Sport", name: "Joggen" },
+            { category: "Sport", name: "Fitnessstudio" },
+            { category: "Sport", name: "Leichtatlethik" },
+        ],
+        friends: [178, 487, 100, 39, 454, 48, 986, 358, 84, 94, 735, 563, 98, 69],
+        groups: [9032, 329],
+        relationshipState: "single",
+        languages: ["German", "French", "Chinese", "English"],
+        info:
+            "Blindtexte werden ebenfalls zur Demonstration der Gestalt verschiedener Schrifttypen und zu Layoutzwecken verwendet. Sie ergeben in der Regel keinen inhaltlichen Sinn. Aufgrund ihrer verbreiteten Funktion als Fülltext für das Layout kommt einer Nicht-Lesbarkeit besondere Bedeutung zu, da die menschliche Wahrnehmung u.a. darauf ausgerichtet ist, bestimmte Muster und Wiederholungen zu erkennen.",
+        profile_pictures: [
+            "https://i.redd.it/6onq25y0sh311.jpg",
+            "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+            "https://www.jeancoutu.com/globalassets/revamp/photo/conseils-photo/20160302-01-reseaux-sociaux-profil/photo-profil_301783868.jpg",
+        ],
+    },
+];
