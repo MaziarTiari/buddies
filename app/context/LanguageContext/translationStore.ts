@@ -15,6 +15,17 @@ export interface IMultiLangLineList {
     message_relation_stranger: string;
     message_relation_blocked: string;
     message_relation_group: string;
+    sign_up: {
+      heading: string;
+      username: string;
+      email: string;
+      phone: string;
+      birth_date: string;
+      city: string;
+      password: string;
+      repeat_password: string;
+      submit_button: string;
+    },
   }
   
   export type Language = 'de' | 'en';
@@ -41,7 +52,18 @@ export interface IMultiLangLineList {
         message_relation_friend: "mit dir befreundet",
         message_relation_stranger: "nicht befreundet",
         message_relation_blocked: "ist blockiert",
-        message_relation_group: "in gemeinsamer Gruppe",    
+        message_relation_group: "in gemeinsamer Gruppe",
+        sign_up: {
+          heading: "Registrieren",
+          username: "Benutzername",
+          email: "Email",
+          phone: "Mobil",
+          birth_date: "Geburtsdatum",
+          city: "Stadt",
+          password: "Passwort",
+          repeat_password: "Passwort wiederholen",
+          submit_button: "Registrieren",
+        },
       },
       en: {
         menu_profile: "Profile",
@@ -60,5 +82,16 @@ export interface IMultiLangLineList {
         message_relation_stranger: "not your friend",
         message_relation_blocked: "is blocked",
         message_relation_group: "in same group",
+        sign_up: {
+          heading: "Sign Up",
+          username: "Username",
+          email: "Email",
+          phone: "Cellphone",
+          birth_date: "Birth date",
+          city: "City",
+          password: "Password",
+          repeat_password: "Repeat Passwort",
+          submit_button: "Sign Up",
+        },
       }
   };

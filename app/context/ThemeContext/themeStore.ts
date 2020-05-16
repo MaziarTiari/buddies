@@ -2,6 +2,7 @@ export interface ITheme {
     App: {
         primaryText: string;
         secondaryText: string;
+        defaultInputFontColor: string;
         primaryItem: string;
         layoutBackground: string;
         screenBackground: string;
@@ -30,6 +31,7 @@ export const themeStore: IThemeStore = {
         App: {
             primaryText: "#FFFFFF",
             secondaryText: "#B3B3B3",
+            defaultInputFontColor: "#000000",
             primaryItem: "#FFAD1E",
             layoutBackground: "#121618",
             screenBackground: "#1C2329",
@@ -47,6 +49,7 @@ export const themeStore: IThemeStore = {
     },
     light: {
         App: {
+            defaultInputFontColor: "#000000",
             primaryText: "#000000",
             secondaryText: "#757575",
             primaryItem: "#FFAD1E",

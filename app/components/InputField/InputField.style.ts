@@ -10,9 +10,10 @@ const useStyle = () => {
             flexDirection: "row",
             alignItems: "center",
             backgroundColor: theme.App.primaryText,
+            borderRadius:getResponsiveSize(8)
         },
         textInput: {
-            color: theme.App.secondaryText,
+            color: theme.App.defaultInputFontColor,
             borderWidth: 0,
             fontSize: fontsizes.medium,
             lineHeight: getLineHeight(fontsizes.medium),
