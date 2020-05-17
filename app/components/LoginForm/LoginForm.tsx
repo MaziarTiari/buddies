@@ -11,6 +11,7 @@ import { getResponsiveSize } from '../../utils/font/font'
 import { LanguageContext } from '../../context/LanguageContext/LanguageContext'
 import { ThemeContext } from '../../context/ThemeContext/ThemeContext'
 import DatePicker from '@react-native-community/datetimepicker';
+import { validateEmail, validatePhone } from '../../utils/functions/validate'
 
 enum form {
     username = "username",
@@ -86,26 +87,45 @@ const LoginForm = () => {
     }    
 
     const validateForm = (formData: any): boolean => {
-        let succes: boolean = true;
-        Object.keys(form)
-            .forEach(formIndex => {
-                if(formData[formIndex] === "") {
-                    setFormWarning({...formWarning, [formIndex]: true});
-                    succes = false;
-                }
-            });
-        const pass1 = formData[form.password], pass2 = formData[form.repeatPassword];
-        if(pass1 !== "" && pass1 !== pass2) {
-            setFormWarning({
-                ...formWarning, [form.password]: true, [form.repeatPassword]: true
-            });
-            succes = false;
-        }
-        console.log(formData);
-        return succes;
+        let inputErrors: number = 0;
+        let warnings: any = formWarning;
+        const result: boolean = inputErrors > 0;
+        Object.keys(form).forEach(formIndex => {
+            if(formData[formIndex] === undefined) {
+                warnings[formIndex] = true;
+                inputErrors++;
+            } 
+        });
+        if( inputErrors === Object.keys(formData).length ) return result;
+        warnings = validateInputPatterns(formData, warnings);
+        setFormWarning(warnings);
+        return result;
     }
 
-    useEffect(() => console.log(formWarning),[formWarning]);
+    const isUndefinedOrEmpty = (string: string) => 
+        !string || string === "" || string === " "
+
+    const validateInputPatterns = (inputs: any, warnings: any) => {
+        if( !isUndefinedOrEmpty(inputs[form.password]) ) {
+            if (inputs[form.password] !== inputs[form.repeatPassword]) {
+                setpasswordErrorText("Passwörter stimmen nicht überein");
+                warnings[form.password] = true;
+                warnings[form.repeatPassword] = true;
+            }
+        }
+        if( !isUndefinedOrEmpty(inputs[form.email]) ) {
+            if(validateEmail(inputs[form.email]) ) {
+                setEmailErrorText("Das war keine korrekte Email Addresse");
+                warnings[form.email] = true;
+            }
+        }
+        if( !isUndefinedOrEmpty(inputs[form.phone]) ) {
+            if ( !validatePhone(inputs[form.phone]) ) {
+                // set phone warnings
+            }
+        }
+            
+    }
 
     const removeDateIcon = birthDateValue === "" 
                          ? undefined
@@ -141,31 +161,33 @@ const LoginForm = () => {
                         placeholder={translations.sign_up.phone}/>
                     <View >
                     <TouchableRipple onPress={() => setShowDate(true)}>
-                    <LoginInputField 
-                        value={birthDateValue}
-                        iconName="calendar" warning={formWarning.birthDate}
-                        onChangeText={txt => setValue( form.birthDate, txt)}
-                        placeholder={translations.sign_up.birth_date} editable={false}
-                        rightComponent={removeDateIcon}
-                    />
+                        <LoginInputField 
+                            value={birthDateValue}
+                            iconName="calendar" warning={formWarning.birthDate}
+                            onChangeText={txt => setValue( form.birthDate, txt)}
+                            placeholder={translations.sign_up.birth_date} editable={false}
+                            rightComponent={removeDateIcon}
+                        />
                     </TouchableRipple>
                     {showDate && (
-                        <View style={{backgroundColor:"#fff", borderRadius: 8}}>
-                        <DatePicker
-                            //testID="dateTimePicker"
-                            value={birthDate}
-                            mode="date"
-                            display="default"
-                            onChange={onDateChange}
-                        />
-                        <View 
-                            style={{
-                                flexDirection:"row", alignSelf:"flex-end", marginRight:20,
-                            }}
-                        >
-                            <IconButton icon="close" onPress={onCancelDate}/>
-                            <IconButton icon="calendar-check" onPress={onDateSelected}/>
-                        </View>
+                        <View style={Platform.OS === 'ios' && {backgroundColor:"#fff", borderRadius: 8}}>
+                            <DatePicker
+                                //testID="dateTimePicker"
+                                value={birthDate}
+                                mode="date"
+                                display="default"
+                                onChange={onDateChange}
+                            />
+                            { Platform.OS === 'ios' &&
+                            <View 
+                                style={{
+                                    flexDirection:"row", alignSelf:"flex-end", marginRight:20,
+                                }}
+                            >
+                                <IconButton icon="close" onPress={onCancelDate}/>
+                                <IconButton icon="calendar-check" onPress={onDateSelected}/>
+                            </View>
+                            }
                         </View>
                      )}
                     </View>
