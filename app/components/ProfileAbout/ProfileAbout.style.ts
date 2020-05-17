@@ -19,18 +19,8 @@ const useStyle = () => {
             padding: getResponsiveSize(15),
             maxWidth: "50%",
         },
-        outerRippleContainer: {
-            borderRadius: 100000, // just a very high number to safly get a cirle
-            overflow: "hidden",
-            aspectRatio: 1,
-        },
-        rippleContainer: {
-            justifyContent: "center",
-            flex: 1,
-        },
         innerRippleContainer: {
             alignItems: "center",
-            margin: getResponsiveSize(15),
         },
         headline: {
             fontSize: fontsizes.medium,

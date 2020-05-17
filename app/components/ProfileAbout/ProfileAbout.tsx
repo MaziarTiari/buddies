@@ -1,23 +1,28 @@
 import React, { useContext, useState } from "react";
-import { Text, View, ScrollView, Image } from "react-native";
+import { Text, View, ScrollView } from "react-native";
 import Container from "../Container/Container";
 import { LanguageContext } from "../../context/LanguageContext/LanguageContext";
 import useStyle from "./ProfileAbout.style";
-import GallerySwiper, { ImageObj } from "react-native-gallery-swiper";
-import { TouchableRipple } from "react-native-paper";
+import { ImageObj } from "react-native-gallery-swiper";
 import { IHobby, IProfile } from "../../dev/example_data/FetchedProfile";
 import { users } from "../../dev/example_data/users";
+import TouchableRippleCircle from "../TouchableRippleCircle/TouchableRippleCircle";
+import GallerySwiperWithIndicator from "../GallerySwiperWithIndicator/GallerySwiperWithIndicator";
+import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
+import { getResponsiveSize } from "../../utils/font/font";
 
 const ProfileAbout = ({ navigation }: any) => {
     const style = useStyle();
     const [profile, setProfile] = useState<IProfile>(users[3]);
     const { translations } = useContext(LanguageContext);
+    const { theme } = useContext(ThemeContext);
+
     return (
         <Container type="screen" layout="root">
             <ScrollView style={{ flex: 1, width: "100%" }}>
                 {/* Profile Images */}
                 <View style={style.galleryContainer}>
-                    <GallerySwiper
+                    <GallerySwiperWithIndicator
                         images={
                             profile.profile_pictures
                                 ? profile.profile_pictures.map(
@@ -35,6 +40,11 @@ const ProfileAbout = ({ navigation }: any) => {
                         resizeMode="contain"
                         enableTranslate={false}
                         enableScale={false}
+                        showIndicator={true}
+                        indicatorBackground={theme.App.screenBackground}
+                        indicatorForeground={theme.App.primaryText}
+                        indicatorMargin={getResponsiveSize(15)}
+                        indicatorPosition="topright"
                     />
                 </View>
 
@@ -51,33 +61,24 @@ const ProfileAbout = ({ navigation }: any) => {
                             {profile.employments && profile.employments[0].position}
                         </Text>
                     </View>
-                    <View style={style.outerRippleContainer}>
-                        <TouchableRipple
-                            style={style.rippleContainer}
-                            onPress={() => navigation.navigate("FriendList")}
-                        >
-                            <View style={style.innerRippleContainer}>
-                                <Text style={style.headline}>
-                                    {profile.friends ? profile.friends.length : 0}
-                                </Text>
-                                <Text style={style.text}>
-                                    {translations.profile_friends}
-                                </Text>
-                            </View>
-                        </TouchableRipple>
-                    </View>
-                    <View style={style.outerRippleContainer}>
-                        <TouchableRipple style={style.rippleContainer} onPress={() => {}}>
-                            <View style={style.innerRippleContainer}>
-                                <Text style={style.headline}>
-                                    {profile.groups ? profile.groups.length : 0}
-                                </Text>
-                                <Text style={style.text}>
-                                    {translations.profile_groups}
-                                </Text>
-                            </View>
-                        </TouchableRipple>
-                    </View>
+                    <TouchableRippleCircle
+                        onPress={() => navigation.navigate("FriendList")}
+                    >
+                        <View style={style.innerRippleContainer}>
+                            <Text style={style.headline}>
+                                {profile.friends ? profile.friends.length : 0}
+                            </Text>
+                            <Text style={style.text}>{translations.profile_friends}</Text>
+                        </View>
+                    </TouchableRippleCircle>
+                    <TouchableRippleCircle onPress={() => {}}>
+                        <View style={style.innerRippleContainer}>
+                            <Text style={style.headline}>
+                                {profile.groups ? profile.groups.length : 0}
+                            </Text>
+                            <Text style={style.text}>{translations.profile_groups}</Text>
+                        </View>
+                    </TouchableRippleCircle>
                 </View>
 
                 {/* Personal Information */}
