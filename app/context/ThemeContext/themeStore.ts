@@ -5,6 +5,7 @@ export interface ITheme {
         primaryItem: string;
         layoutBackground: string;
         screenBackground: string;
+        menuBackground: string;
         contentBasicButton: string;
         basicItem: string;
         profileIsOnlineDot: string;
@@ -18,7 +19,7 @@ export interface ITheme {
     };
 }
 
-export type IThemeType = 'dark' | 'light';
+export type IThemeType = "dark" | "light";
 
 interface IThemeStore {
     dark: ITheme;
@@ -33,6 +34,7 @@ export const themeStore: IThemeStore = {
             primaryItem: "#FFAD1E",
             layoutBackground: "#121618",
             screenBackground: "#1C2329",
+            menuBackground: "#26303A",
             contentBasicButton: "#C7D0E5",
             basicItem: "#CAE6D8",
             profileIsOnlineDot: "#79C879",
@@ -42,7 +44,7 @@ export const themeStore: IThemeStore = {
         },
         ChatItem: {
             sentMsgBackground: "#227E62",
-            recievedMsgBackground: "#45535F"
+            recievedMsgBackground: "#45535F",
         },
     },
     light: {
@@ -52,6 +54,7 @@ export const themeStore: IThemeStore = {
             primaryItem: "#FFAD1E",
             layoutBackground: "#1CAB7F",
             screenBackground: "#FFFFFF",
+            menuBackground: "#222222",
             contentBasicButton: "#979797",
             basicItem: "#645D64",
             profileIsOnlineDot: "#79C879",
@@ -61,7 +64,7 @@ export const themeStore: IThemeStore = {
         },
         ChatItem: {
             sentMsgBackground: "#227E62",
-            recievedMsgBackground: "#45535F"
+            recievedMsgBackground: "#45535F",
         },
-    }
-}
+    },
+};
