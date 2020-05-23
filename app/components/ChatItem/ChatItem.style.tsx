@@ -5,7 +5,6 @@ import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
 
 const roundMessageBorderRadius = getResponsiveSize(25);
 
-
 const useStyle = () => {
     const theme = useContext(ThemeContext).theme;
 
@@ -30,23 +29,23 @@ const useStyle = () => {
             marginRight: "10%",
         },
         nameText: {
-            fontSize: fontsizes.medium,
-            lineHeight: getLineHeight(fontsizes.medium),
+            fontSize: fontsizes.small,
+            lineHeight: getLineHeight(fontsizes.small),
             fontWeight: "bold",
             color: theme.App.primaryText,
         },
         messageText: {
-            fontSize: fontsizes.medium,
-            lineHeight: getLineHeight(fontsizes.medium),
+            fontSize: fontsizes.small,
+            lineHeight: getLineHeight(fontsizes.small),
             color: theme.App.primaryText,
         },
         dateText: {
-            fontSize: fontsizes.small,
+            fontSize: fontsizes.xsmall,
             marginTop: getResponsiveSize(5),
             textAlign: "right",
             color: theme.App.secondaryText,
         },
     });
-}
+};
 
 export default useStyle;

@@ -9,6 +9,7 @@ export interface ITheme {
         contentBasicButton: string;
         basicItem: string;
         profileIsOnlineDot: string;
+        invalidInputBoarder: string;
     };
     ActivityListItem: {
         heartIconOn: string;
@@ -38,6 +39,7 @@ export const themeStore: IThemeStore = {
             contentBasicButton: "#C7D0E5",
             basicItem: "#CAE6D8",
             profileIsOnlineDot: "#79C879",
+            invalidInputBoarder: "#DC143C",
         },
         ActivityListItem: {
             heartIconOn: "#FBCF07",
@@ -58,6 +60,7 @@ export const themeStore: IThemeStore = {
             contentBasicButton: "#979797",
             basicItem: "#645D64",
             profileIsOnlineDot: "#79C879",
+            invalidInputBoarder: "red",
         },
         ActivityListItem: {
             heartIconOn: "#FBCF07",

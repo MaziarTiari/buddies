@@ -29,6 +29,14 @@ export interface IMultiLangLineList {
     profile_employment_preposition: string;
     profile_hobbies: string;
     profile_about_me: string;
+    profile_add_employment: string;
+    profile_edit_employment: string;
+    profile_employment_category_placeholder: string;
+    profile_employment_text_placeholder: string;
+    profile_add_hobby: string;
+    profile_edit_hobby: string;
+    profile_hobby_category_placeholder: string;
+    profile_hobby_text_placeholder: string;
 }
 
 export type Language = "de" | "en";
@@ -66,10 +74,18 @@ export const translationStore: TranslationStore = {
         profile_relationshipstate: "Beziehnungsstatus",
         profile_sex: "Geschlecht",
         profile_languages: "Sprachen",
-        profile_employments: "Tätigenkeiten",
+        profile_employments: "Tätigkeiten",
         profile_employment_preposition: "bei",
         profile_hobbies: "Interessen",
         profile_about_me: "Über mich",
+        profile_add_employment: "Tätigkeit hinzufügen",
+        profile_edit_employment: "Tätigkeit bearbeiten",
+        profile_employment_category_placeholder: "Kategorie wählen ...",
+        profile_employment_text_placeholder: "Institution, Unternehmen ...",
+        profile_add_hobby: "Interesse hinzufügen",
+        profile_edit_hobby: "Interesse bearbeiten",
+        profile_hobby_category_placeholder: "Kategorie wählen ...",
+        profile_hobby_text_placeholder: "Beschreibung ...",
     },
     en: {
         menu_profile: "Profile",
@@ -102,5 +118,13 @@ export const translationStore: TranslationStore = {
         profile_employment_preposition: "at",
         profile_hobbies: "Interests",
         profile_about_me: "About Me",
+        profile_edit_employment: "Edit Employment",
+        profile_add_employment: "Add Employment",
+        profile_employment_category_placeholder: "Choose Category ...",
+        profile_employment_text_placeholder: "Institution, Company ...",
+        profile_add_hobby: "Add Interest",
+        profile_edit_hobby: "Edit Interest",
+        profile_hobby_category_placeholder: "Choose Category ...",
+        profile_hobby_text_placeholder: "Description ...",
     },
 };
