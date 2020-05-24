@@ -12,7 +12,7 @@ import FormInput from '../FormInput/FormInput';
 import useStyles from './SignUpForm.style';
 import moment from 'moment';
 import FormDatePicker from '../FormDatePicker/FormDatePicker';
-import { UserBackend } from '../../api/UserApi'
+import { BackendService } from '../../api/BackendService'
 import { INewUser } from '../../models/User';
 
 enum form {
@@ -124,15 +124,15 @@ const SignUpForm = () => {
     const onSubmit = (formData: any) => {
         const formIsValid = validateForm(formData);
         if(formIsValid) {
-            const newUser: INewUser = {
-                username: formData[form.username],
-                email: formData[form.email],
-                phone: formData[form.phone],
-                birthDate: formData[form.birthDate],
-                city: formData[form.city],
-                password: formData[form.password]
-            }
-            UserBackend.createUser(newUser);
+            // const newUser: INewUser = {
+            //     username: formData[form.username],
+            //     email: formData[form.email],
+            //     phone: formData[form.phone],
+            //     birthDate: formData[form.birthDate],
+            //     city: formData[form.city],
+            //     password: formData[form.password]
+            // }
+            // BackendService.createUser(newUser);
         }
     }    
     
