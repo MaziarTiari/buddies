@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import RootContextProvider from "./app/context/RootContext";
 import Navigation from "./app/navigation/Navigation";
-import LoginForm from "./app/components/LoginForm/LoginForm";
+import SignUpForm from "./app/components/SignUpForm/SignUpForm";
 
 const App = () => {
     const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
@@ -10,7 +10,7 @@ const App = () => {
     return (
         <RootContextProvider>
             {!isAuthorized &&
-            <LoginForm/>
+            <SignUpForm/>
             }
             {isAuthorized &&
             <NavigationContainer>

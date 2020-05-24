@@ -1,31 +1,40 @@
-import { IProfile } from "./FetchedProfile";
+import { IUserProfile } from "../../models/User";
 
-export const users: IProfile[] = [
+export const users: IUserProfile[] = [
     {
-        id: 1,
+        id: "1",
         username: "maziar",
         email: "maziar@email.com",
-        location: "Heidelberg",
+        city: "Heidelberg",
         phone: "01785219400",
         firstname: "Maziar",
-        lastname: "Tiari"
+        lastname: "Tiari",
+        password: "Password",
+        birthDate: 635299200,
+        salt: "salt"
     },
     {
-        id: 2,
+        id: "2",
         username: "nico",
         email: "nico@email.com",
-        location: "Worms",
+        city: "Worms",
         phone: "01785219400",
         firstname: "Nico",
-        lastname: "Hofmann"
+        lastname: "Hofmann",
+        password: "Password",
+        birthDate: 635299200,
+        salt: "salt"
     },
     {
-        id: 3,
+        id: "3",
         username: "milad",
         email: "milad@email.com",
-        location: "Heidelber",
+        city: "Heidelber",
         phone: "01785219400",
         firstname: "Milad",
-        lastname: "Tiari"
+        lastname: "Tiari",
+        password: "Password",
+        birthDate: 635299200,
+        salt: "salt"
     }
 ]
