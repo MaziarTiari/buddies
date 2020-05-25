@@ -5,7 +5,7 @@ import Navigation from "./app/navigation/Navigation";
 import SignUpForm from "./app/components/SignUpForm/SignUpForm";
 
 const App = () => {
-    const [isAuthorized, setIsAuthorized] = useState<boolean>(true);
+    const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
 
     return (
         <RootContextProvider>

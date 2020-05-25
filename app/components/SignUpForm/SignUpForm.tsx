@@ -11,48 +11,35 @@ import { validateEmail, validatePhone } from '../../utils/functions/validate';
 import FormInput from '../FormInput/FormInput';
 import useStyles from './SignUpForm.style';
 import moment from 'moment';
-import FormDatePicker from '../FormDatePicker/FormDatePicker';
 import { BackendService } from '../../api/BackendService'
-import { INewUser } from '../../models/User';
+import { INewUser, IUser } from '../../models/User';
 
 enum form {
-    username = "username",
     email = "email",
     phone = "phone",
-    birthDate = "birthDate",
-    city = "city",
     password = "password",
     repeatPassword = "repeatPassword",
 }
 
 interface FormErrorSate {
-    username: boolean;
     email: boolean;
     phone: boolean;
-    birthDate: boolean;
-    city: boolean;
     password: boolean;
     repeatPassword: boolean;
 }
 
 const initialFormErrorState: FormErrorSate = {
-    username: false,
     email: false,
     phone: false,
-    birthDate: false,
-    city: false,
     password: false,
     repeatPassword: false,
 }
 
-export interface IRequestedAccount {
-    Username: string;
-    Email: string;
-    City: string;
-    Password: string;
-    Phone: string;
-    BirthDate: number;
-}
+const userService = new BackendService<IUser>(
+    {
+        baseURL: "http://40.113.114.86/api/Users",
+    }
+);
 
 const SixteenYearsAgo = moment(Date.now()).subtract(16, 'years').toDate();
 
@@ -61,7 +48,6 @@ const SignUpForm = () => {
     const translations = useContext(LanguageContext).translations;
     const styles = useStyles();
     const [formErrorState, setFormErrorState] = useState<FormErrorSate>(initialFormErrorState);
-    const [birthDate, setBirthDate] = useState<Date>(SixteenYearsAgo);
     const [emailErrorMessage, setEmailErrorMessage] = useState("");
     const [passwordErrorMessage, setpasswordErrorMessage] = useState("");
     const [phoneErrorMessage, setPhoneErrorMessage] = useState("");
@@ -72,7 +58,6 @@ const SignUpForm = () => {
 
     const setErrorMessagesToDefault = () => {
         setFormErrorState(initialFormErrorState);
-        console.log(initialFormErrorState)
         setEmailErrorMessage("");
         setPhoneErrorMessage("");
         setpasswordErrorMessage("");
@@ -82,17 +67,18 @@ const SignUpForm = () => {
         setErrorMessagesToDefault();
         let incorrectInputs: number = 0;
         let errors: any = initialFormErrorState;
-        const result: boolean = incorrectInputs > 0;
+        const result = () => incorrectInputs == 0;
         Object.keys(form).forEach(formIndex => {
             if( isUndefinedOrEmpty(formData[formIndex]) ) {
                 errors[formIndex] = true;
+                console.log(formIndex)
                 incorrectInputs++;
             } else errors[formIndex] = false;
         });
-        if( incorrectInputs === Object.keys(formData).length ) return result;
+        if( incorrectInputs === Object.keys(formData).length ) return result();
         errors = validateInputPatterns(formData, errors);
         setFormErrorState(errors);
-        return result;
+        return result();
     }
 
     const isUndefinedOrEmpty = (string: string) => 
@@ -121,19 +107,21 @@ const SignUpForm = () => {
         return warnings;
     }
 
-    const onSubmit = (formData: any) => {
+    // TODO: fix passwords compare
+    const onSubmit = async (formData: any) => {
         const formIsValid = validateForm(formData);
         if(formIsValid) {
-            // const newUser: INewUser = {
-            //     username: formData[form.username],
-            //     email: formData[form.email],
-            //     phone: formData[form.phone],
-            //     birthDate: formData[form.birthDate],
-            //     city: formData[form.city],
-            //     password: formData[form.password]
-            // }
-            // BackendService.createUser(newUser);
+            const newUser: INewUser = {
+                email: formData[form.email],
+                phone: formData[form.phone],
+                password: formData[form.password]
+            }
+            console.log("jdjfks")
+            const re = await userService.Create<IUser, INewUser>(newUser);
+            console.log(re);
         }
+        //console.log("hjh")
+
     }    
     
     return (
@@ -147,10 +135,6 @@ const SignUpForm = () => {
                     <Headline style={styles.heading}>
                         {translations.form.heading}
                     </Headline>
-                    <FormInput 
-                        iconName="face-profile" error={formErrorState?.username}
-                        onChangeText={txt => setValue( form.username, txt)}
-                        placeholder={translations.form.username}/>
                     { !isUndefinedOrEmpty(emailErrorMessage) && 
                         <Text style={{color:"#FF2929"}}>{emailErrorMessage}</Text>
                     }
@@ -165,15 +149,6 @@ const SignUpForm = () => {
                         iconName="cellphone" error={formErrorState?.phone}
                         onChangeText={txt => setValue( form.phone, txt)}
                         placeholder={translations.form.phone}/>
-                    <FormDatePicker 
-                        onChange={d => setValue(form.birthDate, d)}
-                        inputPlaceholder={translations.form.birth_date}
-                        options={{value: birthDate, minimumDate: SixteenYearsAgo}}
-                    />
-                    <FormInput 
-                        iconName="city" error={formErrorState?.city}
-                        onChangeText={txt => setValue( form.city, txt)}
-                        placeholder={translations.form.city}/>
                     { !isUndefinedOrEmpty(passwordErrorMessage) && 
                         <Text style={{color:"#FF2929"}}>{passwordErrorMessage}</Text>
                     }
