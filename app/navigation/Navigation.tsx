@@ -5,7 +5,9 @@ import FriendList from "../components/FriendList/FriendList";
 import Chat from "../components/Chat/Chat";
 import ActivityList from "../components/ActivityList/ActivityList";
 import { createStackNavigator } from "@react-navigation/stack";
-import ProfileEditor from "../components/ProfileEditor/ProfileEditor";
+import ProfileEditorMenu from "../components/ProfileEditorMenu/ProfileEditorMenu";
+import ProfileEditorTagList from "../components/ProfileEditorTagList/ProfileEditorTagList";
+import ProfileEditorPersonal from "../components/ProfileEditorPersonal/ProfileEditorPersonal";
 
 const Stack = createStackNavigator();
 
@@ -18,7 +20,18 @@ const Navigation = () => {
             <Stack.Screen name={RouteName.Chat.Chat} component={Chat} />
             <Stack.Screen name={RouteName.Activity.MyFavorite} component={ActivityList} />
             <Stack.Screen name={RouteName.Activity.MyList} component={ActivityList} />
-            <Stack.Screen name={RouteName.Profile.Editor} component={ProfileEditor} />
+            <Stack.Screen
+                name={RouteName.Profile.Editor.Menu}
+                component={ProfileEditorMenu}
+            />
+            <Stack.Screen
+                name={RouteName.Profile.Editor.Taglist}
+                component={ProfileEditorTagList}
+            />
+            <Stack.Screen
+                name={RouteName.Profile.Editor.Personal}
+                component={ProfileEditorPersonal}
+            />
         </Stack.Navigator>
     );
 };

@@ -11,6 +11,7 @@ const useStyle = () => {
             alignItems: "center",
             backgroundColor: theme.App.menuBackground,
             flex: 1,
+            borderRadius: getResponsiveSize(8),
         },
         textInput: {
             color: theme.App.primaryText,
@@ -18,7 +19,7 @@ const useStyle = () => {
             fontSize: fontsizes.small,
             lineHeight: getLineHeight(fontsizes.small),
             flex: 1,
-            margin: getResponsiveSize(6),
+            marginVertical: getResponsiveSize(10),
         },
     });
 };

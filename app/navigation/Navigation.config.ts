@@ -25,7 +25,11 @@ export const RouteName = {
         Activity: "ProfileActivity",
         Galery: "ProfileGalery",
         FriendList: "FriendList",
-        Editor: "ProfileEditor",
+        Editor: {
+            Menu: "ProfileEditorMenu",
+            Personal: "ProfileEditorPersonal",
+            Taglist: "ProfileEditorTagList",
+        },
     },
 };
 

@@ -2,6 +2,7 @@ export interface ITheme {
     App: {
         primaryText: string;
         secondaryText: string;
+        defaultInputFontColor: string;
         primaryItem: string;
         layoutBackground: string;
         screenBackground: string;
@@ -18,6 +19,9 @@ export interface ITheme {
         sentMsgBackground: string;
         recievedMsgBackground: string;
     };
+    Button: {
+        dangerousColor: string;
+    };
 }
 
 export type IThemeType = "dark" | "light";
@@ -32,6 +36,7 @@ export const themeStore: IThemeStore = {
         App: {
             primaryText: "#FFFFFF",
             secondaryText: "#B3B3B3",
+            defaultInputFontColor: "#000000",
             primaryItem: "#FFAD1E",
             layoutBackground: "#121618",
             screenBackground: "#1C2329",
@@ -48,9 +53,13 @@ export const themeStore: IThemeStore = {
             sentMsgBackground: "#227E62",
             recievedMsgBackground: "#45535F",
         },
+        Button: {
+            dangerousColor: "#DC143C",
+        },
     },
     light: {
         App: {
+            defaultInputFontColor: "#000000",
             primaryText: "#000000",
             secondaryText: "#757575",
             primaryItem: "#FFAD1E",
@@ -68,6 +77,9 @@ export const themeStore: IThemeStore = {
         ChatItem: {
             sentMsgBackground: "#227E62",
             recievedMsgBackground: "#45535F",
+        },
+        Button: {
+            dangerousColor: "red",
         },
     },
 };

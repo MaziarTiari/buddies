@@ -10,7 +10,6 @@ const useStyle = () => {
             alignItems: "center",
             justifyContent: "space-between",
             flexDirection: "row",
-            marginHorizontal: getResponsiveSize(12),
         },
         fieldText: {
             fontSize: fontsizes.small,
@@ -25,8 +24,8 @@ const useStyle = () => {
             alignItems: "center",
         },
         headerText: {
-            fontSize: fontsizes.small,
-            lineHeight: getLineHeight(fontsizes.small),
+            fontSize: fontsizes.medium,
+            lineHeight: getLineHeight(fontsizes.medium),
             fontWeight: "bold",
             color: theme.App.primaryText,
         },

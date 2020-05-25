@@ -1,7 +1,7 @@
 import { ImageSourcePropType } from "react-native";
 
 export interface IActivity {
-    ownerUserId: number;
+    ownerUserId: string;
     id: number;
     title: string;
     location: string;
@@ -33,7 +33,7 @@ export interface ActivityApplyCriteria {
 
 export const activities: IActivity[] = [
     {
-        ownerUserId: 2,
+        ownerUserId: "2",
         id: 1,
         title: "Mountain Bike",
         location: "Heidelberg, Pholosophenweg",
@@ -44,7 +44,7 @@ export const activities: IActivity[] = [
         endDate: new Date(2020, 26, 5, 16, 0),
     },
     {
-        ownerUserId: 1,
+        ownerUserId: "1",
         id: 2,
         title:
             "Meditation mit einem sehr langen Text als Titel der dann evtl abgeschnitten wird",
@@ -54,7 +54,7 @@ export const activities: IActivity[] = [
         membersUserIds: [1, 2],
     },
     {
-        ownerUserId: 1,
+        ownerUserId: "1",
         id: 3,
         title: "kleiner Text",
         location: "Worms",

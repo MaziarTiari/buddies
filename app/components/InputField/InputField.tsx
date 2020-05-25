@@ -4,9 +4,6 @@ import {
     NativeSyntheticEvent,
     TextInputContentSizeChangeEventData,
     View,
-    Keyboard,
-    KeyboardEvent,
-    Platform,
     StyleProp,
     ViewStyle,
     TextInputProps,
@@ -29,28 +26,9 @@ export const InputField = ({style, ...Props}: InputFieldProps) => {
     const styles = useStyle();
 
     const [inputHeight, setInputHeight] = useState(Props.dynamicHeight?.min);
-    const [marginBottom, setMarginBottom] = useState(0);
 
     const LeftComponent = () => (Props.leftComponent ? Props.leftComponent : null);
     const RightComponent = () => (Props.rightComponent ? Props.rightComponent : null);
-
-    useEffect(() => {
-        if (Platform.OS !== "ios") return;
-        Keyboard.addListener("keyboardWillShow", _keyboardWillShow);
-        Keyboard.addListener("keyboardWillHide", _keyboardWillHide);
-        return () => {
-            Keyboard.removeListener("keyboardWillShow", _keyboardWillShow);
-            Keyboard.removeListener("keyboardWillHide", _keyboardWillHide);
-        };
-    }, []);
-
-    const _keyboardWillShow = (event: KeyboardEvent) => {
-        setMarginBottom(event.endCoordinates.height * 0.31);
-    };
-
-    const _keyboardWillHide = () => {
-        setMarginBottom(0);
-    };
 
     const handleContentSizeChange = (
         event: NativeSyntheticEvent<TextInputContentSizeChangeEventData>
@@ -68,13 +46,7 @@ export const InputField = ({style, ...Props}: InputFieldProps) => {
     };
 
     return (
-        <View
-            style={[
-                styles.inputContainer,
-                Props.containerStyle,
-                { marginBottom: marginBottom },
-            ]}
-        >
+        <View style={[styles.inputContainer, Props.containerStyle]}>
             <LeftComponent {...Props.leftComponent?.props} />
             <TextInput
                 onContentSizeChange={Props.dynamicHeight && handleContentSizeChange}

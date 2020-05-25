@@ -1,22 +1,29 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
-import { Modal, View, Text, Button } from "react-native";
+import { Modal, View, Text } from "react-native";
 import CustomizedPicker from "../CustomizedPicker/CustomizedPicker";
-import { ICategory } from "../TagItem/TagItem";
 import { TouchableRipple } from "react-native-paper";
-import useStyle from "./TagEditor.style";
+import useStyle from "./CategorizedInputEditor.style";
 import Autocomplete from "react-native-autocomplete-input";
 import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
+import InputField from "../InputField/InputField";
+import Button from "../Button/Button";
+import { LanguageContext } from "../../context/LanguageContext/LanguageContext";
+import { getResponsiveSize } from "../../utils/font/font";
 
-export interface TagEditorProps {
+export interface CategorizedInputEditorProps {
     visible: boolean;
-    onSave: (selectedCategory: ICategory, selectedText: string) => void;
+    showDelete: boolean;
+    onSave: (category: string, title: string, institution?: string) => void;
     onCancel: () => void;
-    categoryList: ICategory[];
+    onDelete: () => void;
+    categoryList: string[];
     headline: string;
-    preselectedText?: string;
-    preselectedCategory?: ICategory;
-    textPlaceholder?: string;
+    preselectedTitle?: string;
+    preselectedCategory?: string;
+    preselectedInstitution?: string;
+    titlePlaceholder?: string;
     categoryPlaceholder?: string;
+    institutionPlaceholder?: string;
 }
 
 const MIN_SUGGESTION_LENGHT = 3;
@@ -25,22 +32,27 @@ const allSuggestions = [
     "Musterfabrik AG",
     "Mustermann und Söhne",
     "Musterfirma Süd",
+    "Musterfirma West",
     "Hochschule Worms",
     "Hochschule Heidelberg",
     "Hochschule Frankfurt a.M.",
     "Grundschule Worms",
 ]; // received from API later
 
-const TagEditor = (props: TagEditorProps) => {
+const CategorizedInputEditor = (props: CategorizedInputEditorProps) => {
     const style = useStyle();
     const { theme } = useContext(ThemeContext);
+    const { translations } = useContext(LanguageContext);
 
     const [suggestions, setSuggestions] = useState<string[]>([]);
-    const [selectedText, setSelectedText] = useState<string | undefined>(
-        props.preselectedText
+    const [selectedTitle, setSelectedTitle] = useState<string | undefined>(
+        props.preselectedTitle
     );
-    const [selectedCategory, setSelectedCategory] = useState<ICategory | undefined>(
+    const [selectedCategory, setSelectedCategory] = useState<string | undefined>(
         props.preselectedCategory
+    );
+    const [selectedInstitution, setSelectedInstitution] = useState<string | undefined>(
+        props.preselectedInstitution
     );
 
     const [categoryBorderColor, setCategoryBorderColor] = useState<string>(
@@ -56,8 +68,9 @@ const TagEditor = (props: TagEditorProps) => {
     useEffect(() => {
         // when the modal opens, the states needs a reset
         if (!isVisible.current && props.visible) {
-            setSelectedText(props.preselectedText);
+            setSelectedTitle(props.preselectedTitle);
             setSelectedCategory(props.preselectedCategory);
+            setSelectedInstitution(props.preselectedInstitution);
             setCategoryBorderColor(style.picker.borderColor);
             setTextBorderColor(style.autoCompleteContainer.borderColor);
             setSuggestions([]);
@@ -65,23 +78,27 @@ const TagEditor = (props: TagEditorProps) => {
         isVisible.current = props.visible;
     }, [props.visible]);
 
-    const handleChangeText = (text: string): void => {
+    const handleChangeTitle = (title: string): void => {
         setSuggestions(
-            text.length >= MIN_SUGGESTION_LENGHT
+            title.length >= MIN_SUGGESTION_LENGHT
                 ? allSuggestions.filter((suggestion) =>
-                      suggestion.toLocaleLowerCase().startsWith(text.toLocaleLowerCase())
+                      suggestion.toLocaleLowerCase().startsWith(title.toLocaleLowerCase())
                   )
                 : []
         );
-        setSelectedText(text);
+        setSelectedTitle(title);
+    };
+
+    const handleChangeInstitution = (institution: string): void => {
+        setSelectedInstitution(institution);
     };
 
     const handleSuggestionSelected = (text: string): void => {
-        setSelectedText(text);
+        setSelectedTitle(text);
         setSuggestions([]);
     };
 
-    const handleCategorySelected = (category: ICategory): void => {
+    const handleCategorySelected = (category: string): void => {
         setSelectedCategory(category);
     };
 
@@ -90,12 +107,12 @@ const TagEditor = (props: TagEditorProps) => {
             selectedCategory ? style.picker.borderColor : theme.App.invalidInputBoarder
         );
         setTextBorderColor(
-            selectedText
+            selectedTitle
                 ? style.autoCompleteContainer.borderColor
                 : theme.App.invalidInputBoarder
         );
-        if (selectedCategory && selectedText)
-            props.onSave(selectedCategory, selectedText);
+        if (selectedCategory && selectedTitle)
+            props.onSave(selectedCategory, selectedTitle, selectedInstitution);
     };
 
     const renderItem = ({ item }: any): JSX.Element => (
@@ -119,7 +136,7 @@ const TagEditor = (props: TagEditorProps) => {
                         headerText={props.categoryPlaceholder}
                         placeholder={props.categoryPlaceholder}
                         itemList={props.categoryList}
-                        getLabel={(category: ICategory) => category.text}
+                        getLabel={(category) => category}
                         onItemChange={handleCategorySelected}
                         selectedItem={selectedCategory}
                     />
@@ -131,18 +148,38 @@ const TagEditor = (props: TagEditorProps) => {
                         ]}
                         listStyle={style.autoCompleteList}
                         data={suggestions}
-                        value={selectedText}
-                        placeholder={props.textPlaceholder}
-                        onChangeText={handleChangeText}
+                        value={selectedTitle}
+                        placeholder={props.titlePlaceholder}
+                        onChangeText={handleChangeTitle}
                         renderItem={renderItem}
                         keyExtractor={(item) => item}
                     />
+                    <InputField
+                        containerStyle={style.autoCompleteContainer}
+                        value={selectedInstitution}
+                        placeholder={props.institutionPlaceholder}
+                        onChangeText={handleChangeInstitution}
+                    />
                     <View style={style.buttonContainer}>
-                        <View style={style.button}>
-                            <Button title="cancel" onPress={props.onCancel} />
+                        <View>
+                            {props.showDelete && (
+                                <Button
+                                    title={translations.button.delete}
+                                    onPress={props.onDelete}
+                                    isDangerous={true}
+                                />
+                            )}
                         </View>
-                        <View style={style.button}>
-                            <Button title="save" onPress={handleSave} />
+                        <View style={{ flexDirection: "row" }}>
+                            <Button
+                                title={translations.button.cancel}
+                                onPress={props.onCancel}
+                                style={{ marginHorizontal: getResponsiveSize(5) }}
+                            />
+                            <Button
+                                title={translations.button.save}
+                                onPress={handleSave}
+                            />
                         </View>
                     </View>
                 </View>
@@ -151,4 +188,4 @@ const TagEditor = (props: TagEditorProps) => {
     );
 };
 
-export default TagEditor;
+export default CategorizedInputEditor;

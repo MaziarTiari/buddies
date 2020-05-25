@@ -31,7 +31,7 @@ const ProfileHeader = ({ navigation }: any) => {
                 }}
             >
                 <MenuOption
-                    onSelect={() => navigation.navigate(RouteName.Profile.Editor)}
+                    onSelect={() => navigation.navigate(RouteName.Profile.Editor.Menu)}
                     text="edit"
                 />
                 <MenuOption onSelect={() => {}} text="Option 2" />

@@ -1,9 +1,9 @@
-import React, { ReactNode } from 'react'
-import { View, ViewProps, KeyboardAvoidingView, Platform, StyleSheet } from 'react-native'
+import React, { ReactNode, useState, useEffect } from 'react'
+import { View, ViewProps, KeyboardEvent, Keyboard, GestureResponderEvent, ScrollView } from 'react-native'
 import { useStyle } from './Container.style';
+import { useScreenDimension } from '../../utils/device/ScreenDimension';
 
 interface ContainerProps extends ViewProps{
-    keyboardAvoiding?: boolean
     children?: ReactNode;
 }
 
@@ -20,8 +20,9 @@ interface ComponentContainerProps extends ContainerProps {
 type ScreenLayout = 'root' | 'body';
 type ComponentLayout = 'root' | 'root_center';
 
-const Container = ( {layout, type, style, keyboardAvoiding, ...Props}: 
-        ComponentContainerProps | ScreenContainerProps) => {
+const Container = ( {
+            layout, type, style, children ,...Props
+        }: ComponentContainerProps | ScreenContainerProps) => {
 
     const styles = useStyle();
 
@@ -29,15 +30,7 @@ const Container = ( {layout, type, style, keyboardAvoiding, ...Props}:
                    ? styles.component[ layout as ComponentLayout ]
                    : styles.screen[ layout as ScreenLayout ];
 
-    return (
-        keyboardAvoiding 
-        ?   <View style={[ style, containerStyle ]} {...Props}>
-                <KeyboardAvoidingView
-                    children={Props.children}
-                    behavior={Platform.select({android: undefined, ios: 'padding'})}
-                />
-            </View>
-        :   <View style={[ style, containerStyle ]} {...Props} />
-    )
+
+    return <View style={[ style, containerStyle ]} {...Props} children={children}/>
 }
 export default Container

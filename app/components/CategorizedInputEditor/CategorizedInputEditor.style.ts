@@ -13,44 +13,47 @@ const useStyle = () => {
             backgroundColor: "#000000AA",
         },
         modalView: {
-            margin: 20,
             backgroundColor: theme.App.screenBackground,
-            width: getResponsiveSize(350),
-            minHeight: getResponsiveSize(275),
+            width: getResponsiveSize(380),
             position: "absolute",
+            padding: getResponsiveSize(20),
         },
         headline: {
-            fontSize: fontsizes.small,
-            lineHeight: getLineHeight(fontsizes.small),
+            fontSize: fontsizes.medium,
+            lineHeight: getLineHeight(fontsizes.medium),
             fontWeight: "bold",
             textAlign: "center",
-            padding: getResponsiveSize(15),
+            margin: getResponsiveSize(10),
             color: theme.App.primaryText,
         },
         picker: {
             borderWidth: 1,
             borderColor: theme.App.layoutBackground,
             backgroundColor: theme.App.menuBackground,
-            padding: getResponsiveSize(15),
-            margin: getResponsiveSize(10),
+            borderRadius: getResponsiveSize(8),
+            paddingVertical: getResponsiveSize(15),
+            paddingHorizontal: getResponsiveSize(10),
+            marginTop: getResponsiveSize(15),
         },
         autoComplete: {
-            padding: getResponsiveSize(10),
-            backgroundColor: theme.App.menuBackground,
             fontSize: fontsizes.small,
             lineHeight: getLineHeight(fontsizes.small),
+            paddingVertical: getResponsiveSize(10),
             color: theme.App.primaryText,
         },
         autoCompleteContainer: {
+            backgroundColor: theme.App.menuBackground,
             borderWidth: 1,
-            margin: getResponsiveSize(10),
+            marginTop: getResponsiveSize(15),
             borderColor: theme.App.layoutBackground,
+            borderRadius: getResponsiveSize(8),
+            paddingHorizontal: getResponsiveSize(10),
         },
         autoCompleteList: {
-            marginHorizontal: getResponsiveSize(10),
             backgroundColor: theme.App.menuBackground,
             borderWidth: 1,
             borderColor: theme.App.layoutBackground,
+            margin: 0,
             maxHeight: getResponsiveSize(185), // max 4 items visible
         },
         autoCompleteItemContainer: {
@@ -63,10 +66,8 @@ const useStyle = () => {
         },
         buttonContainer: {
             flexDirection: "row",
-            justifyContent: "flex-end",
-        },
-        button: {
-            padding: getResponsiveSize(10),
+            justifyContent: "space-between",
+            marginTop: getResponsiveSize(30),
         },
     });
 };

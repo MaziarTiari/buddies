@@ -4,7 +4,7 @@ import { IActivity } from "../../dev/example_data/fetchedActivityList";
 import { IconButton, Headline, TouchableRipple } from "react-native-paper";
 import { fontsizes } from "../../utils/font/font";
 import { users } from "../../dev/example_data/users";
-import { IProfile } from "../../dev/example_data/FetchedProfile";
+import { IUserProfile } from "../../models/User";
 import { useStyle } from "./ActivityListItem.style";
 import Container from "../Container/Container";
 const defaultImg = require("../../../assets/img/default-activity-img.jpg");
@@ -12,7 +12,7 @@ const defaultImg = require("../../../assets/img/default-activity-img.jpg");
 const ActivityListItem = (Props: IActivity) => {
     const { styles, theme } = useStyle();
 
-    const owner = users.find((user) => user.id === Props.ownerUserId) as IProfile;
+    const owner = users.find((user) => user.id === Props.ownerUserId) as IUserProfile;
     const ownerName = owner.firstname
         ? owner.firstname + " " + owner.lastname
         : owner.username;

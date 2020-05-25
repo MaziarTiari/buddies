@@ -3,7 +3,7 @@ import { fontsizes, getLineHeight } from "../../utils/font/font";
 import { useContext } from "react";
 import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
 
-const useStyle = () => { 
+const useStyle = () => {
     const theme = useContext(ThemeContext).theme;
     return StyleSheet.create({
         rightContainer: {
@@ -18,23 +18,24 @@ const useStyle = () => {
             lineHeight: getLineHeight(fontsizes.small),
         },
         unreadContainer: {
-            height: fontsizes.medium * 1.5, // scaling medium font for the dot container
+            height: fontsizes.small * 1.5, // scaling medium font for the dot container
             justifyContent: "center",
             alignItems: "center",
         },
         unreadDot: {
-            width: fontsizes.medium * 1.5, // scaling medium font for the dot
-            height: fontsizes.medium * 1.5,
-            borderRadius: fontsizes.medium * 0.75,
-            backgroundColor: theme.App.primaryText,
+            width: fontsizes.small * 1.5, // scaling medium font for the dot
+            height: fontsizes.small * 1.5,
+            borderRadius: fontsizes.small * 0.75,
+            backgroundColor: theme.App.primaryItem,
             justifyContent: "center",
             alignItems: "center",
         },
         unreadDotText: {
             color: theme.App.screenBackground,
-            fontSize: fontsizes.medium,
+            fontSize: fontsizes.small,
+            lineHeight: getLineHeight(fontsizes.small),
         },
     });
-}
+};
 
 export default useStyle;

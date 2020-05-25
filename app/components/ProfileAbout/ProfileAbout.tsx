@@ -1,19 +1,18 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { Text, View, ScrollView } from "react-native";
 import Container from "../Container/Container";
 import { LanguageContext } from "../../context/LanguageContext/LanguageContext";
 import useStyle from "./ProfileAbout.style";
-import { ImageObj } from "react-native-gallery-swiper";
-import { IHobby, IProfile } from "../../dev/example_data/FetchedProfile";
-import { users } from "../../dev/example_data/users";
 import TouchableRippleCircle from "../TouchableRippleCircle/TouchableRippleCircle";
 import GallerySwiperWithIndicator from "../GallerySwiperWithIndicator/GallerySwiperWithIndicator";
 import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
 import { getResponsiveSize } from "../../utils/font/font";
+import { CategorizedInput } from "../../models/User";
+import { ProfileContext } from "../../context/ProfileContext/ProfileContext";
 
 const ProfileAbout = ({ navigation }: any) => {
     const style = useStyle();
-    const [profile, setProfile] = useState<IProfile>(users[3]);
+    const { profile } = useContext(ProfileContext);
     const { translations } = useContext(LanguageContext);
     const { theme } = useContext(ThemeContext);
 
@@ -24,18 +23,18 @@ const ProfileAbout = ({ navigation }: any) => {
                 <View style={style.galleryContainer}>
                     <GallerySwiperWithIndicator
                         images={
-                            profile.profile_pictures
+                            /*profile.profile_pictures
                                 ? profile.profile_pictures.map(
                                       (profile_picture): ImageObj => ({
                                           url: profile_picture,
                                       })
                                   )
-                                : [
-                                      {
-                                          // using default image if no image is provided:
-                                          source: require("../../../assets/img/defaultProfileImage.png"),
-                                      },
-                                  ]
+                                :*/ [
+                                {
+                                    // using default image if no image is provided:
+                                    source: require("../../../assets/img/defaultProfileImage.png"),
+                                },
+                            ]
                         }
                         resizeMode="contain"
                         enableTranslate={false}
@@ -52,13 +51,13 @@ const ProfileAbout = ({ navigation }: any) => {
                 <View style={style.primaryInfoContainer}>
                     <View style={style.innerInfoContainer}>
                         <Text numberOfLines={1} style={style.headline}>
-                            {profile.firstname} ({getAge(profile.birthday)})
+                            {profile.firstname} ({getAge(profile.birthDate)})
                         </Text>
                         <Text numberOfLines={1} style={style.text}>
-                            {profile.location}
+                            {profile.city}
                         </Text>
                         <Text numberOfLines={1} style={style.text}>
-                            {profile.employments && profile.employments[0].position}
+                            {profile.username}
                         </Text>
                     </View>
                     <TouchableRippleCircle
@@ -115,9 +114,9 @@ const ProfileAbout = ({ navigation }: any) => {
                             <Text style={style.text}>
                                 {profile.firstname + " " + profile.lastname}
                             </Text>
-                            <Text style={style.text}>{profile.location}</Text>
+                            <Text style={style.text}>{profile.city}</Text>
                             <Text style={style.text}>
-                                {profile.birthday.toLocaleDateString()}
+                                {new Date(profile.birthDate).toLocaleDateString()}
                             </Text>
                             <Text style={style.text}>{profile.sex}</Text>
                             {profile.relationshipState && (
@@ -135,16 +134,15 @@ const ProfileAbout = ({ navigation }: any) => {
                 </View>
 
                 {/* Employments */}
-                {profile.employments && (
+                {profile.jobs && (
                     <View style={style.secondaryInfoContainer}>
                         <Text style={style.headline}>
                             {translations.profile_employments}
                         </Text>
-                        {profile.employments.map((employment, index) => (
+                        {profile.jobs.map((job: CategorizedInput, index: number) => (
                             <Text style={style.text} key={index}>
-                                {employment.position}{" "}
-                                {translations.profile_employment_preposition}{" "}
-                                {employment.institution}
+                                {job.category} {job.title}
+                                {job.institution ? " (" + job.institution + ")" : ""}
                             </Text>
                         ))}
                     </View>
@@ -172,16 +170,17 @@ const ProfileAbout = ({ navigation }: any) => {
     );
 };
 
-const getAge = (birthDate: Date): number => {
+const getAge = (birthDate: number): number => {
     const today = new Date();
-    const monthDiff = today.getMonth() - birthDate.getMonth();
-    let age = today.getFullYear() - birthDate.getFullYear();
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate()))
+    const _birthDate = new Date(birthDate);
+    const monthDiff = today.getMonth() - _birthDate.getMonth();
+    let age = today.getFullYear() - _birthDate.getFullYear();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < _birthDate.getDate()))
         age--;
     return age;
 };
 
-const renderHobbies = (hobbies: IHobby[], style: any): JSX.Element[] => {
+const renderHobbies = (hobbies: CategorizedInput[], style: any): JSX.Element[] => {
     const categories: string[] = [];
     hobbies.forEach((hobby) => {
         if (categories.indexOf(hobby.category) === -1) categories.push(hobby.category);
@@ -194,7 +193,7 @@ const renderHobbies = (hobbies: IHobby[], style: any): JSX.Element[] => {
             <Text style={[style.text, style.column, { width: "70%" }]}>
                 {hobbies
                     .filter((hobby) => hobby.category == category)
-                    .map((hobby) => hobby.name)
+                    .map((hobby) => hobby.title)
                     .join(", ")}
             </Text>
         </View>
