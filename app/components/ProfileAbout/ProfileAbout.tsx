@@ -1,52 +1,58 @@
 import React, { useContext } from "react";
-import { Text, View, ScrollView } from "react-native";
+import { Text, View, ScrollView, Image } from "react-native";
 import Container from "../Container/Container";
 import { LanguageContext } from "../../context/LanguageContext/LanguageContext";
 import useStyle from "./ProfileAbout.style";
 import TouchableRippleCircle from "../TouchableRippleCircle/TouchableRippleCircle";
-import GallerySwiperWithIndicator from "../GallerySwiperWithIndicator/GallerySwiperWithIndicator";
-import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
-import { getResponsiveSize } from "../../utils/font/font";
 import { CategorizedInput } from "../../models/User";
 import { ProfileContext } from "../../context/ProfileContext/ProfileContext";
+import Swiper from "react-native-swiper";
+
+// TODO: Remove example_img Array and use Profile Context instead
+const example_img: string[] = [
+    "https://www.bootdey.com/img/Content/avatar/avatar1.png",
+    "https://upload.wikimedia.org/wikipedia/commons/3/30/%C5%A0koda_Superb_III_at_IAA_2019_IMG_0397.jpg",
+    "https://www.thesun.co.uk/wp-content/uploads/2020/01/NINTCHDBPICT000554673258.jpg",
+];
 
 const ProfileAbout = ({ navigation }: any) => {
     const style = useStyle();
     const { profile } = useContext(ProfileContext);
     const { translations } = useContext(LanguageContext);
-    const { theme } = useContext(ThemeContext);
+
+    const renderPagination = (index: number, total: number): JSX.Element | undefined => {
+        return total > 1 ? (
+            <View style={style.paginationContainer}>
+                <Text style={style.paginationText}>
+                    {index + 1}/{total}
+                </Text>
+            </View>
+        ) : undefined;
+    };
 
     return (
         <Container type="screen" layout="root">
             <ScrollView style={{ flex: 1, width: "100%" }}>
                 {/* Profile Images */}
-                <View style={style.galleryContainer}>
-                    <GallerySwiperWithIndicator
-                        images={
-                            /*profile.profile_pictures
-                                ? profile.profile_pictures.map(
-                                      (profile_picture): ImageObj => ({
-                                          url: profile_picture,
-                                      })
-                                  )
-                                :*/ [
-                                {
-                                    // using default image if no image is provided:
-                                    source: require("../../../assets/img/defaultProfileImage.png"),
-                                    dimensions: { width: 100, height: 100 },
-                                },
-                            ]
-                        }
-                        resizeMode="contain"
-                        enableTranslate={false}
-                        enableScale={false}
-                        showIndicator={true}
-                        indicatorBackground={theme.App.screenBackground}
-                        indicatorForeground={theme.App.primaryText}
-                        indicatorMargin={getResponsiveSize(15)}
-                        indicatorPosition="topright"
-                    />
-                </View>
+                <Swiper
+                    containerStyle={style.galleryContainer}
+                    renderPagination={renderPagination}
+                >
+                    {example_img.length > 0 ? (
+                        example_img.map((url, index) => (
+                            <Image
+                                key={index}
+                                style={style.image}
+                                source={{ uri: url }}
+                            />
+                        ))
+                    ) : (
+                        <Image
+                            style={style.image}
+                            source={require("../../../assets/img/defaultProfileImage.png")}
+                        />
+                    )}
+                </Swiper>
 
                 {/* Quick Info */}
                 <View style={style.primaryInfoContainer}>
