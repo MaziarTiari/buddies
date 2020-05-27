@@ -52,6 +52,26 @@ const useStyle = () => {
         column: {
             width: "50%",
         },
+        paginationContainer: {
+            position: "absolute",
+            right: 0,
+            top: 0,
+            paddingVertical: getResponsiveSize(5),
+            paddingHorizontal: getResponsiveSize(10),
+            borderRadius: getResponsiveSize(15),
+            backgroundColor: theme.App.screenBackground,
+            margin: getResponsiveSize(12),
+        },
+        paginationText: {
+            color: theme.App.primaryText,
+            fontSize: fontsizes.small,
+        },
+        image: {
+            width: "100%",
+            flex: 1,
+            resizeMode: "contain",
+            backgroundColor: "black",
+        },
     });
 };
 
