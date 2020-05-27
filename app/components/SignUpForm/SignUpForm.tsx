@@ -1,5 +1,4 @@
 import React, {useContext, useState } from 'react';
-import { Text } from 'react-native';
 import Container from '../Container/Container';
 import { Headline } from 'react-native-paper';
 import Button from '../Button/Button';
@@ -9,74 +8,26 @@ import { LanguageContext } from '../../context/LanguageContext/LanguageContext';
 import { validateEmail, validatePhone } from '../../utils/generics/validate';
 import FormInput from '../FormInput/FormInput';
 import useStyles from './SignUpForm.style';
-import { BackendService } from '../../api/ApiClient'
+import { ApiClient } from '../../api/ApiClient'
 import { INewUser, IUser } from '../../models/User';
+import { getServiceUrl } from '../../api/channels';
+import { 
+    IFormErrorSatus, INITIAL_FORM_STATUS, INITIAL_SHOW_ERROR_MSG, IShowErrowMessage, 
+    IForm, INITIAL_FORM, FormKey 
+} from './constants';
 
-interface IForm {
-    email: string;
-    phone: string;
-    password: string;
-    repeatPassword: string;
-}
-
-const INITIAL_FORM: IForm = {
-    email: "",
-    phone: "",
-    password: "",
-    repeatPassword: ""
-}
-
-enum FormKey {
-    email = "email",
-    phone = "phone",
-    password = "password",
-    repeatPassword = "repeatPassword"
-}
-
-interface IShowErrowMessage {
-    email: boolean;
-    phone: boolean;
-    password: boolean;
-}
-
-interface IFormErrorSatus extends IShowErrowMessage{
-    repeatPassword: boolean;
-}
-
-const INITIAL_FORM_STATUS: IFormErrorSatus = {
-    email: false,
-    phone: false,
-    password: false,
-    repeatPassword: false,
-}
-
-const INITIAL_SHOW_ERROR_MSG: IShowErrowMessage = {
-    email: false,
-    phone: false,
-    password: false,
-}
-
-const userService = new BackendService<IUser>(
-    {
-        baseURL: "http://40.113.114.86/api/Users",
-    }
-);
-
-const INITIAL_ERROR_MESSAGES = {
-    email: "",
-    phone: "",
-    password: ""
-}
-
+const userService = new ApiClient<IUser>({ baseURL: getServiceUrl("Users") });
 var incorrectInputs: number = 0;
 
 const SignUpForm = () => {
 
-    const translations = useContext(LanguageContext).translations;
-    const [formErrorStatus, setFormErrorStatus] = useState<IFormErrorSatus>(INITIAL_FORM_STATUS);
-    const [showErrorMessage, setShowErrorMessage] = useState<IShowErrowMessage>(INITIAL_SHOW_ERROR_MSG);
-    const [form, setForm] = useState(INITIAL_FORM);
+    const [formErrorStatus, setFormErrorStatus] = 
+        useState<IFormErrorSatus>(INITIAL_FORM_STATUS);
+    const [showErrorMessage, setShowErrorMessage] = 
+        useState<IShowErrowMessage>(INITIAL_SHOW_ERROR_MSG);
+    const [form, setForm] = useState<IForm>(INITIAL_FORM);
 
+    const translations = useContext(LanguageContext).translations;
     const styles = useStyles();
 
     const setErrorMessagesToDefault = () => {
@@ -100,8 +51,7 @@ const SignUpForm = () => {
                 incorrectInputs++;
             }
         }
-        let tmp = validateInputPatterns(errors);
-        if(tmp) errors = tmp;
+        errors = validateInputPatterns(errors);
         setFormErrorStatus(Object.assign({} ,errors))
         return result();
     }
@@ -110,12 +60,13 @@ const SignUpForm = () => {
         !string || string === "" || string === " "
 
     
-    const validateInputPatterns = (errors: any) => {
+    const validateInputPatterns = (errors: any): IFormErrorSatus => {
         let showErrorMessage: IShowErrowMessage = {
             email: false, password: false, phone: false
         };
-        if(incorrectInputs === Object.keys(form).length) return;
-        if( !isUndefinedOrEmpty(form.password) && !isUndefinedOrEmpty(form.repeatPassword)) {
+        if(incorrectInputs === Object.keys(form).length) return errors;
+        if(!isUndefinedOrEmpty(form.password) && !isUndefinedOrEmpty(form.repeatPassword)) 
+        {
             if (form.password !== form.repeatPassword) {
                 showErrorMessage.password = true;
                 errors[FormKey.password] = true;
@@ -186,7 +137,8 @@ const SignUpForm = () => {
                     <FormInput
                         error={formErrorStatus.repeatPassword}
                         iconName="onepassword" secureTextEntry 
-                        onChangeText={txt => setForm({...form, [FormKey.repeatPassword]: txt})}
+                        onChangeText={txt => 
+                            setForm({...form, [FormKey.repeatPassword]: txt})}
                         placeholder={translations.form.repeat_password}/>
                     <Button 
                         onPress={onSubmit}
