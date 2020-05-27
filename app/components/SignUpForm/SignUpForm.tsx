@@ -1,13 +1,12 @@
-import React, { useEffect, useContext, useState } from 'react';
+import React, {useContext, useState } from 'react';
 import { Text } from 'react-native';
 import Container from '../Container/Container';
-import { useForm } from 'react-hook-form';
 import { Headline } from 'react-native-paper';
 import Button from '../Button/Button';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { getResponsiveSize } from '../../utils/font/font';
 import { LanguageContext } from '../../context/LanguageContext/LanguageContext';
-import { validateEmail, validatePhone } from '../../utils/functions/validate';
+import { validateEmail, validatePhone } from '../../utils/generics/validate';
 import FormInput from '../FormInput/FormInput';
 import useStyles from './SignUpForm.style';
 import { BackendService } from '../../api/ApiClient'
@@ -34,10 +33,13 @@ enum FormKey {
     repeatPassword = "repeatPassword"
 }
 
-interface IFormErrorSatus {
+interface IShowErrowMessage {
     email: boolean;
     phone: boolean;
     password: boolean;
+}
+
+interface IFormErrorSatus extends IShowErrowMessage{
     repeatPassword: boolean;
 }
 
@@ -46,6 +48,12 @@ const INITIAL_FORM_STATUS: IFormErrorSatus = {
     phone: false,
     password: false,
     repeatPassword: false,
+}
+
+const INITIAL_SHOW_ERROR_MSG: IShowErrowMessage = {
+    email: false,
+    phone: false,
+    password: false,
 }
 
 const userService = new BackendService<IUser>(
@@ -66,19 +74,14 @@ const SignUpForm = () => {
 
     const translations = useContext(LanguageContext).translations;
     const [formErrorStatus, setFormErrorStatus] = useState<IFormErrorSatus>(INITIAL_FORM_STATUS);
-    const [errorMessages, setErrorMessages] = useState<typeof INITIAL_ERROR_MESSAGES>(INITIAL_ERROR_MESSAGES)    
+    const [showErrorMessage, setShowErrorMessage] = useState<IShowErrowMessage>(INITIAL_SHOW_ERROR_MSG);
     const [form, setForm] = useState(INITIAL_FORM);
 
     const styles = useStyles();
 
-    const setErrorMessage = (message: string, key: string) => {
-        incorrectInputs++;
-        setErrorMessages({...errorMessages, [key]: message})
-    }
-
     const setErrorMessagesToDefault = () => {
         setFormErrorStatus(INITIAL_FORM_STATUS);
-        setErrorMessages(INITIAL_ERROR_MESSAGES);
+        setShowErrorMessage(INITIAL_FORM_STATUS);
         incorrectInputs = 0;
     }
 
@@ -93,7 +96,6 @@ const SignUpForm = () => {
         const result = () => incorrectInputs == 0;
         for(let [key, value] of Object.entries(form)) {
             if( isUndefinedOrEmpty(value) ) {
-                console.log(key);
                 errors[key] = true;
                 incorrectInputs++;
             }
@@ -109,26 +111,33 @@ const SignUpForm = () => {
 
     
     const validateInputPatterns = (errors: any) => {
+        let showErrorMessage: IShowErrowMessage = {
+            email: false, password: false, phone: false
+        };
         if(incorrectInputs === Object.keys(form).length) return;
         if( !isUndefinedOrEmpty(form.password) && !isUndefinedOrEmpty(form.repeatPassword)) {
             if (form.password !== form.repeatPassword) {
-                setErrorMessage("Passwörter stimmen nicht überein", FormKey.password);
+                showErrorMessage.password = true;
                 errors[FormKey.password] = true;
                 errors[FormKey.repeatPassword] = true;
+                incorrectInputs++;
             }
         }
         if( !isUndefinedOrEmpty(form.email) ) {
             if(!validateEmail(form.email) ) {
-                setErrorMessage("Das war keine korrekte Email Addresse", FormKey.email);
+                showErrorMessage.email = true;
                 errors[FormKey.email] = true;
+                incorrectInputs++;
             }
         }
         if( !isUndefinedOrEmpty(form.phone) ) {
             if ( !validatePhone(form.phone) ) {
-                setErrorMessage("Das ist keine Telefonnummer", FormKey.phone);
+                showErrorMessage.phone = true;
                 errors[FormKey.phone] = true;
+                incorrectInputs++;
             }
         }
+        setShowErrorMessage(Object.assign({}, showErrorMessage));
         return errors;
     }
 
@@ -156,24 +165,21 @@ const SignUpForm = () => {
                     <Headline style={styles.heading}>
                         {translations.form.heading}
                     </Headline>
-                    { !isUndefinedOrEmpty(errorMessages.email) && 
-                        <Text style={{color:"#FF2929"}}>{errorMessages.email}</Text>
-                    }
                     <FormInput 
+                        errorMessage="Das war keine korrekte Email Addresse"
+                        showErrorMessage={showErrorMessage.email}
                         iconName="email" error={formErrorStatus.email}
                         onChangeText={txt => setForm({...form, [FormKey.email]: txt})}
                         placeholder={translations.form.email}/>
-                    { !isUndefinedOrEmpty(errorMessages.phone) && 
-                        <Text style={{color:"#FF2929"}}>{errorMessages.phone}</Text>
-                    }
                     <FormInput
+                        errorMessage="Das ist keine Telefonnummer"
+                        showErrorMessage={showErrorMessage.phone}
                         iconName="cellphone" error={formErrorStatus.phone}
                         onChangeText={txt => setForm({...form, [FormKey.phone]: txt})}
                         placeholder={translations.form.phone}/>
-                    { !isUndefinedOrEmpty(errorMessages.password) && 
-                        <Text style={{color:"#FF2929"}}>{errorMessages.password}</Text>
-                    }
                     <FormInput 
+                        errorMessage="Passwörter stimmen nicht überein"
+                        showErrorMessage={showErrorMessage.password}
                         iconName="onepassword" error={formErrorStatus.password}
                         onChangeText={txt => setForm({...form, [FormKey.password]: txt})}
                         placeholder={translations.form.password} secureTextEntry/>
