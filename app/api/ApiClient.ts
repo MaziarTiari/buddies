@@ -1,18 +1,18 @@
-import { AxiosResponse, AxiosRequestConfig, AxiosError } from "axios";
+import { AxiosRequestConfig } from "axios";
 import { Api, ApiResponse } from "./Api";
 
 interface Config extends AxiosRequestConfig {
     baseURL: string;
 }
 
-export interface BackendService<T> extends Api{
+export interface ApiClient<T> extends Api{
     Create<T,B>(data: B, url?: string, config?: AxiosRequestConfig) : Promise<ApiResponse<T>>;
     Get<T>(url?: string, config?: AxiosRequestConfig) : Promise<ApiResponse<T>>;
     Delete(url: string, config?: AxiosRequestConfig) : Promise<ApiResponse<number>>;
     Update<T,B = T>(data: B, url: string, config?: AxiosRequestConfig) : Promise<ApiResponse<T>>;
 }
 
-export class BackendService<T> extends Api{
+export class ApiClient<T> extends Api{
     constructor(config: Config){
         super(config)
 
