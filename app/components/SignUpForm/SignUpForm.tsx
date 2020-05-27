@@ -1,138 +1,156 @@
-import React, { useEffect, useContext, useState } from 'react';
+import React, {useContext, useState } from 'react';
 import { Text } from 'react-native';
 import Container from '../Container/Container';
-import { useForm } from 'react-hook-form';
 import { Headline } from 'react-native-paper';
 import Button from '../Button/Button';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { getResponsiveSize } from '../../utils/font/font';
 import { LanguageContext } from '../../context/LanguageContext/LanguageContext';
-import { validateEmail, validatePhone } from '../../utils/functions/validate';
+import { validateEmail, validatePhone } from '../../utils/generics/validate';
 import FormInput from '../FormInput/FormInput';
 import useStyles from './SignUpForm.style';
-import moment from 'moment';
-import FormDatePicker from '../FormDatePicker/FormDatePicker';
-import { BackendService } from '../../api/BackendService'
-import { INewUser } from '../../models/User';
+import { BackendService } from '../../api/ApiClient'
+import { INewUser, IUser } from '../../models/User';
 
-enum form {
-    username = "username",
-    email = "email",
-    phone = "phone",
-    birthDate = "birthDate",
-    city = "city",
-    password = "password",
-    repeatPassword = "repeatPassword",
+interface IForm {
+    email: string;
+    phone: string;
+    password: string;
+    repeatPassword: string;
 }
 
-interface FormErrorSate {
-    username: boolean;
+const INITIAL_FORM: IForm = {
+    email: "",
+    phone: "",
+    password: "",
+    repeatPassword: ""
+}
+
+enum FormKey {
+    email = "email",
+    phone = "phone",
+    password = "password",
+    repeatPassword = "repeatPassword"
+}
+
+interface IShowErrowMessage {
     email: boolean;
     phone: boolean;
-    birthDate: boolean;
-    city: boolean;
     password: boolean;
+}
+
+interface IFormErrorSatus extends IShowErrowMessage{
     repeatPassword: boolean;
 }
 
-const initialFormErrorState: FormErrorSate = {
-    username: false,
+const INITIAL_FORM_STATUS: IFormErrorSatus = {
     email: false,
     phone: false,
-    birthDate: false,
-    city: false,
     password: false,
     repeatPassword: false,
 }
 
-export interface IRequestedAccount {
-    Username: string;
-    Email: string;
-    City: string;
-    Password: string;
-    Phone: string;
-    BirthDate: number;
+const INITIAL_SHOW_ERROR_MSG: IShowErrowMessage = {
+    email: false,
+    phone: false,
+    password: false,
 }
 
-const SixteenYearsAgo = moment(Date.now()).subtract(16, 'years').toDate();
+const userService = new BackendService<IUser>(
+    {
+        baseURL: "http://40.113.114.86/api/Users",
+    }
+);
+
+const INITIAL_ERROR_MESSAGES = {
+    email: "",
+    phone: "",
+    password: ""
+}
+
+var incorrectInputs: number = 0;
 
 const SignUpForm = () => {
-    const {register, handleSubmit, setValue} = useForm();
-    const translations = useContext(LanguageContext).translations;
-    const styles = useStyles();
-    const [formErrorState, setFormErrorState] = useState<FormErrorSate>(initialFormErrorState);
-    const [birthDate, setBirthDate] = useState<Date>(SixteenYearsAgo);
-    const [emailErrorMessage, setEmailErrorMessage] = useState("");
-    const [passwordErrorMessage, setpasswordErrorMessage] = useState("");
-    const [phoneErrorMessage, setPhoneErrorMessage] = useState("");
 
-    useEffect(() => {
-        Object.keys(form).forEach(formIndex => register(formIndex));
-    },[register]);
+    const translations = useContext(LanguageContext).translations;
+    const [formErrorStatus, setFormErrorStatus] = useState<IFormErrorSatus>(INITIAL_FORM_STATUS);
+    const [showErrorMessage, setShowErrorMessage] = useState<IShowErrowMessage>(INITIAL_SHOW_ERROR_MSG);
+    const [form, setForm] = useState(INITIAL_FORM);
+
+    const styles = useStyles();
 
     const setErrorMessagesToDefault = () => {
-        setFormErrorState(initialFormErrorState);
-        console.log(initialFormErrorState)
-        setEmailErrorMessage("");
-        setPhoneErrorMessage("");
-        setpasswordErrorMessage("");
+        setFormErrorStatus(INITIAL_FORM_STATUS);
+        setShowErrorMessage(INITIAL_FORM_STATUS);
+        incorrectInputs = 0;
     }
 
-    const validateForm = (formData: any): boolean => {
+    const validateForm = (): boolean => {
         setErrorMessagesToDefault();
-        let incorrectInputs: number = 0;
-        let errors: any = initialFormErrorState;
-        const result: boolean = incorrectInputs > 0;
-        Object.keys(form).forEach(formIndex => {
-            if( isUndefinedOrEmpty(formData[formIndex]) ) {
-                errors[formIndex] = true;
+        let errors: any = {
+            email: false,
+            phone: false,
+            password: false,
+            repeatPassword: false,
+        } as IFormErrorSatus;
+        const result = () => incorrectInputs == 0;
+        for(let [key, value] of Object.entries(form)) {
+            if( isUndefinedOrEmpty(value) ) {
+                errors[key] = true;
                 incorrectInputs++;
-            } else errors[formIndex] = false;
-        });
-        if( incorrectInputs === Object.keys(formData).length ) return result;
-        errors = validateInputPatterns(formData, errors);
-        setFormErrorState(errors);
-        return result;
+            }
+        }
+        let tmp = validateInputPatterns(errors);
+        if(tmp) errors = tmp;
+        setFormErrorStatus(Object.assign({} ,errors))
+        return result();
     }
 
     const isUndefinedOrEmpty = (string: string) => 
         !string || string === "" || string === " "
 
-    const validateInputPatterns = (inputs: any, warnings: any): Object => {
-        if( !isUndefinedOrEmpty(inputs[form.password]) ) {
-            if (inputs[form.password] !== inputs[form.repeatPassword]) {
-                setpasswordErrorMessage("Passwörter stimmen nicht überein");
-                warnings[form.password] = true;
-                warnings[form.repeatPassword] = true;
+    
+    const validateInputPatterns = (errors: any) => {
+        let showErrorMessage: IShowErrowMessage = {
+            email: false, password: false, phone: false
+        };
+        if(incorrectInputs === Object.keys(form).length) return;
+        if( !isUndefinedOrEmpty(form.password) && !isUndefinedOrEmpty(form.repeatPassword)) {
+            if (form.password !== form.repeatPassword) {
+                showErrorMessage.password = true;
+                errors[FormKey.password] = true;
+                errors[FormKey.repeatPassword] = true;
+                incorrectInputs++;
             }
         }
-        if( !isUndefinedOrEmpty(inputs[form.email]) ) {
-            if(!validateEmail(inputs[form.email]) ) {
-                setEmailErrorMessage("Das war keine korrekte Email Addresse");
-                warnings[form.email] = true;
+        if( !isUndefinedOrEmpty(form.email) ) {
+            if(!validateEmail(form.email) ) {
+                showErrorMessage.email = true;
+                errors[FormKey.email] = true;
+                incorrectInputs++;
             }
         }
-        if( !isUndefinedOrEmpty(inputs[form.phone]) ) {
-            if ( !validatePhone(inputs[form.phone]) ) {
-                setPhoneErrorMessage("Das ist keine Telefonnummer");
-                warnings[form.phone] = true;
+        if( !isUndefinedOrEmpty(form.phone) ) {
+            if ( !validatePhone(form.phone) ) {
+                showErrorMessage.phone = true;
+                errors[FormKey.phone] = true;
+                incorrectInputs++;
             }
         }
-        return warnings;
+        setShowErrorMessage(Object.assign({}, showErrorMessage));
+        return errors;
     }
 
-    const onSubmit = (formData: any) => {
-        const formIsValid = validateForm(formData);
+    const onSubmit = async () => {
+        const formIsValid = validateForm();
         if(formIsValid) {
-            // const newUser: INewUser = {
-            //     username: formData[form.username],
-            //     email: formData[form.email],
-            //     phone: formData[form.phone],
-            //     birthDate: formData[form.birthDate],
-            //     city: formData[form.city],
-            //     password: formData[form.password]
-            // }
-            // BackendService.createUser(newUser);
+            const newUser: INewUser = {
+                email: form.email,
+                phone: form.phone,
+                password: form.password
+            }
+            const response = await userService.Create<IUser, INewUser>(newUser);
+            console.log(response);
         }
     }    
     
@@ -148,46 +166,30 @@ const SignUpForm = () => {
                         {translations.form.heading}
                     </Headline>
                     <FormInput 
-                        iconName="face-profile" error={formErrorState?.username}
-                        onChangeText={txt => setValue( form.username, txt)}
-                        placeholder={translations.form.username}/>
-                    { !isUndefinedOrEmpty(emailErrorMessage) && 
-                        <Text style={{color:"#FF2929"}}>{emailErrorMessage}</Text>
-                    }
-                    <FormInput 
-                        iconName="email" error={formErrorState?.email}
-                        onChangeText={txt => setValue( form.email, txt)}
+                        errorMessage="Das war keine korrekte Email Addresse"
+                        showErrorMessage={showErrorMessage.email}
+                        iconName="email" error={formErrorStatus.email}
+                        onChangeText={txt => setForm({...form, [FormKey.email]: txt})}
                         placeholder={translations.form.email}/>
-                    { !isUndefinedOrEmpty(phoneErrorMessage) && 
-                        <Text style={{color:"#FF2929"}}>{phoneErrorMessage}</Text>
-                    }
                     <FormInput
-                        iconName="cellphone" error={formErrorState?.phone}
-                        onChangeText={txt => setValue( form.phone, txt)}
+                        errorMessage="Das ist keine Telefonnummer"
+                        showErrorMessage={showErrorMessage.phone}
+                        iconName="cellphone" error={formErrorStatus.phone}
+                        onChangeText={txt => setForm({...form, [FormKey.phone]: txt})}
                         placeholder={translations.form.phone}/>
-                    <FormDatePicker 
-                        onChange={d => setValue(form.birthDate, d)}
-                        inputPlaceholder={translations.form.birth_date}
-                        options={{value: birthDate, minimumDate: SixteenYearsAgo}}
-                    />
                     <FormInput 
-                        iconName="city" error={formErrorState?.city}
-                        onChangeText={txt => setValue( form.city, txt)}
-                        placeholder={translations.form.city}/>
-                    { !isUndefinedOrEmpty(passwordErrorMessage) && 
-                        <Text style={{color:"#FF2929"}}>{passwordErrorMessage}</Text>
-                    }
-                    <FormInput 
-                        iconName="onepassword" error={formErrorState?.password}
-                        onChangeText={txt => setValue( form.password, txt)}
+                        errorMessage="Passwörter stimmen nicht überein"
+                        showErrorMessage={showErrorMessage.password}
+                        iconName="onepassword" error={formErrorStatus.password}
+                        onChangeText={txt => setForm({...form, [FormKey.password]: txt})}
                         placeholder={translations.form.password} secureTextEntry/>
                     <FormInput
-                        error={formErrorState?.repeatPassword}
+                        error={formErrorStatus.repeatPassword}
                         iconName="onepassword" secureTextEntry 
-                        onChangeText={txt => setValue( form.repeatPassword, txt)}
+                        onChangeText={txt => setForm({...form, [FormKey.repeatPassword]: txt})}
                         placeholder={translations.form.repeat_password}/>
                     <Button 
-                        onPress={handleSubmit(onSubmit)} 
+                        onPress={onSubmit}
                         title={translations.form.submit_button} 
                         style={styles.submitButton}/>
                 </KeyboardAwareScrollView>

@@ -4,22 +4,22 @@ export const users: IUserProfile[] = [
     {
         id: "1",
         username: "maziar",
-        userId: "1",
         city: "Heidelberg",
         firstname: "Maziar",
         lastname: "Tiari",
         birthDate: 635299200,
-        sex: "male",
+        sex: "m",
+        userId:"22"
     },
     {
         id: "2",
+        sex: "m",
+        userId:"33",
         username: "nico",
-        userId: "2",
         city: "Worms",
         firstname: "Nico",
         lastname: "Hofmann",
         birthDate: 635299200,
-        sex: "male",
     },
     {
         id: "3",
