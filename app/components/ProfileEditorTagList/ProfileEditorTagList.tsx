@@ -5,11 +5,11 @@ import { ProfileContext } from "../../context/ProfileContext/ProfileContext";
 import { CategorizedInput } from "../../models/User";
 import { TouchableRipple } from "react-native-paper";
 import useStyle from "./ProfileEditorTagList.style";
-import ActionButton from "react-native-action-button";
 import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import { LanguageContext } from "../../context/LanguageContext/LanguageContext";
 import CategorizedInputEditor from "../CategorizedInputEditor/CategorizedInputEditor";
+import ActionButton from "../ActionButton/ActionButton";
 
 export interface IProfileEditorTagListConfig {
     categories: string[];
@@ -127,11 +127,7 @@ const ProfileEditorTagList = () => {
                 keyExtractor={(item, index) => index.toString()}
                 style={style.list}
             />
-            <ActionButton
-                buttonColor={theme.App.primaryItem}
-                onPress={handleAddPressed}
-                fixNativeFeedbackRadius={true}
-            />
+            <ActionButton onPress={handleAddPressed} text="+" />
             <CategorizedInputEditor
                 visible={showEditor}
                 categoryList={config.categories}
