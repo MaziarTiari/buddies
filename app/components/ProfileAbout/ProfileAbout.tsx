@@ -33,6 +33,7 @@ const ProfileAbout = ({ navigation }: any) => {
                                 {
                                     // using default image if no image is provided:
                                     source: require("../../../assets/img/defaultProfileImage.png"),
+                                    dimensions: { width: 100, height: 100 },
                                 },
                             ]
                         }
