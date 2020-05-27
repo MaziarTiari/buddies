@@ -10,25 +10,38 @@ import { LanguageContext } from '../../context/LanguageContext/LanguageContext';
 import { validateEmail, validatePhone } from '../../utils/functions/validate';
 import FormInput from '../FormInput/FormInput';
 import useStyles from './SignUpForm.style';
-import moment from 'moment';
-import { BackendService } from '../../api/BackendService'
+import { BackendService } from '../../api/ApiClient'
 import { INewUser, IUser } from '../../models/User';
 
-enum form {
+interface IForm {
+    email: string;
+    phone: string;
+    password: string;
+    repeatPassword: string;
+}
+
+const INITIAL_FORM: IForm = {
+    email: "",
+    phone: "",
+    password: "",
+    repeatPassword: ""
+}
+
+enum FormKey {
     email = "email",
     phone = "phone",
     password = "password",
-    repeatPassword = "repeatPassword",
+    repeatPassword = "repeatPassword"
 }
 
-interface FormErrorSate {
+interface IFormErrorSatus {
     email: boolean;
     phone: boolean;
     password: boolean;
     repeatPassword: boolean;
 }
 
-const initialFormErrorState: FormErrorSate = {
+const INITIAL_FORM_STATUS: IFormErrorSatus = {
     email: false,
     phone: false,
     password: false,
@@ -41,87 +54,95 @@ const userService = new BackendService<IUser>(
     }
 );
 
-const SixteenYearsAgo = moment(Date.now()).subtract(16, 'years').toDate();
+const INITIAL_ERROR_MESSAGES = {
+    email: "",
+    phone: "",
+    password: ""
+}
+
+var incorrectInputs: number = 0;
 
 const SignUpForm = () => {
-    const {register, handleSubmit, setValue} = useForm();
+
     const translations = useContext(LanguageContext).translations;
+    const [formErrorStatus, setFormErrorStatus] = useState<IFormErrorSatus>(INITIAL_FORM_STATUS);
+    const [errorMessages, setErrorMessages] = useState<typeof INITIAL_ERROR_MESSAGES>(INITIAL_ERROR_MESSAGES)    
+    const [form, setForm] = useState(INITIAL_FORM);
+
     const styles = useStyles();
-    const [formErrorState, setFormErrorState] = useState<FormErrorSate>(initialFormErrorState);
-    const [emailErrorMessage, setEmailErrorMessage] = useState("");
-    const [passwordErrorMessage, setpasswordErrorMessage] = useState("");
-    const [phoneErrorMessage, setPhoneErrorMessage] = useState("");
 
-    useEffect(() => {
-        Object.keys(form).forEach(formIndex => register(formIndex));
-    },[register]);
-
-    const setErrorMessagesToDefault = () => {
-        setFormErrorState(initialFormErrorState);
-        setEmailErrorMessage("");
-        setPhoneErrorMessage("");
-        setpasswordErrorMessage("");
+    const setErrorMessage = (message: string, key: string) => {
+        incorrectInputs++;
+        setErrorMessages({...errorMessages, [key]: message})
     }
 
-    const validateForm = (formData: any): boolean => {
+    const setErrorMessagesToDefault = () => {
+        setFormErrorStatus(INITIAL_FORM_STATUS);
+        setErrorMessages(INITIAL_ERROR_MESSAGES);
+        incorrectInputs = 0;
+    }
+
+    const validateForm = (): boolean => {
         setErrorMessagesToDefault();
-        let incorrectInputs: number = 0;
-        let errors: any = initialFormErrorState;
+        let errors: any = {
+            email: false,
+            phone: false,
+            password: false,
+            repeatPassword: false,
+        } as IFormErrorSatus;
         const result = () => incorrectInputs == 0;
-        Object.keys(form).forEach(formIndex => {
-            if( isUndefinedOrEmpty(formData[formIndex]) ) {
-                errors[formIndex] = true;
-                console.log(formIndex)
+        for(let [key, value] of Object.entries(form)) {
+            if( isUndefinedOrEmpty(value) ) {
+                console.log(key);
+                errors[key] = true;
                 incorrectInputs++;
-            } else errors[formIndex] = false;
-        });
-        if( incorrectInputs === Object.keys(formData).length ) return result();
-        errors = validateInputPatterns(formData, errors);
-        setFormErrorState(errors);
+            }
+        }
+        let tmp = validateInputPatterns(errors);
+        if(tmp) errors = tmp;
+        setFormErrorStatus(Object.assign({} ,errors))
         return result();
     }
 
     const isUndefinedOrEmpty = (string: string) => 
         !string || string === "" || string === " "
 
-    const validateInputPatterns = (inputs: any, warnings: any): Object => {
-        if( !isUndefinedOrEmpty(inputs[form.password]) ) {
-            if (inputs[form.password] !== inputs[form.repeatPassword]) {
-                setpasswordErrorMessage("Passwörter stimmen nicht überein");
-                warnings[form.password] = true;
-                warnings[form.repeatPassword] = true;
+    
+    const validateInputPatterns = (errors: any) => {
+        if(incorrectInputs === Object.keys(form).length) return;
+        if( !isUndefinedOrEmpty(form.password) && !isUndefinedOrEmpty(form.repeatPassword)) {
+            if (form.password !== form.repeatPassword) {
+                setErrorMessage("Passwörter stimmen nicht überein", FormKey.password);
+                errors[FormKey.password] = true;
+                errors[FormKey.repeatPassword] = true;
             }
         }
-        if( !isUndefinedOrEmpty(inputs[form.email]) ) {
-            if(!validateEmail(inputs[form.email]) ) {
-                setEmailErrorMessage("Das war keine korrekte Email Addresse");
-                warnings[form.email] = true;
+        if( !isUndefinedOrEmpty(form.email) ) {
+            if(!validateEmail(form.email) ) {
+                setErrorMessage("Das war keine korrekte Email Addresse", FormKey.email);
+                errors[FormKey.email] = true;
             }
         }
-        if( !isUndefinedOrEmpty(inputs[form.phone]) ) {
-            if ( !validatePhone(inputs[form.phone]) ) {
-                setPhoneErrorMessage("Das ist keine Telefonnummer");
-                warnings[form.phone] = true;
+        if( !isUndefinedOrEmpty(form.phone) ) {
+            if ( !validatePhone(form.phone) ) {
+                setErrorMessage("Das ist keine Telefonnummer", FormKey.phone);
+                errors[FormKey.phone] = true;
             }
         }
-        return warnings;
+        return errors;
     }
 
-    // TODO: fix passwords compare
-    const onSubmit = async (formData: any) => {
-        const formIsValid = validateForm(formData);
+    const onSubmit = async () => {
+        const formIsValid = validateForm();
         if(formIsValid) {
             const newUser: INewUser = {
-                email: formData[form.email],
-                phone: formData[form.phone],
-                password: formData[form.password]
+                email: form.email,
+                phone: form.phone,
+                password: form.password
             }
-            console.log("jdjfks")
-            const re = await userService.Create<IUser, INewUser>(newUser);
-            console.log(re);
+            const response = await userService.Create<IUser, INewUser>(newUser);
+            console.log(response);
         }
-        //console.log("hjh")
-
     }    
     
     return (
@@ -135,34 +156,34 @@ const SignUpForm = () => {
                     <Headline style={styles.heading}>
                         {translations.form.heading}
                     </Headline>
-                    { !isUndefinedOrEmpty(emailErrorMessage) && 
-                        <Text style={{color:"#FF2929"}}>{emailErrorMessage}</Text>
+                    { !isUndefinedOrEmpty(errorMessages.email) && 
+                        <Text style={{color:"#FF2929"}}>{errorMessages.email}</Text>
                     }
                     <FormInput 
-                        iconName="email" error={formErrorState?.email}
-                        onChangeText={txt => setValue( form.email, txt)}
+                        iconName="email" error={formErrorStatus.email}
+                        onChangeText={txt => setForm({...form, [FormKey.email]: txt})}
                         placeholder={translations.form.email}/>
-                    { !isUndefinedOrEmpty(phoneErrorMessage) && 
-                        <Text style={{color:"#FF2929"}}>{phoneErrorMessage}</Text>
+                    { !isUndefinedOrEmpty(errorMessages.phone) && 
+                        <Text style={{color:"#FF2929"}}>{errorMessages.phone}</Text>
                     }
                     <FormInput
-                        iconName="cellphone" error={formErrorState?.phone}
-                        onChangeText={txt => setValue( form.phone, txt)}
+                        iconName="cellphone" error={formErrorStatus.phone}
+                        onChangeText={txt => setForm({...form, [FormKey.phone]: txt})}
                         placeholder={translations.form.phone}/>
-                    { !isUndefinedOrEmpty(passwordErrorMessage) && 
-                        <Text style={{color:"#FF2929"}}>{passwordErrorMessage}</Text>
+                    { !isUndefinedOrEmpty(errorMessages.password) && 
+                        <Text style={{color:"#FF2929"}}>{errorMessages.password}</Text>
                     }
                     <FormInput 
-                        iconName="onepassword" error={formErrorState?.password}
-                        onChangeText={txt => setValue( form.password, txt)}
+                        iconName="onepassword" error={formErrorStatus.password}
+                        onChangeText={txt => setForm({...form, [FormKey.password]: txt})}
                         placeholder={translations.form.password} secureTextEntry/>
                     <FormInput
-                        error={formErrorState?.repeatPassword}
+                        error={formErrorStatus.repeatPassword}
                         iconName="onepassword" secureTextEntry 
-                        onChangeText={txt => setValue( form.repeatPassword, txt)}
+                        onChangeText={txt => setForm({...form, [FormKey.repeatPassword]: txt})}
                         placeholder={translations.form.repeat_password}/>
                     <Button 
-                        onPress={handleSubmit(onSubmit)} 
+                        onPress={onSubmit}
                         title={translations.form.submit_button} 
                         style={styles.submitButton}/>
                 </KeyboardAwareScrollView>
