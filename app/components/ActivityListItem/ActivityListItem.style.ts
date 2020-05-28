@@ -3,21 +3,21 @@ import { fontsizes, getResponsiveSize, getLineHeight } from "../../utils/font/fo
 import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
 import { useContext } from "react";
 
-
 export const useStyle = () => {
     const theme = useContext(ThemeContext).theme;
     const styles = StyleSheet.create({
         root: {
             flex: 1,
+            backgroundColor: theme.App.screenBackground,
+        },
+        container: {
             borderBottomWidth: 1,
             borderColor: theme.App.layoutBackground,
             borderBottomStartRadius: getResponsiveSize(25),
             borderBottomEndRadius: getResponsiveSize(25),
             paddingTop: getResponsiveSize(20),
             paddingBottom: getResponsiveSize(45),
-        },
-        container: {
-            position:"relative"
+            position: "relative",
         },
         headerContainer: {
             flexDirection: "row",
@@ -43,7 +43,7 @@ export const useStyle = () => {
             flex: 1,
             marginLeft: getResponsiveSize(15),
             justifyContent: "space-between",
-            marginRight:getResponsiveSize(4)
+            marginRight: getResponsiveSize(4),
         },
         title: {
             color: theme.App.primaryText,
@@ -52,7 +52,7 @@ export const useStyle = () => {
             lineHeight: getLineHeight(fontsizes.medium),
         },
         address: {
-            marginBottom: getResponsiveSize(4)
+            marginBottom: getResponsiveSize(4),
         },
         info: {
             color: theme.App.primaryText,
@@ -69,10 +69,10 @@ export const useStyle = () => {
             alignSelf: "flex-end",
         },
         favoriteIcon: {
-            position:"absolute",
-            top:"97%"
-        }
+            position: "absolute",
+            top: "97%",
+        },
     });
 
     return { theme: theme, styles: styles };
-}
+};

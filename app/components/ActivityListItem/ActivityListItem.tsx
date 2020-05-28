@@ -13,9 +13,7 @@ const ActivityListItem = (Props: IActivity) => {
     const { styles, theme } = useStyle();
 
     const owner = users.find((user) => user.id === Props.ownerUserId) as IUserProfile;
-    const ownerName = owner.firstname
-        ? owner.firstname + " " + owner.lastname
-        : owner.username;
+    const ownerName = owner.firstname + " " + owner.lastname;
     const participatesCount =
         Props.membersUserIds?.length + "/" + Props.allowedApplyNumber;
     const titleContent = Props.title;
@@ -61,7 +59,10 @@ const ActivityListItem = (Props: IActivity) => {
                         </Headline>
                         <View style={styles.bodyContainer}>
                             <View>
-                                <Text numberOfLines={2} style={[styles.info, styles.address]}>
+                                <Text
+                                    numberOfLines={2}
+                                    style={[styles.info, styles.address]}
+                                >
                                     {Props.location}
                                 </Text>
                                 {(Props.startDate || Props.endDate) && (
