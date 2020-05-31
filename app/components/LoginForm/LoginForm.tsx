@@ -7,15 +7,16 @@ import FormInput from '../FormInput/FormInput';
 import useStyle from './LoginForm.style'
 import { LanguageContext } from '../../context/LanguageContext/LanguageContext';
 import Button from '../Button/Button';
-import { IVerifyingUser, IUser } from '../../models/User';
+import { IVerifyingUser, IUser, IUserProfile } from '../../models/User';
 import { ApiClient } from '../../api/ApiClient';
 import { ProfileContext } from '../../context/ProfileContext/ProfileContext';
 import HttpStatus from 'http-status-codes'
 import LinkLabel from '../LinkLabel/LinkLabel';
 
 interface LoginFormProps { 
-    onSuccess: () => void;
+    onLoggedIn: () => void;
     onRegister: () => void;
+    onCreateUser: () => void;
 }
 
 const initialFormStatus = {
@@ -23,8 +24,10 @@ const initialFormStatus = {
     password: false
 }
 
-const Api = new ApiClient<IVerifyingUser>({baseURL: "http://localhost:5000/api/users/login"})
-const LoginForm = ({ onSuccess, onRegister }: LoginFormProps) => {
+const UserApi = new ApiClient<IVerifyingUser>({baseURL: "http://localhost:5000/api/users/login"})
+const UserProfileApi = new ApiClient<IUserProfile>({baseURL: "http://localhost:5000/api/userProfiles/"})
+
+const LoginForm = ({ onLoggedIn, onRegister, onCreateUser }: LoginFormProps) => {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -57,18 +60,27 @@ const LoginForm = ({ onSuccess, onRegister }: LoginFormProps) => {
         const formIsValid = await validateForm();
         if(!formIsValid) {setVerify(true); return}
         const verifyingUser: IVerifyingUser = { email: email, password: password};
-        await Api.Post<IUser,IVerifyingUser>(verifyingUser)
-        .then(res => {
+        await UserApi.Post<IUser,IVerifyingUser>(verifyingUser)
+        .then( async res => {
             if(res.error) {
                 if(res.error.status === HttpStatus.UNAUTHORIZED)
                     setShowPasswordError(true)
                 if(res.error.status === HttpStatus.NOT_FOUND)
                     setShowEmailError(true);
-                return res;
             }
             if(res.data) {
                 user.setUser(res.data);
-                onSuccess();
+                const userProfile = await UserProfileApi.Get<IUserProfile>(res.data.id);
+                console.log(userProfile.data)
+                return userProfile;
+            }
+        }).then(res => {
+            if(res?.data) {
+                user.setUserProfile(res.data)
+                onLoggedIn();
+            } else {
+                onCreateUser();
+                if(res?.error) console.error(res.error)
             }
         })
         .catch(err => console.error(err));

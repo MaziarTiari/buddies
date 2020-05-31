@@ -7,6 +7,7 @@ import TouchableRippleCircle from "../TouchableRippleCircle/TouchableRippleCircl
 import { CategorizedInput } from "../../models/User";
 import { ProfileContext } from "../../context/ProfileContext/ProfileContext";
 import Swiper from "react-native-swiper";
+import moment from 'moment';
 
 // TODO: Remove example_img Array and use Profile Context instead
 const example_img: string[] = [
@@ -17,7 +18,7 @@ const example_img: string[] = [
 
 const ProfileAbout = ({ navigation }: any) => {
     const style = useStyle();
-    const { userProfile: profile } = useContext(ProfileContext);
+    const { userProfile } = useContext(ProfileContext);
     const { translations } = useContext(LanguageContext);
 
     const renderPagination = (index: number, total: number): JSX.Element | undefined => {
@@ -58,13 +59,13 @@ const ProfileAbout = ({ navigation }: any) => {
                 <View style={style.primaryInfoContainer}>
                     <View style={style.innerInfoContainer}>
                         <Text numberOfLines={1} style={style.headline}>
-                            {profile.firstname} ({getAge(profile.birthDate)})
+                            {userProfile.firstname} ({getAge(userProfile.birthDate)})
                         </Text>
                         <Text numberOfLines={1} style={style.text}>
-                            {profile.city}
+                            {userProfile.city}
                         </Text>
                         <Text numberOfLines={1} style={style.text}>
-                            {profile.username}
+                            {userProfile.username}
                         </Text>
                     </View>
                     <TouchableRippleCircle
@@ -72,7 +73,7 @@ const ProfileAbout = ({ navigation }: any) => {
                     >
                         <View style={style.innerRippleContainer}>
                             <Text style={style.headline}>
-                                {profile.friends ? profile.friends.length : 0}
+                                {userProfile.friends ? userProfile.friends.length : 0}
                             </Text>
                             <Text style={style.text}>{translations.profile.friends}</Text>
                         </View>
@@ -80,7 +81,7 @@ const ProfileAbout = ({ navigation }: any) => {
                     <TouchableRippleCircle onPress={() => {}}>
                         <View style={style.innerRippleContainer}>
                             <Text style={style.headline}>
-                                {profile.groups ? profile.groups.length : 0}
+                                {userProfile.groups ? userProfile.groups.length : 0}
                             </Text>
                             <Text style={style.text}>{translations.profile.groups}</Text>
                         </View>
@@ -106,12 +107,12 @@ const ProfileAbout = ({ navigation }: any) => {
                             <Text style={style.smallHeadline}>
                                 {translations.profile.gender}:
                             </Text>
-                            {profile.relationshipState && (
+                            {userProfile.relationshipState && (
                                 <Text style={style.smallHeadline}>
                                     {translations.profile.relationshipstate}:
                                 </Text>
                             )}
-                            {profile.languages && (
+                            {userProfile.languages && (
                                 <Text style={style.smallHeadline}>
                                     {translations.profile.languages}:
                                 </Text>
@@ -119,21 +120,21 @@ const ProfileAbout = ({ navigation }: any) => {
                         </View>
                         <View style={style.column}>
                             <Text style={style.text}>
-                                {profile.firstname + " " + profile.lastname}
+                                {userProfile.firstname + " " + userProfile.lastname}
                             </Text>
-                            <Text style={style.text}>{profile.city}</Text>
+                            <Text style={style.text}>{userProfile.city}</Text>
                             <Text style={style.text}>
-                                {new Date(profile.birthDate).toLocaleDateString()}
+                                {moment.unix(userProfile.birthDate).format('L')}
                             </Text>
-                            <Text style={style.text}>{profile.sex}</Text>
-                            {profile.relationshipState && (
+                            <Text style={style.text}>{userProfile.sex}</Text>
+                            {userProfile.relationshipState && (
                                 <Text style={style.text}>
-                                    {profile.relationshipState}
+                                    {userProfile.relationshipState}
                                 </Text>
                             )}
-                            {profile.languages && (
+                            {userProfile.languages && (
                                 <Text style={style.text}>
-                                    {profile.languages.join(", ")}
+                                    {userProfile.languages.join(", ")}
                                 </Text>
                             )}
                         </View>
@@ -141,12 +142,12 @@ const ProfileAbout = ({ navigation }: any) => {
                 </View>
 
                 {/* Employments */}
-                {profile.jobs && (
+                {userProfile.jobs && (
                     <View style={style.secondaryInfoContainer}>
                         <Text style={style.headline}>
                             {translations.profile.employments}
                         </Text>
-                        {profile.jobs.map((job: CategorizedInput, index: number) => (
+                        {userProfile.jobs.map((job: CategorizedInput, index: number) => (
                             <Text style={style.text} key={index}>
                                 {job.category} {job.title}
                                 {job.institution ? " (" + job.institution + ")" : ""}
@@ -156,20 +157,20 @@ const ProfileAbout = ({ navigation }: any) => {
                 )}
 
                 {/* Hobbies */}
-                {profile.hobbies && (
+                {userProfile.hobbies && (
                     <View style={style.secondaryInfoContainer}>
                         <Text style={style.headline}>{translations.profile.hobbies}</Text>
-                        {renderHobbies(profile.hobbies, style)}
+                        {renderHobbies(userProfile.hobbies, style)}
                     </View>
                 )}
 
                 {/* About Text */}
-                {profile.info && (
+                {userProfile.info && (
                     <View style={style.secondaryInfoContainer}>
                         <Text style={style.headline}>
                             {translations.profile.about_me}
                         </Text>
-                        <Text style={style.text}>{profile.info}</Text>
+                        <Text style={style.text}>{userProfile.info}</Text>
                     </View>
                 )}
             </ScrollView>
@@ -178,13 +179,9 @@ const ProfileAbout = ({ navigation }: any) => {
 };
 
 const getAge = (birthDate: number): number => {
-    const today = new Date();
-    const _birthDate = new Date(birthDate);
-    const monthDiff = today.getMonth() - _birthDate.getMonth();
-    let age = today.getFullYear() - _birthDate.getFullYear();
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < _birthDate.getDate()))
-        age--;
-    return age;
+    const _birthDate = moment.unix(birthDate);
+    let diff = moment().diff(_birthDate, "years");
+    return diff;
 };
 
 const renderHobbies = (hobbies: CategorizedInput[], style: any): JSX.Element[] => {

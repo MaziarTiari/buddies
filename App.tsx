@@ -6,8 +6,9 @@ import SignUpForm from "./app/components/SignUpForm/SignUpForm";
 import CreateProfileForm from "./app/components/CreateProfileForm/CreateProfileForm";
 import LoginForm from "./app/components/LoginForm/LoginForm";
 
+type StatusType = "signedUp"|"userExists"|"profileCreated"|"loggedIn"|null;
 const App = () => {
-    const [status, setStatus] = useState<"signedUp"|"userExists"|"profileCreated"|"loggedIn"|null>(null);
+    const [status, setStatus] = useState<StatusType>(null);
 
     return (
         <RootContextProvider>
@@ -18,7 +19,10 @@ const App = () => {
             {status === "signedUp" && 
             <CreateProfileForm onCreateUser={() => setStatus("profileCreated")}/>}
             {status === 'userExists' && 
-            <LoginForm onSuccess={() => setStatus("loggedIn")} onRegister={() => setStatus(null)}/>}
+            <LoginForm 
+                onLoggedIn={() => setStatus("loggedIn")} 
+                onRegister={() => setStatus(null)} 
+                onCreateUser={() => setStatus("signedUp")}/>}
             {(status === 'profileCreated' || status === 'loggedIn') && (
                 <NavigationContainer>
                     <Navigation />

@@ -11,11 +11,7 @@ import useStyles from './SignUpForm.style';
 import { ApiClient } from '../../api/ApiClient'
 import { INewUser, IUser } from '../../models/User';
 import { getServiceUrl } from '../../api/channels';
-import { 
-    IFormErrorSatus, INITIAL_FORM_STATUS, INITIAL_SHOW_ERROR_MSG, IShowErrowMessage, 
-    IForm, INITIAL_FORM, FormKey 
-} from './constants';
-import { isUndefinedOrEmpty } from '../../utils/generics';
+import { IForm, INITIAL_FORM, FormKey } from './constants';
 import { ProfileContext } from '../../context/ProfileContext/ProfileContext';
 import LinkLabel from '../LinkLabel/LinkLabel';
 import HttpStatus from 'http-status-codes'
@@ -52,9 +48,7 @@ const SignUpForm = (Props: SignUpFormProps) => {
         if(emailErrorStatus || phoneErrorStatus 
                 || passwordErrorStatus || repeatPasswordErrorStatus)
             isValid = false;
-        console.log(form)
         if(form.password !== form.repeatPassword) {
-            console.log("NOT SAME")
             setShowPasswordErrorMessage(true);
             isValid = false;
         }
@@ -72,6 +66,7 @@ const SignUpForm = (Props: SignUpFormProps) => {
         await userService.Post<IUser, INewUser>(newUser)
         .then(res => {
             if(res.data && !res.error) {
+                console.log(res.data)
                 user.setUser(res.data);
                 Props.onSignedUp(true);
             } else {
