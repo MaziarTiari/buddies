@@ -22,16 +22,16 @@ const ProfileEditorMenu = () => {
 
     const MenuItems: ListMenuItem[] = [
         {
-            title: translations.profile_personal_info,
+            title: translations.profile.personal_info,
             navRoute: RouteName.Profile.Editor.Personal,
         },
         {
-            title: translations.profile_employments,
+            title: translations.profile.employments,
             navRoute: RouteName.Profile.Editor.Taglist,
             navParam: JobParam,
         },
         {
-            title: translations.profile_hobbies,
+            title: translations.profile.hobbies,
             navRoute: RouteName.Profile.Editor.Taglist,
             navParam: HobbyParam,
         },

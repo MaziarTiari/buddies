@@ -1,10 +1,11 @@
-import { useContext } from "react";
-import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
+import { useContext } from "react"
+import { ThemeContext } from "../../context/ThemeContext/ThemeContext"
 import { StyleSheet } from "react-native";
-import { getResponsiveSize, fontsizes } from "../../utils/font/font";
+import { getResponsiveSize } from "../../utils/font/font";
 
-const useStyles = () => {
-    const theme = useContext(ThemeContext).theme;
+export const useStyle = () => {
+    const {theme} = useContext(ThemeContext);
+
     return StyleSheet.create({
         root: {
             flex:1,
@@ -28,5 +29,3 @@ const useStyles = () => {
         }
     });
 }
-
-export default useStyles;

@@ -8,7 +8,7 @@
         "test": "jest"
     },
     "dependencies": {
-        "@react-native-community/datetimepicker": "^2.2.0",
+        "@react-native-community/datetimepicker": "github:react-native-community/datetimepicker",
         "@react-native-community/masked-view": "^0.1.6",
         "@react-navigation/material-bottom-tabs": "^5.1.9",
         "@react-navigation/material-top-tabs": "^5.1.9",
@@ -17,6 +17,7 @@
         "axios": "^0.19.2",
         "expo": "~37.0.3",
         "expo-updates": "~0.1.0",
+        "http-status-codes": "^1.4.0",
         "moment": "^2.25.3",
         "react": "~16.9.0",
         "react-dom": "~16.9.0",
@@ -24,6 +25,7 @@
         "react-native": "^0.62.2",
         "react-native-autocomplete-input": "^4.2.0",
         "react-native-custom-picker": "^0.4.0",
+        "react-native-date-picker": "^2.7.10",
         "react-native-fs": "^2.16.6",
         "react-native-gesture-handler": "~1.6.0",
         "react-native-interactable": "^2.0.1",

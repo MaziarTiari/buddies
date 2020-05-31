@@ -36,3 +36,8 @@ export interface CategorizedInput {
     title: string;
     institution?: string;
 }
+
+export interface IVerifyingUser {
+    email: string;
+    password: string;
+}

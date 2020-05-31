@@ -11,7 +11,7 @@ const useStyle = () => {
             justifyContent: "space-between",
             flexDirection: "row",
         },
-        fieldText: {
+        label: {
             fontSize: fontsizes.small,
             lineHeight: getLineHeight(fontsizes.small),
             color: theme.App.primaryText,
@@ -31,11 +31,6 @@ const useStyle = () => {
         },
         option: {
             padding: getResponsiveSize(12),
-        },
-        optionText: {
-            fontSize: fontsizes.small,
-            lineHeight: getLineHeight(fontsizes.small),
-            color: theme.App.primaryText,
         },
     });
 };

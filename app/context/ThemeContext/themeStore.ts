@@ -11,6 +11,10 @@ export interface ITheme {
         basicItem: string;
         profileIsOnlineDot: string;
         invalidInputBoarder: string;
+        devider: string;
+        buttonBackground: string;
+        labelLinkColor: string;
+        errorColor: string;
     };
     ActivityListItem: {
         heartIconOn: string;
@@ -45,6 +49,10 @@ export const themeStore: IThemeStore = {
             basicItem: "#CAE6D8",
             profileIsOnlineDot: "#79C879",
             invalidInputBoarder: "#DC143C",
+            devider: "#374758",
+            buttonBackground: "#C2821F",
+            labelLinkColor: "#20FEC8",
+            errorColor: "#FF7573"
         },
         ActivityListItem: {
             heartIconOn: "#FBCF07",
@@ -70,6 +78,10 @@ export const themeStore: IThemeStore = {
             basicItem: "#645D64",
             profileIsOnlineDot: "#79C879",
             invalidInputBoarder: "red",
+            devider: "#374758",
+            buttonBackground: "#C2821F",
+            labelLinkColor: "#20FEC8",
+            errorColor: "#FF322F"
         },
         ActivityListItem: {
             heartIconOn: "#FBCF07",

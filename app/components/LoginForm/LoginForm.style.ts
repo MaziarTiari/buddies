@@ -1,9 +1,9 @@
 import { useContext } from "react";
 import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
 import { StyleSheet } from "react-native";
-import { getResponsiveSize, fontsizes } from "../../utils/font/font";
+import { getResponsiveSize } from "../../utils/font/font";
 
-const useStyles = () => {
+const useStyle = () => {
     const theme = useContext(ThemeContext).theme;
     return StyleSheet.create({
         root: {
@@ -29,4 +29,4 @@ const useStyles = () => {
     });
 }
 
-export default useStyles;
+export default useStyle;

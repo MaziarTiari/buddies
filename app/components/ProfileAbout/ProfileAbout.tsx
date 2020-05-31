@@ -17,7 +17,7 @@ const example_img: string[] = [
 
 const ProfileAbout = ({ navigation }: any) => {
     const style = useStyle();
-    const { profile } = useContext(ProfileContext);
+    const { userProfile: profile } = useContext(ProfileContext);
     const { translations } = useContext(LanguageContext);
 
     const renderPagination = (index: number, total: number): JSX.Element | undefined => {
@@ -74,7 +74,7 @@ const ProfileAbout = ({ navigation }: any) => {
                             <Text style={style.headline}>
                                 {profile.friends ? profile.friends.length : 0}
                             </Text>
-                            <Text style={style.text}>{translations.profile_friends}</Text>
+                            <Text style={style.text}>{translations.profile.friends}</Text>
                         </View>
                     </TouchableRippleCircle>
                     <TouchableRippleCircle onPress={() => {}}>
@@ -82,7 +82,7 @@ const ProfileAbout = ({ navigation }: any) => {
                             <Text style={style.headline}>
                                 {profile.groups ? profile.groups.length : 0}
                             </Text>
-                            <Text style={style.text}>{translations.profile_groups}</Text>
+                            <Text style={style.text}>{translations.profile.groups}</Text>
                         </View>
                     </TouchableRippleCircle>
                 </View>
@@ -90,30 +90,30 @@ const ProfileAbout = ({ navigation }: any) => {
                 {/* Personal Information */}
                 <View style={style.secondaryInfoContainer}>
                     <Text style={style.headline}>
-                        {translations.profile_personal_info}
+                        {translations.profile.personal_info}
                     </Text>
                     <View style={style.columnContainer}>
                         <View style={style.column}>
                             <Text style={style.smallHeadline}>
-                                {translations.profile_name}:
+                                {translations.profile.name}:
                             </Text>
                             <Text style={style.smallHeadline}>
-                                {translations.profile_location}:
+                                {translations.profile.city}:
                             </Text>
                             <Text style={style.smallHeadline}>
-                                {translations.profile_birthday}:
+                                {translations.profile.birthDate}:
                             </Text>
                             <Text style={style.smallHeadline}>
-                                {translations.profile_sex}:
+                                {translations.profile.gender}:
                             </Text>
                             {profile.relationshipState && (
                                 <Text style={style.smallHeadline}>
-                                    {translations.profile_relationshipstate}:
+                                    {translations.profile.relationshipstate}:
                                 </Text>
                             )}
                             {profile.languages && (
                                 <Text style={style.smallHeadline}>
-                                    {translations.profile_languages}:
+                                    {translations.profile.languages}:
                                 </Text>
                             )}
                         </View>
@@ -144,7 +144,7 @@ const ProfileAbout = ({ navigation }: any) => {
                 {profile.jobs && (
                     <View style={style.secondaryInfoContainer}>
                         <Text style={style.headline}>
-                            {translations.profile_employments}
+                            {translations.profile.employments}
                         </Text>
                         {profile.jobs.map((job: CategorizedInput, index: number) => (
                             <Text style={style.text} key={index}>
@@ -158,7 +158,7 @@ const ProfileAbout = ({ navigation }: any) => {
                 {/* Hobbies */}
                 {profile.hobbies && (
                     <View style={style.secondaryInfoContainer}>
-                        <Text style={style.headline}>{translations.profile_hobbies}</Text>
+                        <Text style={style.headline}>{translations.profile.hobbies}</Text>
                         {renderHobbies(profile.hobbies, style)}
                     </View>
                 )}
@@ -167,7 +167,7 @@ const ProfileAbout = ({ navigation }: any) => {
                 {profile.info && (
                     <View style={style.secondaryInfoContainer}>
                         <Text style={style.headline}>
-                            {translations.profile_about_me}
+                            {translations.profile.about_me}
                         </Text>
                         <Text style={style.text}>{profile.info}</Text>
                     </View>

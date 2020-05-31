@@ -1,12 +1,13 @@
-import React, { ReactNode, useState, useEffect } from 'react'
+import React, { ReactNode, useState, useEffect, ReactElement } from 'react'
 import { View, ViewProps, KeyboardEvent, Keyboard, GestureResponderEvent, ScrollView, KeyboardAvoidingView, Platform } from 'react-native'
 import { useStyle } from './Container.style';
 import { useScreenDimension } from '../../utils/device/ScreenDimension';
 import { getResponsiveSize } from '../../utils/font/font';
+import FormInput from '../FormInput/FormInput';
 
 interface ContainerProps extends ViewProps{
     keyboardAvoiding?: boolean;
-    children?: ReactNode;
+    children: ReactElement<typeof FormInput>;
 }
 
 interface ScreenContainerProps extends ContainerProps {

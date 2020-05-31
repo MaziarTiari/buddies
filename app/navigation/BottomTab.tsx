@@ -66,7 +66,7 @@ const BottomTab = ({ navigation, route }: any) => {
 
     return (
         <Tab.Navigator
-            initialRouteName={RouteName.FeedList}
+            initialRouteName={RouteName.Profile.Tab}
             screenOptions={{ tabBarColor: theme.App.layoutBackground }}
             labeled={false}
         >

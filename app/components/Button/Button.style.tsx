@@ -7,18 +7,19 @@ const useStyle = () => {
     const { theme } = useContext(ThemeContext);
     return StyleSheet.create({
         container: {
-            borderWidth: 1,
+            //borderWidth: 1,
             borderColor: theme.App.layoutBackground,
-            backgroundColor: theme.App.primaryItem,
-            borderRadius: getResponsiveSize(8),
+            backgroundColor: "#C2821F",
+            borderRadius: getResponsiveSize(50),
             alignSelf: "baseline",
         },
         text: {
-            fontSize: fontsizes.small,
-            lineHeight: getLineHeight(fontsizes.small),
+            fontSize: fontsizes.medium,
+            lineHeight: getLineHeight(fontsizes.medium),
             textAlign: "center",
             color: theme.App.primaryText,
-            padding: getResponsiveSize(10),
+            padding: getResponsiveSize(15),
+            fontWeight: "bold"
         },
     });
 };

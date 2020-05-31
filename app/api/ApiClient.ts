@@ -6,7 +6,7 @@ interface Config extends AxiosRequestConfig {
 }
 
 export interface ApiClient<T> extends Api{
-    Create<T,B>(data: B, url?: string, config?: AxiosRequestConfig) : Promise<ApiResponse<T>>;
+    Post<T,B>(data: B, url?: string, config?: AxiosRequestConfig) : Promise<ApiResponse<T>>;
     Get<T>(url?: string, config?: AxiosRequestConfig) : Promise<ApiResponse<T>>;
     Delete(url: string, config?: AxiosRequestConfig) : Promise<ApiResponse<number>>;
     Update<T,B = T>(data: B, url: string, config?: AxiosRequestConfig) : Promise<ApiResponse<T>>;
@@ -17,7 +17,7 @@ export class ApiClient<T> extends Api{
         super(config)
 
         this.Get = this.Get.bind(this);
-        this.Create = this.Create.bind(this);
+        this.Post = this.Post.bind(this);
         this.Delete = this.Delete.bind(this);
         this.Update = this.Update.bind(this);
     }
@@ -29,7 +29,7 @@ export class ApiClient<T> extends Api{
      * @param data `Request body`
      * @param config
      */
-    async Create<T,B>(data: B, url: string = "/", config?: AxiosRequestConfig) 
+    async Post<T,B>(data: B, url: string = "/", config?: AxiosRequestConfig) 
             : Promise<ApiResponse<T>> 
     {
         let response = new ApiResponse<T>();

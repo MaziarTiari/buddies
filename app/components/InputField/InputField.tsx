@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
     TextInput,
     NativeSyntheticEvent,
     TextInputContentSizeChangeEventData,
-    View,
     StyleProp,
     ViewStyle,
     TextInputProps,
 } from "react-native";
 import useStyle from "./InputField.style";
+import { InputFieldContainer } from "../InputFieldContainer/InputFieldContainer";
 
 interface IDynamicHeight {
     min: number;
@@ -27,8 +27,8 @@ export const InputField = ({style, ...Props}: InputFieldProps) => {
 
     const [inputHeight, setInputHeight] = useState(Props.dynamicHeight?.min);
 
-    const LeftComponent = () => (Props.leftComponent ? Props.leftComponent : null);
-    const RightComponent = () => (Props.rightComponent ? Props.rightComponent : null);
+    const LeftComponent = (Props.leftComponent ? Props.leftComponent : undefined);
+    const RightComponent = (Props.rightComponent ? Props.rightComponent : undefined);
 
     const handleContentSizeChange = (
         event: NativeSyntheticEvent<TextInputContentSizeChangeEventData>
@@ -46,19 +46,21 @@ export const InputField = ({style, ...Props}: InputFieldProps) => {
     };
 
     return (
-        <View style={[styles.inputContainer, Props.containerStyle]}>
-            <LeftComponent {...Props.leftComponent?.props} />
-            <TextInput
-                onContentSizeChange={Props.dynamicHeight && handleContentSizeChange}
-                {...Props}
-                style={[
-                    styles.textInput,
-                    style,
-                    Props.dynamicHeight && { height: inputHeight },
-                ]}
-            />
-            <RightComponent {...Props.rightComponent?.props} />
-        </View>
+        <InputFieldContainer 
+            leftComponent={LeftComponent} rightComponent={RightComponent}
+            style={Props.containerStyle}
+            content={
+                <TextInput
+                    onContentSizeChange={Props.dynamicHeight && handleContentSizeChange}
+                    {...Props}
+                    style={[
+                        styles.textInput,
+                        style,
+                        Props.dynamicHeight && { height: inputHeight },
+                    ]}
+                />
+            }
+        />
     );
 };
 

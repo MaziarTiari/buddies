@@ -17,7 +17,7 @@ export interface IProfileEditorTagListConfig {
 }
 
 const ProfileEditorTagList = () => {
-    const { profile, saveProfile } = useContext(ProfileContext);
+    const { userProfile: profile, saveProfile } = useContext(ProfileContext);
     const { theme } = useContext(ThemeContext);
     const { translations } = useContext(LanguageContext);
     const style = useStyle();
@@ -28,8 +28,8 @@ const ProfileEditorTagList = () => {
     navigation.setOptions({
         title:
             config.type == "jobs"
-                ? translations.profile_edit_employments
-                : translations.profile_edit_hobbies,
+                ? translations.profile.edit_employments
+                : translations.profile.edit_hobbies,
     });
 
     const [editingItem, setEditingItem] = useState<CategorizedInput | undefined>();
@@ -136,27 +136,27 @@ const ProfileEditorTagList = () => {
                 onDelete={handleDeletePressed}
                 categoryPlaceholder={
                     config.type === "jobs"
-                        ? translations.profile_employment_category_placeholder
-                        : translations.profile_hobby_category_placeholder
+                        ? translations.profile.category
+                        : translations.profile.category
                 }
                 titlePlaceholder={
                     config.type === "jobs"
-                        ? translations.profile_employment_title_placeholder
-                        : translations.profile_hobby_title_placeholder
+                        ? translations.profile.employment_title_placeholder
+                        : translations.profile.hobby_title_placeholder
                 }
                 institutionPlaceholder={
                     config.type === "jobs"
-                        ? translations.profile_employment_institution_placeholder
-                        : translations.profile_hobby_institution_placeholder
+                        ? translations.profile.employment_institution_placeholder
+                        : translations.profile.hobby_institution_placeholder
                 }
                 headline={
                     config.type === "jobs"
                         ? editingItem
-                            ? translations.profile_edit_employment
-                            : translations.profile_add_employment
+                            ? translations.profile.edit_employment
+                            : translations.profile.add_employment
                         : editingItem
-                        ? translations.profile_edit_hobby
-                        : translations.profile_add_hobby
+                        ? translations.profile.edit_hobby
+                        : translations.profile.add_hobby
                 }
                 preselectedCategory={editingItem?.category}
                 preselectedTitle={editingItem?.title}

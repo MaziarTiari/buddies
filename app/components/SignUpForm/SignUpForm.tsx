@@ -1,11 +1,11 @@
-import React, {useContext, useState } from 'react';
+import React, {useContext, useState, useEffect } from 'react';
 import Container from '../Container/Container';
 import { Headline } from 'react-native-paper';
 import Button from '../Button/Button';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { getResponsiveSize } from '../../utils/font/font';
 import { LanguageContext } from '../../context/LanguageContext/LanguageContext';
-import { validateEmail, validatePhone } from '../../utils/generics/validate';
+import { isEmail, isPhoneNumber } from '../../utils/validate';
 import FormInput from '../FormInput/FormInput';
 import useStyles from './SignUpForm.style';
 import { ApiClient } from '../../api/ApiClient'
@@ -15,94 +15,73 @@ import {
     IFormErrorSatus, INITIAL_FORM_STATUS, INITIAL_SHOW_ERROR_MSG, IShowErrowMessage, 
     IForm, INITIAL_FORM, FormKey 
 } from './constants';
+import { isUndefinedOrEmpty } from '../../utils/generics';
+import { ProfileContext } from '../../context/ProfileContext/ProfileContext';
+import LinkLabel from '../LinkLabel/LinkLabel';
+import HttpStatus from 'http-status-codes'
 
-const userService = new ApiClient<IUser>({ baseURL: getServiceUrl("Users") });
-var incorrectInputs: number = 0;
+const userService = new ApiClient<IUser>({ baseURL: "http://localhost:5000/api/users" });
+interface SignUpFormProps { 
+    onSignedUp: (status: boolean) => void;
+    onLogin: () => void;
+}
 
-const SignUpForm = () => {
-
-    const [formErrorStatus, setFormErrorStatus] = 
-        useState<IFormErrorSatus>(INITIAL_FORM_STATUS);
-    const [showErrorMessage, setShowErrorMessage] = 
-        useState<IShowErrowMessage>(INITIAL_SHOW_ERROR_MSG);
+const SignUpForm = (Props: SignUpFormProps) => {
     const [form, setForm] = useState<IForm>(INITIAL_FORM);
+    const [verify, setVerify] = useState(false);
+    const [emailErrorStatus, setEmailErrorStatus] = useState(false);
+    const [phoneErrorStatus, setPhoneErrorStatus] = useState(false);
+    const [passwordErrorStatus, setPasswordErrorStatus] = useState(false);
+    const [repeatPasswordErrorStatus, setRepeatPasswordErrorStatus] = useState(false);
+    const [showEmailErrorMessage, setShowEmailErrorMessage] = useState(false);
+    const [showPasswordErrorMessage, setShowPasswordErrorMessage] = useState(false);
 
+    const user = useContext(ProfileContext);
     const translations = useContext(LanguageContext).translations;
     const styles = useStyles();
 
     const setErrorMessagesToDefault = () => {
-        setFormErrorStatus(INITIAL_FORM_STATUS);
-        setShowErrorMessage(INITIAL_FORM_STATUS);
-        incorrectInputs = 0;
+        setShowEmailErrorMessage(false);
+        setShowPasswordErrorMessage(false);
+        setVerify(false);
     }
 
     const validateForm = (): boolean => {
         setErrorMessagesToDefault();
-        let errors: any = {
-            email: false,
-            phone: false,
-            password: false,
-            repeatPassword: false,
-        } as IFormErrorSatus;
-        const result = () => incorrectInputs == 0;
-        for(let [key, value] of Object.entries(form)) {
-            if( isUndefinedOrEmpty(value) ) {
-                errors[key] = true;
-                incorrectInputs++;
-            }
+        let isValid: boolean = true;
+        if(emailErrorStatus || phoneErrorStatus 
+                || passwordErrorStatus || repeatPasswordErrorStatus)
+            isValid = false;
+        console.log(form)
+        if(form.password !== form.repeatPassword) {
+            console.log("NOT SAME")
+            setShowPasswordErrorMessage(true);
+            isValid = false;
         }
-        errors = validateInputPatterns(errors);
-        setFormErrorStatus(Object.assign({} ,errors))
-        return result();
-    }
-
-    const isUndefinedOrEmpty = (string: string) => 
-        !string || string === "" || string === " "
-
-    
-    const validateInputPatterns = (errors: any): IFormErrorSatus => {
-        let showErrorMessage: IShowErrowMessage = {
-            email: false, password: false, phone: false
-        };
-        if(incorrectInputs === Object.keys(form).length) return errors;
-        if(!isUndefinedOrEmpty(form.password) && !isUndefinedOrEmpty(form.repeatPassword)) 
-        {
-            if (form.password !== form.repeatPassword) {
-                showErrorMessage.password = true;
-                errors[FormKey.password] = true;
-                errors[FormKey.repeatPassword] = true;
-                incorrectInputs++;
-            }
-        }
-        if( !isUndefinedOrEmpty(form.email) ) {
-            if(!validateEmail(form.email) ) {
-                showErrorMessage.email = true;
-                errors[FormKey.email] = true;
-                incorrectInputs++;
-            }
-        }
-        if( !isUndefinedOrEmpty(form.phone) ) {
-            if ( !validatePhone(form.phone) ) {
-                showErrorMessage.phone = true;
-                errors[FormKey.phone] = true;
-                incorrectInputs++;
-            }
-        }
-        setShowErrorMessage(Object.assign({}, showErrorMessage));
-        return errors;
+        return isValid;
     }
 
     const onSubmit = async () => {
         const formIsValid = validateForm();
-        if(formIsValid) {
-            const newUser: INewUser = {
-                email: form.email,
-                phone: form.phone,
-                password: form.password
-            }
-            const response = await userService.Create<IUser, INewUser>(newUser);
-            console.log(response);
+        if(!formIsValid) { setVerify(true); return;}
+        const newUser: INewUser = {
+            email: form.email,
+            phone: form.phone,
+            password: form.password
         }
+        await userService.Post<IUser, INewUser>(newUser)
+        .then(res => {
+            if(res.data && !res.error) {
+                user.setUser(res.data);
+                Props.onSignedUp(true);
+            } else {
+                if(res.error?.status === HttpStatus.CONFLICT) {
+                    setShowEmailErrorMessage(true);
+                }
+                else console.error(res.error)
+            }
+        })
+        .catch(err => console.error(err));
     }    
     
     return (
@@ -114,36 +93,39 @@ const SignUpForm = () => {
                     contentContainerStyle={styles.contentContainer}
                 >
                     <Headline style={styles.heading}>
-                        {translations.form.heading}
+                        {translations.ScreenHeading.register}
                     </Headline>
-                    <FormInput 
-                        errorMessage="Das war keine korrekte Email Addresse"
-                        showErrorMessage={showErrorMessage.email}
-                        iconName="email" error={formErrorStatus.email}
+                    <FormInput
+                        errorMessage={translations.register.errorMessage.email}
+                        errorStatusChange={setEmailErrorStatus}
+                        showErrorMessage={showEmailErrorMessage} type="email" required
+                        iconName="email" verify={verify}
                         onChangeText={txt => setForm({...form, [FormKey.email]: txt})}
-                        placeholder={translations.form.email}/>
+                        placeholder={translations.profile.email}/>
                     <FormInput
-                        errorMessage="Das ist keine Telefonnummer"
-                        showErrorMessage={showErrorMessage.phone}
-                        iconName="cellphone" error={formErrorStatus.phone}
+                        errorStatusChange={setPhoneErrorStatus} type="phone" required
+                        iconName="cellphone" verify={verify}
                         onChangeText={txt => setForm({...form, [FormKey.phone]: txt})}
-                        placeholder={translations.form.phone}/>
+                        placeholder={translations.profile.phone}/>
                     <FormInput 
-                        errorMessage="Passwörter stimmen nicht überein"
-                        showErrorMessage={showErrorMessage.password}
-                        iconName="onepassword" error={formErrorStatus.password}
+                        errorStatusChange={setPasswordErrorStatus}
+                        errorMessage={translations.register.errorMessage.password}
+                        showErrorMessage={showPasswordErrorMessage} required
+                        iconName="onepassword" verify={verify}
                         onChangeText={txt => setForm({...form, [FormKey.password]: txt})}
-                        placeholder={translations.form.password} secureTextEntry/>
+                        placeholder={translations.register.password} secureTextEntry/>
                     <FormInput
-                        error={formErrorStatus.repeatPassword}
+                        errorStatusChange={setRepeatPasswordErrorStatus}
+                        verify={verify} required
                         iconName="onepassword" secureTextEntry 
                         onChangeText={txt => 
                             setForm({...form, [FormKey.repeatPassword]: txt})}
-                        placeholder={translations.form.repeat_password}/>
+                        placeholder={translations.register.repeat_password}/>
                     <Button 
                         onPress={onSubmit}
-                        title={translations.form.submit_button} 
+                        title={translations.register.submit_button} 
                         style={styles.submitButton}/>
+                    <LinkLabel label="Anmelden" onPress={Props.onLogin}/>
                 </KeyboardAwareScrollView>
             </Container>
         </Container>

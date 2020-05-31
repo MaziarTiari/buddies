@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleProp, ViewStyle } from "react-native";
+import { View, Text, StyleProp, ViewStyle, TextStyle } from "react-native";
 import {
     CustomPicker,
     FieldTemplateSettings,
@@ -15,6 +15,8 @@ export interface CustomizedPickerProps {
     onItemChange: (selectedItem: any) => void;
     style?: StyleProp<ViewStyle>;
     placeholder?: string;
+    labelTextStyle?: StyleProp<TextStyle>;
+    // titleTextStyle?: StyleProp<Text>;
 }
 
 const CustomizedPicker = (props: CustomizedPickerProps) => {
@@ -28,7 +30,7 @@ const CustomizedPicker = (props: CustomizedPickerProps) => {
 
     const renderOption = ({ getLabel, item }: OptionTemplateSettings) => (
         <View style={style.option}>
-            <Text style={style.optionText}>{getLabel(item)}</Text>
+            <Text style={[style.label, props.labelTextStyle]}>{getLabel(item)}</Text>
         </View>
     );
 
@@ -37,11 +39,11 @@ const CustomizedPicker = (props: CustomizedPickerProps) => {
         selectedItem,
         defaultText,
     }: FieldTemplateSettings) => (
-        <View style={style.field}>
-            <Text style={style.fieldText}>
+        <View style={[style.field]}>
+            <Text style={[style.label, props.labelTextStyle]}>
                 {(selectedItem && getLabel(selectedItem)) || defaultText}
             </Text>
-            <Text style={style.fieldText}>▼</Text>
+            <Text style={style.label}>▼</Text>
         </View>
     );
 
