@@ -110,6 +110,7 @@ const FormInput =
             { (verify && typeErrorMessage && typeErrorStatus && value !== "" && showTypeErrorMessage) &&
             <Text style={{color:theme.App.errorColor}}>{typeErrorMessage}</Text>}
             <InputField
+                secureTextEntry={Props.type && Props.type === "password"}
                 {...Props} onBlur={onBlur} onFocus={onFocus} onChangeText={onChangeText} 
                 containerStyle={[borderColorStyle, styles.container]}
                 placeholderTextColor={theme.App.secondaryText} style={styles.input}

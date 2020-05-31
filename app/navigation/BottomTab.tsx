@@ -18,7 +18,7 @@ function getHeaderRight(routeName: string, navigation: any): (() => JSX.Element)
         case RouteName.Activity.Tab:
             return () => <ActivityHeader navigation={navigation} />;
         case RouteName.Profile.Tab:
-            return () => <ProfileHeader navigation={navigation} />;
+            return () => <ProfileHeader  />;
     }
     return null;
 }

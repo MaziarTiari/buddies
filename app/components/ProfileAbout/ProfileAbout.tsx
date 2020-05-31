@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Text, View, ScrollView, Image } from "react-native";
 import Container from "../Container/Container";
 import { LanguageContext } from "../../context/LanguageContext/LanguageContext";
@@ -8,6 +8,9 @@ import { CategorizedInput } from "../../models/User";
 import { ProfileContext } from "../../context/ProfileContext/ProfileContext";
 import Swiper from "react-native-swiper";
 import moment from 'moment';
+import InfoItem from "../InfoItem/InfoItem";
+import EditableSection from '../EditableSection/EditableSection'
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 // TODO: Remove example_img Array and use Profile Context instead
 const example_img: string[] = [
@@ -16,10 +19,15 @@ const example_img: string[] = [
     "https://www.thesun.co.uk/wp-content/uploads/2020/01/NINTCHDBPICT000554673258.jpg",
 ];
 
-const ProfileAbout = ({ navigation }: any) => {
+const ProfileAbout = () => {
+    const nav = useNavigation();
+    const route = useRoute();
     const style = useStyle();
     const { userProfile } = useContext(ProfileContext);
     const { translations } = useContext(LanguageContext);
+    const [editable, setEditable] = useState(true);
+
+    useEffect(() => console.log(route.params), [route.params])
 
     const renderPagination = (index: number, total: number): JSX.Element | undefined => {
         return total > 1 ? (
@@ -88,91 +96,53 @@ const ProfileAbout = ({ navigation }: any) => {
                     </TouchableRippleCircle>
                 </View>
 
-                {/* Personal Information */}
-                <View style={style.secondaryInfoContainer}>
+                {/* Personell */}
+                <EditableSection editable={editable} onEdit={() => alert("On Edit")}>
                     <Text style={style.headline}>
                         {translations.profile.personal_info}
                     </Text>
-                    <View style={style.columnContainer}>
-                        <View style={style.column}>
-                            <Text style={style.smallHeadline}>
-                                {translations.profile.name}:
-                            </Text>
-                            <Text style={style.smallHeadline}>
-                                {translations.profile.city}:
-                            </Text>
-                            <Text style={style.smallHeadline}>
-                                {translations.profile.birthDate}:
-                            </Text>
-                            <Text style={style.smallHeadline}>
-                                {translations.profile.gender}:
-                            </Text>
-                            {userProfile.relationshipState && (
-                                <Text style={style.smallHeadline}>
-                                    {translations.profile.relationshipstate}:
-                                </Text>
-                            )}
-                            {userProfile.languages && (
-                                <Text style={style.smallHeadline}>
-                                    {translations.profile.languages}:
-                                </Text>
-                            )}
-                        </View>
-                        <View style={style.column}>
-                            <Text style={style.text}>
-                                {userProfile.firstname + " " + userProfile.lastname}
-                            </Text>
-                            <Text style={style.text}>{userProfile.city}</Text>
-                            <Text style={style.text}>
-                                {moment.unix(userProfile.birthDate).format('L')}
-                            </Text>
-                            <Text style={style.text}>{userProfile.sex}</Text>
-                            {userProfile.relationshipState && (
-                                <Text style={style.text}>
-                                    {userProfile.relationshipState}
-                                </Text>
-                            )}
-                            {userProfile.languages && (
-                                <Text style={style.text}>
-                                    {userProfile.languages.join(", ")}
-                                </Text>
-                            )}
-                        </View>
-                    </View>
-                </View>
+                    <InfoItem 
+                        keyText={translations.profile.name} 
+                        valueText={userProfile.firstname + " " + userProfile.lastname} />
+                    <InfoItem 
+                        keyText={translations.profile.city} 
+                        valueText={userProfile.city} />
+                    <InfoItem 
+                        keyText={translations.profile.birthDate} 
+                        valueText={moment.unix(userProfile.birthDate).format('L')} />
+                    <InfoItem 
+                        keyText={translations.profile.gender} 
+                        valueText={userProfile.sex} />
+                </EditableSection>
 
-                {/* Employments */}
-                {userProfile.jobs && (
-                    <View style={style.secondaryInfoContainer}>
-                        <Text style={style.headline}>
-                            {translations.profile.employments}
-                        </Text>
-                        {userProfile.jobs.map((job: CategorizedInput, index: number) => (
-                            <Text style={style.text} key={index}>
-                                {job.category} {job.title}
-                                {job.institution ? " (" + job.institution + ")" : ""}
-                            </Text>
-                        ))}
-                    </View>
-                )}
+                {/* Jobs */}
+                <EditableSection editable={editable} onEdit={() => alert("On Edit")}>
+                    <Text style={style.headline}>{translations.profile.employments}</Text>
+                    {userProfile.jobs?.map(job => 
+                        <InfoItem 
+                            keyText={job.category} 
+                            valueText={
+                                job.title + job.institution ? " (" + 
+                                job.institution + ")" : ""}
+                        />
+                    )}
+                </EditableSection>    
 
                 {/* Hobbies */}
-                {userProfile.hobbies && (
-                    <View style={style.secondaryInfoContainer}>
-                        <Text style={style.headline}>{translations.profile.hobbies}</Text>
-                        {renderHobbies(userProfile.hobbies, style)}
-                    </View>
-                )}
+                <EditableSection editable={editable} onEdit={() => alert("On Edit")}>
+                    <Text style={style.headline}>{translations.profile.hobbies}</Text>
+                    {userProfile.hobbies && (
+                        <View>
+                            {renderHobbies(userProfile.hobbies, style)}
+                        </View>
+                    )}
+                </EditableSection>
 
                 {/* About Text */}
-                {userProfile.info && (
-                    <View style={style.secondaryInfoContainer}>
-                        <Text style={style.headline}>
-                            {translations.profile.about_me}
-                        </Text>
-                        <Text style={style.text}>{userProfile.info}</Text>
-                    </View>
-                )}
+                <EditableSection editable={editable} onEdit={() => alert("On Edit")}>
+                    <Text style={style.headline}>{translations.profile.about_me}</Text>
+                    {userProfile.info &&<Text style={style.text}>{userProfile.info}</Text>}
+                </EditableSection>
             </ScrollView>
         </Container>
     );

@@ -7,7 +7,7 @@ import FormInput from '../FormInput/FormInput';
 
 interface ContainerProps extends ViewProps{
     keyboardAvoiding?: boolean;
-    children: ReactElement<typeof FormInput>;
+    children: ReactNode;
 }
 
 interface ScreenContainerProps extends ContainerProps {

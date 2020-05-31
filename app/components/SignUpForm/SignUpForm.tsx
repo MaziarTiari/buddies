@@ -5,7 +5,6 @@ import Button from '../Button/Button';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { getResponsiveSize } from '../../utils/font/font';
 import { LanguageContext } from '../../context/LanguageContext/LanguageContext';
-import { isEmail, isPhoneNumber } from '../../utils/validate';
 import FormInput from '../FormInput/FormInput';
 import useStyles from './SignUpForm.style';
 import { ApiClient } from '../../api/ApiClient'
@@ -103,7 +102,7 @@ const SignUpForm = (Props: SignUpFormProps) => {
                         onChangeText={txt => setForm({...form, [FormKey.phone]: txt})}
                         placeholder={translations.profile.phone}/>
                     <FormInput 
-                        errorStatusChange={setPasswordErrorStatus}
+                        errorStatusChange={setPasswordErrorStatus} type="password" 
                         errorMessage={translations.register.errorMessage.password}
                         showErrorMessage={showPasswordErrorMessage} required
                         iconName="onepassword" verify={verify}
@@ -111,8 +110,7 @@ const SignUpForm = (Props: SignUpFormProps) => {
                         placeholder={translations.register.password} secureTextEntry/>
                     <FormInput
                         errorStatusChange={setRepeatPasswordErrorStatus}
-                        verify={verify} required
-                        iconName="onepassword" secureTextEntry 
+                        verify={verify} required iconName="onepassword" type="password" 
                         onChangeText={txt => 
                             setForm({...form, [FormKey.repeatPassword]: txt})}
                         placeholder={translations.register.repeat_password}/>

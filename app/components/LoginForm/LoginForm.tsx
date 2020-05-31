@@ -71,7 +71,6 @@ const LoginForm = ({ onLoggedIn, onRegister, onCreateUser }: LoginFormProps) => 
             if(res.data) {
                 user.setUser(res.data);
                 const userProfile = await UserProfileApi.Get<IUserProfile>(res.data.id);
-                console.log(userProfile.data)
                 return userProfile;
             }
         }).then(res => {
@@ -108,6 +107,7 @@ const LoginForm = ({ onLoggedIn, onRegister, onCreateUser }: LoginFormProps) => 
                         onChangeText={setEmail}
                         placeholder={translations.profile.email}/>
                     <FormInput
+                        type="password"
                         errorMessage={translations.login.errorMessages.password}
                         required errorStatusChange={
                             err => setErrorStatus({...errorStatus, password: err})
@@ -115,7 +115,6 @@ const LoginForm = ({ onLoggedIn, onRegister, onCreateUser }: LoginFormProps) => 
                         showErrorMessage={showPasswordError}
                         verify={verify}
                         onChangeText={setPassword}
-                        secureTextEntry
                         placeholder={translations.register.password}/>
                     <Button
                         onPress={onSubmit}

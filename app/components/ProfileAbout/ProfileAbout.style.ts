@@ -71,7 +71,7 @@ const useStyle = () => {
             flex: 1,
             resizeMode: "contain",
             backgroundColor: "black",
-        },
+        }
     });
 };
 
