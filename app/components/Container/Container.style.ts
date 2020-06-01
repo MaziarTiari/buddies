@@ -12,7 +12,6 @@ export const useStyle = () => {
             flex: 1,
             backgroundColor: theme.App.screenBackground,
             alignItems: "center",
-            paddingTop: Platform.OS === 'ios' ? getResponsiveSize(40) : 0,
         },
         body: {
             flex: 1,

@@ -50,7 +50,7 @@ const CustomizedPicker = (props: CustomizedPickerProps) => {
     return (
         <View style={props.style}>
             <CustomPicker
-                options={props.itemList}
+                options={props.itemList || []}
                 value={props.selectedItem}
                 modalStyle={style.modal}
                 fieldTemplate={renderField}

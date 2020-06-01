@@ -26,7 +26,7 @@ const FormInput =
     const { translations } = useContext(LanguageContext);
     const [typeErrorStatus, setTypeErrorStatus] = useState(false);
     const [requiredErrorStatus, setRequiredErrorStatus] = useState(initialError);
-    const [value, setValue] = useState("");
+    const [value, setValue] = useState(Props.defaultValue || "");
     const [showTypeErrorMessage, setShowTypeErrorMessage] = useState(false);
 
     const typeErrorMessage = Props.type
@@ -61,15 +61,11 @@ const FormInput =
         if(!Props.type) return false;
         switch(Props.type) {
             case "email":
-
                 return changeTypeErrorStatus(!isEmail(value));
-                break;
             case "number":
                 return changeTypeErrorStatus(!isNumeric(value));
-                break;
             case "phone":
                 return changeTypeErrorStatus(!isPhoneNumber(value));
-                break;
             default: break;
         }
         return false;

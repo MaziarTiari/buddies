@@ -1,17 +1,17 @@
 import React, { useContext } from "react";
-import { View } from "react-native";
 import { IconButton } from "react-native-paper";
 import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
 import { Menu, MenuTrigger, MenuOption, MenuOptions } from "react-native-popup-menu";
 import { fontsizes, getResponsiveSize } from "../../utils/font/font";
-import { RouteName } from "../../navigation/Navigation.config";
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
+import { SessionContext } from "../../context/SessionContext/SessionContext";
 
 
 const ProfileHeader = () => {
     const navigation = useNavigation();
     const { theme } = useContext(ThemeContext);
-    const route = useRoute();
+    const {actionState, ...session} = useContext(SessionContext);
+
     return (
         <Menu>
             <MenuTrigger>
@@ -34,13 +34,7 @@ const ProfileHeader = () => {
                     },
                 }}
             >
-                <MenuOption
-                    onSelect={() => {
-                        navigation.navigate(RouteName.Profile.About, {onEdit: true})
-                        navigation.navigate(RouteName.Profile.Activity)
-                    }}
-                    text="edit"
-                />
+                <MenuOption onSelect={() => {}} text="Option 1"/>
                 <MenuOption onSelect={() => {}} text="Option 2" />
                 <MenuOption onSelect={() => {}} text="Option 3" />
                 <MenuOption onSelect={() => {}} text="Option 4" />

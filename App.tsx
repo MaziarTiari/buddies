@@ -17,7 +17,7 @@ const App = () => {
                 onSignedUp={status => status && setStatus("signedUp")} 
                 onLogin={() => setStatus("userExists")}/>}
             {status === "signedUp" && 
-            <CreateProfileForm onCreateUser={() => setStatus("profileCreated")}/>}
+            <CreateProfileForm onSubmit={() => setStatus("profileCreated")}/>}
             {status === 'userExists' && 
             <LoginForm 
                 onLoggedIn={() => setStatus("loggedIn")} 

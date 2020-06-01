@@ -11,7 +11,7 @@ import { ApiClient } from '../../api/ApiClient'
 import { INewUser, IUser } from '../../models/User';
 import { getServiceUrl } from '../../api/channels';
 import { IForm, INITIAL_FORM, FormKey } from './constants';
-import { ProfileContext } from '../../context/ProfileContext/ProfileContext';
+import { SessionContext } from '../../context/SessionContext/SessionContext';
 import LinkLabel from '../LinkLabel/LinkLabel';
 import HttpStatus from 'http-status-codes'
 
@@ -31,7 +31,7 @@ const SignUpForm = (Props: SignUpFormProps) => {
     const [showEmailErrorMessage, setShowEmailErrorMessage] = useState(false);
     const [showPasswordErrorMessage, setShowPasswordErrorMessage] = useState(false);
 
-    const user = useContext(ProfileContext);
+    const user = useContext(SessionContext);
     const translations = useContext(LanguageContext).translations;
     const styles = useStyles();
 

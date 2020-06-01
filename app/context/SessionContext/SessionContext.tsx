@@ -1,38 +1,47 @@
 import React, { createContext, Component } from "react";
-import { IProfileContextState, profileContextInitialState } from "./stateFrame";
+import { ISessionContextState, sessionContextInitialState, ActionState } from "./stateFrame";
 import { users } from "../../dev/example_data/users";
 import { IUserProfile, IUser } from "../../models/User";
 
-export const ProfileContext = createContext(profileContextInitialState);
+export const SessionContext = createContext(sessionContextInitialState);
 
-export class ProfileContextProvider extends Component {
+export class SessionContextProvider extends Component {
+    
     fetchProfile = (id: number) => {
         this.setState({ profile: users[id] }); // TODO get by API
     };
 
-    setUser = (userIn: IUser) => this.setState({user: userIn});
+    setActionState = (action: ActionState) => {
+        this.setState({actionState: action});
+    }
 
-    setUserProfile = (userProfileIn: IUserProfile) => 
+    setUser = (userIn: IUser) => {
+        this.setState({user: userIn});
+    }
+
+    setUserProfile = (userProfileIn: IUserProfile) => {
         this.setState({userProfile: userProfileIn})
+    }
 
     saveProfile = (updatedProfile: IUserProfile) => {
         this.setState({ profile: updatedProfile });
         console.log("Save Profile with id: ", this.state.userProfile.id); // TODO save by API
     };
 
-    state: IProfileContextState = {
-        ...profileContextInitialState,
+    state: ISessionContextState = {
+        ...sessionContextInitialState,
         setUser: this.setUser,
         setUserProfile: this.setUserProfile,
         fetchProfile: this.fetchProfile,
         saveProfile: this.saveProfile,
+        setActionState: this.setActionState
     };
 
     render() {
         return (
-            <ProfileContext.Provider value={this.state}>
+            <SessionContext.Provider value={this.state}>
                 {this.props.children}
-            </ProfileContext.Provider>
+            </SessionContext.Provider>
         );
     }
 }

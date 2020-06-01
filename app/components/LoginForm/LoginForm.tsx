@@ -9,7 +9,7 @@ import { LanguageContext } from '../../context/LanguageContext/LanguageContext';
 import Button from '../Button/Button';
 import { IVerifyingUser, IUser, IUserProfile } from '../../models/User';
 import { ApiClient } from '../../api/ApiClient';
-import { ProfileContext } from '../../context/ProfileContext/ProfileContext';
+import { SessionContext } from '../../context/SessionContext/SessionContext';
 import HttpStatus from 'http-status-codes'
 import LinkLabel from '../LinkLabel/LinkLabel';
 
@@ -39,7 +39,7 @@ const LoginForm = ({ onLoggedIn, onRegister, onCreateUser }: LoginFormProps) => 
     
     const styles = useStyle();
     const { translations } = useContext(LanguageContext);
-    const user = useContext(ProfileContext);
+    const user = useContext(SessionContext);
 
     const setErrorsToDefault = () => {
         setVerify(false);

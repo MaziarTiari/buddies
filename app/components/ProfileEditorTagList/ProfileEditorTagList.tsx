@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { View, FlatList, Text } from "react-native";
 import Container from "../Container/Container";
-import { ProfileContext } from "../../context/ProfileContext/ProfileContext";
+import { SessionContext } from "../../context/SessionContext/SessionContext";
 import { CategorizedInput } from "../../models/User";
 import { TouchableRipple } from "react-native-paper";
 import useStyle from "./ProfileEditorTagList.style";
@@ -17,7 +17,7 @@ export interface IProfileEditorTagListConfig {
 }
 
 const ProfileEditorTagList = () => {
-    const { userProfile: profile, saveProfile } = useContext(ProfileContext);
+    const { userProfile: profile, saveProfile } = useContext(SessionContext);
     const { theme } = useContext(ThemeContext);
     const { translations } = useContext(LanguageContext);
     const style = useStyle();

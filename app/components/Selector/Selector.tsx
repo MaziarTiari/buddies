@@ -12,7 +12,7 @@ interface SelectorProps {
     modalTitle: string;
     items: string[];
     onSelect: (item: string) => void;
-	selectedItem: string;
+	selectedItem?: string;
 	style?: StyleProp<TextStyle>
 }
 export function Selector( Props: SelectorProps) {

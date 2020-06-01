@@ -5,12 +5,16 @@ import { LanguageContext } from "../../context/LanguageContext/LanguageContext";
 import useStyle from "./ProfileAbout.style";
 import TouchableRippleCircle from "../TouchableRippleCircle/TouchableRippleCircle";
 import { CategorizedInput } from "../../models/User";
-import { ProfileContext } from "../../context/ProfileContext/ProfileContext";
+import { SessionContext } from "../../context/SessionContext/SessionContext";
 import Swiper from "react-native-swiper";
 import moment from 'moment';
 import InfoItem from "../InfoItem/InfoItem";
 import EditableSection from '../EditableSection/EditableSection'
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
+import { Headline } from "react-native-paper";
+import ProfileAboutMenu from "./Menu";
+import { RouteName } from "../../navigation/Navigation.config";
+import { IProfileEditorTagListConfig } from '../ProfileEditorTagList/ProfileEditorTagList'
 
 // TODO: Remove example_img Array and use Profile Context instead
 const example_img: string[] = [
@@ -20,14 +24,16 @@ const example_img: string[] = [
 ];
 
 const ProfileAbout = () => {
-    const nav = useNavigation();
-    const route = useRoute();
+    const navigation = useNavigation();
     const style = useStyle();
-    const { userProfile } = useContext(ProfileContext);
+    const { userProfile } = useContext(SessionContext);
     const { translations } = useContext(LanguageContext);
-    const [editable, setEditable] = useState(true);
+    const [isOnEdit, setIsOnEdit] = useState(false);
 
-    useEffect(() => console.log(route.params), [route.params])
+    useEffect( () => {
+        navigation.addListener("blur", () => setIsOnEdit(false));
+        return () => navigation.removeListener("blur", () => setIsOnEdit(false));
+    },[])
 
     const renderPagination = (index: number, total: number): JSX.Element | undefined => {
         return total > 1 ? (
@@ -43,25 +49,25 @@ const ProfileAbout = () => {
         <Container type="screen" layout="root">
             <ScrollView style={{ flex: 1, width: "100%" }}>
                 {/* Profile Images */}
+                <View style={{position:"relative"}}>
                 <Swiper
                     containerStyle={style.galleryContainer}
                     renderPagination={renderPagination}
                 >
-                    {example_img.length > 0 ? (
-                        example_img.map((url, index) => (
-                            <Image
-                                key={index}
-                                style={style.image}
-                                source={{ uri: url }}
-                            />
-                        ))
-                    ) : (
-                        <Image
+                    {example_img.length > 0 
+                    ? (example_img.map((url, index) => (
+                        <Image key={index} style={style.image} source={{ uri: url }}/>))) 
+                    : (<Image
                             style={style.image}
                             source={require("../../../assets/img/defaultProfileImage.png")}
-                        />
-                    )}
+                        />)}
                 </Swiper>
+                <ProfileAboutMenu 
+                    isOnEdit={isOnEdit}
+                    onEdit={state => setIsOnEdit(state)}
+                    style={{position:"absolute", alignSelf:"flex-end", 
+                    top:"88%", margin:0, right:"2%"}}/>
+                </View>
 
                 {/* Quick Info */}
                 <View style={style.primaryInfoContainer}>
@@ -97,27 +103,44 @@ const ProfileAbout = () => {
                 </View>
 
                 {/* Personell */}
-                <EditableSection editable={editable} onEdit={() => alert("On Edit")}>
-                    <Text style={style.headline}>
+                <EditableSection 
+                    editable={isOnEdit} 
+                    onEdit={() => navigation.navigate(RouteName.Profile.Editor.Personal)}>
+                    <Headline style={style.headline}>
                         {translations.profile.personal_info}
-                    </Text>
+                    </Headline>
                     <InfoItem 
                         keyText={translations.profile.name} 
-                        valueText={userProfile.firstname + " " + userProfile.lastname} />
+                        valueText={
+                            userProfile.firstname + " " + 
+                            userProfile.lastname} />
                     <InfoItem 
                         keyText={translations.profile.city} 
                         valueText={userProfile.city} />
                     <InfoItem 
                         keyText={translations.profile.birthDate} 
-                        valueText={moment.unix(userProfile.birthDate).format('L')} />
+                        valueText={
+                            moment.unix(userProfile.birthDate).format('L')
+                        } />
                     <InfoItem 
                         keyText={translations.profile.gender} 
                         valueText={userProfile.sex} />
                 </EditableSection>
 
                 {/* Jobs */}
-                <EditableSection editable={editable} onEdit={() => alert("On Edit")}>
-                    <Text style={style.headline}>{translations.profile.employments}</Text>
+                <EditableSection 
+                    editable={isOnEdit} 
+                    onEdit={() => {
+                        navigation.navigate(
+                            RouteName.Profile.Editor.Taglist, 
+                            {
+                                categories: ["IT", "Design", "Ingeneuer"],
+                                type: "jobs",
+                            } as IProfileEditorTagListConfig)
+                    }}>
+                    <Headline style={style.headline}>
+                        {translations.profile.employments}
+                    </Headline>
                     {userProfile.jobs?.map(job => 
                         <InfoItem 
                             keyText={job.category} 
@@ -129,8 +152,10 @@ const ProfileAbout = () => {
                 </EditableSection>    
 
                 {/* Hobbies */}
-                <EditableSection editable={editable} onEdit={() => alert("On Edit")}>
-                    <Text style={style.headline}>{translations.profile.hobbies}</Text>
+                <EditableSection editable={isOnEdit} onEdit={() => alert("On Edit")}>
+                    <Headline style={style.headline}>
+                        {translations.profile.hobbies}
+                    </Headline>
                     {userProfile.hobbies && (
                         <View>
                             {renderHobbies(userProfile.hobbies, style)}
@@ -139,7 +164,7 @@ const ProfileAbout = () => {
                 </EditableSection>
 
                 {/* About Text */}
-                <EditableSection editable={editable} onEdit={() => alert("On Edit")}>
+                <EditableSection editable={isOnEdit} onEdit={() => alert("On Edit")}>
                     <Text style={style.headline}>{translations.profile.about_me}</Text>
                     {userProfile.info &&<Text style={style.text}>{userProfile.info}</Text>}
                 </EditableSection>

@@ -9,20 +9,22 @@ import { ThemeContext } from '../../context/ThemeContext/ThemeContext';
 
 interface FormDatePickerProps {
     verify?: boolean;
+    defaultInputValue?: string;
     onChange: (date: Moment) => void;
     options: DatePickerOptions;
     inputPlaceholder: string;
     onChangeText?: (value: string) => void;
+    required?: boolean
 }
 const FormDatePicker = (Props: FormDatePickerProps) => {
     const [date, setDate] = useState(Props.options.value)
     const [show, setShow] = useState(false);
-    const [inputValue, setInputValue] = useState("");
+    const [inputValue, setInputValue] = useState(Props.defaultInputValue || "");
 
     const { theme } = useContext(ThemeContext);
 
     const onDateChange = (event: any, dateIn: any) => {
-        const d: Date = dateIn || Props.options.value as Date;
+        const d: Date = dateIn;
         setShow(Platform.OS === 'ios');
         const now = moment();
         d.setHours(now.hours());
@@ -46,6 +48,12 @@ const FormDatePicker = (Props: FormDatePickerProps) => {
         setDate(date);
     }
 
+    const onRemove = () => {
+        setInputValue("");
+        if(Props.onChangeText)
+            Props.onChangeText("");
+    }
+
     function dropOnChange(props: FormDatePickerProps) {
         let { onChange, ...rest } = props.options;
         return rest;
@@ -54,7 +62,7 @@ const FormDatePicker = (Props: FormDatePickerProps) => {
     const inputDeleteIcon = inputValue === "" 
                           ? undefined
                           : <IconButton 
-                                icon="close" onPress={()=>setInputValue("")}
+                                icon="close" onPress={onRemove}
                                 size={getResponsiveSize(24)} style={{margin:0}}
                                 color={theme.App.primaryText}
                             />
@@ -63,7 +71,7 @@ const FormDatePicker = (Props: FormDatePickerProps) => {
         <View>
             <TouchableRipple onPress={() => setShow(!show)}>
                 <FormInput 
-                    onTouchStart={() => setShow(!show)}
+                    onTouchStart={() => setShow(!show)} required={Props.required}
                     value={inputValue}
                     iconName="calendar" verify={Props.verify}
                     placeholder={Props.inputPlaceholder} editable={false}

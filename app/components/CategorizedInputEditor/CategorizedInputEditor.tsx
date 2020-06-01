@@ -9,6 +9,7 @@ import InputField from "../InputField/InputField";
 import Button from "../Button/Button";
 import { LanguageContext } from "../../context/LanguageContext/LanguageContext";
 import { getResponsiveSize } from "../../utils/font/font";
+import { Selector } from "../Selector/Selector";
 
 export interface CategorizedInputEditorProps {
     visible: boolean;
@@ -54,16 +55,15 @@ const CategorizedInputEditor = (props: CategorizedInputEditorProps) => {
     const [selectedInstitution, setSelectedInstitution] = useState<string | undefined>(
         props.preselectedInstitution
     );
-
     const [categoryBorderColor, setCategoryBorderColor] = useState<string>(
         style.picker.borderColor
     );
-
     const [textBorderColor, setTextBorderColor] = useState<string>(
         style.autoCompleteContainer.borderColor
     );
 
     const isVisible = useRef(props.visible);
+    
 
     useEffect(() => {
         // when the modal opens, the states needs a reset
@@ -131,13 +131,13 @@ const CategorizedInputEditor = (props: CategorizedInputEditorProps) => {
             <View style={style.centeredView}>
                 <View style={style.modalView}>
                     <Text style={style.headline}>{props.headline}</Text>
-                    <CustomizedPicker
+                    <Selector
                         style={[style.picker, { borderColor: categoryBorderColor }]}
-                        headerText={props.categoryPlaceholder}
+                        modalTitle={ props.categoryPlaceholder || ""}
                         placeholder={props.categoryPlaceholder}
-                        itemList={props.categoryList}
-                        getLabel={(category) => category}
-                        onItemChange={handleCategorySelected}
+                        items={[...props.categoryList, "sonstige"]}
+                        //getLabel={(category) => category}
+                        onSelect={handleCategorySelected}
                         selectedItem={selectedCategory}
                     />
                     <Autocomplete
