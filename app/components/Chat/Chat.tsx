@@ -1,10 +1,12 @@
 import React, { useState, useMemo } from "react";
-import { FlatList, View } from "react-native";
+import { FlatList, View, KeyboardAvoidingView, Platform } from "react-native";
 import styles from "./Chat.style";
 import ChatInput from "../ChatInput/ChatInput";
 import Container from "../Container/Container";
 import { exampleResponse, IChatMessage } from "../../dev/example_data/ChatReponse";
 import ChatItem from "../ChatItem/ChatItem";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { getResponsiveSize } from "../../utils/font/font";
 
 const OWN_UUID = "2"; // TODO REMOVE LATER !!!
 
@@ -25,7 +27,7 @@ const Chat = ({ route, navigation }: any) => {
     };
 
     return (
-        <Container type="screen" layout="root" keyboardAvoiding style={styles.container}>
+        <Container type="screen" layout="root" style={styles.container} keyboardAvoiding>
             <FlatList
                 data={sortedMessages}
                 renderItem={({ item: message }) => (
@@ -41,7 +43,6 @@ const Chat = ({ route, navigation }: any) => {
                 inverted
             />
             <ChatInput style={styles.inputField} onSend={handleSend} />
-            <View style={{height:600}} />
         </Container>
     );
 };

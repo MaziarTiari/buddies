@@ -1,33 +1,33 @@
-import React from 'react'
-import { Text, TouchableOpacityProps, StyleSheet } from 'react-native'
-import { TouchableOpacity } from 'react-native-gesture-handler'
+import React, { useContext } from "react";
+import { Text, TextStyle, StyleProp, ViewStyle } from "react-native";
+import useStyle from "./Button.style";
+import { TouchableRipple } from "react-native-paper";
+import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
 
-interface ButtonProps extends TouchableOpacityProps{
+interface ButtonProps {
     title: string;
+    textStyle?: StyleProp<TextStyle>;
+    style?: StyleProp<ViewStyle>;
+    isDangerous?: boolean;
+    onPress?: () => void;
 }
-const Button = ({title, ...Props}: ButtonProps) => {
+const Button = (props: ButtonProps) => {
+    const style = useStyle();
+    const { theme } = useContext(ThemeContext);
     return (
-        <TouchableOpacity {...Props} style={[styles.container, Props.style]}>
-            <Text style={styles.title}>{title}</Text>
-        </TouchableOpacity>
-    )
-}
-// TODO: fix
-const styles = StyleSheet.create({
-    container: {
-        flexDirection:"row",
-        backgroundColor:"#C48A1D",
-        padding:"2%",
-        borderRadius: 20,
-        width:"100%",
-    },
-    title: {
-        flex:1, 
-        fontSize:22,
-        fontWeight:"500", 
-        textAlign:"center",
-        color:"#fff"
-    }
-});
+        <TouchableRipple
+            onPress={props.onPress}
+            style={[
+                style.container,
+                props.isDangerous ? { backgroundColor: theme.Button.dangerousColor } : {},
+                props.style,
+            ]}
+        >
+            <Text numberOfLines={1} style={[style.text, props.textStyle]}>
+                {props.title}
+            </Text>
+        </TouchableRipple>
+    );
+};
 
-export default Button
+export default Button;

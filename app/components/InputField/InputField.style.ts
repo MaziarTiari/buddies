@@ -6,21 +6,14 @@ import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
 const useStyle = () => {
     const theme = useContext(ThemeContext).theme;
     return StyleSheet.create({
-        inputContainer: {
-            flexDirection: "row",
-            alignItems: "center",
-            backgroundColor: theme.App.primaryText,
-            borderRadius:getResponsiveSize(8)
-        },
         textInput: {
-            color: theme.App.defaultInputFontColor,
-            borderWidth: 0,
+            color: theme.App.primaryText,
             fontSize: fontsizes.medium,
             lineHeight: getLineHeight(fontsizes.medium),
             flex: 1,
-            marginVertical: getResponsiveSize(10),
+            height:"100%",
         },
     });
-}
+};
 
 export default useStyle;

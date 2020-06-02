@@ -3,7 +3,7 @@ import { fontsizes, getResponsiveSize, getLineHeight } from "../../utils/font/fo
 import { useContext } from "react";
 import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
 
-const useStyle = () => { 
+const useStyle = () => {
     const theme = useContext(ThemeContext).theme;
     return StyleSheet.create({
         root: {
@@ -15,7 +15,7 @@ const useStyle = () => {
         container: {
             alignItems: "center",
             flexDirection: "row",
-            marginVertical: getResponsiveSize(20),
+            marginVertical: getResponsiveSize(15),
         },
         profileImageContainer: {
             position: "relative",
@@ -50,6 +50,6 @@ const useStyle = () => {
             backgroundColor: theme.App.profileIsOnlineDot,
         },
     });
-}
+};
 
 export default useStyle;

@@ -3,7 +3,7 @@ import { Device } from "../device/Device";
 const device = new Device();
 const maxScaling = 1.3;
 
-export const getLineHeight = (fontSize: number) => fontSize * 1.2;
+export const getLineHeight = (fontSize: number) => fontSize * 1.25;
 
 export const getResponsiveSize = (value: number) => {
     const scaling = device.width / 450;
@@ -18,4 +18,3 @@ export const fontsizes = {
     icon: getResponsiveSize(30),
     icon_m: getResponsiveSize(40),
 };
-

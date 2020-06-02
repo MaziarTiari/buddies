@@ -26,9 +26,13 @@ export const RouteName = {
         Activity: "ProfileActivity",
         Galery: "ProfileGalery",
         FriendList: "FriendList",
+        Editor: {
+            Menu: "ProfileEditorMenu",
+            Personal: "ProfileEditorPersonal",
+            Taglist: "ProfileEditorTagList",
+        },
     },
 };
-
 
 export const useNavOption = () => {
     const theme = useContext(ThemeContext).theme;
@@ -53,4 +57,4 @@ export const useNavOption = () => {
     };
 
     return { screen: screenOptions, tabBar: tabBarOptions };
-}
+};

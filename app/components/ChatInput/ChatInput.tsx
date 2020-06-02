@@ -1,9 +1,14 @@
 import React, { useState } from "react";
-import { NativeSyntheticEvent, TextInputFocusEventData, ViewProps } from "react-native";
+import {
+    NativeSyntheticEvent,
+    TextInputFocusEventData,
+    ViewProps,
+    View,
+} from "react-native";
 import { IconButton } from "react-native-paper";
 import InputField from "../InputField/InputField";
 import useStyle from "./ChatInput.style";
-import { fontsizes, getLineHeight } from "../../utils/font/font";
+import { fontsizes, getLineHeight, getResponsiveSize } from "../../utils/font/font";
 
 export interface ChatInputProps extends ViewProps {
     onSend: (message: string) => void;
@@ -28,29 +33,31 @@ export const ChatInput = (Props: ChatInputProps) => {
     };
 
     return (
-        <InputField
-            containerStyle={styles.inputContainer}
-            dynamicHeight={{ min: MIN_HEIGHT, max: MAX_HEIGHT }}
-            multiline={true}
-            value={inputText}
-            onChangeText={handleChangeText}
-            leftComponent={
-                <IconButton
-                    icon="delete"
-                    color={theme.App.secondaryText}
-                    size={fontsizes.icon}
-                    onPress={() => setInputText("")}
-                />
-            }
-            rightComponent={
-                <IconButton
-                    icon="send"
-                    color={theme.App.secondaryText}
-                    size={fontsizes.icon}
-                    onPress={handleSendText}
-                />
-            }
-        />
+        <View style={{ flexDirection: "row" }}>
+            <InputField
+                containerStyle={styles.inputContainer}
+                dynamicHeight={{ min: MIN_HEIGHT, max: MAX_HEIGHT }}
+                multiline={true}
+                value={inputText}
+                onChangeText={handleChangeText}
+                leftComponent={
+                    <IconButton
+                        icon="delete"
+                        color={theme.App.secondaryText}
+                        size={getResponsiveSize(30)}
+                        onPress={() => setInputText("")}
+                    />
+                }
+                rightComponent={
+                    <IconButton
+                        icon="send"
+                        color={theme.App.secondaryText}
+                        size={getResponsiveSize(30)}
+                        onPress={handleSendText}
+                    />
+                }
+            />
+        </View>
     );
 };
 

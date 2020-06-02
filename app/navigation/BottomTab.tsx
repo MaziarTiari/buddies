@@ -18,7 +18,7 @@ function getHeaderRight(routeName: string, navigation: any): (() => JSX.Element)
         case RouteName.Activity.Tab:
             return () => <ActivityHeader navigation={navigation} />;
         case RouteName.Profile.Tab:
-            return () => <ProfileHeader navigation={navigation} />;
+            return () => <ProfileHeader  />;
     }
     return null;
 }
@@ -43,7 +43,7 @@ const BottomTab = ({ navigation, route }: any) => {
             default:
                 return "unknown_route";
         }
-    }
+    };
 
     useLayoutEffect(() => {
         const routeName = route.state
@@ -57,15 +57,16 @@ const BottomTab = ({ navigation, route }: any) => {
     }, [navigation, route]);
 
     const getBottomIcon = (icon: string, focused: boolean): React.ReactNode => (
-        <MaterialCommunityIcons 
-            name={icon} size={26}
+        <MaterialCommunityIcons
+            name={icon}
+            size={26}
             color={focused ? theme.App.primaryItem : theme.App.basicItem}
         />
     );
 
     return (
         <Tab.Navigator
-            initialRouteName={RouteName.FeedList}
+            initialRouteName={RouteName.Profile.Tab}
             screenOptions={{ tabBarColor: theme.App.layoutBackground }}
             labeled={false}
         >

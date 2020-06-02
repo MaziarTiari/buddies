@@ -1,40 +1,98 @@
-import { IUserProfile } from "../../models/User";
+import { IUserProfile } from "../../models/User/UserProfile";
 
 export const users: IUserProfile[] = [
     {
         id: "1",
         username: "maziar",
-        email: "maziar@email.com",
         city: "Heidelberg",
-        phone: "01785219400",
         firstname: "Maziar",
         lastname: "Tiari",
-        password: "Password",
         birthDate: 635299200,
-        salt: "salt"
+        sex: "m",
+        userId:"22"
     },
     {
         id: "2",
+        sex: "m",
+        userId:"33",
         username: "nico",
-        email: "nico@email.com",
         city: "Worms",
-        phone: "01785219400",
         firstname: "Nico",
         lastname: "Hofmann",
-        password: "Password",
         birthDate: 635299200,
-        salt: "salt"
     },
     {
         id: "3",
         username: "milad",
-        email: "milad@email.com",
+        userId: "3",
         city: "Heidelber",
-        phone: "01785219400",
         firstname: "Milad",
         lastname: "Tiari",
-        password: "Password",
+        sex: "male",
         birthDate: 635299200,
-        salt: "salt"
-    }
-]
+    },
+    {
+        id: "4",
+        username: "max",
+        userId: "4",
+        firstname: "Maximilian",
+        lastname: "Mustermann",
+        birthDate: 635299200,
+        city: "Heidelberg (DE)",
+        sex: "male",
+        jobs: [
+            {
+                place: "Hochschule Worms",
+                category: "Student",
+                title: "Angewandte Informatik",
+            },
+            {
+                place: "Musterfirma GmbH",
+                category: "Angestellter",
+                title: "IT-Beauftragter",
+            },
+            {
+                place: "Kindergarten Heidelberg",
+                category: "Angestellter",
+                title: "Hausmeister",
+            },
+        ],
+        hobbies: [
+            { category: "Sport", title: "Fußball" },
+            { category: "Sport", title: "Handball" },
+            { category: "Technik", title: "Softwareentwicklung" },
+            { category: "Technik", title: "Autos" },
+            { category: "Gaming", title: "Shooter" },
+            { category: "Gaming", title: "Strategiespiele" },
+            { category: "Sport", title: "Joggen" },
+            { category: "Sport", title: "Fitnessstudio" },
+            { category: "Sport", title: "Leichtatlethik" },
+        ],
+        friends: [
+            "178",
+            "487",
+            "100",
+            "39",
+            "454",
+            "48",
+            "986",
+            "358",
+            "84",
+            "94",
+            "735",
+            "563",
+            "98",
+            "69",
+        ],
+        groups: ["9032", "329"],
+        relationshipState: "single",
+        languages: ["German", "French", "Chinese", "English"],
+        info:
+            "Blindtexte werden ebenfalls zur Demonstration der Gestalt verschiedener Schrifttypen und zu Layoutzwecken verwendet. Sie ergeben in der Regel keinen inhaltlichen Sinn. Aufgrund ihrer verbreiteten Funktion als Fülltext für das Layout kommt einer Nicht-Lesbarkeit besondere Bedeutung zu, da die menschliche Wahrnehmung u.a. darauf ausgerichtet ist, bestimmte Muster und Wiederholungen zu erkennen.",
+        profileImage: "https://i.redd.it/6onq25y0sh311.jpg",
+        /* Weitere Bilder:   
+        "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+        "https://www.jeancoutu.com/globalassets/revamp/photo/conseils-photo/20160302-01-reseaux-sociaux-profil/photo-profil_301783868.jpg",
+        */
+    },
+];

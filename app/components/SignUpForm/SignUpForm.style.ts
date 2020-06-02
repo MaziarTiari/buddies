@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
 import { StyleSheet } from "react-native";
-import { getResponsiveSize } from "../../utils/font/font";
+import { getResponsiveSize, fontsizes } from "../../utils/font/font";
 
 const useStyles = () => {
     const theme = useContext(ThemeContext).theme;
