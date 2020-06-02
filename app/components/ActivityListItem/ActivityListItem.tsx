@@ -7,10 +7,13 @@ import { users } from "../../dev/example_data/users";
 import { IUserProfile } from "../../models/User";
 import { useStyle } from "./ActivityListItem.style";
 import Container from "../Container/Container";
+import { useNavigation, CommonActions } from "@react-navigation/native";
+import { RouteName } from "../../navigation/Navigation.config";
 const defaultImg = require("../../../assets/img/default-activity-img.jpg");
 
 const ActivityListItem = (Props: IActivity) => {
     const { styles, theme } = useStyle();
+    const navigation = useNavigation();
 
     const owner = users.find((user) => user.id === Props.ownerUserId) as IUserProfile;
     const ownerName = owner.firstname + " " + owner.lastname;
@@ -21,7 +24,7 @@ const ActivityListItem = (Props: IActivity) => {
     const dateScale = getDateScale(Props.startDate, Props.endDate);
     const timeScale = getTimeScale(Props.startTime, Props.endTime);
 
-    const onPress = () => {};
+    const onPress = () => { navigation.dispatch(CommonActions.navigate({ name: RouteName.Activity.Info, params: Props})) };
     const onParticipates = () => {};
     const onChat = (event?: GestureResponderEvent) => {};
     const onFavorite = () => {};

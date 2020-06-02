@@ -5,6 +5,7 @@ import FriendList from '../components/FriendList/FriendList';
 import Chat from '../components/Chat/Chat';
 import ActivityList from '../components/ActivityList/ActivityList';
 import { createStackNavigator } from '@react-navigation/stack';
+import ActivityInfo from '../components/ActivityInfo/ActivityInfo';
 
 const Stack = createStackNavigator();
 
@@ -24,6 +25,8 @@ const Navigation = () => {
             />
             <Stack.Screen 
                 name={RouteName.Activity.MyList} component={ActivityList} />
+                <Stack.Screen
+                name={RouteName.Activity.Info} component={ActivityInfo}/>
         </Stack.Navigator>
     );
 }
