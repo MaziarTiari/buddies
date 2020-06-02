@@ -4,7 +4,7 @@ import Container from "../Container/Container";
 import { LanguageContext } from "../../context/LanguageContext/LanguageContext";
 import useStyle from "./ProfileAbout.style";
 import TouchableRippleCircle from "../TouchableRippleCircle/TouchableRippleCircle";
-import { CategorizedInput } from "../../models/User";
+import { CategorizedInput } from "../../models/User/UserProfile";
 import { SessionContext } from "../../context/SessionContext/SessionContext";
 import Swiper from "react-native-swiper";
 import moment from 'moment';
@@ -141,12 +141,12 @@ const ProfileAbout = () => {
                     <Headline style={style.headline}>
                         {translations.profile.employments}
                     </Headline>
-                    {userProfile.jobs?.map(job => 
+                    {userProfile.jobs?.map((job: CategorizedInput) => 
                         <InfoItem 
                             keyText={job.category} 
                             valueText={
-                                job.title + job.institution ? " (" + 
-                                job.institution + ")" : ""}
+                                job.title + job.place ? " (" + 
+                                job.place + ")" : ""}
                         />
                     )}
                 </EditableSection>    

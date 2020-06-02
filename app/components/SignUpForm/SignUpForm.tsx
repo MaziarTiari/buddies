@@ -8,14 +8,14 @@ import { LanguageContext } from '../../context/LanguageContext/LanguageContext';
 import FormInput from '../FormInput/FormInput';
 import useStyles from './SignUpForm.style';
 import { ApiClient } from '../../api/ApiClient'
-import { INewUser, IUser } from '../../models/User';
+import { INewUser, IUser } from '../../models/User/User';
 import { getServiceUrl } from '../../api/channels';
 import { IForm, INITIAL_FORM, FormKey } from './constants';
 import { SessionContext } from '../../context/SessionContext/SessionContext';
 import LinkLabel from '../LinkLabel/LinkLabel';
 import HttpStatus from 'http-status-codes'
 
-const userService = new ApiClient<IUser>({ baseURL: "http://localhost:5000/api/users" });
+const userService = new ApiClient<IUser>({ baseURL: getServiceUrl("Users") });
 interface SignUpFormProps { 
     onSignedUp: (status: boolean) => void;
     onLogin: () => void;

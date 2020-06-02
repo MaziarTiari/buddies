@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react'
 import ProfilePersonalInfoForm from '../ProfilePersonalInfoForm/ProfilePersonalInfoForm'
-import { INewUserProfile, IUserProfile } from '../../models/User'
+import { INewUserProfile, IUserProfile } from '../../models/User/UserProfile'
 import { SessionContext } from '../../context/SessionContext/SessionContext'
 import { ApiClient } from '../../api/ApiClient'
 import { getServiceUrl } from '../../api/channels'

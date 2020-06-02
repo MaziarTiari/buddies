@@ -1,14 +1,3 @@
-export interface INewUser {
-    phone: string;
-    email: string;
-    password: string;
-}
-
-export interface IUser extends INewUser {
-    id: string;
-    salt: string;
-}
-
 export interface INewUserProfile {
     userId: string;
     username: string;
@@ -34,10 +23,5 @@ export interface IUserProfile extends INewUserProfile {
 export interface CategorizedInput {
     category: string;
     title: string;
-    institution?: string;
-}
-
-export interface IVerifyingUser {
-    email: string;
-    password: string;
+    place?: string;
 }

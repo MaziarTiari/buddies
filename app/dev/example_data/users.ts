@@ -1,4 +1,4 @@
-import { IUserProfile } from "../../models/User";
+import { IUserProfile } from "../../models/User/UserProfile";
 
 export const users: IUserProfile[] = [
     {
@@ -42,17 +42,17 @@ export const users: IUserProfile[] = [
         sex: "male",
         jobs: [
             {
-                institution: "Hochschule Worms",
+                place: "Hochschule Worms",
                 category: "Student",
                 title: "Angewandte Informatik",
             },
             {
-                institution: "Musterfirma GmbH",
+                place: "Musterfirma GmbH",
                 category: "Angestellter",
                 title: "IT-Beauftragter",
             },
             {
-                institution: "Kindergarten Heidelberg",
+                place: "Kindergarten Heidelberg",
                 category: "Angestellter",
                 title: "Hausmeister",
             },

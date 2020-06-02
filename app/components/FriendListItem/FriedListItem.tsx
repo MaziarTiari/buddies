@@ -1,7 +1,7 @@
 import React from "react";
 import { IconButton } from "react-native-paper";
 import { ProfileListItem } from "../ProfileListItem/ProfileListItem";
-import { IUserProfile } from "../../models/User";
+import { IUserProfile } from "../../models/User/UserProfile";
 
 export const FriedListItem = (Props: IUserProfile) => {
     const rightComponent = (

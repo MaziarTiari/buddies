@@ -4,7 +4,7 @@ import { IActivity } from "../../dev/example_data/fetchedActivityList";
 import { IconButton, Headline, TouchableRipple } from "react-native-paper";
 import { fontsizes } from "../../utils/font/font";
 import { users } from "../../dev/example_data/users";
-import { IUserProfile } from "../../models/User";
+import { IUserProfile } from "../../models/User/UserProfile";
 import { useStyle } from "./ActivityListItem.style";
 import Container from "../Container/Container";
 const defaultImg = require("../../../assets/img/default-activity-img.jpg");

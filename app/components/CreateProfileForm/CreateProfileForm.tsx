@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import moment from 'moment';
 import { ApiClient } from '../../api/ApiClient';
-import { IUserProfile, INewUserProfile } from '../../models/User';
+import { IUserProfile, INewUserProfile } from '../../models/User/UserProfile';
 import { SessionContext } from '../../context/SessionContext/SessionContext';
 import { CONFLICT } from 'http-status-codes';
 import ProfilePersonalInfoForm from '../ProfilePersonalInfoForm/ProfilePersonalInfoForm'

@@ -1,7 +1,7 @@
 import React, { createContext, Component } from "react";
 import { ISessionContextState, sessionContextInitialState, ActionState } from "./stateFrame";
 import { users } from "../../dev/example_data/users";
-import { IUserProfile, IUser } from "../../models/User";
+import { IUserProfile, IUser } from "../../models/User/User";
 
 export const SessionContext = createContext(sessionContextInitialState);
 

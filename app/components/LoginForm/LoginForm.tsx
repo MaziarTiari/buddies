@@ -7,11 +7,13 @@ import FormInput from '../FormInput/FormInput';
 import useStyle from './LoginForm.style'
 import { LanguageContext } from '../../context/LanguageContext/LanguageContext';
 import Button from '../Button/Button';
-import { IVerifyingUser, IUser, IUserProfile } from '../../models/User';
+import { IVerifyingUser, IUser } from '../../models/User/User';
+import { IUserProfile } from '../../models/User/UserProfile';
 import { ApiClient } from '../../api/ApiClient';
 import { SessionContext } from '../../context/SessionContext/SessionContext';
 import HttpStatus from 'http-status-codes'
 import LinkLabel from '../LinkLabel/LinkLabel';
+import { getServiceUrl } from '../../api/channels';
 
 interface LoginFormProps { 
     onLoggedIn: () => void;
@@ -24,8 +26,8 @@ const initialFormStatus = {
     password: false
 }
 
-const UserApi = new ApiClient<IVerifyingUser>({baseURL: "http://localhost:5000/api/users/login"})
-const UserProfileApi = new ApiClient<IUserProfile>({baseURL: "http://localhost:5000/api/userProfiles/"})
+const UserApi = new ApiClient<IVerifyingUser>({baseURL: getServiceUrl("Users/login")})
+const UserProfileApi = new ApiClient<IUserProfile>({baseURL: getServiceUrl("UserProfiles")})
 
 const LoginForm = ({ onLoggedIn, onRegister, onCreateUser }: LoginFormProps) => {
 

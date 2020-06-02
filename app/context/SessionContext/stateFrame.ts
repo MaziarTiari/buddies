@@ -1,5 +1,5 @@
-import { users } from "../../dev/example_data/users";
-import { IUserProfile, IUser } from "../../models/User";
+import { IUser } from '../../models/User/User'
+import { IUserProfile } from "../../models/User/UserProfile";
 
 export type ActionState = "on_tour" | "on_edit";
 

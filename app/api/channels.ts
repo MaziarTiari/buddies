@@ -1,14 +1,5 @@
-export type BuddiesResource =  'Users' | 'UserProfiles';
+export type BuddiesResource =  'Users' | 'UserProfiles' | 'Users/login';
 
 export const getServiceUrl = ( resource: BuddiesResource): string => {
-    return 'http://localhost:5000/api/' + resource + "/";
-}
-
-const serviceEndpoints = {
-    Users: {
-        login: "login/",
-    },
-    UserProfiles: {
-        username: "username/"
-    }
+    return 'http://40.113.114.86/api/' + resource + "/";
 }

@@ -12,8 +12,9 @@ import moment from 'moment';
 import { Selector } from '../Selector/Selector';
 import { isUndefinedOrEmpty } from '../../utils/generics';
 import { ApiClient } from '../../api/ApiClient';
-import { IUserProfile, INewUserProfile } from '../../models/User';
+import { IUserProfile, INewUserProfile } from '../../models/User/UserProfile';
 import { SessionContext } from '../../context/SessionContext/SessionContext';
+import { getServiceUrl } from '../../api/channels';
 
 export const INITIAL_FORM_STATUS = {
     username: false,
@@ -37,7 +38,7 @@ const INITIAL_FORM = {
 }
 
 const UserProfileApi = new ApiClient<IUserProfile>(
-    {baseURL: "http://localhost:5000/api/userprofiles/"}
+    {baseURL: getServiceUrl("UserProfiles")}
 );
 
 

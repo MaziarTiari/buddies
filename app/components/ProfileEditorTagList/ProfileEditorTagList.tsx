@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { View, FlatList, Text } from "react-native";
 import Container from "../Container/Container";
 import { SessionContext } from "../../context/SessionContext/SessionContext";
-import { CategorizedInput } from "../../models/User";
+import { CategorizedInput } from "../../models/User/UserProfile";
 import { TouchableRipple } from "react-native-paper";
 import useStyle from "./ProfileEditorTagList.style";
 import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
@@ -49,16 +49,16 @@ const ProfileEditorTagList = () => {
         setEditingItem(undefined);
     };
 
-    const handleSavePressed = (category: string, title: string, institution?: string) => {
+    const handleSavePressed = (category: string, title: string, place?: string) => {
         if (editingItem) {
             editingItem.category = category;
             editingItem.title = title;
-            editingItem.institution = institution;
+            editingItem.place = place;
         } else {
             const addItem: CategorizedInput = {
                 category: category,
                 title: title,
-                institution: institution,
+                place: place,
             };
             switch (config.type) {
                 case "hobbies":
@@ -79,9 +79,11 @@ const ProfileEditorTagList = () => {
     const handleDeletePressed = () => {
         switch (config.type) {
             case "hobbies":
-                profile.hobbies = profile.hobbies?.filter((item) => item !== editingItem);
+                profile.hobbies = profile.hobbies?.filter(
+                    (hobby: CategorizedInput) => hobby !== editingItem);
             case "jobs":
-                profile.jobs = profile.jobs?.filter((item) => item !== editingItem);
+                profile.jobs = profile.jobs?.filter(
+                    (job: CategorizedInput) => job !== editingItem);
         }
         setShowEditor(false);
         setEditingItem(undefined);
@@ -98,9 +100,9 @@ const ProfileEditorTagList = () => {
                     <Text numberOfLines={1} style={style.text}>
                         {item.title}
                     </Text>
-                    {item.institution && (
+                    {item.place && (
                         <Text numberOfLines={1} style={style.text}>
-                            {item.institution}
+                            {item.place}
                         </Text>
                     )}
                 </View>
@@ -160,7 +162,7 @@ const ProfileEditorTagList = () => {
                 }
                 preselectedCategory={editingItem?.category}
                 preselectedTitle={editingItem?.title}
-                preselectedInstitution={editingItem?.institution}
+                preselectedInstitution={editingItem?.place}
                 showDelete={editingItem !== undefined}
             />
         </Container>
