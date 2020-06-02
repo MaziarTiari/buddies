@@ -1,8 +1,8 @@
-import React, { useContext, useState, useEffect, useCallback } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import InputField, { InputFieldProps } from "../InputField/InputField";
-import { getResponsiveSize, fontsizes } from "../../utils/font/font";
+import { getResponsiveSize } from "../../utils/font/font";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { View, Text, StyleSheet, Platform, NativeSyntheticEvent, TextInputFocusEventData, TextProperties } from 'react-native';
+import { View, Text, StyleSheet, Platform, NativeSyntheticEvent, TextInputFocusEventData } from 'react-native';
 import { ThemeContext } from '../../context/ThemeContext/ThemeContext';
 import { LanguageContext } from '../../context/LanguageContext/LanguageContext';
 import { isEmail, isNumeric, isPhoneNumber } from '../../utils/validate';
@@ -103,7 +103,7 @@ const FormInput =
             <View>
             { showErrorMessage && 
             <Text style={{color:theme.App.errorColor}}>{errorMessage}</Text>}
-            { (verify && typeErrorMessage && typeErrorStatus && value !== "" && showTypeErrorMessage) &&
+            { (verify && typeErrorMessage !== undefined && typeErrorStatus && value !== "" && showTypeErrorMessage) &&
             <Text style={{color:theme.App.errorColor}}>{typeErrorMessage}</Text>}
             <InputField
                 secureTextEntry={Props.type && Props.type === "password"}
