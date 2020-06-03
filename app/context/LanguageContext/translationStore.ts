@@ -42,7 +42,7 @@ export interface IMultiLangLineList {
         gender_pick_labels: {
             male: string;
             female: string;
-            other: string;    
+            other: string;
         };
         languages: string;
         employments: string;
@@ -96,6 +96,7 @@ export interface IMultiLangLineList {
         cancel: string;
         delete: string;
     };
+    dateRangePreposition: string;
 }
 
 export type Language = "de" | "en";
@@ -168,7 +169,7 @@ export const translationStore: TranslationStore = {
             edit_hobbies: "Interessen bearbeiten",
             hobby_title_placeholder: "Beschreibung ...",
             hobby_institution_placeholder: "Institution, Verein, Gruppe ...",
-            
+
         },
         ScreenHeading: {
             register: "Registrieren",
@@ -184,7 +185,7 @@ export const translationStore: TranslationStore = {
             },
             submit_button: "Profil erstellen"
         },
-        login : {
+        login: {
             errorMessages: {
                 email: "Die Email Adresse existiert nicht",
                 password: "Das Passwort ist nicht korrekt"
@@ -206,6 +207,7 @@ export const translationStore: TranslationStore = {
             cancel: "Abbrechen",
             delete: "Löschen",
         },
+        dateRangePreposition: "bis",
     },
     en: {
         menu_profile: "Profile",
@@ -284,7 +286,7 @@ export const translationStore: TranslationStore = {
             },
             submit_button: "Create Profile"
         },
-        login : {
+        login: {
             errorMessages: {
                 email: "Couldn't find email address",
                 password: "Incorrect password"
@@ -306,5 +308,6 @@ export const translationStore: TranslationStore = {
             cancel: "Cancel",
             delete: "Delete",
         },
+        dateRangePreposition: "to",
     },
 };
