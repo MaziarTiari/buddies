@@ -31,7 +31,7 @@ const ActivityInfo = () => {
 
     return (
         <Container layout="root" type="screen">
-            <ScrollView style={{ flex: 1, width: "100%" }}>
+            <ScrollView style={{ flex: 1, alignSelf:"stretch" }}>
 
                 {/* Images */}
                 <Swiper
