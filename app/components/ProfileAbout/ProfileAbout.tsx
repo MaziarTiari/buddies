@@ -15,7 +15,7 @@ import { Headline } from "react-native-paper";
 import ProfileAboutMenu from "./Menu";
 import { RouteName } from "../../navigation/Navigation.config";
 import { IProfileEditorTagListConfig } from '../ProfileEditorTagList/ProfileEditorTagList'
-import renderPagination from "../SwiperPagination/SwiperPagination";
+import SwiperPagination from "../SwiperPagination/SwiperPagination";
 
 // TODO: Remove example_img Array and use Profile Context instead
 const example_img: string[] = [
@@ -43,7 +43,7 @@ const ProfileAbout = () => {
                 <View style={{ position: "relative" }}>
                     <Swiper
                         containerStyle={style.galleryContainer}
-                        renderPagination={renderPagination}
+                        renderPagination={(index, total) => <SwiperPagination index={index} total={total} />}
                     >
                         {example_img.length > 0
                             ? (example_img.map((url, index) => (
