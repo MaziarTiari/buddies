@@ -1,34 +1,35 @@
 import { ImageSourcePropType } from "react-native";
+import { CategorizedInput } from "../../models/User/UserProfile";
 
 export interface IActivity {
+
     ownerUserId: string;
     id: string;
-    title: string;
-    location: string;
-    allowedApplyNumber: number;
-    membersUserIds?: number[];
-    subjects?: string[];
-    imageName: string;
-    description?: string;
-    startDate?: Date;
-    endDate?: Date;
-    startTime?: Date;
-    endTime?: Date;
-    allowPublish?: boolean;
-    applyCriteria?: ActivityApplyCriteria;
-}
 
-export interface ActivityApplyCriteria {
-    ids?: number[];
-    excludedIds?: number[];
-    location?: string;
-    languages?: string[];
-    educationalInstitutes?: string[];
-    companies?: string[];
-    sex?: string[];
-    birthdays?: Date[];
-    relationshipStates?: string[];
-    jobs?: string[];
+    title: string;
+    hobbies?: CategorizedInput[];
+    startDate: number;
+    endDate?: number;
+    description: string;
+    location: string;
+    imageName: string; // TODO
+    allowPublish?: boolean;
+
+    memberUserIds?: string[];
+    applicantUserIds?: string[];
+
+    maxApplications?: number;
+    applicationDeadline?: number;
+    visibility: "public" | "friends" | "private";
+
+    reqSex?: string;
+    reqAge?: number;
+    reqLanguage?: string[];
+    reqLocation?: string;
+    reqLocationRadius?: number;
+    reqRelationshipState?: string;
+    reqJob?: CategorizedInput[];
+
 }
 
 export const activities: IActivity[] = [
@@ -36,30 +37,27 @@ export const activities: IActivity[] = [
         ownerUserId: "2",
         id: "1",
         title: "Mountain Bike",
-        location: "Heidelberg, Pholosophenweg",
-        allowedApplyNumber: 6,
+        location: "Heidelberg, Philosophenweg",
+        maxApplications: 6,
         imageName: "mountain-bike.jpg",
-        membersUserIds: [1, 2],
-        startDate: new Date(2020, 26, 5, 6, 50),
-        endDate: new Date(2020, 26, 5, 16, 0),
-    },
-    {
-        ownerUserId: "1",
-        id: "2",
-        title:
-            "Meditation mit einem sehr langen Text als Titel der dann evtl abgeschnitten wird",
-        location: "Worms",
-        allowedApplyNumber: 10,
-        imageName: "meditation.jpg",
-        membersUserIds: [1, 2],
-    },
-    {
-        ownerUserId: "1",
-        id: "3",
-        title: "kleiner Text",
-        location: "Worms",
-        allowedApplyNumber: 3,
-        imageName: "meditation.jpg",
-        membersUserIds: [1, 2],
+        startDate: new Date(2020, 26, 5, 6, 50).getTime() / 1000,
+        endDate: new Date(2020, 26, 5, 16, 0).getTime() / 1000,
+        visibility: "public",
+        description: "Wir starten am Philosophenweg und fahren anschließend den Berg hoch bis zum Ende der Physikstraße",
+        hobbies: [
+            { category: "Sport", title: "Fahrrad" },
+            { category: "Natur", title: "Erkunden" }
+        ],
+        allowPublish: true,
+        memberUserIds: ["1", "2", "3"],
+        applicantUserIds: ["4"],
+        reqSex: "male",
+        reqAge: 16,
+        reqLocation: "Heidelberg",
+        reqLocationRadius: 10,
+        reqRelationshipState: "single",
+        reqJob: [{ title: "Angewandte Informatik", category: "Student" }],
+        applicationDeadline: new Date(2020, 25, 5, 18).getTime() / 1000,
+
     },
 ];

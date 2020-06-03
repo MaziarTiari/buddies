@@ -21,7 +21,7 @@ const ActivityListItem = (Props: IActivity) => {
 
     const owner = users.find((user) => user.id === Props.ownerUserId) as IUserProfile;
     const ownerName = owner.firstname + " " + owner.lastname;
-    const participatesCount = Props.membersUserIds?.length + "/" + Props.maxApplications;
+    const participatesCount = Props.memberUserIds?.length + "/" + Props.maxApplications;
     const titleContent = Props.title;
     const imageSource = getImageSource(Props.imageName);
     const dateString = getDateRangeString(Props.startDate, translations.dateRangePreposition, Props.endDate)
