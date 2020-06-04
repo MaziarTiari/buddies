@@ -60,4 +60,23 @@ export const activities: IActivity[] = [
         applicationDeadline: new Date(2020, 25, 5, 18).getTime() / 1000,
 
     },
+    {
+        ownerUserId: "3",
+        id: "2",
+        title: "Mediation",
+        location: "Worms, Hintergasse 13",
+        imageName: "meditation.jpg",
+        startDate: new Date(2020, 24, 5, 18, 0).getTime() / 1000,
+        endDate: new Date(2020, 24, 5, 20, 0).getTime() / 1000,
+        visibility: "public",
+        description: "Gemeinsames Meditieren in einer Gruppe sorgt für maximales Entspannes.",
+        hobbies: [
+            { category: "Natur", title: "Wohlfühlen" }
+        ],
+        allowPublish: true,
+        memberUserIds: ["1", "3"],
+        applicantUserIds: ["3"],
+        applicationDeadline: new Date(2020, 23, 5, 18).getTime() / 1000,
+
+    },
 ];
