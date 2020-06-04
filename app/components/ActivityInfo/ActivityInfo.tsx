@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { View, Text, ScrollView, Image } from "react-native";
 import useStyle from "./ActivityInfo.style";
 import { LanguageContext } from "../../context/LanguageContext/LanguageContext";
-import { IActivity } from "../../dev/example_data/fetchedActivityList";
+import { IActivity, activities } from "../../dev/example_data/fetchedActivityList";
 import Container from "../Container/Container";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import EditableSection from "../EditableSection/EditableSection";
@@ -31,7 +31,7 @@ const ActivityInfo = () => {
 
     return (
         <Container layout="root" type="screen">
-            <ScrollView style={{ flex: 1, alignSelf:"stretch" }}>
+            <ScrollView style={{ flex: 1, alignSelf: "stretch" }}>
 
                 {/* Images */}
                 <Swiper
@@ -63,7 +63,7 @@ const ActivityInfo = () => {
                     <TouchableRippleCircle onPress={() => { }}>
                         <View style={style.innerRippleContainer}>
                             <Text style={style.headline}>
-                                {activity.memberUserIds ? activity.memberUserIds.length : 0}
+                                {(activity.memberUserIds ? activity.memberUserIds.length : 0) + (activity.maxApplications ? " / " + activity.maxApplications : "")}
                             </Text>
                             <Text style={style.text}>{translations.activity.members}</Text>
                         </View>
@@ -91,8 +91,6 @@ const ActivityInfo = () => {
                 <EditableSection editable={true} onEdit={() => { }}>
                     <Headline style={style.headline}>{translations.activity.criteria}</Headline>
                     <InfoItem keyText={translations.activity.visibility} valueText={activity.visibility} />
-                    {activity.maxApplications !== undefined &&
-                        <InfoItem keyText={translations.activity.maxApplications} valueText={activity.maxApplications.toString()} />}
                     {activity.applicationDeadline !== undefined &&
                         <InfoItem keyText={translations.activity.applicationDeadline} valueText={moment.unix(activity.applicationDeadline).format("LLL")} />}
                     {activity.reqLocation !== undefined &&
