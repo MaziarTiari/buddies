@@ -169,7 +169,7 @@ export const translationStore: TranslationStore = {
             gender: "Geschlecht",
             gender_pick_labels: {
                 female: "Weiblich",
-                male: "Mänlich",
+                male: "Männlich",
                 other: "Drittes Geschlecht"
             },
             languages: "Sprachen",
@@ -238,7 +238,7 @@ export const translationStore: TranslationStore = {
             visibility: "Sichbarkeit",
             maxApplications: "Max. Teilnehmerzahl",
             applicationDeadline: "Bewerbungsfrist",
-            reqLocation: "Herkunft + Umkreis",
+            reqLocation: "Wohnort + Umkreis",
             reqSex: "Geschlecht",
             reqAge: "Mindestalter",
             reqRelationshipState: "Beziehungsstatus",
