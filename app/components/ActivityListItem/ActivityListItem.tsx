@@ -7,10 +7,11 @@ import { users } from "../../dev/example_data/users";
 import { IUserProfile } from "../../models/User/UserProfile";
 import { useStyle } from "./ActivityListItem.style";
 import Container from "../Container/Container";
-import { useNavigation, CommonActions } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import { RouteName } from "../../navigation/Navigation.config";
 import { LanguageContext } from "../../context/LanguageContext/LanguageContext";
 import { getDateRangeString } from "../../utils/date";
+import { SessionContext } from "../../context/SessionContext/SessionContext";
 
 const defaultImg = require("../../../assets/img/default-activity-img.jpg");
 
@@ -18,6 +19,7 @@ const ActivityListItem = (Props: IActivity) => {
     const { styles, theme } = useStyle();
     const navigation = useNavigation();
     const { translations } = useContext(LanguageContext);
+    const { setActivity } = useContext(SessionContext);
 
     const owner = users.find((user) => user.id === Props.ownerUserId) as IUserProfile;
     const ownerName = owner.firstname + " " + owner.lastname;
@@ -26,7 +28,11 @@ const ActivityListItem = (Props: IActivity) => {
     const imageSource = getImageSource(Props.imageName);
     const dateString = getDateRangeString(Props.startDate, translations.dateRangePreposition, Props.endDate)
 
-    const onPress = () => { navigation.dispatch(CommonActions.navigate({ name: RouteName.Activity.Info, params: Props })) };
+    const onPress = () => {
+        setActivity(Props);
+        navigation.navigate(RouteName.Activity.Info)
+    };
+
     const onParticipates = () => { };
     const onChat = (event?: GestureResponderEvent) => { };
     const onFavorite = () => { };

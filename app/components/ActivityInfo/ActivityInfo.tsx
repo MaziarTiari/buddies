@@ -2,9 +2,8 @@ import React, { useContext } from "react";
 import { View, Text, ScrollView, Image } from "react-native";
 import useStyle from "./ActivityInfo.style";
 import { LanguageContext } from "../../context/LanguageContext/LanguageContext";
-import { IActivity, activities } from "../../dev/example_data/fetchedActivityList";
 import Container from "../Container/Container";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import EditableSection from "../EditableSection/EditableSection";
 import { Headline } from "react-native-paper";
 import InfoItem from "../InfoItem/InfoItem";
@@ -12,6 +11,7 @@ import moment from "moment";
 import TouchableRippleCircle from "../TouchableRippleCircle/TouchableRippleCircle";
 import Swiper from "react-native-swiper";
 import SwiperPagination from "../SwiperPagination/SwiperPagination";
+import { SessionContext } from "../../context/SessionContext/SessionContext";
 
 // TODO: Remove example_img Array and use Session Context instead
 const example_img: string[] = [
@@ -23,9 +23,8 @@ const example_img: string[] = [
 const ActivityInfo = () => {
     const style = useStyle();
     const navigation = useNavigation();
-    const route = useRoute();
     const { translations } = useContext(LanguageContext);
-    const activity = route.params as IActivity;
+    const { activity } = useContext(SessionContext);
 
     navigation.setOptions({ title: activity.title });
 
