@@ -57,22 +57,25 @@ const LoginForm = (Props: LoginFormProps) => {
             setVerify(true); 
             return;
         }
-        await userApi.VerifyUser({email: email, password: password})
-        .then(res => {
-            session.setUser(res);
-            userProfileApi.Get<IUserProfile>(res.id)
-            .then(res => {
-                session.setUserProfile(res);
+
+        try {
+            const user = await userApi.VerifyUser({ email: email, password: password });
+            session.setUser(user);
+            try {
+                const userProfile = await userProfileApi.Get<IUserProfile>(user.id);
+                session.setUserProfile(userProfile);
                 return Props.onSubmit("login");
-            }).catch((error: AxiosError) => {
-                if(error.response?.status === NOT_FOUND)
-                    return setResponceError(translations.login.errorMessages.email);
-                if(error.response?.status === UNAUTHORIZED)
-                    return setResponceError(translations.login.errorMessages.password);
-                else
-                    return setResponceError(translations.apiRequestError.responceError);
-            });
-        })
+            } catch (error) {
+                Props.onSubmit("create_profile");
+            }
+        } catch(error) {
+            if((error as AxiosError).response?.status === NOT_FOUND)
+                return setResponceError(translations.login.errorMessages.email);
+            else if((error as AxiosError).response?.status === UNAUTHORIZED)
+                return setResponceError(translations.login.errorMessages.password);
+            else
+                return setResponceError(translations.apiRequestError.responceError);
+        }
     }
 
     return (
