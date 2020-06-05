@@ -1,88 +1,38 @@
-import { AxiosRequestConfig } from "axios";
-import { Api, ApiResponse } from "./Api";
+import { Api } from "./Api";
+import { AxiosRequestConfig, AxiosResponse, AxiosError } from "axios";
+import { IUserProfile } from "../models/User/UserProfile";
+import { getServiceUrl } from "./channels";
 
-interface Config extends AxiosRequestConfig {
-    baseURL: string;
-}
-
-export interface ApiClient<T> extends Api{
-    Post<T,B>(data: B, url?: string, config?: AxiosRequestConfig) : Promise<ApiResponse<T>>;
-    Get<T>(url?: string, config?: AxiosRequestConfig) : Promise<ApiResponse<T>>;
-    Delete(url: string, config?: AxiosRequestConfig) : Promise<ApiResponse<number>>;
-    Update<T,B = T>(data: B, url: string, config?: AxiosRequestConfig) : Promise<ApiResponse<T>>;
-}
-
-export class ApiClient<T> extends Api{
-    constructor(config: Config){
-        super(config)
-
-        this.Get = this.Get.bind(this);
-        this.Post = this.Post.bind(this);
-        this.Delete = this.Delete.bind(this);
+export class ApiClient<T> extends Api<T> {
+    constructor(config: AxiosRequestConfig) {
+        super(config);
+        this.Create = this.Create.bind(this);
         this.Update = this.Update.bind(this);
-    }
-    
-    /**
-     * @template T - `TYPE: expected object`
-     * @template B - `BODY: Request Body`
-     * @param url - `Resource (eg. /Users)`
-     * @param data `Request body`
-     * @param config
-     */
-    async Post<T,B>(data: B, url: string = "/", config?: AxiosRequestConfig) 
-            : Promise<ApiResponse<T>> 
-    {
-        let response = new ApiResponse<T>();
-        try { 
-            const res = await this.post<T,B>(url , data, config);
-            response.data = this.success(res);
-        } catch(e) {
-            response.error = this.error(e);
-        }
-        return response;
+        this.GetAll = this.GetAll.bind(this);
     }
 
-    /**
-     * @template T - `TYPE: expected object`
-     * @param url - `Resource (eg. /Users) has defaull("/")`
-     * @param config
-     */
-    async Get(url: string = "/", config?: AxiosRequestConfig) 
-            : Promise<ApiResponse<T>> 
-    {
-        let response = new ApiResponse<T>();
-        try {
-            const res = await this.get<T>(url, config);
-            response.data = this.success(res);
-        } catch(e) {
-            response.error =  this.error(e);
-        }
-        return response;
+    public Get<T>(id: string) {
+        return this.get<T>(id).then(this.success)
+            .catch((error: AxiosError) => {throw error});
     }
 
-    async Delete(url: string, config?: AxiosRequestConfig) 
-            : Promise<ApiResponse<number>> 
-    {
-        let response = new ApiResponse<number>();
-        try {
-            const res = await this.delete<number>(url, config);
-            response.data = this.success(res);
-        } catch(e) {
-            response.error =  this.error(e);
-        }
-        return response;
+    public GetAll<T>(url?: string) {
+        return this.get<T>(url).then(this.success)
+            .catch((error: AxiosError) => {throw error});
     }
 
-    async Update<T,B = T>(data: B, url: string, config?: AxiosRequestConfig)
-            : Promise<ApiResponse<T>>
-    {
-        let response = new ApiResponse<T>();
-        try { 
-            const res = await this.put<T,B>(url , data, config);
-            response.data = this.success(res);
-        } catch(e) {
-            response.error = this.error(e);
-        }
-        return response;
+    public Create<T,B=T>(obj: B) {
+        return this.post<T,B>("", obj).then(this.success)
+            .catch((error: AxiosError) => {throw error});
+    }
+
+    public Update<T,B=T>(id: string, newObj: B) {
+        return this.put<T,B>(id, newObj).then(this.success)
+            .catch((error: AxiosError) => {throw error});
     }
 }
+
+export const UserProfileApi = new ApiClient<IUserProfile>(
+    {baseURL: getServiceUrl("UserProfiles")}
+);
+

@@ -1,5 +1,5 @@
-import axios, { AxiosError, AxiosRequestConfig, AxiosResponse, AxiosInstance } from "axios";
-
+import axios, { AxiosRequestConfig, AxiosResponse, AxiosError } from "axios";
+import { apiConfig } from './Api.config';
 /**
  * ES6 Axios Class.
  *
@@ -19,19 +19,8 @@ import axios, { AxiosError, AxiosRequestConfig, AxiosResponse, AxiosInstance } f
  *   }
  * }
  */
-type ServerError = { status: number, description: string }
 
-export interface ApiResponse<T> {
-    data?: T;
-    error?: ServerError;
-}
-
-export class ApiResponse<T> {
-    data?: T;
-    error?: ServerError;
-}
-
-export class Api {
+export class Api<T> {
     [x:string]: any;
     /**
      * Creates an instance of Api.
@@ -39,8 +28,8 @@ export class Api {
      * @param {import("axios").AxiosRequestConfig} [config] - axios configuration.
      * @memberof Api
      */
-    public constructor (config: AxiosRequestConfig) {
-        this.api = axios.create(config);
+    public constructor (config?: AxiosRequestConfig) {
+        this.api = axios.create(Object.assign({} , apiConfig, config));
 
         this.getUri = this.getUri.bind(this);
         this.request = this.request.bind(this);
@@ -99,7 +88,7 @@ export class Api {
      * @returns {Promise<R>} HTTP `axios` response payload.
      * @memberof Api
      */
-    protected get<T, R = AxiosResponse<T>> (url: string, config?: AxiosRequestConfig): Promise<R> {
+    protected get<T, R = AxiosResponse<T>> (url?: string, config?: AxiosRequestConfig): Promise<R> {
         return this.api.get(url, config);
     }
 
@@ -195,17 +184,7 @@ export class Api {
         return response.data;
     }
 
-    protected error(e: any): ServerError {
-        let error: ServerError = {status: 0, description: ""};
-        if(e.response.status) {
-            error.status = (e as AxiosError).response!.status;
-        }
-        if((e as AxiosError).response?.statusText) {
-            error.description = (e as AxiosError).response?.statusText!;
-        }
-        if(error.description === "") {
-            error.description = e;
-        }
-        return error;
+    protected error(error: AxiosError<Error>) {
+        throw error;
     }
 }

@@ -1,5 +1,4 @@
 import React, { useContext } from 'react'
-import moment from 'moment';
 import { ApiClient } from '../../api/ApiClient';
 import { IUserProfile, INewUserProfile } from '../../models/User/UserProfile';
 import { SessionContext } from '../../context/SessionContext/SessionContext';
@@ -7,13 +6,14 @@ import { CONFLICT } from 'http-status-codes';
 import ProfilePersonalInfoForm from '../ProfilePersonalInfoForm/ProfilePersonalInfoForm'
 import { LanguageContext } from '../../context/LanguageContext/LanguageContext';
 import { getServiceUrl } from '../../api/channels';
+import { AuthenticationStatus } from '../../../App';
 
 const UserProfileApi = new ApiClient<IUserProfile>(
     { baseURL: getServiceUrl("UserProfiles") }
 );
 
 interface CreateProfileFormProps {
-    onSubmit: () => void;    
+    onSubmit: (status: AuthenticationStatus) => void;    
 }
 
 const CreateProfileForm = (Props: CreateProfileFormProps) => {
@@ -25,7 +25,7 @@ const CreateProfileForm = (Props: CreateProfileFormProps) => {
         .then(res => {
             if(res.data && !res.error) {
                 session.setUserProfile(res.data);
-                Props.onSubmit();
+                Props.onSubmit("profile_created");
             }
             else {
                 if(res.error?.status === CONFLICT) {
@@ -38,7 +38,7 @@ const CreateProfileForm = (Props: CreateProfileFormProps) => {
 
     return (
         <ProfilePersonalInfoForm 
-            onSubmit={onSubmit} submitTitle={translations.createProfile.submit_button}
+            onSubmit={onSubmit} buttonTitle={translations.createProfile.submit_button}
             title={translations.ScreenHeading.createProfile}/>
     );
 }

@@ -6,6 +6,9 @@ import { ApiClient } from '../../api/ApiClient'
 import { getServiceUrl } from '../../api/channels'
 import { useNavigation } from '@react-navigation/native'
 import { RouteName } from '../../navigation/Navigation.config'
+import { METHOD_NOT_ALLOWED, NO_CONTENT, NOT_FOUND } from 'http-status-codes'
+import { AxiosError } from 'axios'
+import { LanguageContext } from '../../context/LanguageContext/LanguageContext'
 
 const UserProfileApi = new ApiClient<IUserProfile>({
     baseURL: getServiceUrl("UserProfiles")
@@ -14,7 +17,9 @@ const UserProfileApi = new ApiClient<IUserProfile>({
 const ProfileEditorPersonal = () => {
     const session = useContext(SessionContext);
     const userProfile = useState(session.userProfile)[0];
+    const [responceError, setResponceError] = useState("");
     const navigation = useNavigation();
+    const { translations } = useContext(LanguageContext);
 
     const onSubmit = async (newUserProfile: INewUserProfile) => {
         let user = { ...session.userProfile };
@@ -23,20 +28,28 @@ const ProfileEditorPersonal = () => {
                 (user as any)[i] = (newUserProfile as any)[i]
             }
         })
-        await UserProfileApi.Update<number, IUserProfile>(user, user.userId)
-        .then(res => {
-            if(res.error) {
-                console.error(res.error);
-            } else {
-                session.setUserProfile(user);
-                navigation.navigate(RouteName.Profile.About);
+        await UserProfileApi.Update<number, IUserProfile>(user.id, user)
+        .then(() => {
+            session.setUserProfile(user);
+            return navigation.navigate(RouteName.Profile.About);
+        }).catch( (error: AxiosError) => {
+            if(!error.response) {
+                return console.error(error);
             }
-        }).catch(err => console.error(err));
+            if(error.response.status === METHOD_NOT_ALLOWED) {
+                return console.error(error.response);
+            } else if (error.response.status === NOT_FOUND) {
+                return setResponceError(translations.createProfile.errorMessage.notFound);
+            } else {
+                return setResponceError(translations.apiRequestError.responceError);
+            }
+        });
     }
     
     return (
-        <ProfilePersonalInfoForm
-            onSubmit={onSubmit} submitTitle={"change"} title="bearbeiten" 
+        <ProfilePersonalInfoForm // TODO change hard coded titles
+            responceError={responceError}
+            onSubmit={onSubmit} buttonTitle={"change"} title="bearbeiten" 
             defaultValues={{
                 birthDate: userProfile.birthDate, city: userProfile.city, 
                 firstname: userProfile.firstname, lastname: userProfile.lastname,

@@ -3,30 +3,31 @@ import { Text } from "react-native";
 import Container from "../Container/Container";
 import { LanguageContext } from "../../context/LanguageContext/LanguageContext";
 import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
-import { Selector } from "../Selector/Selector";
 import { Language } from "../../context/LanguageContext/translationStore";
 import { IThemeType } from "../../context/ThemeContext/themeStore";
+import { Selector } from '../Selector/Selector'
 
 const FeedList = () => {
     const lang = useContext(LanguageContext);
-    const {theme, changeTheme, availableThemeTypes, themeType} = useContext(ThemeContext);
+	const theme = useContext(ThemeContext);
     return (
 		<Container type="screen" layout="root">
 			<Container type="screen" layout="body">
-			<Text style={{ color: theme.App.primaryText }}>
-				{lang.translations.menu_activities}
-			</Text>
-			<Selector 
-				items={lang.availableLanguages} selectedItem={lang.language} 
-				onSelect={l => lang.changeLanguage(l as Language)} modalTitle="Select"
-			/>
-			<Selector 
-					items={availableThemeTypes} selectedItem={themeType} 
-					onSelect={l => changeTheme(l as IThemeType)} modalTitle="Select"
-			/>
-			<Text style={{ color: theme.App.secondaryText }}>
-			
-			</Text>
+				<Text style={{ color: theme.theme.App.primaryText }}>
+					{lang.translations.menu_activities}
+				</Text>
+				<Selector 
+					items={lang.availableLanguages} selectedItem={lang.language} 
+					onSelect={l => lang.setLanguage(l as Language)} modalTitle="Select"
+				/>
+				<Selector
+					style={{height: 100}}
+					placeholder={theme.themeType}
+					items={theme.availableThemeTypes.map(t => t as string)} 
+					selectedItem={theme.themeType as string}
+					onSelect={l => theme.setThemeType(l as IThemeType)} 
+					modalTitle="Select"
+				/>
 			</Container>
 		</Container>
     );

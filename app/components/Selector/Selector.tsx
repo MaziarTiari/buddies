@@ -4,7 +4,6 @@ import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
 import { TouchableRipple, IconButton } from "react-native-paper";
 import FormInput from "../FormInput/FormInput";
 import { getResponsiveSize, fontsizes } from "../../utils/font/font";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 interface SelectorProps {
     error?: boolean;
@@ -13,7 +12,7 @@ interface SelectorProps {
     items: string[];
     onSelect: (item: string) => void;
 	selectedItem?: string;
-	style?: StyleProp<TextStyle>
+    style?: StyleProp<TextStyle>
 }
 export function Selector( Props: SelectorProps) {
     const { theme } = useContext(ThemeContext);
@@ -28,9 +27,9 @@ export function Selector( Props: SelectorProps) {
         Props.onSelect(Props.items[i]);
     }
     return (
-        <View>
+        <View style={{flex:1}}>
             <TouchableRipple 
-                style={{flex:1}}
+                style={[{flex:1}, Props.style]}
                 onPress={() => setModalVisible(!modalVisible)}>
                 <FormInput
                     verify={Props.error}

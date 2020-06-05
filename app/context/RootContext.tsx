@@ -8,13 +8,13 @@ export default class RootContextProvider extends Component {
     render() {
         return (
             <MenuProvider>
-            <LanguageContextProvider>
-                <ThemeContextProvider>
-                    <SessionContextProvider>
-                        {this.props.children}
-                    </SessionContextProvider>
-                </ThemeContextProvider>
-            </LanguageContextProvider>
+                <LanguageContextProvider>
+                    <ThemeContextProvider>
+                        <SessionContextProvider>
+                            {this.props.children}
+                        </SessionContextProvider>
+                    </ThemeContextProvider>
+                </LanguageContextProvider>
             </MenuProvider>
         );
     }

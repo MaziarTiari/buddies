@@ -1,47 +1,40 @@
 import React, { useState, useContext } from 'react'
-import Container from '../Container/Container';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { getResponsiveSize } from '../../utils/font/font';
-import { Headline } from 'react-native-paper';
 import FormInput from '../FormInput/FormInput';
-import useStyle from './LoginForm.style'
 import { LanguageContext } from '../../context/LanguageContext/LanguageContext';
-import Button from '../Button/Button';
-import { IVerifyingUser, IUser } from '../../models/User/User';
-import { IUserProfile } from '../../models/User/UserProfile';
-import { ApiClient } from '../../api/ApiClient';
 import { SessionContext } from '../../context/SessionContext/SessionContext';
-import HttpStatus from 'http-status-codes'
-import LinkLabel from '../LinkLabel/LinkLabel';
+import {userApi} from '../../api/User/UserApi';
+import { AuthenticationStatus } from '../../../App';
+import FormWithRequest from '../FormWithRequest/FormWithRequest';
+import { ApiClient } from '../../api/ApiClient';
+import { IUserProfile } from '../../models/User/UserProfile';
 import { getServiceUrl } from '../../api/channels';
-
-interface LoginFormProps { 
-    onLoggedIn: () => void;
-    onRegister: () => void;
-    onCreateUser: () => void;
-}
+import { AxiosError } from 'axios';
+import { NOT_FOUND, UNAUTHORIZED } from 'http-status-codes';
 
 const initialFormStatus = {
     email: false,
     password: false
 }
 
-const UserApi = new ApiClient<IVerifyingUser>({baseURL: getServiceUrl("Users/login")})
-const UserProfileApi = new ApiClient<IUserProfile>({baseURL: getServiceUrl("UserProfiles")})
+interface LoginFormProps {
+    onSubmit: (status: AuthenticationStatus) => void;
+}
 
-const LoginForm = ({ onLoggedIn, onRegister, onCreateUser }: LoginFormProps) => {
+const userProfileApi = 
+    new ApiClient<IUserProfile>({ baseURL: getServiceUrl("UserProfiles") });
 
+const LoginForm = (Props: LoginFormProps) => {
+
+    const [responceError, setResponceError] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [errorStatus, setErrorStatus] = useState<typeof initialFormStatus>(
-        initialFormStatus)
+        initialFormStatus);
     const [verify, setVerify] = useState(false);
     const [showPasswordError, setShowPasswordError] = useState(false);
     const [showEmailError, setShowEmailError] = useState(false);
-    
-    const styles = useStyle();
     const { translations } = useContext(LanguageContext);
-    const user = useContext(SessionContext);
+    const session = useContext(SessionContext);
 
     const setErrorsToDefault = () => {
         setVerify(false);
@@ -60,73 +53,55 @@ const LoginForm = ({ onLoggedIn, onRegister, onCreateUser }: LoginFormProps) => 
 
     const onSubmit = async () => {
         const formIsValid = await validateForm();
-        if(!formIsValid) {setVerify(true); return}
-        const verifyingUser: IVerifyingUser = { email: email, password: password};
-        await UserApi.Post<IUser,IVerifyingUser>(verifyingUser)
-        .then( async res => {
-            if(res.error) {
-                if(res.error.status === HttpStatus.UNAUTHORIZED)
-                    setShowPasswordError(true)
-                if(res.error.status === HttpStatus.NOT_FOUND)
-                    setShowEmailError(true);
-            }
-            if(res.data) {
-                user.setUser(res.data);
-                const userProfile = await UserProfileApi.Get<IUserProfile>(res.data.id);
-                return userProfile;
-            }
-        }).then(res => {
-            if(res?.data) {
-                user.setUserProfile(res.data)
-                onLoggedIn();
-            } else {
-                onCreateUser();
-                if(res?.error) console.error(res.error)
-            }
+        if(!formIsValid) {
+            setVerify(true); 
+            return;
+        }
+        await userApi.VerifyUser({email: email, password: password})
+        .then(res => {
+            session.setUser(res);
+            userProfileApi.Get<IUserProfile>(res.id)
+            .then(res => {
+                session.setUserProfile(res);
+                return Props.onSubmit("login");
+            }).catch((error: AxiosError) => {
+                if(!error.response) 
+                    return setResponceError(translations.apiRequestError.responceError);
+                if(error.response.status === NOT_FOUND)
+                    return setResponceError(translations.login.errorMessages.email);
+                if(error.response.status === UNAUTHORIZED)
+                    return setResponceError(translations.login.errorMessages.password);
+            });
         })
-        .catch(err => console.error(err));
     }
 
     return (
-        <Container type="screen" layout="root">
-            <Container type="screen" layout="body">
-                <KeyboardAwareScrollView 
-                    resetScrollToCoords={{ x: 0, y: 0 }} enableOnAndroid
-                    extraHeight={getResponsiveSize(20)} 
-                    contentContainerStyle={styles.contentContainer}
-                >
-                    <Headline style={styles.heading}>
-                        {translations.ScreenHeading.login}
-                    </Headline>
-                    <FormInput
-                        type="email" required 
-                        errorStatusChange={
-                            err => setErrorStatus({...errorStatus, email: err})
-                        }
-                        showErrorMessage={showEmailError}
-                        errorMessage={translations.login.errorMessages.email}
-                        verify={verify}
-                        onChangeText={setEmail}
-                        placeholder={translations.profile.email}/>
-                    <FormInput
-                        type="password"
-                        errorMessage={translations.login.errorMessages.password}
-                        required errorStatusChange={
-                            err => setErrorStatus({...errorStatus, password: err})
-                        }
-                        showErrorMessage={showPasswordError}
-                        verify={verify}
-                        onChangeText={setPassword}
-                        placeholder={translations.register.password}/>
-                    <Button
-                        onPress={onSubmit}
-                        title={translations.login.submit_button} 
-                        style={styles.submitButton}/>
-                    <LinkLabel 
-                        onPress={onRegister} label={translations.register.submit_button}/>
-                </KeyboardAwareScrollView>
-            </Container>
-        </Container>
+        <FormWithRequest
+            linkLabel={translations.register.submit_button} 
+            onLink={() => Props.onSubmit(null)}
+            buttonTitle={translations.login.submit_button} onSubmit={onSubmit}
+            heading={translations.ScreenHeading.login} responseError={responceError}>
+            <FormInput
+                type="email" required 
+                errorStatusChange={
+                    err => setErrorStatus({...errorStatus, email: err})
+                }
+                showErrorMessage={showEmailError}
+                errorMessage={translations.login.errorMessages.email}
+                verify={verify}
+                onChangeText={setEmail}
+                placeholder={translations.profile.email}/>
+            <FormInput
+                type="password"
+                errorMessage={translations.login.errorMessages.password}
+                required errorStatusChange={
+                    err => setErrorStatus({...errorStatus, password: err})
+                }
+                showErrorMessage={showPasswordError}
+                verify={verify}
+                onChangeText={setPassword}
+                placeholder={translations.register.password}/>
+        </FormWithRequest>
     )
 }
 

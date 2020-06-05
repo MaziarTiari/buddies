@@ -72,6 +72,7 @@ export interface IMultiLangLineList {
                 pattern: string;
                 conflict: string
             };
+            notFound: string;
         },
         submit_button: string;
     };
@@ -90,6 +91,9 @@ export interface IMultiLangLineList {
         password: string;
         repeat_password: string;
         submit_button: string;
+    };
+    apiRequestError: {
+        responceError: string;
     };
     button: {
         save: string;
@@ -181,17 +185,20 @@ export const translationStore: TranslationStore = {
                     pattern: "Nur Buchstaben, Zieffern und dise Sonderzeichen erlaubt . - _",
                     conflict: "Der Name existiert schon bereits",
                 },
+                notFound: "Benutzer konnte nicht gefunden werden"
             },
             submit_button: "Profil erstellen"
         },
         login : {
             errorMessages: {
                 email: "Die Email Adresse existiert nicht",
-                password: "Das Passwort ist nicht korrekt"
+                password: "Das Passwort ist nicht korrekt",
             },
             submit_button: "Einloggen"
-        }
-        ,
+        },
+        apiRequestError: {
+            responceError: "Es gibt einen Problem, wir kümmern uns so schnell wie möglich",
+        },
         register: {
             password: "Passwort",
             repeat_password: "Passwort wiederholen",
@@ -281,6 +288,7 @@ export const translationStore: TranslationStore = {
                     pattern: "Only characters, numbers and this symols . - _ are allowed",
                     conflict: "Username already exists",
                 },
+                notFound: "Can not find user"
             },
             submit_button: "Create Profile"
         },
@@ -290,8 +298,10 @@ export const translationStore: TranslationStore = {
                 password: "Incorrect password"
             },
             submit_button: "Einloggen"
-        }
-        ,
+        },
+        apiRequestError: {
+            responceError: "There has been a problem, we give our best to solve it asap"
+        },
         register: {
             password: "Password",
             repeat_password: "Repeat Password",

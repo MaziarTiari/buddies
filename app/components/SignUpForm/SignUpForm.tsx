@@ -1,25 +1,21 @@
-import React, {useContext, useState, useEffect } from 'react';
-import Container from '../Container/Container';
-import { Headline } from 'react-native-paper';
-import Button from '../Button/Button';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { getResponsiveSize } from '../../utils/font/font';
+import React, {useContext, useState } from 'react';
 import { LanguageContext } from '../../context/LanguageContext/LanguageContext';
 import FormInput from '../FormInput/FormInput';
-import useStyles from './SignUpForm.style';
-import { ApiClient } from '../../api/ApiClient'
 import { INewUser, IUser } from '../../models/User/User';
-import { getServiceUrl } from '../../api/channels';
 import { IForm, INITIAL_FORM, FormKey } from './constants';
 import { SessionContext } from '../../context/SessionContext/SessionContext';
-import LinkLabel from '../LinkLabel/LinkLabel';
-import HttpStatus from 'http-status-codes'
+import { AuthenticationStatus } from '../../../App'
+import FormWithRequest from '../FormWithRequest/FormWithRequest';
+import { ApiClient } from '../../api/ApiClient';
+import { getServiceUrl } from '../../api/channels';
+import { AxiosError } from 'axios';
+import { CONFLICT } from 'http-status-codes';
 
-const userService = new ApiClient<IUser>({ baseURL: getServiceUrl("Users") });
 interface SignUpFormProps { 
-    onSignedUp: (status: boolean) => void;
-    onLogin: () => void;
+    onSubmit: (status: AuthenticationStatus) => void;
 }
+
+const userApi = new ApiClient<IUser>({ baseURL: getServiceUrl("Users") });
 
 const SignUpForm = (Props: SignUpFormProps) => {
     const [form, setForm] = useState<IForm>(INITIAL_FORM);
@@ -30,10 +26,10 @@ const SignUpForm = (Props: SignUpFormProps) => {
     const [repeatPasswordErrorStatus, setRepeatPasswordErrorStatus] = useState(false);
     const [showEmailErrorMessage, setShowEmailErrorMessage] = useState(false);
     const [showPasswordErrorMessage, setShowPasswordErrorMessage] = useState(false);
-
-    const user = useContext(SessionContext);
+    const [responceError, setResponceError] = useState("");
+    
+    const session = useContext(SessionContext);
     const translations = useContext(LanguageContext).translations;
-    const styles = useStyles();
 
     const setErrorMessagesToDefault = () => {
         setShowEmailErrorMessage(false);
@@ -62,66 +58,50 @@ const SignUpForm = (Props: SignUpFormProps) => {
             phone: form.phone,
             password: form.password
         }
-        await userService.Post<IUser, INewUser>(newUser)
+        await userApi.Create<IUser, INewUser>(newUser)
         .then(res => {
-            if(res.data && !res.error) {
-                console.log(res.data)
-                user.setUser(res.data);
-                Props.onSignedUp(true);
-            } else {
-                if(res.error?.status === HttpStatus.CONFLICT) {
-                    setShowEmailErrorMessage(true);
-                }
-                else console.error(res.error)
-            }
-        })
-        .catch(err => console.error(err));
+            session.setUser(res);
+            return Props.onSubmit("create_profile");
+        }).catch((error: AxiosError) => {
+            if(!error.response) 
+                return setResponceError(translations.apiRequestError.responceError);
+            if(error.response.status === CONFLICT)
+                return setResponceError(translations.register.errorMessage.email);
+        });
     }    
     
     return (
-        <Container type="screen" layout="root">
-            <Container type="screen" layout="body">
-                <KeyboardAwareScrollView 
-                    resetScrollToCoords={{ x: 0, y: 0 }} enableOnAndroid
-                    extraHeight={getResponsiveSize(20)} 
-                    contentContainerStyle={styles.contentContainer}
-                >
-                    <Headline style={styles.heading}>
-                        {translations.ScreenHeading.register}
-                    </Headline>
-                    <FormInput
-                        errorMessage={translations.register.errorMessage.email}
-                        errorStatusChange={setEmailErrorStatus}
-                        showErrorMessage={showEmailErrorMessage} type="email" required
-                        iconName="email" verify={verify}
-                        onChangeText={txt => setForm({...form, [FormKey.email]: txt})}
-                        placeholder={translations.profile.email}/>
-                    <FormInput
-                        errorStatusChange={setPhoneErrorStatus} type="phone" required
-                        iconName="cellphone" verify={verify}
-                        onChangeText={txt => setForm({...form, [FormKey.phone]: txt})}
-                        placeholder={translations.profile.phone}/>
-                    <FormInput 
-                        errorStatusChange={setPasswordErrorStatus} type="password" 
-                        errorMessage={translations.register.errorMessage.password}
-                        showErrorMessage={showPasswordErrorMessage} required
-                        iconName="onepassword" verify={verify}
-                        onChangeText={txt => setForm({...form, [FormKey.password]: txt})}
-                        placeholder={translations.register.password} secureTextEntry/>
-                    <FormInput
-                        errorStatusChange={setRepeatPasswordErrorStatus}
-                        verify={verify} required iconName="onepassword" type="password" 
-                        onChangeText={txt => 
-                            setForm({...form, [FormKey.repeatPassword]: txt})}
-                        placeholder={translations.register.repeat_password}/>
-                    <Button 
-                        onPress={onSubmit}
-                        title={translations.register.submit_button} 
-                        style={styles.submitButton}/>
-                    <LinkLabel label="Anmelden" onPress={Props.onLogin}/>
-                </KeyboardAwareScrollView>
-            </Container>
-        </Container>
+        <FormWithRequest
+            linkLabel={translations.login.submit_button} 
+            onLink={() => Props.onSubmit("on_login")}
+            buttonTitle={translations.register.submit_button} onSubmit={onSubmit}
+            heading={translations.ScreenHeading.register} responseError={responceError}>
+            <FormInput
+                errorMessage={translations.register.errorMessage.email}
+                errorStatusChange={setEmailErrorStatus}
+                showErrorMessage={showEmailErrorMessage} type="email" required
+                iconName="email" verify={verify}
+                onChangeText={txt => setForm({...form, [FormKey.email]: txt})}
+                placeholder={translations.profile.email}/>
+            <FormInput
+                errorStatusChange={setPhoneErrorStatus} type="phone" required
+                iconName="cellphone" verify={verify}
+                onChangeText={txt => setForm({...form, [FormKey.phone]: txt})}
+                placeholder={translations.profile.phone}/>
+            <FormInput 
+                errorStatusChange={setPasswordErrorStatus} type="password" 
+                errorMessage={translations.register.errorMessage.password}
+                showErrorMessage={showPasswordErrorMessage} required
+                iconName="onepassword" verify={verify}
+                onChangeText={txt => setForm({...form, [FormKey.password]: txt})}
+                placeholder={translations.register.password} secureTextEntry/>
+            <FormInput
+                errorStatusChange={setRepeatPasswordErrorStatus}
+                verify={verify} required iconName="onepassword" type="password" 
+                onChangeText={txt => 
+                    setForm({...form, [FormKey.repeatPassword]: txt})}
+                placeholder={translations.register.repeat_password}/>
+        </FormWithRequest>
     );
 }
 
