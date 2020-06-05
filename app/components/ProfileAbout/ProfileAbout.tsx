@@ -14,7 +14,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Headline } from "react-native-paper";
 import ProfileAboutMenu from "./Menu";
 import { RouteName } from "../../navigation/Navigation.config";
-import { IProfileEditorTagListConfig } from '../ProfileEditorTagList/ProfileEditorTagList'
+import { ICategorizedInputListConfig } from '../CategorizedInputList/CategorizedInputList'
 import SwiperPagination from "../SwiperPagination/SwiperPagination";
 
 // TODO: Remove example_img Array and use Profile Context instead
@@ -35,6 +35,11 @@ const ProfileAbout = () => {
         navigation.addListener("blur", () => setIsOnEdit(false));
         return () => navigation.removeListener("blur", () => setIsOnEdit(false));
     }, [])
+
+    const handleEmploymentItemsChanged = (items: CategorizedInput[]) => {
+        console.log("Items Changed");
+        // TODO
+    }
 
     return (
         <Container type="screen" layout="root">
@@ -129,7 +134,15 @@ const ProfileAbout = () => {
                             {
                                 categories: ["IT", "Design", "Ingeneuer"],
                                 type: "jobs",
-                            } as IProfileEditorTagListConfig)
+                                editorEditHeadline: translations.profile.edit_employment,
+                                editorAddHeadline: translations.profile.add_employment,
+                                editorInstitutionPlaceholder: translations.profile.employment_institution_placeholder,
+                                editorTitlePlaceholder: translations.profile.employment_title_placeholder,
+                                editorCategoryPlaceholder: translations.profile.category,
+                                items: userProfile.jobs,
+                                headerTitle: translations.profile.edit_employments,
+                                onItemsChanged: handleEmploymentItemsChanged,
+                            } as ICategorizedInputListConfig)
                     }}>
                     <Headline style={style.headline}>
                         {translations.profile.employments}
