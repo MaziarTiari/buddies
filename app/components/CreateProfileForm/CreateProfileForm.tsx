@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { ApiClient } from '../../api/ApiClient';
 import { IUserProfile, INewUserProfile } from '../../models/User/UserProfile';
 import { SessionContext } from '../../context/SessionContext/SessionContext';
@@ -7,10 +7,10 @@ import ProfilePersonalInfoForm from '../ProfilePersonalInfoForm/ProfilePersonalI
 import { LanguageContext } from '../../context/LanguageContext/LanguageContext';
 import { getServiceUrl } from '../../api/channels';
 import { AuthenticationStatus } from '../../../App';
+import { AxiosError } from 'axios';
 
-const UserProfileApi = new ApiClient<IUserProfile>(
-    { baseURL: getServiceUrl("UserProfiles") }
-);
+const userProfileApi = 
+    new ApiClient<IUserProfile>({ baseURL: getServiceUrl("UserProfiles") });
 
 interface CreateProfileFormProps {
     onSubmit: (status: AuthenticationStatus) => void;    
@@ -19,25 +19,26 @@ interface CreateProfileFormProps {
 const CreateProfileForm = (Props: CreateProfileFormProps) => {
     const session = useContext(SessionContext);
     const { translations } = useContext(LanguageContext);
+    const [responceError, setResponceError] = useState("");
 
     const onSubmit = async (newUserProfile: INewUserProfile) => {
-        await UserProfileApi.Post<IUserProfile, INewUserProfile>(newUserProfile)
+        await userProfileApi.Create<IUserProfile, INewUserProfile>(newUserProfile)
         .then(res => {
-            if(res.data && !res.error) {
-                session.setUserProfile(res.data);
-                Props.onSubmit("profile_created");
-            }
-            else {
-                if(res.error?.status === CONFLICT) {
-                    console.error(res.error);
-                } else console.error(res.error)
-            }
+            session.setUserProfile(res);
+            Props.onSubmit("profile_created");
         })
-        .catch(err => console.error(err));
+        .catch((error: AxiosError) => {
+            if(error.response?.status === CONFLICT)
+                setResponceError(
+                    translations.createProfile.errorMessage.username.conflict)
+            else
+                setResponceError(translations.apiRequestError.responceError);
+        });
     }
 
     return (
         <ProfilePersonalInfoForm 
+            responceError={responceError}
             onSubmit={onSubmit} buttonTitle={translations.createProfile.submit_button}
             title={translations.ScreenHeading.createProfile}/>
     );

@@ -65,12 +65,12 @@ const LoginForm = (Props: LoginFormProps) => {
                 session.setUserProfile(res);
                 return Props.onSubmit("login");
             }).catch((error: AxiosError) => {
-                if(!error.response) 
-                    return setResponceError(translations.apiRequestError.responceError);
-                if(error.response.status === NOT_FOUND)
+                if(error.response?.status === NOT_FOUND)
                     return setResponceError(translations.login.errorMessages.email);
-                if(error.response.status === UNAUTHORIZED)
+                if(error.response?.status === UNAUTHORIZED)
                     return setResponceError(translations.login.errorMessages.password);
+                else
+                    return setResponceError(translations.apiRequestError.responceError);
             });
         })
     }

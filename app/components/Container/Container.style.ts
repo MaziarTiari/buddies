@@ -23,10 +23,13 @@ export const useStyle = () => {
     const component = StyleSheet.create({
         root: {
             flex: 1,
+            alignItems: "stretch",
+            alignSelf: "stretch",
             marginHorizontal: getResponsiveSize(15),
         },
         root_center: {
             flex: 1,
+            alignSelf: "stretch",
             marginHorizontal: getResponsiveSize(15),
             alignItems: "center",
             paddingTop: 30,

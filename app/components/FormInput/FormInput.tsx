@@ -2,10 +2,11 @@ import React, { useContext, useState, useEffect } from 'react';
 import InputField, { InputFieldProps } from "../InputField/InputField";
 import { getResponsiveSize } from "../../utils/font/font";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { View, Text, StyleSheet, Platform, NativeSyntheticEvent, TextInputFocusEventData } from 'react-native';
+import { View, Text, StyleSheet, Platform, NativeSyntheticEvent, TextInputFocusEventData, KeyboardAvoidingView } from 'react-native';
 import { ThemeContext } from '../../context/ThemeContext/ThemeContext';
 import { LanguageContext } from '../../context/LanguageContext/LanguageContext';
 import { isEmail, isNumeric, isPhoneNumber } from '../../utils/validate';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export interface FormInputProps extends InputFieldProps{
     iconName?: string;
@@ -100,7 +101,10 @@ const FormInput =
         verify && (showErrorMessage || requiredErrorStatus || (typeErrorStatus && showTypeErrorMessage))
         ? {borderColor: theme.App.errorColor} : undefined;
     return (
-            <View>
+        <KeyboardAwareScrollView 
+            resetScrollToCoords={{ x: 0, y: 0 }} enableOnAndroid scrollEnabled={false}
+            extraHeight={getResponsiveSize(20)} 
+        >
             { showErrorMessage && 
             <Text style={{color:theme.App.errorColor}}>{errorMessage}</Text>}
             { (verify && typeErrorMessage !== undefined && typeErrorStatus && value !== "" && showTypeErrorMessage) &&
@@ -119,7 +123,7 @@ const FormInput =
                     : undefined
                 }
             />
-            </View>
+        </KeyboardAwareScrollView>
     )
 }
 

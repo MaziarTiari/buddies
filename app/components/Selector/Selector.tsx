@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { StyleProp, TextStyle, Picker, View, Modal, Alert, StyleSheet, TouchableHighlight, Text } from "react-native";
+import { StyleProp, TextStyle, View, Modal, Alert, StyleSheet, TouchableHighlight, Text, KeyboardAvoidingView } from "react-native";
 import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
 import { TouchableRipple, IconButton } from "react-native-paper";
 import FormInput from "../FormInput/FormInput";
@@ -27,9 +27,9 @@ export function Selector( Props: SelectorProps) {
         Props.onSelect(Props.items[i]);
     }
     return (
-        <View style={{flex:1}}>
+        <View>
             <TouchableRipple 
-                style={[{flex:1}, Props.style]}
+                style={[ Props.style]}
                 onPress={() => setModalVisible(!modalVisible)}>
                 <FormInput
                     verify={Props.error}
@@ -41,6 +41,7 @@ export function Selector( Props: SelectorProps) {
                     }
                 />
             </TouchableRipple>
+            {modalVisible &&
             <Modal
                 animationType="slide"
                 transparent={true}
@@ -70,6 +71,7 @@ export function Selector( Props: SelectorProps) {
                     </View>
                 </View>
             </Modal>
+            }
     </View>
     );
 }

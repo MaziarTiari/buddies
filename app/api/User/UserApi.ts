@@ -1,17 +1,9 @@
-import React from 'react'
-import { View, Text } from 'react-native'
-import { ApiClient } from '../ApiClient';
-import { IVerifyingUser, IUser, INewUser } from '../../models/User/User';
+import { IVerifyingUser, IUser } from '../../models/User/User';
 import { getServiceUrl } from '../channels';
-import { UNAUTHORIZED, NOT_FOUND, CONFLICT } from 'http-status-codes';
-import { Api } from '../Api';
 import { AxiosRequestConfig, AxiosError } from 'axios';
+import { ApiClient } from '../ApiClient';
 
-const VerifyingUserApi = new ApiClient<IVerifyingUser>(
-    { baseURL: getServiceUrl("Users/login") }
-);
-
-class UserApi<T> extends Api<T>  {
+class UserApi<T> extends ApiClient<T>  {
     
     constructor(config: AxiosRequestConfig) {
         super(config);
@@ -19,7 +11,8 @@ class UserApi<T> extends Api<T>  {
     }
     
     public VerifyUser(verifyingUser: IVerifyingUser) {
-        return this.post<IUser, IVerifyingUser>("login/", verifyingUser).then(this.success)
+        return this.post<IUser, IVerifyingUser>("login/", verifyingUser)
+            .then(this.success)
             .catch((error: AxiosError) => {throw error});
     }
 }

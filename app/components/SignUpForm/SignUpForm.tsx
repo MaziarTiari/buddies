@@ -63,10 +63,10 @@ const SignUpForm = (Props: SignUpFormProps) => {
             session.setUser(res);
             return Props.onSubmit("create_profile");
         }).catch((error: AxiosError) => {
-            if(!error.response) 
-                return setResponceError(translations.apiRequestError.responceError);
-            if(error.response.status === CONFLICT)
+            if(error.response?.status === CONFLICT)
                 return setResponceError(translations.register.errorMessage.email);
+            else 
+                return setResponceError(translations.apiRequestError.responceError);
         });
     }    
     
