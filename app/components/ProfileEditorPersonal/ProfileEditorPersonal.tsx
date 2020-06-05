@@ -29,6 +29,7 @@ const ProfileEditorPersonal = () => {
             }
         })
         session.updateUserProfile(user);
+        navigation.navigate(RouteName.Profile.About);
     }
     
     return (
