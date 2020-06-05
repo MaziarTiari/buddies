@@ -101,10 +101,7 @@ const FormInput =
         verify && (showErrorMessage || requiredErrorStatus || (typeErrorStatus && showTypeErrorMessage))
         ? {borderColor: theme.App.errorColor} : undefined;
     return (
-        <KeyboardAwareScrollView 
-            resetScrollToCoords={{ x: 0, y: 0 }} enableOnAndroid scrollEnabled={false}
-            extraHeight={getResponsiveSize(20)} 
-        >
+        <View>
             { showErrorMessage && 
             <Text style={{color:theme.App.errorColor}}>{errorMessage}</Text>}
             { (verify && typeErrorMessage !== undefined && typeErrorStatus && value !== "" && showTypeErrorMessage) &&
@@ -123,7 +120,7 @@ const FormInput =
                     : undefined
                 }
             />
-        </KeyboardAwareScrollView>
+        </View>
     )
 }
 

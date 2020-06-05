@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
 import { Modal, View, Text } from "react-native";
-import CustomizedPicker from "../CustomizedPicker/CustomizedPicker";
 import { TouchableRipple } from "react-native-paper";
 import useStyle from "./CategorizedInputEditor.style";
 import Autocomplete from "react-native-autocomplete-input";
@@ -63,19 +62,18 @@ const CategorizedInputEditor = (props: CategorizedInputEditorProps) => {
     );
 
     const isVisible = useRef(props.visible);
-    
+
+    useEffect(() => console.log("show", props.visible), [props.visible]);
 
     useEffect(() => {
-        // when the modal opens, the states needs a reset
-        if (!isVisible.current && props.visible) {
-            setSelectedTitle(props.preselectedTitle);
-            setSelectedCategory(props.preselectedCategory);
-            setSelectedInstitution(props.preselectedInstitution);
-            setCategoryBorderColor(style.picker.borderColor);
-            setTextBorderColor(style.autoCompleteContainer.borderColor);
-            setSuggestions([]);
-        }
-        isVisible.current = props.visible;
+        // when the modal closes, the states needs a reset
+        if (props.visible) return;
+        setSelectedTitle(props.preselectedTitle);
+        setSelectedCategory(props.preselectedCategory);
+        setSelectedInstitution(props.preselectedInstitution);
+        setCategoryBorderColor(style.picker.borderColor);
+        setTextBorderColor(style.autoCompleteContainer.borderColor);
+        setSuggestions([]);
     }, [props.visible]);
 
     const handleChangeTitle = (title: string): void => {
@@ -89,6 +87,10 @@ const CategorizedInputEditor = (props: CategorizedInputEditorProps) => {
         setSelectedTitle(title);
     };
 
+    const handleCategorySelected = (category: string): void => {
+        setSelectedCategory(category);
+    };
+
     const handleChangeInstitution = (institution: string): void => {
         setSelectedInstitution(institution);
     };
@@ -96,10 +98,6 @@ const CategorizedInputEditor = (props: CategorizedInputEditorProps) => {
     const handleSuggestionSelected = (text: string): void => {
         setSelectedTitle(text);
         setSuggestions([]);
-    };
-
-    const handleCategorySelected = (category: string): void => {
-        setSelectedCategory(category);
     };
 
     const handleSave = (): void => {
@@ -136,7 +134,6 @@ const CategorizedInputEditor = (props: CategorizedInputEditorProps) => {
                         modalTitle={ props.categoryPlaceholder || ""}
                         placeholder={props.categoryPlaceholder}
                         items={[...props.categoryList, "sonstige"]}
-                        //getLabel={(category) => category}
                         onSelect={handleCategorySelected}
                         selectedItem={selectedCategory}
                     />
