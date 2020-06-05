@@ -28,22 +28,7 @@ const ProfileEditorPersonal = () => {
                 (user as any)[i] = (newUserProfile as any)[i]
             }
         })
-        await UserProfileApi.Update<number, IUserProfile>(user.id, user)
-        .then(() => {
-            session.setUserProfile(user);
-            return navigation.navigate(RouteName.Profile.About);
-        }).catch( (error: AxiosError) => {
-            if(!error.response) {
-                return console.error(error);
-            }
-            if(error.response.status === METHOD_NOT_ALLOWED) {
-                return console.error(error.response);
-            } else if (error.response.status === NOT_FOUND) {
-                return setResponceError(translations.createProfile.errorMessage.notFound);
-            } else {
-                return setResponceError(translations.apiRequestError.responceError);
-            }
-        });
+        session.updateUserProfile(user);
     }
     
     return (

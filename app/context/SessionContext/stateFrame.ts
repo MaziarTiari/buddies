@@ -9,6 +9,7 @@ export interface ISessionContextState {
     setUser: (user: IUser) => void;
     setUserProfile: (profile: IUserProfile) => void;
     setActivity: (activity: IActivity) => void;
+    updateUserProfile: (newUserProfile: IUserProfile) => void;
 }
 
 export const sessionContextInitialState: ISessionContextState = {
@@ -18,4 +19,5 @@ export const sessionContextInitialState: ISessionContextState = {
     setUser: () => console.warn("Function setUser() is not implemeted!"),
     setUserProfile: () => console.warn("Function setUserProfile() is not implemeted!"),
     setActivity: () => console.warn("Function setActivity() is not implemented!"),
+    updateUserProfile: () => console.warn("Function updateUserProfile() is not implemented!"),
 };
