@@ -42,7 +42,7 @@ export interface IMultiLangLineList {
         gender_pick_labels: {
             male: string;
             female: string;
-            other: string;    
+            other: string;
         };
         languages: string;
         employments: string;
@@ -100,6 +100,26 @@ export interface IMultiLangLineList {
         cancel: string;
         delete: string;
     };
+    activity: {
+        description: string;
+        information: string;
+        location: string;
+        startTime: string;
+        endTime: string;
+        hobbies: string;
+        criteria: string;
+        visibility: string;
+        maxApplications: string;
+        applicationDeadline: string;
+        reqLocation: string;
+        reqSex: string;
+        reqAge: string;
+        reqRelationshipState: string;
+        reqJob: string;
+        reqLanguage: string;
+        members: string;
+    }
+    dateRangePreposition: string;
 }
 
 export type Language = "de" | "en";
@@ -153,7 +173,7 @@ export const translationStore: TranslationStore = {
             gender: "Geschlecht",
             gender_pick_labels: {
                 female: "Weiblich",
-                male: "Mänlich",
+                male: "Männlich",
                 other: "Drittes Geschlecht"
             },
             languages: "Sprachen",
@@ -172,7 +192,7 @@ export const translationStore: TranslationStore = {
             edit_hobbies: "Interessen bearbeiten",
             hobby_title_placeholder: "Beschreibung ...",
             hobby_institution_placeholder: "Institution, Verein, Gruppe ...",
-            
+
         },
         ScreenHeading: {
             register: "Registrieren",
@@ -189,7 +209,7 @@ export const translationStore: TranslationStore = {
             },
             submit_button: "Profil erstellen"
         },
-        login : {
+        login: {
             errorMessages: {
                 email: "Die Email Adresse existiert nicht",
                 password: "Das Passwort ist nicht korrekt",
@@ -213,6 +233,26 @@ export const translationStore: TranslationStore = {
             cancel: "Abbrechen",
             delete: "Löschen",
         },
+        dateRangePreposition: "bis",
+        activity: {
+            description: "Beschreibung",
+            information: "Informationen",
+            location: "Treffpunkt",
+            startTime: "Beginn",
+            endTime: "Ende",
+            hobbies: "Themen",
+            criteria: "Teilnahmekriterien",
+            visibility: "Sichbarkeit",
+            maxApplications: "Max. Teilnehmerzahl",
+            applicationDeadline: "Bewerbungsfrist",
+            reqLocation: "Wohnort + Umkreis",
+            reqSex: "Geschlecht",
+            reqAge: "Mindestalter",
+            reqRelationshipState: "Beziehungsstatus",
+            reqJob: "Tätigkeiten",
+            reqLanguage: "Sprache",
+            members: "Teilnehmer",
+        }
     },
     en: {
         menu_profile: "Profile",
@@ -292,7 +332,7 @@ export const translationStore: TranslationStore = {
             },
             submit_button: "Create Profile"
         },
-        login : {
+        login: {
             errorMessages: {
                 email: "Couldn't find email address",
                 password: "Incorrect password"
@@ -316,5 +356,25 @@ export const translationStore: TranslationStore = {
             cancel: "Cancel",
             delete: "Delete",
         },
+        dateRangePreposition: "to",
+        activity: {
+            description: "Description",
+            information: "Information",
+            location: "Meeting Point",
+            startTime: "Start",
+            endTime: "End",
+            hobbies: "Subjects",
+            criteria: "Eligibility Criteria",
+            visibility: "Visibility",
+            maxApplications: "Max. Participations",
+            applicationDeadline: "Application Deadline",
+            reqLocation: "Location + Radius",
+            reqSex: "Sex",
+            reqAge: "Minimum Age",
+            reqRelationshipState: "Relationship State",
+            reqJob: "Employments",
+            reqLanguage: "Language",
+            members: "Member"
+        }
     },
 };

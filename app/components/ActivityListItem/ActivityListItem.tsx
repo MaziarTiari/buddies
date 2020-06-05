@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { View, Image, Text, GestureResponderEvent } from "react-native";
 import { IActivity } from "../../dev/example_data/fetchedActivityList";
 import { IconButton, Headline, TouchableRipple } from "react-native-paper";
@@ -7,26 +7,35 @@ import { users } from "../../dev/example_data/users";
 import { IUserProfile } from "../../models/User/UserProfile";
 import { useStyle } from "./ActivityListItem.style";
 import Container from "../Container/Container";
+import { useNavigation } from "@react-navigation/native";
+import { RouteName } from "../../navigation/Navigation.config";
+import { LanguageContext } from "../../context/LanguageContext/LanguageContext";
+import { getDateRangeString } from "../../utils/date";
+import { SessionContext } from "../../context/SessionContext/SessionContext";
+
 const defaultImg = require("../../../assets/img/default-activity-img.jpg");
 
 const ActivityListItem = (Props: IActivity) => {
     const { styles, theme } = useStyle();
+    const navigation = useNavigation();
+    const { translations } = useContext(LanguageContext);
+    const { setActivity } = useContext(SessionContext);
 
     const owner = users.find((user) => user.id === Props.ownerUserId) as IUserProfile;
-    const ownerName = owner.firstname
-        ? owner.firstname + " " + owner.lastname
-        : owner.username;
-    const participatesCount =
-        Props.membersUserIds?.length + "/" + Props.allowedApplyNumber;
+    const ownerName = owner.firstname + " " + owner.lastname;
+    const participatesCount = Props.memberUserIds?.length + (Props.maxApplications ? "/" + Props.maxApplications : "");
     const titleContent = Props.title;
     const imageSource = getImageSource(Props.imageName);
-    const dateScale = getDateScale(Props.startDate, Props.endDate);
-    const timeScale = getTimeScale(Props.startTime, Props.endTime);
+    const dateString = getDateRangeString(Props.startDate, translations.dateRangePreposition, Props.endDate)
 
-    const onPress = () => {};
-    const onParticipates = () => {};
-    const onChat = (event?: GestureResponderEvent) => {};
-    const onFavorite = () => {};
+    const onPress = () => {
+        setActivity(Props);
+        navigation.navigate(RouteName.Activity.Info)
+    };
+
+    const onParticipates = () => { };
+    const onChat = (event?: GestureResponderEvent) => { };
+    const onFavorite = () => { };
 
     return (
         <TouchableRipple style={styles.root} onPress={onPress}>
@@ -61,15 +70,13 @@ const ActivityListItem = (Props: IActivity) => {
                         </Headline>
                         <View style={styles.bodyContainer}>
                             <View>
-                                <Text numberOfLines={2} style={[styles.info, styles.address]}>
+                                <Text
+                                    numberOfLines={2}
+                                    style={[styles.info, styles.address]}
+                                >
                                     {Props.location}
                                 </Text>
-                                {(Props.startDate || Props.endDate) && (
-                                    <Text style={styles.info}>{dateScale}</Text>
-                                )}
-                                {(Props.startTime || Props.endTime) && (
-                                    <Text style={styles.info}>{timeScale}</Text>
-                                )}
+                                <Text style={styles.info}>{dateString}</Text>
                             </View>
                         </View>
                     </View>
@@ -86,6 +93,7 @@ const ActivityListItem = (Props: IActivity) => {
     );
 };
 
+/*
 const getDateScale = (startDate?: Date, endDate?: Date) => {
     const start = startDate?.toLocaleDateString();
     const end = endDate?.toLocaleDateString();
@@ -99,6 +107,7 @@ const getTimeScale = (startTime?: Date, endTime?: Date) => {
     if (start === end || !end) return start;
     return start + " - " + end;
 };
+*/
 
 const getImageSource = (title: string) => {
     switch (title) {

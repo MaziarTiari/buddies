@@ -47,4 +47,6 @@ target 'buddies' do
 
   pod 'react-native-date-picker', :path => '../node_modules/react-native-date-picker'
 
+  pod 'react-native-simple-toast', :path => '../node_modules/react-native-simple-toast'
+
 end

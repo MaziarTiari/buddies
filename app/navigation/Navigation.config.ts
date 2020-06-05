@@ -14,6 +14,7 @@ export const RouteName = {
         Map: "ActivityMap",
         MyList: "ActivityMyList",
         MyFavorite: "ActivityMyFavorite",
+        Info: "ActivityInfo",
     },
     Chat: {
         List: "ChatList",
