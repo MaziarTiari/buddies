@@ -1,12 +1,9 @@
 import React, { useContext, useState } from "react";
-import { 
-    StyleProp, TextStyle, View, StyleSheet, Text,
-    Dimensions, ScrollView, Modal, Alert
-} from "react-native";
+import { StyleProp, TextStyle, View, Text, ScrollView, Modal, Alert } from "react-native";
 import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
 import { TouchableRipple, IconButton } from "react-native-paper";
 import FormInput from "../FormInput/FormInput";
-import { getResponsiveSize, fontsizes } from "../../utils/font/font";
+import { getResponsiveSize } from "../../utils/font/font";
 import { useStyle } from "./Selector.style";
 
 interface SelectorProps {
