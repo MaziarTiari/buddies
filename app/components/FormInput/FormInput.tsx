@@ -36,7 +36,7 @@ const FormInput =
     const styles = StyleSheet.create({
         container: {
             paddingVertical: 
-                Platform.OS === 'ios' ? getResponsiveSize(15) : getResponsiveSize(3),
+                Platform.OS === 'ios' ? getResponsiveSize(15) : getResponsiveSize(10),
             borderWidth: 1,
             marginVertical: getResponsiveSize(5),
             paddingHorizontal: getResponsiveSize(10)
@@ -107,10 +107,14 @@ const FormInput =
             { (verify && typeErrorMessage !== undefined && typeErrorStatus && value !== "" && showTypeErrorMessage) &&
             <Text style={{color:theme.App.errorColor}}>{typeErrorMessage}</Text>}
             <InputField
+                {...Props} 
+                containerStyle={[borderColorStyle, styles.container, Props.containerStyle]}
+                style={styles.input}
                 secureTextEntry={Props.type && Props.type === "password"}
-                {...Props} onBlur={onBlur} onFocus={onFocus} onChangeText={onChangeText} 
-                containerStyle={[borderColorStyle, styles.container]}
-                placeholderTextColor={theme.App.secondaryText} style={styles.input}
+                onBlur={onBlur} 
+                onFocus={onFocus} 
+                onChangeText={onChangeText} 
+                placeholderTextColor={theme.App.secondaryText}
                 leftComponent={ iconName ?
                     <MaterialCommunityIcons
                         style={{marginRight: getResponsiveSize(8)}}

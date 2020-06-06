@@ -1,11 +1,12 @@
 import React, { useState, useMemo } from "react";
-import { FlatList } from "react-native";
+import { FlatList, Text } from "react-native";
 import { 
     exampleResponse, IChatPartner, Relation,
 } from "../../dev/example_data/MessageListQueryResponse";
 import { RouteName } from "../../navigation/Navigation.config";
 import { ChatListItem } from "../ChatListItem/ChatListItem";
 import Container from "../Container/Container";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const ChatList = ({ navigation }: any) => {
     const chatPartners = useState<IChatPartner[]>(exampleResponse)[0];
@@ -29,6 +30,20 @@ const ChatList = ({ navigation }: any) => {
     return (
         <Container type="screen" layout="root">
             <Container  type='screen' layout='body'>
+                <FlatList
+                    //style={styles.dropDownList}
+                    data={["item1", "item2", "item3"]} 
+                    renderItem={({item, index}) => 
+                        <TouchableOpacity 
+                            style={{flex:1}}
+                            onPress={() => alert(item)}
+                            containerStyle={{paddingTop:5}}
+                        >
+                            <Text style={{color:"#FFF"}}>{item}</Text>
+                        </TouchableOpacity>
+                    } 
+                    keyExtractor={(item, index) => index.toString()}
+                />
                 <FlatList
                     data={sortedChatPartners}
                     renderItem={({ item: chatPartner }) => (

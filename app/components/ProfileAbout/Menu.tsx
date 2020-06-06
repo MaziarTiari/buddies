@@ -45,8 +45,6 @@ const ProfileAboutMenu = ( Props: ProfileAboutMenuProps) => {
                 { !Props.isOnEdit &&
                 <View>
                     <MenuOption onSelect={() => {}} text="Option 2" />
-                    <MenuOption onSelect={() => {}} text="Option 3" />
-                    <MenuOption onSelect={() => {}} text="Option 4" />
                 </View>
                 }
             </MenuOptions>

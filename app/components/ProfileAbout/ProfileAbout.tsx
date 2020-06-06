@@ -31,10 +31,10 @@ const ProfileAbout = () => {
     const { translations } = useContext(LanguageContext);
     const [isOnEdit, setIsOnEdit] = useState(false);
 
-    useEffect(() => {
-        navigation.addListener("blur", () => setIsOnEdit(false));
-        return () => navigation.removeListener("blur", () => setIsOnEdit(false));
-    }, [])
+    // useEffect(() => {
+    //     navigation.addListener("blur", () => setIsOnEdit(false));
+    //     return () => navigation.removeListener("blur", () => setIsOnEdit(false));
+    // }, [])
 
     const handleEmploymentItemsChanged = (items: CategorizedInput[]) => {
         console.log("Items Changed");
@@ -147,12 +147,16 @@ const ProfileAbout = () => {
                     <Headline style={style.headline}>
                         {translations.profile.employments}
                     </Headline>
-                    {userProfile.jobs?.map((job: CategorizedInput) =>
+                    {userProfile.jobs?.map((job, i) =>
                         <InfoItem
+                            key={i}
                             keyText={job.category}
                             valueText={
-                                job.title + job.place ? " (" +
-                                    job.place + ")" : ""}
+                                job.title 
+                                +
+                                ((job.place !== undefined || "") && " (" +
+                                job.place + ")")
+                            }
                         />
                     )}
                 </EditableSection>

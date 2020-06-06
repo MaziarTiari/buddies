@@ -61,8 +61,6 @@ const CategorizedInputEditor = (props: CategorizedInputEditorProps) => {
         style.autoCompleteContainer.borderColor
     );
 
-    const isVisible = useRef(props.visible);
-
     useEffect(() => console.log("show", props.visible), [props.visible]);
 
     useEffect(() => {
@@ -133,9 +131,10 @@ const CategorizedInputEditor = (props: CategorizedInputEditorProps) => {
                         style={[style.picker, { borderColor: categoryBorderColor }]}
                         modalTitle={ props.categoryPlaceholder || ""}
                         placeholder={props.categoryPlaceholder}
-                        items={[...props.categoryList, "sonstige"]}
+                        items={props.categoryList}
                         onSelect={handleCategorySelected}
                         selectedItem={selectedCategory}
+                        editable={true}
                     />
                     <Autocomplete
                         style={style.autoComplete}

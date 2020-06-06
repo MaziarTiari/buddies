@@ -1,9 +1,13 @@
 import React, { useContext, useState } from "react";
-import { StyleProp, TextStyle, View, Modal, Alert, StyleSheet, TouchableHighlight, Text, KeyboardAvoidingView } from "react-native";
+import { 
+    StyleProp, TextStyle, View, StyleSheet, Text,
+    Dimensions, ScrollView, Modal, Alert
+} from "react-native";
 import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
 import { TouchableRipple, IconButton } from "react-native-paper";
 import FormInput from "../FormInput/FormInput";
 import { getResponsiveSize, fontsizes } from "../../utils/font/font";
+import { useStyle } from "./Selector.style";
 
 interface SelectorProps {
     error?: boolean;
@@ -13,106 +17,144 @@ interface SelectorProps {
     onSelect: (item: string) => void;
 	selectedItem?: string;
     style?: StyleProp<TextStyle>
+    editable?: boolean;
 }
 export function Selector( Props: SelectorProps) {
     const { theme } = useContext(ThemeContext);
-    const styles = useStyle();
-    
-    const [modalVisible, setModalVisible] = useState(false);
+    const styles = useStyle(Props.editable || false);
+    const [showModal, setShowModal] = useState(false);
+    const [selectedItem, setSelectedItem] = useState(Props.selectedItem || "");
     const [value, setValue] = useState(Props.selectedItem || "");
+    const [items, setItems] = useState<string[]>(Props.items);
 
-    const onSelect = (i: number) => {
-        setModalVisible(false);
-        setValue(Props.items[i]);
-        Props.onSelect(Props.items[i]);
+    const onSelect = (item: string) => {
+        const selectedValue = item.length > getResponsiveSize(25) 
+                            ? item.slice(0, getResponsiveSize(25)) 
+                                + "..." : item;
+        setShowModal(false);
+        setSelectedItem(selectedValue);
+        Props.onSelect(item);
+        if(Props.editable)
+            filterItems(item);
+        setValue("");
+        setItems(Props.items);
     }
-    return (
-        <View>
+
+    const filterItems = (text: string) => {
+        const items = Props.items.filter(
+            item => item.toLowerCase().startsWith(text.toLowerCase())
+        );
+        setItems(items);
+    }
+
+    const onChangeText = (text: string) => {
+        setValue(text);
+        filterItems(text);
+        const selectableItem = Props.items.find(
+            item => item.toLowerCase() === text.toLowerCase()
+        )
+        setSelectedItem(selectableItem || "")
+    }
+
+    const deleteInputValue = () => {
+        setValue(""),
+        setItems(Props.items);
+    }
+
+    const setToDefault = () => {
+        deleteInputValue();
+        setSelectedItem("");
+    }
+
+    const onCloseModal = () => {
+        setShowModal(false);
+        deleteInputValue();
+    }
+
+    const renderItem = (item: string, index: number) => {
+        const lastItem = items.length - 1;
+        return (
             <TouchableRipple 
-                style={[ Props.style]}
-                onPress={() => setModalVisible(!modalVisible)}>
+                onPress={() => onSelect(item)} 
+                style={[
+                    styles.item, 
+                    { 
+                        marginTop: index === 0 ? 15 : 0,
+                        marginBottom: index === lastItem ? 15 : 0,
+                    }
+                ]}
+                key={index} 
+            >
+                <Text onPress={() => onSelect(item)} style={styles.itemText}>
+                    {item}
+                </Text>
+            </TouchableRipple>
+        )
+    }
+
+    return (
+        <View style={[styles.centeredView, Props.style]}>
+            <TouchableRipple 
+                style={styles.selectorContainer}
+                onPress={() => setShowModal(!showModal)}>
                 <FormInput
                     verify={Props.error}
                     placeholder={Props.placeholder}
-                    value={value} editable={false} 
-                    onTouchStart={() => setModalVisible(!modalVisible)}
+                    value={selectedItem}
+                    defaultValue={Props.selectedItem} 
+                    editable={false}
+                    onTouchStart={() => setShowModal(!showModal)}
                     rightComponent={
-                        <Text style={{color: theme.App.primaryText}}>▼</Text>
+                        selectedItem !== "" ?
+                        <IconButton
+                            style={{margin:0}}
+                            size={getResponsiveSize(18)}
+                            icon="close" 
+                            onPress={() => setToDefault()} 
+                            color={theme.App.primaryText}/>
+                        : undefined
                     }
                 />
             </TouchableRipple>
-            {modalVisible &&
+            <View style={styles.centeredView}>
             <Modal
                 animationType="slide"
                 transparent={true}
-                visible={modalVisible}
-                onRequestClose={() => { Alert.alert("Modal has been closed."); }}
+                visible={showModal}
+                onRequestClose={() => {Alert.alert("Modal has been closed.");}}
             >
                 <View style={styles.centeredView}>
                     <View style={styles.modalView}>
-                    <IconButton
-                        color={theme.App.primaryText}
-                        icon="close" onPress={() => setModalVisible(false)} 
-                        style={{alignSelf:"flex-end", position:"absolute"}}
-                    />
-                        <Text style={styles.modalTitle}>{Props.modalTitle}</Text>
-                            <View>
-                                {Props.items.map((item, i) =>
-                                    <TouchableHighlight  key={i}
-                                        style={{ ...styles.itemContainer}}
-                                        onPress={() => onSelect(i)}
-                                    >
-                                        <Text style={styles.itemText}>
-                                            {item}
-                                        </Text>
-                                    </TouchableHighlight>
-                                )}
-                            </View>
+                        <IconButton
+                            color={theme.App.primaryText}
+                            style={styles.modalIcon}
+                            icon="window-minimize" 
+                            onPress={onCloseModal}
+                        />
+                        {Props.editable &&
+                            <FormInput
+                                containerStyle={styles.autosuggestInputField}
+                                onChangeText={onChangeText}
+                                placeholder={Props.placeholder}
+                                value={value}
+                                rightComponent={
+                                    value !== "" ?
+                                    <IconButton 
+                                        icon="close" 
+                                        onPress={() => setToDefault()} 
+                                        color={theme.App.primaryText}
+                                    />
+                                    : undefined
+                                }
+                            />
+                        }
+                        <ScrollView style={styles.dropDownListContainer}>
+                            {items.map((item, index) => renderItem(item, index))}
+                        </ScrollView>
                     </View>
                 </View>
             </Modal>
-            }
+            </View>
     </View>
     );
-}
-
-const useStyle = () => { 
-    const { theme } = useContext(ThemeContext);
-    return StyleSheet.create({
-        centeredView: {
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "stretch",
-            marginTop: getResponsiveSize(22)
-            },
-            modalView: {
-            margin: getResponsiveSize(20),
-            backgroundColor: theme.App.menuBackground,
-            borderRadius: getResponsiveSize(20),
-            paddingVertical: getResponsiveSize(35),
-            alignItems: "stretch",
-            shadowColor: theme.App.devider,
-            shadowOpacity: 1,
-            shadowRadius: 1.5,
-            elevation: 10
-        },
-        itemContainer: {
-            borderTopColor: theme.App.devider,
-            backgroundColor: theme.App.menuBackground,
-            paddingVertical: getResponsiveSize(8),
-            paddingHorizontal: getResponsiveSize(15),
-            color: theme.App.primaryText
-        },
-        modalTitle: {
-            fontSize: getResponsiveSize(24),
-            marginBottom: getResponsiveSize(20),
-            color: theme.App.primaryText,
-            fontWeight: "bold",
-            textAlign: "center"
-        },
-        itemText: {
-            fontSize: fontsizes.small,
-            color: theme.App.primaryText
-        }
-    });
 }

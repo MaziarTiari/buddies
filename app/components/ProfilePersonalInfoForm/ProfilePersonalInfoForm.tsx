@@ -146,7 +146,7 @@ const CreateProfileForm = (Props: CreateProfileFormProps) => {
                 placeholder={translations.profile.gender}
                 onSelect={gender => setForm({...form, gender: gender})}
                 modalTitle={translations.profile.gender}
-                items={getGenderLabels()} />
+                items={getGenderLabels()}/>
         </FormWithRequest>
     );
 }
