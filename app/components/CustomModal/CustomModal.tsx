@@ -16,9 +16,9 @@ const CustomModal = (Props: CenteredModalProps) => {
     const styles = StyleSheet.create({
         container: {
             flex: Props.fixPosition ? 0 : 1,
-            justifyContent: "flex-start",
-            alignItems: "flex-start",
-            top:"15%"
+            justifyContent: "center",
+            alignItems: "stretch",
+            top: Props.fixPosition ? "15%" : 0,
         },
         modalView: {
         position:"absolute",
