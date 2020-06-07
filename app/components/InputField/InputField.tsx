@@ -6,6 +6,7 @@ import {
     StyleProp,
     ViewStyle,
     TextInputProps,
+    View,
 } from "react-native";
 import useStyle from "./InputField.style";
 import { InputFieldContainer } from "../InputFieldContainer/InputFieldContainer";
@@ -46,21 +47,23 @@ export const InputField = ({style, ...Props}: InputFieldProps) => {
     };
 
     return (
-        <InputFieldContainer 
-            leftComponent={LeftComponent} rightComponent={RightComponent}
-            style={Props.containerStyle}
-            content={
-                <TextInput
-                    onContentSizeChange={Props.dynamicHeight && handleContentSizeChange}
-                    {...Props}
-                    style={[
-                        styles.textInput,
-                        style,
-                        Props.dynamicHeight && { height: inputHeight },
-                    ]}
-                />
-            }
-        />
+        <View style={{flexDirection: "row"}}>
+            <InputFieldContainer 
+                leftComponent={LeftComponent} rightComponent={RightComponent}
+                style={Props.containerStyle}
+                content={
+                    <TextInput
+                        onContentSizeChange={Props.dynamicHeight && handleContentSizeChange}
+                        {...Props}
+                        style={[
+                            styles.textInput,
+                            style,
+                            Props.dynamicHeight && { height: inputHeight },
+                        ]}
+                    />
+                }
+            />
+        </View>
     );
 };
 

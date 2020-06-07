@@ -16,6 +16,8 @@ import ProfileAboutMenu from "./Menu";
 import { RouteName } from "../../navigation/Navigation.config";
 import { ICategorizedInputListConfig } from '../CategorizedInputList/CategorizedInputList'
 import SwiperPagination from "../SwiperPagination/SwiperPagination";
+import CustomModal from "../CustomModal/CustomModal";
+import InputField from "../InputField/InputField";
 
 // TODO: Remove example_img Array and use Profile Context instead
 const example_img: string[] = [
@@ -27,9 +29,21 @@ const example_img: string[] = [
 const ProfileAbout = () => {
     const navigation = useNavigation();
     const style = useStyle();
-    const { userProfile } = useContext(SessionContext);
+    const { userProfile, updateUserProfile } = useContext(SessionContext);
     const { translations } = useContext(LanguageContext);
     const [isOnEdit, setIsOnEdit] = useState(false);
+    const [showInfoEditor, setShowInfoEditor] = useState(false);
+    const [profileInfo, setProfileInfo] = useState(userProfile.info || "");
+
+    const onInfoEditorClose = () => {
+        setShowInfoEditor(false);
+        setProfileInfo(userProfile.info || "");
+    }
+
+    const onInfoEditorSubmit = () => {
+        setShowInfoEditor(false);
+        updateUserProfile({...userProfile, info: profileInfo});
+    }
 
     // useEffect(() => {
     //     navigation.addListener("blur", () => setIsOnEdit(false));
@@ -141,7 +155,7 @@ const ProfileAbout = () => {
                                 editorCategoryPlaceholder: translations.profile.category,
                                 items: userProfile.jobs,
                                 headerTitle: translations.profile.edit_employments,
-                                onItemsChanged: handleEmploymentItemsChanged,
+                                //onItemsChanged: handleEmploymentItemsChanged,
                             } as ICategorizedInputListConfig)
                     }}>
                     <Headline style={style.headline}>
@@ -154,15 +168,33 @@ const ProfileAbout = () => {
                             valueText={
                                 job.title 
                                 +
-                                ((job.place !== undefined || "") && " (" +
-                                job.place + ")")
+                                (job.place ? " (" +
+                                job.place + ")" : "")
                             }
                         />
                     )}
                 </EditableSection>
 
                 {/* Hobbies */}
-                <EditableSection editable={isOnEdit} onEdit={() => alert("On Edit")}>
+                <EditableSection 
+                    editable={isOnEdit} 
+                    onEdit={() => {
+                        navigation.navigate(
+                            RouteName.Profile.Editor.Taglist,
+                            {
+                                categories: ["Nature"],
+                                type: "hobbies",
+                                editorEditHeadline: translations.profile.editor.hobbies.heading_when_edit,
+                                editorAddHeadline: translations.profile.editor.hobbies.heading_when_add,
+                                editorInstitutionPlaceholder: translations.profile.editor.hobbies.place_label,
+                                editorTitlePlaceholder: translations.profile.editor.hobbies.hobbie_title_label,
+                                editorCategoryPlaceholder: translations.profile.category,
+                                items: userProfile.hobbies,
+                                headerTitle: translations.profile.editor.hobbies.editor_heading,
+                                //onItemsChanged: handleEmploymentItemsChanged,
+                            } as ICategorizedInputListConfig)
+                    }}
+                >
                     <Headline style={style.headline}>
                         {translations.profile.hobbies}
                     </Headline>
@@ -174,10 +206,22 @@ const ProfileAbout = () => {
                 </EditableSection>
 
                 {/* About Text */}
-                <EditableSection editable={isOnEdit} onEdit={() => alert("On Edit")}>
+                <EditableSection editable={isOnEdit} onEdit={() => setShowInfoEditor(true)}>
                     <Text style={style.headline}>{translations.profile.about_me}</Text>
                     {userProfile.info && <Text style={style.text}>{userProfile.info}</Text>}
                 </EditableSection>
+                <CustomModal
+                    onSubmit={onInfoEditorSubmit}
+                    onCloseModal={onInfoEditorClose} 
+                    showModal={showInfoEditor}
+                >
+                    <InputField
+                        value={profileInfo || ""}
+                        multiline
+                        dynamicHeight={{min: 150, max: 200}}
+                        onChangeText={setProfileInfo}
+                    />
+                </CustomModal>
             </ScrollView>
         </Container>
     );

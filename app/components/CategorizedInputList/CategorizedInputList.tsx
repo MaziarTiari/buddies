@@ -23,7 +23,7 @@ export interface ICategorizedInputListConfig {
     editorInstitutionPlaceholder: string;
     editorAddHeadline: string;
     editorEditHeadline: string;
-    onItemsChanged: (items: CategorizedInput[]) => void;
+    //onItemsChanged: (items: CategorizedInput[]) => void;
 }
 
 const CategorizedInputList = () => {

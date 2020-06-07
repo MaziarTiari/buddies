@@ -49,6 +49,15 @@ export interface IMultiLangLineList {
         employment_preposition: string;
         hobbies: string;
         about_me: string;
+        editor: {
+            hobbies: {
+                editor_heading: string;
+                heading_when_add: string;
+                heading_when_edit: string;
+                hobbie_title_label: string;
+                place_label: string;
+            }
+        },
         add_employment: string;
         edit_employment: string;
         edit_employments: string;
@@ -181,6 +190,15 @@ export const translationStore: TranslationStore = {
             employment_preposition: "bei",
             hobbies: "Interessen",
             about_me: "Über mich",
+            editor: {
+                hobbies: {
+                    editor_heading: "Was sind deine Hobbies?",
+                    heading_when_add: "Hobby hinzufügen",
+                    heading_when_edit: "Möchtest du was ändern?",
+                    hobbie_title_label: "Ich laufe gerne, und du?",
+                    place_label: "Ort, Verein..."
+                }
+            },
             add_employment: "Tätigkeit hinzufügen",
             edit_employment: "Tätigkeit bearbeiten",
             edit_employments: "Tätigkeiten bearbeiten",
@@ -305,6 +323,15 @@ export const translationStore: TranslationStore = {
             employment_preposition: "at",
             hobbies: "Interests",
             about_me: "About Me",
+            editor: {
+                hobbies: {
+                    editor_heading: "What are your Hobbies?",
+                    heading_when_add: "Add new Hobby",
+                    heading_when_edit: "Need to change something?",
+                    hobbie_title_label: "I love hiking, and you?",
+                    place_label: "Place, Club..."
+                }
+            },
             edit_employment: "Edit Employment",
             edit_employments: "Edit Employments",
             add_employment: "Add Employment",

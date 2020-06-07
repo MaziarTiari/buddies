@@ -6,6 +6,7 @@ import { IconButton } from 'react-native-paper';
 
 interface CenteredModalProps {
     onCloseModal: () => void;
+    onSubmit?: () => void;
     fixPosition?: boolean,
     showModal: boolean;
     children: ReactNode;
@@ -16,11 +17,11 @@ const CustomModal = (Props: CenteredModalProps) => {
     const styles = StyleSheet.create({
         container: {
             flex: Props.fixPosition ? 0 : 1,
-            justifyContent: "center",
             alignItems: "stretch",
             top: Props.fixPosition ? "15%" : 0,
         },
         modalView: {
+        paddingBottom: getResponsiveSize(20),
         position:"absolute",
         width:"90%",
         alignSelf:"center",
@@ -37,8 +38,15 @@ const CustomModal = (Props: CenteredModalProps) => {
         shadowRadius: 3.84,
         elevation: 20
         },
-        modalIcon: {
-            alignSelf:"flex-end",
+        header: {
+            justifyContent: "space-between",
+            flexDirection: "row",
+        },
+        closeIcon: {
+            alignSelf: Props.onSubmit ? "flex-start" : "flex-end",
+        },
+        submitIcon: {
+            alignSelf: "flex-end",
         }
     });
     
@@ -52,12 +60,22 @@ const CustomModal = (Props: CenteredModalProps) => {
             >
                 <View style={styles.container}>
                     <View style={styles.modalView}>
-                        <IconButton
-                            color={theme.App.primaryText}
-                            style={styles.modalIcon}
-                            icon="window-minimize" 
-                            onPress={Props.onCloseModal}
-                        />
+                        <View style={styles.header}>
+                            <IconButton
+                                color={theme.App.primaryText}
+                                style={styles.closeIcon}
+                                icon="window-minimize" 
+                                onPress={Props.onCloseModal}
+                            />
+                            {Props.onSubmit &&
+                                <IconButton
+                                    color={theme.App.primaryText}
+                                    style={styles.submitIcon}
+                                    icon="hand-okay" 
+                                    onPress={Props.onSubmit}
+                                />
+                            }
+                        </View>
                         {Props.children}
                     </View>
                 </View>

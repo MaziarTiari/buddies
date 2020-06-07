@@ -134,7 +134,7 @@ const CategorizedInputEditor = (props: CategorizedInputEditorProps) => {
                         items={props.categoryList}
                         onSelect={handleCategorySelected}
                         selectedItem={selectedCategory}
-                        editable={true}
+                        editable
                     />
                     <Autocomplete
                         style={style.autoComplete}

@@ -31,20 +31,6 @@ const ChatList = ({ navigation }: any) => {
         <Container type="screen" layout="root">
             <Container  type='screen' layout='body'>
                 <FlatList
-                    //style={styles.dropDownList}
-                    data={["item1", "item2", "item3"]} 
-                    renderItem={({item, index}) => 
-                        <TouchableOpacity 
-                            style={{flex:1}}
-                            onPress={() => alert(item)}
-                            containerStyle={{paddingTop:5}}
-                        >
-                            <Text style={{color:"#FFF"}}>{item}</Text>
-                        </TouchableOpacity>
-                    } 
-                    keyExtractor={(item, index) => index.toString()}
-                />
-                <FlatList
                     data={sortedChatPartners}
                     renderItem={({ item: chatPartner }) => (
                         <ChatListItem
