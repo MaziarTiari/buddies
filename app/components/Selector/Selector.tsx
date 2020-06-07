@@ -1,10 +1,11 @@
 import React, { useContext, useState } from "react";
-import { StyleProp, TextStyle, View, Text, ScrollView, Modal, Alert } from "react-native";
+import { StyleProp, TextStyle, View, Text, ScrollView, Modal } from "react-native";
 import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
 import { TouchableRipple, IconButton } from "react-native-paper";
 import FormInput from "../FormInput/FormInput";
 import { getResponsiveSize } from "../../utils/font/font";
 import { useStyle } from "./Selector.style";
+import CustomModal from '../CustomModal/CustomModal';
 
 interface SelectorProps {
     error?: boolean;
@@ -90,7 +91,7 @@ export function Selector( Props: SelectorProps) {
     }
 
     return (
-        <View style={[styles.centeredView, Props.style]}>
+        <View style={Props.style}>
             <TouchableRipple 
                 style={styles.selectorContainer}
                 onPress={() => setShowModal(!showModal)}>
@@ -113,45 +114,34 @@ export function Selector( Props: SelectorProps) {
                     }
                 />
             </TouchableRipple>
-            <View style={styles.centeredView}>
-            <Modal
-                animationType="slide"
-                transparent={true}
-                visible={showModal}
-                onRequestClose={() => {Alert.alert("Modal has been closed.");}}
+            <CustomModal 
+                onCloseModal={onCloseModal} 
+                showModal={showModal} 
+                fixPosition={Props.editable || false}
             >
-                <View style={styles.centeredView}>
-                    <View style={styles.modalView}>
-                        <IconButton
-                            color={theme.App.primaryText}
-                            style={styles.modalIcon}
-                            icon="window-minimize" 
-                            onPress={onCloseModal}
-                        />
-                        {Props.editable &&
-                            <FormInput
-                                containerStyle={styles.autosuggestInputField}
-                                onChangeText={onChangeText}
-                                placeholder={Props.placeholder}
-                                value={value}
-                                rightComponent={
-                                    value !== "" ?
-                                    <IconButton 
-                                        icon="close" 
-                                        onPress={() => setToDefault()} 
-                                        color={theme.App.primaryText}
-                                    />
-                                    : undefined
-                                }
+                {Props.editable &&
+                    <FormInput
+                        containerStyle={styles.autosuggestInputField}
+                        onChangeText={onChangeText}
+                        placeholder={Props.placeholder}
+                        value={value}
+                        rightComponent={
+                            value !== "" ?
+                            <IconButton
+                                style={{margin:0}}
+                                size={getResponsiveSize(18)}
+                                icon="close" 
+                                onPress={() => setToDefault()} 
+                                color={theme.App.primaryText}
                             />
+                            : undefined
                         }
-                        <ScrollView style={styles.dropDownListContainer}>
-                            {items.map((item, index) => renderItem(item, index))}
-                        </ScrollView>
-                    </View>
-                </View>
-            </Modal>
-            </View>
-    </View>
+                    />
+                }
+                <ScrollView style={styles.dropDownListContainer}>
+                    {items.map((item, index) => renderItem(item, index))}
+                </ScrollView>
+            </CustomModal>
+        </View>
     );
 }

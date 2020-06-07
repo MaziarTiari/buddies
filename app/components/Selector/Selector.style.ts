@@ -9,10 +9,11 @@ export const useStyle = (editable: boolean) => {
     const { theme } = useContext(ThemeContext);
 
     return StyleSheet.create({
-        centeredView: {
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
+        container: {
+            flex: editable ? 0 : 1,
+            justifyContent: "flex-start",
+            alignItems: "flex-start",
+            top:"15%"
         },
         selectorContainer: {
             flex: 1, alignSelf:"stretch"
@@ -40,21 +41,23 @@ export const useStyle = (editable: boolean) => {
             color: theme.App.primaryText,
         },
         modalView: {
-        position:"absolute",
-        width:"90%",
-        alignSelf:"center",
-        alignItems:"stretch",
-        backgroundColor: theme.App.screenBackground,
-        borderRadius: 20,
-        paddingHorizontal: getResponsiveSize(20),
-        shadowColor: "#0000",
-        shadowOffset: {
-            width: 5,
-            height: 5
-        },
-        shadowOpacity: 0.5,
-        shadowRadius: 3.84,
-        elevation: 20
+            flex:1,
+            top: "20%",
+            position:"absolute",
+            width:"90%",
+            alignSelf:"center",
+            alignItems:"stretch",
+            backgroundColor: theme.App.screenBackground,
+            borderRadius: 20,
+            paddingHorizontal: getResponsiveSize(20),
+            shadowColor: "#0000",
+            shadowOffset: {
+                width: 5,
+                height: 5
+            },
+            shadowOpacity: 0.5,
+            shadowRadius: 3.84,
+            elevation: 20
         },
         modalIcon: {
             alignSelf:"flex-end",
