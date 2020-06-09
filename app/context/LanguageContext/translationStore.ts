@@ -4,10 +4,10 @@ export interface IMultiLangLineList {
     menu_activities: string;
     menu_activities_favorites: string;
     menu_activities_participated: string;
+    menu_map: string;
     menu_chat: string;
     menu_profile_editor: string;
     activities_tab_list: string;
-    activities_tab_map: string;
     profile_tab_about: string;
     profile_tab_activity: string;
     profile_tab_galery: string;
@@ -136,10 +136,10 @@ export const translationStore: TranslationStore = {
         menu_activities: "Aktivitäten",
         menu_activities_favorites: "Meine Favoriten",
         menu_activities_participated: "Meine Aktivitäten",
+        menu_map: "Erkunden",
         menu_chat: "Nachrichten",
         menu_profile_editor: "Profil bearbeiten",
         activities_tab_list: "Liste",
-        activities_tab_map: "Karte",
         profile_tab_about: "Über mich",
         profile_tab_activity: "Aktivitäten",
         profile_tab_galery: "Galerie",
@@ -260,10 +260,10 @@ export const translationStore: TranslationStore = {
         menu_activities: "Activities",
         menu_activities_favorites: "My Favorites",
         menu_activities_participated: "My Activities",
+        menu_map: "Explore",
         menu_chat: "Messages",
         menu_profile_editor: "Edit Profile",
         activities_tab_list: "List",
-        activities_tab_map: "Map",
         profile_tab_about: "About",
         profile_tab_activity: "Activities",
         profile_tab_galery: "Galery",

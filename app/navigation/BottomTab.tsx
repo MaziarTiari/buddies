@@ -10,6 +10,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { ThemeContext } from "../context/ThemeContext/ThemeContext";
 import { LanguageContext } from "../context/LanguageContext/LanguageContext";
 import ActivityList from "../components/ActivityList/ActivityList";
+import Map from "../components/Map/Map";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -36,6 +37,8 @@ const BottomTab = ({ navigation, route }: any) => {
                 return translations.menu_feed;
             case RouteName.Profile.Tab:
                 return translations.menu_profile;
+            case RouteName.Map:
+                return translations.menu_map;
             case RouteName.Activity.List:
                 return translations.menu_activities;
             case RouteName.Chat.List:
@@ -82,6 +85,13 @@ const BottomTab = ({ navigation, route }: any) => {
                 component={ActivityList}
                 options={{
                     tabBarIcon: ({ focused }) => getBottomIcon("rocket", focused),
+                }}
+            />
+            <Tab.Screen
+                name={RouteName.Map}
+                component={Map}
+                options={{
+                    tabBarIcon: ({ focused }) => getBottomIcon("map", focused),
                 }}
             />
             <Tab.Screen
