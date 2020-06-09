@@ -3,13 +3,13 @@ import { Text } from "react-native";
 import Container from "../Container/Container";
 import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
 
-const ActivityMap = () => {
+const Map = () => {
     const theme = useContext(ThemeContext).theme;
     return (
         <Container type="screen" layout="root">
-            <Text style={{ color: theme.App.secondaryText }}>Activity Map Screen</Text>
+            <Text style={{ color: theme.App.secondaryText }}>Map Screen</Text>
         </Container>
     );
 };
 
-export default ActivityMap;
+export default Map;
