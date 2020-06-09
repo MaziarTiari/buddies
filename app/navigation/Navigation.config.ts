@@ -9,13 +9,12 @@ export const RouteName = {
     Root: "Root",
     FeedList: "FeedList",
     Activity: {
-        Tab: "ActivityTab",
         List: "ActivityList",
-        Map: "ActivityMap",
         MyList: "ActivityMyList",
         MyFavorite: "ActivityMyFavorite",
         Info: "ActivityInfo",
     },
+    Map: "Map",
     Chat: {
         List: "ChatList",
         Chat: "Chat",
