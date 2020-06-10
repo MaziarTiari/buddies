@@ -17,10 +17,7 @@ const CustomModal = (Props: CenteredModalProps) => {
     const styles = StyleSheet.create({
         container: {
             flex: Props.fixPosition ? 0 : 1,
-<<<<<<< HEAD
-=======
             justifyContent: Props.fixPosition ? "flex-start" : "center",
->>>>>>> custom/categorized-input-editor_api_implementation
             alignItems: "stretch",
             top: Props.fixPosition ? "15%" : 0,
         },
