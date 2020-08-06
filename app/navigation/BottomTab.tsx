@@ -3,22 +3,23 @@ import { createMaterialBottomTabNavigator } from "@react-navigation/material-bot
 import { RouteName, useNavOption } from "./Navigation.config";
 import ActivityHeader from "../components/ActivityHeader/ActivityHeader";
 import FeedList from "../components/FeedList/FeedList";
-import ActivitiesTab from "./ActivityTab";
 import ChatList from "../components/ChatList/ChatList";
 import ProfileTab from "./ProfileTab";
 import ProfileHeader from "../components/ProfileHeader/ProfileHeader";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { ThemeContext } from "../context/ThemeContext/ThemeContext";
 import { LanguageContext } from "../context/LanguageContext/LanguageContext";
+import ActivityList from "../components/ActivityList/ActivityList";
+import Map from "../components/Map/Map";
 
 const Tab = createMaterialBottomTabNavigator();
 
 function getHeaderRight(routeName: string, navigation: any): (() => JSX.Element) | null {
     switch (routeName) {
-        case RouteName.Activity.Tab:
+        case RouteName.Activity.List:
             return () => <ActivityHeader navigation={navigation} />;
         case RouteName.Profile.Tab:
-            return () => <ProfileHeader  />;
+            return () => <ProfileHeader />;
     }
     return null;
 }
@@ -36,7 +37,9 @@ const BottomTab = ({ navigation, route }: any) => {
                 return translations.menu_feed;
             case RouteName.Profile.Tab:
                 return translations.menu_profile;
-            case RouteName.Activity.Tab:
+            case RouteName.Map:
+                return translations.menu_map;
+            case RouteName.Activity.List:
                 return translations.menu_activities;
             case RouteName.Chat.List:
                 return translations.menu_chat;
@@ -78,10 +81,17 @@ const BottomTab = ({ navigation, route }: any) => {
                 }}
             />
             <Tab.Screen
-                name={RouteName.Activity.Tab}
-                component={ActivitiesTab}
+                name={RouteName.Activity.List}
+                component={ActivityList}
                 options={{
                     tabBarIcon: ({ focused }) => getBottomIcon("rocket", focused),
+                }}
+            />
+            <Tab.Screen
+                name={RouteName.Map}
+                component={Map}
+                options={{
+                    tabBarIcon: ({ focused }) => getBottomIcon("map", focused),
                 }}
             />
             <Tab.Screen

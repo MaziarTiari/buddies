@@ -12,12 +12,36 @@ export interface ISessionContextState {
     updateUserProfile: (newUserProfile: IUserProfile) => void;
 }
 
-export const sessionContextInitialState: ISessionContextState = {
-    userProfile: { id: "", birthDate: 0, city: "", firstname: "", lastname: "", sex: "", userId: "", username: "" },
-    user: { email: "", id: "", password: "", phone: "", salt: "" },
-    activity: { title: "", id: "", visibility: "friends", startDate: 0, ownerUserId: "", location: "", description: "", imageName: "" },
-    setUser: () => console.warn("Function setUser() is not implemeted!"),
-    setUserProfile: () => console.warn("Function setUserProfile() is not implemeted!"),
-    setActivity: () => console.warn("Function setActivity() is not implemented!"),
-    updateUserProfile: () => console.warn("Function updateUserProfile() is not implemented!"),
+export const initialState: ISessionContextState = {
+    userProfile: { 
+        id: "", 
+        birthDate: 0, 
+        city: "", 
+        firstname: "", 
+        lastname: "", 
+        sex: "", 
+        userId: "", 
+        username: "" 
+    },
+    user: { 
+        email: "", 
+        id: "", 
+        password: "", 
+        phone: "", 
+        salt: "" 
+    },
+    activity: { 
+        title: "", 
+        id: "", 
+        visibility: "friends", 
+        startDate: 0, 
+        ownerUserId: "", 
+        location: "", 
+        description: "", 
+        imageName: "" 
+    },
+    setUser: () => console.warn("setUser() not implemeted!"),
+    setUserProfile: () => console.warn("setUserProfile() not implemeted!"),
+    setActivity: () => console.warn("setActivity() not implemented!"),
+    updateUserProfile: () => console.warn("updateUserProfile() not implemented!"),
 };
