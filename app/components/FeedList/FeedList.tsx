@@ -3,16 +3,12 @@ import { Text, TextInput } from "react-native";
 import Container from "../Container/Container";
 import { LanguageContext } from "../../context/LanguageContext/LanguageContext";
 import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
-import { Language } from "../../context/LanguageContext/translationStore";
-import { IThemeType } from "../../context/ThemeContext/themeStore";
 import { Selector } from '../Selector/Selector'
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { getResponsiveSize } from "../../utils/font/font";
-import FormInput from "../FormInput/FormInput";
-import ChatInput from "../ChatInput/ChatInput";
+import { Language } from "../../context/LanguageContext/Library/DictionaryScope";
+import { IThemeType } from "../../context/ThemeContext/ThemeLibrary/type";
 
 const FeedList = () => {
-	const { availableLanguages, language, setLanguage, translations} = 
+	const { availableLanguages, language, changeLanguage: setLanguage, translations} = 
 		useContext(LanguageContext);
 	const theme = useContext(ThemeContext);
     return (

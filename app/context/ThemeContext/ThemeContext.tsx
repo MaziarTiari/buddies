@@ -1,21 +1,38 @@
 import React, { useState, ReactNode } from 'react'
 import { createContext } from "react";
-import { initialThemeContextState, IThemeContextState } from './stateFrame';
-import { themeStore } from './themeStore';
+import { initialState, IThemeContextState } from './stateFrame';
+import { themeLibrary } from './ThemeLibrary';
+import { IThemeType } from './ThemeLibrary/type';
+// end import /////////////////////////////////////////////////////////////////
 
-export const ThemeContext = createContext(initialThemeContextState);
+export const ThemeContext = createContext(initialState);
 
-const ThemeContextProvider = (props: {children: ReactNode}) => {
-    const [themeType, setThemeType] = useState(initialThemeContextState.themeType);
-    const theme = themeStore[themeType];
+/******************************************************************************
+ * provides theme context
+ * @param props children as consumer of this context
+ * @returns object {  
+ *      availableThemeTypes:    list of all theme types     
+ *      theme
+ *      themeType:  i.g. dark, light....      
+ *      setThemeType
+ * }
+ * 
+ */
+export default function ThemeContextProvider (props: {children: ReactNode}) {
+    
+    const [themeType, setThemeType] = useState<IThemeType>(initialState.themeType);
+    const theme = themeLibrary[themeType];
+    
     const value: IThemeContextState = { 
-        ...initialThemeContextState, theme, themeType, setThemeType,
+        ...initialState, 
+        theme, 
+        themeType, 
+        setThemeType,
     };
+
     return (
         <ThemeContext.Provider value={value}>
             {props.children}
         </ThemeContext.Provider>
     )
 }
-
-export default ThemeContextProvider;
