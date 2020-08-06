@@ -1,19 +1,20 @@
-import { Language, IMultiLangLineList, translationStore } from "./translationStore";
+import { library } from "./Library";
+import { Language, Dictionary } from "./Library/DictionaryScope";
 
 export const defaultLanguage: Language = "de";
 
 export interface ILanguageContextState {
   availableLanguages: Language[];
-  setLanguage: (newLanguage: Language) => void;
+  changeLanguage: (newLanguage: Language) => void;
   language: Language;
-  translations: IMultiLangLineList;
+  translations: Dictionary;
 }
 
-export const languageContextInitialState: ILanguageContextState = {
-  availableLanguages: Object.keys(translationStore) as Language[],
-  setLanguage: () => {
-    console.warn("Funktion changeLanguage() nicht implementiert!");
+export const initialState: ILanguageContextState = {
+  availableLanguages: Object.keys(library) as Language[],
+  changeLanguage: () => {
+    console.warn("changeLanguage() not implemented!");
   },
   language: defaultLanguage,
-  translations: translationStore[defaultLanguage]
+  translations: library[defaultLanguage]
 };
