@@ -67,8 +67,6 @@ const CategorizedInputEditor = (props: CategorizedInputEditorProps) => {
     );
 
     useEffect(() => {
-        // when the modal closes, the states needs a reset
-        if (props.visible) return;
         setSelectedTitle(props.preselectedTitle);
         setSelectedCategory(props.preselectedCategory);
         setSelectedInstitution(props.preselectedInstitution);
