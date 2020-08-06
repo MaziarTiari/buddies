@@ -78,7 +78,7 @@ const ProfileAbout = () => {
     }
 
     const handleHobbyItemsChanged = (items: CategorizedInput[]): void => {
-        updateUserProfile({ ...userProfile, jobs: items });
+        updateUserProfile({ ...userProfile, hobbies: items });
     }
 
     return (
