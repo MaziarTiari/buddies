@@ -26,14 +26,14 @@ const useStyle = () => {
             margin: getResponsiveSize(10),
             color: theme.App.primaryText,
         },
-        picker: {
-            borderWidth: 1,
-            borderColor: theme.App.layoutBackground,
-            backgroundColor: theme.App.menuBackground,
-            borderRadius: getResponsiveSize(8),
-            paddingVertical: getResponsiveSize(15),
-            paddingHorizontal: getResponsiveSize(10),
-            marginTop: getResponsiveSize(15),
+        picker: { // TODO
+            //borderWidth: 1,
+            //borderColor: theme.App.layoutBackground,
+            //backgroundColor: theme.App.menuBackground,
+            //borderRadius: getResponsiveSize(8),
+            //paddingVertical: getResponsiveSize(15),
+            //paddingHorizontal: getResponsiveSize(10),
+            //marginTop: getResponsiveSize(15),
         },
         autoComplete: {
             fontSize: fontsizes.small,
@@ -69,6 +69,13 @@ const useStyle = () => {
             justifyContent: "space-between",
             marginTop: getResponsiveSize(30),
         },
+        button: {
+            borderRadius: getResponsiveSize(8),
+        },
+        buttonText: {
+            fontSize: fontsizes.small,
+            padding: getResponsiveSize(8)
+        }
     });
 };
 
