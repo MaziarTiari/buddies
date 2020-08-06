@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useMemo } from "react";
 import { Text, View, ScrollView, Image } from "react-native";
 import Container from "../Container/Container";
 import { LanguageContext } from "../../context/LanguageContext/LanguageContext";
@@ -7,7 +7,7 @@ import TouchableRippleCircle from "../TouchableRippleCircle/TouchableRippleCircl
 import { CategorizedInput } from "../../models/User/UserProfile";
 import { SessionContext } from "../../context/SessionContext/SessionContext";
 import Swiper from "react-native-swiper";
-import moment from 'moment';
+import moment, { lang } from 'moment';
 import InfoItem from "../InfoItem/InfoItem";
 import EditableSection from '../EditableSection/EditableSection'
 import { useNavigation } from '@react-navigation/native';
@@ -18,6 +18,9 @@ import { ICategorizedInputListConfig } from '../CategorizedInputList/Categorized
 import SwiperPagination from "../SwiperPagination/SwiperPagination";
 import CustomModal from "../CustomModal/CustomModal";
 import InputField from "../InputField/InputField";
+import { ApiClient } from "../../api/ApiClient";
+import { ICategory } from "../../models/Category";
+import { getServiceUrl } from "../../api/channels";
 
 // TODO: Remove example_img Array and use Profile Context instead
 const example_img: string[] = [
@@ -30,10 +33,30 @@ const ProfileAbout = () => {
     const navigation = useNavigation();
     const style = useStyle();
     const { userProfile, updateUserProfile } = useContext(SessionContext);
-    const { translations } = useContext(LanguageContext);
+    const { translations, language } = useContext(LanguageContext);
+
     const [isOnEdit, setIsOnEdit] = useState(false);
     const [showInfoEditor, setShowInfoEditor] = useState(false);
     const [profileInfo, setProfileInfo] = useState(userProfile.info || "");
+    const [jobCategories, setJobCategories] = useState<string[]>([]);
+    const [hobbyCategories, setHobbyCategories] = useState<string[]>([]);
+
+    const categoryApi = new ApiClient<ICategory>(
+        { baseURL: getServiceUrl("Categories") }
+    );
+
+    useMemo(async () => {
+        try {
+            const jobCategoriesFromApi = await categoryApi.Get<ICategory>("jobs");
+            const hobbyCategoriesFromApi = await categoryApi.Get<ICategory>("hobbies");
+            setJobCategories(jobCategoriesFromApi.categories[language]);
+            setHobbyCategories(hobbyCategoriesFromApi.categories[language]);
+        } catch (error) {
+            console.error(error);
+            setJobCategories(["sonstige"]); // TODO
+            setHobbyCategories(["sonstige"]); // TODO
+        }
+    }, []);
 
     const onInfoEditorClose = () => {
         setShowInfoEditor(false);
@@ -42,7 +65,7 @@ const ProfileAbout = () => {
 
     const onInfoEditorSubmit = () => {
         setShowInfoEditor(false);
-        updateUserProfile({...userProfile, info: profileInfo});
+        updateUserProfile({ ...userProfile, info: profileInfo });
     }
 
     // useEffect(() => {
@@ -50,9 +73,12 @@ const ProfileAbout = () => {
     //     return () => navigation.removeListener("blur", () => setIsOnEdit(false));
     // }, [])
 
-    const handleEmploymentItemsChanged = (items: CategorizedInput[]) => {
-        console.log("Items Changed");
-        // TODO
+    const handleJobItemsChanged = (items: CategorizedInput[]): void => {
+        updateUserProfile({ ...userProfile, jobs: items });
+    }
+
+    const handleHobbyItemsChanged = (items: CategorizedInput[]): void => {
+        updateUserProfile({ ...userProfile, jobs: items });
     }
 
     return (
@@ -146,8 +172,7 @@ const ProfileAbout = () => {
                         navigation.navigate(
                             RouteName.Profile.Editor.Taglist,
                             {
-                                categories: ["IT", "Design", "Ingeneuer"],
-                                type: "jobs",
+                                categories: jobCategories,
                                 editorEditHeadline: translations.profile.edit_employment,
                                 editorAddHeadline: translations.profile.add_employment,
                                 editorInstitutionPlaceholder: translations.profile.employment_institution_placeholder,
@@ -155,7 +180,7 @@ const ProfileAbout = () => {
                                 editorCategoryPlaceholder: translations.profile.category,
                                 items: userProfile.jobs,
                                 headerTitle: translations.profile.edit_employments,
-                                //onItemsChanged: handleEmploymentItemsChanged,
+                                onItemsChanged: handleJobItemsChanged,
                             } as ICategorizedInputListConfig)
                     }}>
                     <Headline style={style.headline}>
@@ -165,25 +190,19 @@ const ProfileAbout = () => {
                         <InfoItem
                             key={i}
                             keyText={job.category}
-                            valueText={
-                                job.title 
-                                +
-                                (job.place ? " (" +
-                                job.place + ")" : "")
-                            }
+                            valueText={job.title + (job.place ? " (" + job.place + ")" : "")}
                         />
                     )}
                 </EditableSection>
 
                 {/* Hobbies */}
-                <EditableSection 
-                    editable={isOnEdit} 
+                <EditableSection
+                    editable={isOnEdit}
                     onEdit={() => {
                         navigation.navigate(
                             RouteName.Profile.Editor.Taglist,
                             {
-                                categories: ["Nature"],
-                                type: "hobbies",
+                                categories: hobbyCategories,
                                 editorEditHeadline: translations.profile.editor.hobbies.heading_when_edit,
                                 editorAddHeadline: translations.profile.editor.hobbies.heading_when_add,
                                 editorInstitutionPlaceholder: translations.profile.editor.hobbies.place_label,
@@ -191,7 +210,7 @@ const ProfileAbout = () => {
                                 editorCategoryPlaceholder: translations.profile.category,
                                 items: userProfile.hobbies,
                                 headerTitle: translations.profile.editor.hobbies.editor_heading,
-                                //onItemsChanged: handleEmploymentItemsChanged,
+                                onItemsChanged: handleHobbyItemsChanged,
                             } as ICategorizedInputListConfig)
                     }}
                 >
@@ -212,13 +231,13 @@ const ProfileAbout = () => {
                 </EditableSection>
                 <CustomModal
                     onSubmit={onInfoEditorSubmit}
-                    onCloseModal={onInfoEditorClose} 
+                    onCloseModal={onInfoEditorClose}
                     showModal={showInfoEditor}
                 >
                     <InputField
                         value={profileInfo || ""}
                         multiline
-                        dynamicHeight={{min: 150, max: 200}}
+                        dynamicHeight={{ min: 150, max: 200 }}
                         onChangeText={setProfileInfo}
                     />
                 </CustomModal>

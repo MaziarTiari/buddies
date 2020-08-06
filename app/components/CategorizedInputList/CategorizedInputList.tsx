@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useMemo } from "react";
+import React, { useState } from "react";
 import { View, FlatList, Text } from "react-native";
 import Container from "../Container/Container";
 import { CategorizedInput } from "../../models/User/UserProfile";
@@ -7,15 +7,9 @@ import useStyle from "./CategorizedInputList.style";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import CategorizedInputEditor from "../CategorizedInputEditor/CategorizedInputEditor";
 import ActionButton from "../ActionButton/ActionButton";
-import { ApiClient } from "../../api/ApiClient";
-import { ICategory } from "../../models/Category";
-import { getServiceUrl } from "../../api/channels";
-import { LanguageContext } from "../../context/LanguageContext/LanguageContext";
-import { SessionContext } from "../../context/SessionContext/SessionContext";
 
 export interface ICategorizedInputListConfig {
     categories: string[];
-    type: "jobs" | "hobbies";
     items: CategorizedInput[] | undefined;
     headerTitle: string;
     editorCategoryPlaceholder: string;
@@ -23,34 +17,20 @@ export interface ICategorizedInputListConfig {
     editorInstitutionPlaceholder: string;
     editorAddHeadline: string;
     editorEditHeadline: string;
-    //onItemsChanged: (items: CategorizedInput[]) => void;
+    onItemsChanged: (items: CategorizedInput[]) => void;
 }
 
 const CategorizedInputList = () => {
-    const session = useContext(SessionContext);
-    const lang = useContext(LanguageContext);
     const style = useStyle();
     const route = useRoute();
     const navigation = useNavigation();
     const config = route.params as ICategorizedInputListConfig;
-    const categoryApi = new ApiClient<ICategory>(
-        {baseURL: getServiceUrl("Categories")}
-    );
+
     navigation.setOptions({ title: config.headerTitle });
 
     const [editingItem, setEditingItem] = useState<CategorizedInput | undefined>();
     const [showEditor, setShowEditor] = useState<boolean>(false);
     const [items, setItems] = useState<CategorizedInput[]>(config.items ? config.items : []);
-    const [categories, setCategories] = useState<string[]>([]);
-
-    useMemo( async () => {
-        try {
-            const category = await categoryApi.Get<ICategory>(config.type);
-            setCategories(category.categories[lang.language]);
-        } catch (error) {
-            setCategories(["sonstige"]);
-        }
-    },[])
 
     const handleItemPressed = (item: CategorizedInput) => {
         setEditingItem(item);
@@ -73,20 +53,13 @@ const CategorizedInputList = () => {
             place: place,
         }
         if (editingItem) {
-            setItems(items => items.map(
-                item => item === editingItem ? categorizedInput : item));
+            setItems(items => items.map(item => item === editingItem ? categorizedInput : item));
         } else {
-            let user = { ...session.userProfile };
             setItems(items => [...items, categorizedInput]);
-            config.type === "jobs"
-                ? user.jobs = user.jobs ? [...user.jobs, categorizedInput] 
-                                        : [categorizedInput]
-                : user.hobbies = user.hobbies ? [...user.hobbies, categorizedInput]
-                                            : [categorizedInput];
-            session.updateUserProfile(user);
         }
         setEditingItem(undefined);
         setShowEditor(false);
+        config.onItemsChanged(items);
     };
 
     const handleDeletePressed = () => {
@@ -126,7 +99,7 @@ const CategorizedInputList = () => {
             <ActionButton onPress={handleAddPressed} text="+" />
             <CategorizedInputEditor
                 visible={showEditor}
-                categoryList={categories}
+                categoryList={config.categories}
                 onSave={handleSavePressed}
                 onCancel={handleCancelPressed}
                 onDelete={handleDeletePressed}
