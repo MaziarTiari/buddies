@@ -1,6 +1,6 @@
 import React, { createContext, useState, ReactNode } from "react";
 import { initialState } from "./stateFrame";
-import { IUserProfile } from "../../models/User/UserProfile"; 
+import { IUserProfile } from "../../models/User/UserProfile";
 import { ApiClient } from "../../api/ApiClient";
 import { getServiceUrl } from "../../api/channels";
 import { AxiosError } from "axios";
@@ -25,29 +25,29 @@ export function SessionContextProvider(props: { children: ReactNode }) {
     const [user, setUser] = useState(initialState.user);
     const [userProfile, setUserProfile] = useState(initialState.userProfile);
     const [activity, setActivity] = useState(initialState.activity);
-    
+
     const userProfileApi = new ApiClient<IUserProfile>(
         { baseURL: getServiceUrl("UserProfiles") }
     );
-    
-    const updateUserProfile = (userProfile: IUserProfile) => {
-        userProfileApi.Update<number, IUserProfile>(userProfile.id, userProfile)
-        .then(() => setUserProfile(userProfile))
-        .catch((error: AxiosError) => {
-            if(error.response?.status === NOT_FOUND)
-                alert("Benutzer konnte nicht gefunden werden");
-            else 
-                alert("Es gibt im moment ein Problem, bitte versuche später wieder!")
-        })
+
+    const updateUserProfile = (updatedUserProfile: IUserProfile) => {
+        userProfileApi.Update<string, IUserProfile>(updatedUserProfile.id, updatedUserProfile)
+            .then(() => setUserProfile(updatedUserProfile))
+            .catch((error: AxiosError) => {
+                if (error.response?.status === NOT_FOUND)
+                    alert("Benutzer konnte nicht gefunden werden");
+                else
+                    alert("Es gibt im moment ein Problem, bitte versuche später wieder!")
+            })
     }
-    
-    const value = { 
-        user, 
-        setUser, 
-        userProfile, 
-        setUserProfile, 
-        activity, 
-        setActivity, 
+
+    const value = {
+        user,
+        setUser,
+        userProfile,
+        setUserProfile,
+        activity,
+        setActivity,
         updateUserProfile
     };
 
