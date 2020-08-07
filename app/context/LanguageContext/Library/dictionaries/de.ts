@@ -6,6 +6,7 @@ export const germanDictionary: Dictionary = {
     menu_activities: "Aktivitäten",
     menu_activities_favorites: "Meine Favoriten",
     menu_activities_participated: "Meine Aktivitäten",
+    menu_map: "Erkunden",
     menu_chat: "Nachrichten",
     menu_profile_editor: "Profil bearbeiten",
     activities_tab_list: "Liste",

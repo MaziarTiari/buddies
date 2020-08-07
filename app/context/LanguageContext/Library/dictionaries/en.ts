@@ -6,6 +6,7 @@ export const englishDictionary: Dictionary = {
     menu_activities: "Activities",
     menu_activities_favorites: "My Favorites",
     menu_activities_participated: "My Activities",
+    menu_map: "Explore",
     menu_chat: "Messages",
     menu_profile_editor: "Edit Profile",
     activities_tab_list: "List",

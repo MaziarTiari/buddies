@@ -11,6 +11,7 @@ export interface Dictionary {
     menu_activities: string;
     menu_activities_favorites: string;
     menu_activities_participated: string;
+    menu_map: string;
     menu_chat: string;
     menu_profile_editor: string;
     activities_tab_list: string;
