@@ -10,7 +10,7 @@ import LinkLabel from '../LinkLabel/LinkLabel'
 import { isUndefinedOrEmpty } from '../../utils/generics'
 
 interface FormWithRequestProps {
-    heading: string;
+    heading?: string;
     responseError?: string;
     children: ReactNode;
     buttonTitle: string;
@@ -28,7 +28,7 @@ const FormWithRequest = (Props: FormWithRequestProps) => {
         },
         heading: {
             color: theme.App.primaryText,
-            fontWeight:"700",
+            fontWeight: "700",
             marginBottom: getResponsiveSize(20),
         },
         responceError: {
@@ -43,25 +43,27 @@ const FormWithRequest = (Props: FormWithRequestProps) => {
     return (
         <Container type="screen" layout="root">
             <Container type="screen" layout="body">
-                <KeyboardAwareScrollView 
+                <KeyboardAwareScrollView
                     resetScrollToCoords={{ x: 0, y: 0 }} enableOnAndroid
-                    extraHeight={getResponsiveSize(20)} 
+                    extraHeight={getResponsiveSize(20)}
                     contentContainerStyle={styles.contentContainer}
                 >
-                    <Headline style={styles.heading}>
-                        {Props.heading}
-                    </Headline>
-                    { !isUndefinedOrEmpty(Props.responseError) && 
-                    <Text style={styles.responceError}>
-                        {Props.responseError}
-                    </Text>
+                    {Props.heading &&
+                        <Headline style={styles.heading}>
+                            {Props.heading}
+                        </Headline>
+                    }
+                    {!isUndefinedOrEmpty(Props.responseError) &&
+                        <Text style={styles.responceError}>
+                            {Props.responseError}
+                        </Text>
                     }
                     {Props.children}
                     <Button
-                        onPress={Props.onSubmit} title={Props.buttonTitle} 
-                        style={styles.submitButton}/>
+                        onPress={Props.onSubmit} title={Props.buttonTitle}
+                        style={styles.submitButton} />
                     {(Props.linkLabel && Props.linkLabel !== "") &&
-                    <LinkLabel label={Props.linkLabel} onPress={Props.onLink}/>}
+                        <LinkLabel label={Props.linkLabel} onPress={Props.onLink} />}
                 </KeyboardAwareScrollView>
             </Container>
         </Container>

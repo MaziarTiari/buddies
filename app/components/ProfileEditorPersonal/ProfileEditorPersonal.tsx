@@ -35,7 +35,7 @@ const ProfileEditorPersonal = () => {
     return (
         <ProfilePersonalInfoForm // TODO change hard coded titles
             responseError={responseError}
-            onSubmit={onSubmit} buttonTitle={"change"} title="bearbeiten"
+            onSubmit={onSubmit} buttonTitle={"change"}
             defaultValues={{
                 birthDate: userProfile.birthDate, city: userProfile.city,
                 firstname: userProfile.firstname, lastname: userProfile.lastname,

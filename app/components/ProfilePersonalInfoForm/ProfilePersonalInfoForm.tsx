@@ -5,10 +5,9 @@ import FormDatePicker from '../FormDatePicker/FormDatePicker';
 import moment from 'moment';
 import { Selector } from '../Selector/Selector';
 import { isUndefinedOrEmpty } from '../../utils/generics';
-import { ApiClient, UserProfileApi } from '../../api/ApiClient';
+import { UserProfileApi } from '../../api/ApiClient';
 import { IUserProfile, INewUserProfile } from '../../models/User/UserProfile';
 import { SessionContext } from '../../context/SessionContext/SessionContext';
-import { getServiceUrl } from '../../api/channels';
 import FormWithRequest from '../FormWithRequest/FormWithRequest';
 import { AxiosError } from 'axios';
 
@@ -34,7 +33,7 @@ const INITIAL_FORM = {
 
 interface CreateProfileFormProps {
     onSubmit: (form: INewUserProfile) => void;
-    title: string;
+    title?: string;
     buttonTitle: string;
     defaultValues?: typeof INITIAL_FORM;
     responseError?: string;
@@ -106,7 +105,9 @@ const CreateProfileForm = (Props: CreateProfileFormProps) => {
     return (
         <FormWithRequest
             responseError={Props.responseError}
-            heading={Props.title} buttonTitle={Props.buttonTitle} onSubmit={onSubmit} >
+            heading={Props.title}
+            buttonTitle={Props.buttonTitle}
+            onSubmit={onSubmit} >
             <FormInput
                 defaultValue={Props.defaultValues?.username}
                 required errorStatusChange={setUsernameErrorStatus}
