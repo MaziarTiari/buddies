@@ -52,20 +52,24 @@ const CategorizedInputList = () => {
             title: title,
             place: place,
         }
+        let updatedItems = [];
         if (editingItem) {
-            setItems(items => items.map(item => item === editingItem ? categorizedInput : item));
+            updatedItems = items.map(item => item === editingItem ? categorizedInput : item);
         } else {
-            setItems(items => [...items, categorizedInput]);
+            updatedItems = [...items, categorizedInput];
         }
+        setItems(updatedItems);
         setEditingItem(undefined);
         setShowEditor(false);
-        config.onItemsChanged(items);
+        config.onItemsChanged(updatedItems);
     };
 
     const handleDeletePressed = () => {
-        setItems(items => items.filter(item => item !== editingItem));
+        const updatedItems = items.filter(item => item !== editingItem);
+        setItems(updatedItems);
         setShowEditor(false);
         setEditingItem(undefined);
+        config.onItemsChanged(updatedItems);
     };
 
     const renderItem = (item: CategorizedInput) => {
