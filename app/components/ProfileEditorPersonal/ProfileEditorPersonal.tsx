@@ -17,30 +17,30 @@ const UserProfileApi = new ApiClient<IUserProfile>({
 const ProfileEditorPersonal = () => {
     const session = useContext(SessionContext);
     const userProfile = useState(session.userProfile)[0];
-    const [responceError, setResponceError] = useState("");
+    const [responseError, setResponseError] = useState("");
     const navigation = useNavigation();
     const { translations } = useContext(LanguageContext);
 
     const onSubmit = async (newUserProfile: INewUserProfile) => {
         let user = { ...session.userProfile };
         Object.keys(newUserProfile).forEach(i => {
-            if(Object.getOwnPropertyNames(user).includes(i)) {
+            if (Object.getOwnPropertyNames(user).includes(i)) {
                 (user as any)[i] = (newUserProfile as any)[i]
             }
         })
         session.updateUserProfile(user);
         navigation.navigate(RouteName.Profile.About);
     }
-    
+
     return (
         <ProfilePersonalInfoForm // TODO change hard coded titles
-            responceError={responceError}
-            onSubmit={onSubmit} buttonTitle={"change"} title="bearbeiten" 
+            responseError={responseError}
+            onSubmit={onSubmit} buttonTitle={"change"} title="bearbeiten"
             defaultValues={{
-                birthDate: userProfile.birthDate, city: userProfile.city, 
+                birthDate: userProfile.birthDate, city: userProfile.city,
                 firstname: userProfile.firstname, lastname: userProfile.lastname,
                 gender: userProfile.sex, username: userProfile.username
-            }}/>
+            }} />
     )
 }
 

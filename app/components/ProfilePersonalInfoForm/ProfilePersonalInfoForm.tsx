@@ -33,19 +33,19 @@ const INITIAL_FORM = {
 }
 
 interface CreateProfileFormProps {
-    onSubmit: (form: INewUserProfile) => void; 
+    onSubmit: (form: INewUserProfile) => void;
     title: string;
     buttonTitle: string;
     defaultValues?: typeof INITIAL_FORM;
-    responceError?: string;
+    responseError?: string;
 }
 
 const CreateProfileForm = (Props: CreateProfileFormProps) => {
-    
+
     const defaultForm = Props.defaultValues || INITIAL_FORM;
-    const defaultBirthDateValue = Props.defaultValues 
+    const defaultBirthDateValue = Props.defaultValues
         ? moment.unix(Props.defaultValues.birthDate).format('L') : ""
-    
+
     const [form, setForm] = useState<typeof INITIAL_FORM>(defaultForm);
     const [verify, setVerify] = useState(false);
     const [showUsernameErrorMessage, setShowUsernameErrorMessage] = useState(false);
@@ -67,45 +67,45 @@ const CreateProfileForm = (Props: CreateProfileFormProps) => {
 
     const validateInputs = () => {
         let isValid = true;
-        if(usernameErrorStatus || birthDateErrorStatus || cityErrorStatus || 
-                firstnameErrorStatus || lastnameErrorStatus || genderErrorStatus || 
-                showUsernameErrorMessage) {
+        if (usernameErrorStatus || birthDateErrorStatus || cityErrorStatus ||
+            firstnameErrorStatus || lastnameErrorStatus || genderErrorStatus ||
+            showUsernameErrorMessage) {
             isValid = false;
         }
         Object.keys(form).forEach(i => {
-            if( isUndefinedOrEmpty((form as any)[i]) ) {
+            if (isUndefinedOrEmpty((form as any)[i])) {
                 isValid = false;
                 setVerify(!isValid);
                 return isValid;
             }
         })
-        if(isUndefinedOrEmpty(birthDateInputValue)) isValid = false;
+        if (isUndefinedOrEmpty(birthDateInputValue)) isValid = false;
         setVerify(!isValid);
         return isValid;
     }
 
     const onUsername = async (username: string) => {
-        if(username === Props.defaultValues?.username || "") return;
-        setForm({...form, username: username});
+        if (username === Props.defaultValues?.username || "") return;
+        setForm({ ...form, username: username });
         await UserProfileApi.Get<IUserProfile>("username/" + username)
-        .then(res => setShowUsernameErrorMessage(false))
-        .catch((err: AxiosError) =>  console.log(err));
+            .then(res => setShowUsernameErrorMessage(false))
+            .catch((err: AxiosError) => console.log(err));
     }
 
     const onSubmit = async () => {
         const formIsValid = validateInputs();
-        if(!formIsValid) return;
+        if (!formIsValid) return;
         const newUserProfile: INewUserProfile = {
-            username: form.username, birthDate: form.birthDate, city: form.city, 
-            firstname: form.firstname, lastname: form.lastname, sex: form.gender, 
+            username: form.username, birthDate: form.birthDate, city: form.city,
+            firstname: form.firstname, lastname: form.lastname, sex: form.gender,
             userId: user.user.id
         }
         Props.onSubmit(newUserProfile);
     }
 
     return (
-        <FormWithRequest 
-            responseError={Props.responceError}
+        <FormWithRequest
+            responseError={Props.responseError}
             heading={Props.title} buttonTitle={Props.buttonTitle} onSubmit={onSubmit} >
             <FormInput
                 defaultValue={Props.defaultValues?.username}
@@ -114,39 +114,40 @@ const CreateProfileForm = (Props: CreateProfileFormProps) => {
                 showErrorMessage={showUsernameErrorMessage}
                 verify={verify}
                 onChangeText={onUsername}
-                placeholder={translations.profile.username}/>
+                placeholder={translations.profile.username} />
             <FormInput
                 defaultValue={Props.defaultValues?.firstname}
                 required errorStatusChange={setFirstnameErrorStatus}
                 verify={verify}
-                onChangeText={txt => setForm({...form, firstname: txt})}
-                placeholder={translations.profile.firstname}/>
-            <FormInput 
+                onChangeText={txt => setForm({ ...form, firstname: txt })}
+                placeholder={translations.profile.firstname} />
+            <FormInput
                 defaultValue={Props.defaultValues?.lastname}
                 required errorStatusChange={setLastnameErrorStatus}
                 verify={verify}
-                onChangeText={txt => setForm({...form, lastname: txt})}
-                placeholder={translations.profile.lastname}/>
+                onChangeText={txt => setForm({ ...form, lastname: txt })}
+                placeholder={translations.profile.lastname} />
             <FormInput
                 defaultValue={Props.defaultValues?.city}
                 required errorStatusChange={setCityErrorStatus}
                 verify={birthDateErrorStatus}
-                onChangeText={txt => setForm({...form, city: txt})}
-                placeholder={translations.profile.city}/>
+                onChangeText={txt => setForm({ ...form, city: txt })}
+                placeholder={translations.profile.city} />
             <FormDatePicker
                 verify={verify} defaultInputValue={defaultBirthDateValue}
                 inputPlaceholder={translations.profile.birthDate} required
                 onChangeText={setBirthDateInputValue}
-                onChange={date => setForm({...form, birthDate: moment(date).unix()})}
-                options={{ value: moment.unix(form.birthDate).toDate(),
+                onChange={date => setForm({ ...form, birthDate: moment(date).unix() })}
+                options={{
+                    value: moment.unix(form.birthDate).toDate(),
                     maximumDate: moment.unix(SIXTEEN_YEARS_AGO).toDate()
-                }}/>
+                }} />
             <Selector
                 error={verify} selectedItem={Props.defaultValues?.gender}
                 placeholder={translations.profile.gender}
-                onSelect={gender => setForm({...form, gender: gender})}
+                onSelect={gender => setForm({ ...form, gender: gender })}
                 modalTitle={translations.profile.gender}
-                items={getGenderLabels()}/>
+                items={getGenderLabels()} />
         </FormWithRequest>
     );
 }
