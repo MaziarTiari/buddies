@@ -1,18 +1,10 @@
 import React, { useContext, useState } from 'react'
 import ProfilePersonalInfoForm from '../ProfilePersonalInfoForm/ProfilePersonalInfoForm'
-import { INewUserProfile, IUserProfile } from '../../models/User/UserProfile'
+import { INewUserProfile } from '../../models/User/UserProfile'
 import { SessionContext } from '../../context/SessionContext/SessionContext'
-import { ApiClient } from '../../api/ApiClient'
-import { getServiceUrl } from '../../api/channels'
 import { useNavigation } from '@react-navigation/native'
 import { RouteName } from '../../navigation/Navigation.config'
-import { METHOD_NOT_ALLOWED, NO_CONTENT, NOT_FOUND } from 'http-status-codes'
-import { AxiosError } from 'axios'
 import { LanguageContext } from '../../context/LanguageContext/LanguageContext'
-
-const UserProfileApi = new ApiClient<IUserProfile>({
-    baseURL: getServiceUrl("UserProfiles")
-})
 
 const ProfileEditorPersonal = () => {
     const session = useContext(SessionContext);
@@ -20,6 +12,8 @@ const ProfileEditorPersonal = () => {
     const [responseError, setResponseError] = useState("");
     const navigation = useNavigation();
     const { translations } = useContext(LanguageContext);
+
+    navigation.setOptions({ title: translations.profile.personal_info_edit });
 
     const onSubmit = async (newUserProfile: INewUserProfile) => {
         let user = { ...session.userProfile };
@@ -37,9 +31,12 @@ const ProfileEditorPersonal = () => {
             responseError={responseError}
             onSubmit={onSubmit} buttonTitle={"change"}
             defaultValues={{
-                birthDate: userProfile.birthDate, city: userProfile.city,
-                firstname: userProfile.firstname, lastname: userProfile.lastname,
-                gender: userProfile.sex, username: userProfile.username
+                birthDate: userProfile.birthDate,
+                city: userProfile.city,
+                firstname: userProfile.firstname,
+                lastname: userProfile.lastname,
+                gender: userProfile.sex,
+                username: userProfile.username
             }} />
     )
 }
