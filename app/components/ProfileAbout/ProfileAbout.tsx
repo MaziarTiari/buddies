@@ -7,12 +7,11 @@ import TouchableRippleCircle from "../TouchableRippleCircle/TouchableRippleCircl
 import { CategorizedInput } from "../../models/User/UserProfile";
 import { SessionContext } from "../../context/SessionContext/SessionContext";
 import Swiper from "react-native-swiper";
-import moment, { lang } from 'moment';
+import moment from 'moment';
 import InfoItem from "../InfoItem/InfoItem";
 import EditableSection from '../EditableSection/EditableSection'
 import { useNavigation } from '@react-navigation/native';
 import { Headline } from "react-native-paper";
-import ProfileAboutMenu from "./Menu";
 import { RouteName } from "../../navigation/Navigation.config";
 import { ICategorizedInputListConfig } from '../CategorizedInputList/CategorizedInputList'
 import SwiperPagination from "../SwiperPagination/SwiperPagination";
@@ -32,14 +31,15 @@ const example_img: string[] = [
 const ProfileAbout = () => {
     const navigation = useNavigation();
     const style = useStyle();
-    const { userProfile, updateUserProfile } = useContext(SessionContext);
+    const { userProfile, user, updateUserProfile } = useContext(SessionContext);
     const { translations, language } = useContext(LanguageContext);
 
-    const [isOnEdit, setIsOnEdit] = useState(false);
     const [showInfoEditor, setShowInfoEditor] = useState(false);
     const [profileInfo, setProfileInfo] = useState(userProfile.info || "");
     const [jobCategories, setJobCategories] = useState<string[]>([]);
     const [hobbyCategories, setHobbyCategories] = useState<string[]>([]);
+
+    const isEditable = userProfile.userId === user.id;
 
     const categoryApi = new ApiClient<ICategory>(
         { baseURL: getServiceUrl("Categories") }
@@ -98,13 +98,6 @@ const ProfileAbout = () => {
                                 source={require("../../../assets/img/defaultProfileImage.png")}
                             />)}
                     </Swiper>
-                    <ProfileAboutMenu
-                        isOnEdit={isOnEdit}
-                        onEdit={state => setIsOnEdit(state)}
-                        style={{
-                            position: "absolute", alignSelf: "flex-end",
-                            top: "88%", margin: 0, right: "2%"
-                        }} />
                 </View>
 
                 {/* Quick Info */}
@@ -142,7 +135,7 @@ const ProfileAbout = () => {
 
                 {/* Personell */}
                 <EditableSection
-                    editable={isOnEdit}
+                    editable={isEditable}
                     onEdit={() => navigation.navigate(RouteName.Profile.Editor.Personal)}>
                     <Headline style={style.headline}>
                         {translations.profile.personal_info}
@@ -167,7 +160,7 @@ const ProfileAbout = () => {
 
                 {/* Jobs */}
                 <EditableSection
-                    editable={isOnEdit}
+                    editable={isEditable}
                     onEdit={() => {
                         navigation.navigate(
                             RouteName.Profile.Editor.Taglist,
@@ -197,7 +190,7 @@ const ProfileAbout = () => {
 
                 {/* Hobbies */}
                 <EditableSection
-                    editable={isOnEdit}
+                    editable={isEditable}
                     onEdit={() => {
                         navigation.navigate(
                             RouteName.Profile.Editor.Taglist,
@@ -225,7 +218,7 @@ const ProfileAbout = () => {
                 </EditableSection>
 
                 {/* About Text */}
-                <EditableSection editable={isOnEdit} onEdit={() => setShowInfoEditor(true)}>
+                <EditableSection editable={isEditable} onEdit={() => setShowInfoEditor(true)}>
                     <Text style={style.headline}>{translations.profile.about_me}</Text>
                     {userProfile.info && <Text style={style.text}>{userProfile.info}</Text>}
                 </EditableSection>
