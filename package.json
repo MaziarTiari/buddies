@@ -16,6 +16,7 @@
         "@react-navigation/stack": "^5.2.11",
         "axios": "^0.19.2",
         "expo": "~37.0.3",
+        "expo-image-picker": "^8.4.0",
         "expo-updates": "~0.1.0",
         "http-status-codes": "^1.4.0",
         "moment": "^2.25.3",
