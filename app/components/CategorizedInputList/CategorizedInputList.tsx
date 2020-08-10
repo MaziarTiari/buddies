@@ -100,7 +100,7 @@ const CategorizedInputList = () => {
                 keyExtractor={(item, index) => index.toString()}
                 style={style.list}
             />
-            <ActionButton onPress={handleAddPressed} text="+" />
+            <ActionButton onPress={handleAddPressed} icon="plus" />
             <CategorizedInputEditor
                 visible={showEditor}
                 categoryList={config.categories}
