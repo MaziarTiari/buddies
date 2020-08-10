@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import ProfileAbout from "../components/ProfileAbout/ProfileAbout";
 import ProfileActivity from "../components/ProfileActivity/ProfileActivity";
-import ProfileGalery from "../components/ProfileGalery/ProfileGalery";
+import ProfileGallery from "../components/ProfileGallery/ProfileGallery";
 import { useNavOption, RouteName } from "./Navigation.config";
 import { LanguageContext } from "../context/LanguageContext/LanguageContext";
 
@@ -26,7 +26,7 @@ const ProfileTab = () => {
             />
             <Tab.Screen
                 name={RouteName.Profile.Galery}
-                component={ProfileGalery}
+                component={ProfileGallery}
                 options={{ tabBarLabel: translations.profile_tab_galery }}
             />
         </Tab.Navigator>

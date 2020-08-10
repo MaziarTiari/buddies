@@ -7,7 +7,7 @@ import Constants from "expo-constants";
 import Permissions from "expo-permissions";
 import { Image } from "react-native";
 
-const ProfileGalery = () => {
+const ProfileGallery = () => {
 
 	enum SelectOption { CAMERA, FILE };
 
@@ -76,4 +76,4 @@ const ProfileGalery = () => {
 	);
 };
 
-export default ProfileGalery;
+export default ProfileGallery;
