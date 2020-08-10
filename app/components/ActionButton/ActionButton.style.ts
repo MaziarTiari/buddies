@@ -20,17 +20,18 @@ const useStyle = () => {
             backgroundColor: theme.App.primaryItem,
             width: getResponsiveSize(80),
             height: getResponsiveSize(80),
-            borderRadius: getResponsiveSize(80),
-            margin: getResponsiveSize(20),
+            borderRadius: getResponsiveSize(40),
+            marginHorizontal: getResponsiveSize(20),
+            marginBottom: getResponsiveSize(20),
         },
-        text: {
-            fontSize: getResponsiveSize(40),
-            lineHeight: getResponsiveSize(1.15 * 40),
-            color: theme.App.primaryText,
-            fontWeight: "bold",
-            textAlignVertical: "center",
-            textAlign: "center",
-        },
+        childButton: {
+            backgroundColor: theme.App.primaryItem,
+            width: getResponsiveSize(50),
+            height: getResponsiveSize(50),
+            borderRadius: getResponsiveSize(25),
+            marginHorizontal: getResponsiveSize(35),
+            marginBottom: getResponsiveSize(10)
+        }
     });
 };
 

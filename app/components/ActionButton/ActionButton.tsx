@@ -1,24 +1,45 @@
-import React from "react";
-import { View, Text } from "react-native";
+import React, { useContext } from "react";
+import { View } from "react-native";
 import TouchableRippleCircle from "../TouchableRippleCircle/TouchableRippleCircle";
 import useStyle from "./ActionButton.style";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
+import { getResponsiveSize } from "../../utils/font/font";
 
-export interface ActionButtonProps {
+export interface ActionButtonChildProps {
     onPress: () => void;
-    text: string;
+    icon: string;
+}
+
+export interface ActionButtonProps extends ActionButtonChildProps {
+    children?: ActionButtonChildProps[];
+    showChildren?: boolean;
 }
 
 const ActionButton = (Props: ActionButtonProps) => {
+
     const style = useStyle();
-    return (
-        <View style={style.overlay} pointerEvents="box-none">
-            <View style={style.button}>
-                <TouchableRippleCircle onPress={Props.onPress}>
-                    <Text style={style.text}>{Props.text}</Text>
-                </TouchableRippleCircle>
-            </View>
+    const { theme } = useContext(ThemeContext);
+
+    const renderButton = (props: ActionButtonChildProps, isChild: boolean): JSX.Element => (
+        <View style={isChild ? style.childButton : style.button}>
+            <TouchableRippleCircle onPress={props.onPress}>
+                <MaterialCommunityIcons
+                    name={props.icon}
+                    color={theme.App.primaryText}
+                    size={isChild ? getResponsiveSize(30) : getResponsiveSize(50)}
+                />
+            </TouchableRippleCircle>
         </View>
     );
+
+    return (
+        <View style={style.overlay} pointerEvents="box-none">
+            {Props.showChildren && Props.children && Props.children.map(child => renderButton(child, true))}
+            {renderButton(Props, false)}
+        </View>
+    );
+
 };
 
 export default ActionButton;
