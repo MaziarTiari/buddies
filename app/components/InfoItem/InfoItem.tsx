@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { View, Text, StyleSheet, StyleProp, ViewStyle, TextStyle } from 'react-native'
 import { ThemeContext } from '../../context/ThemeContext/ThemeContext'
-import { fontsizes } from '../../utils/font/font';
+import { fontsizes, getLineHeight } from '../../utils/font/font';
 
 
 interface InfoItemProps {
@@ -26,19 +26,20 @@ const useStyle = () => {
 
     return StyleSheet.create({
         container: {
-            flex:2,
-            flexDirection:"row",
+            flex: 2,
+            flexDirection: "row",
         },
         key: {
             flex: 1,
             fontSize: fontsizes.small,
-            fontWeight: "500",
+            lineHeight: getLineHeight(fontsizes.small),
             color: theme.App.primaryText
         },
         value: {
             flex: 1,
             fontSize: fontsizes.small,
-            color: theme.App.primaryText
+            lineHeight: getLineHeight(fontsizes.small),
+            color: theme.App.secondaryText
         }
     });
 }

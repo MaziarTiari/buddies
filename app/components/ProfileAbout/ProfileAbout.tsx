@@ -251,17 +251,15 @@ const renderHobbies = (hobbies: CategorizedInput[], style: any): JSX.Element[] =
         if (categories.indexOf(hobby.category) === -1) categories.push(hobby.category);
     });
     return categories.map((category, index) => (
-        <View style={style.columnContainer} key={index}>
-            <Text style={[style.smallHeadline, style.column, { width: "30%" }]}>
-                {category + ":"}
-            </Text>
-            <Text style={[style.text, style.column, { width: "70%" }]}>
-                {hobbies
-                    .filter((hobby) => hobby.category == category)
-                    .map((hobby) => hobby.title)
-                    .join(", ")}
-            </Text>
-        </View>
+        <InfoItem
+            keyText={category}
+            valueText={hobbies
+                .filter((hobby) => hobby.category === category)
+                .map((hobby) => hobby.title + (hobby.place ? " (" + hobby.place + ")" : ""))
+                .join(", ")}
+            key={index}
+        />
+
     ));
 };
 
