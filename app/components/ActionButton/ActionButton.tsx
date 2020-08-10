@@ -21,8 +21,8 @@ const ActionButton = (Props: ActionButtonProps) => {
     const style = useStyle();
     const { theme } = useContext(ThemeContext);
 
-    const renderButton = (props: ActionButtonChildProps, isChild: boolean): JSX.Element => (
-        <View style={isChild ? style.childButton : style.button}>
+    const renderButton = (props: ActionButtonChildProps, isChild: boolean, index?: number): JSX.Element => (
+        <View style={isChild ? style.childButton : style.button} key={index}>
             <TouchableRippleCircle onPress={props.onPress}>
                 <MaterialCommunityIcons
                     name={props.icon}
@@ -35,7 +35,7 @@ const ActionButton = (Props: ActionButtonProps) => {
 
     return (
         <View style={style.overlay} pointerEvents="box-none">
-            {Props.showChildren && Props.children && Props.children.map(child => renderButton(child, true))}
+            {Props.showChildren && Props.children && Props.children.map((child, index) => renderButton(child, true, index))}
             {renderButton(Props, false)}
         </View>
     );
