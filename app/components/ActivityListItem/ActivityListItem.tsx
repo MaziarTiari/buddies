@@ -21,7 +21,7 @@ const ActivityListItem = (Props: IActivity) => {
     const { translations } = useContext(LanguageContext);
     const { setActivity } = useContext(SessionContext);
 
-    const owner = users.find((user) => user.id === Props.userId) as IUserProfile;
+    const owner = users.find((user) => user.id === Props.userId)!;
     //const ownerName = owner.firstname + " " + owner.lastname;
     const ownerName = "OwnerName"; // TODO Get From UserAvatar
     const participatesCount = Props.memberUserIds?.length + (Props.maxMember ? "/" + Props.maxMember : "");

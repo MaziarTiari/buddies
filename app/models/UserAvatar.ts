@@ -1,10 +1,10 @@
-import { Image } from "./Image";
+import { IImage } from "./Image";
 
-export interface UserAvatar {
+export interface IUserAvatar {
     id: string;
     userId: string;
     username: string;
     firstname: string;
     surname: string;
-    avatar: Image;
+    avatar: IImage;
 }

@@ -4,7 +4,6 @@ import Container from "../Container/Container";
 import { LanguageContext } from "../../context/LanguageContext/LanguageContext";
 import useStyle from "./ProfileAbout.style";
 import TouchableRippleCircle from "../TouchableRippleCircle/TouchableRippleCircle";
-import { CategorizedInput } from "../../models/UserProfile";
 import { SessionContext } from "../../context/SessionContext/SessionContext";
 import Swiper from "react-native-swiper";
 import moment from 'moment';
@@ -20,6 +19,7 @@ import InputField from "../InputField/InputField";
 import { ApiClient } from "../../api/ApiClient";
 import { ICategory } from "../../models/Category";
 import { getServiceUrl } from "../../api/channels";
+import { ICategorizedInput } from "../../models/CategorizedInput";
 
 // TODO: Remove example_img Array and use Profile Context instead
 const example_img: string[] = [
@@ -73,11 +73,11 @@ const ProfileAbout = () => {
     //     return () => navigation.removeListener("blur", () => setIsOnEdit(false));
     // }, [])
 
-    const handleJobItemsChanged = (items: CategorizedInput[]): void => {
+    const handleJobItemsChanged = (items: ICategorizedInput[]): void => {
         updateUserProfile({ ...userProfile, jobs: items });
     }
 
-    const handleHobbyItemsChanged = (items: CategorizedInput[]): void => {
+    const handleHobbyItemsChanged = (items: ICategorizedInput[]): void => {
         updateUserProfile({ ...userProfile, hobbies: items });
     }
 
@@ -245,7 +245,7 @@ const getAge = (birthDate: number): number => {
     return diff;
 };
 
-const renderHobbies = (hobbies: CategorizedInput[], style: any): JSX.Element[] => {
+const renderHobbies = (hobbies: ICategorizedInput[], style: any): JSX.Element[] => {
     const categories: string[] = [];
     hobbies.forEach((hobby) => {
         if (categories.indexOf(hobby.category) === -1) categories.push(hobby.category);

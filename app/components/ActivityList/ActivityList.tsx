@@ -8,7 +8,7 @@ import useStyle from "./ActivityList.style";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
 import Toast from "react-native-simple-toast";
-import { Activity } from "../../models/Activity";
+import { IActivity } from "../../models/Activity";
 import { useActivities } from "../../Hooks/useActivities";
 
 // TODO : Add Translations
@@ -50,7 +50,7 @@ const ActivityList = () => {
         leftOpen = isActivated;
     };
 
-    const renderBackground = (activity: Activity) => {
+    const renderBackground = (activity: IActivity) => {
         return (
             <View style={style.backgroundContainer}>
                 <View style={style.backgroundSideContainer}>

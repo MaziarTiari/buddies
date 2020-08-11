@@ -1,14 +1,14 @@
 import { IUser } from '../../models/User'
 import { IUserProfile } from "../../models/UserProfile";
-import { Activity } from '../../models/Activity';
+import { IActivity } from '../../models/Activity';
 
 export interface ISessionContextState {
     user: IUser;
     userProfile: IUserProfile;
-    activity: Activity;
+    activity: IActivity;
     setUser: (user: IUser) => void;
     setUserProfile: (profile: IUserProfile) => void;
-    setActivity: (activity: Activity) => void;
+    setActivity: (activity: IActivity) => void;
     updateUserProfile: (newUserProfile: IUserProfile) => void;
 }
 

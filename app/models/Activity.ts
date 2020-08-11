@@ -1,7 +1,7 @@
-import { Image } from './Image';
-import { CategorizedInput } from './CategorizedInput';
+import { ICategorizedInput } from './CategorizedInput';
+import { IImage } from './Image';
 
-export interface Activity {
+export interface IActivity {
     id: string;
     userId: string;
     title: string;
@@ -10,10 +10,10 @@ export interface Activity {
     applicantUserIds: Array<string>;
     visibility: number ;
     description?: string;
-    image?: Image;
+    image?: IImage;
     startDate?: number;
     endDate?: number;
     applicationDeadline?: number;
-    tags?: Array<CategorizedInput>;
+    tags?: Array<ICategorizedInput>;
     maxMember?: number ;
 }

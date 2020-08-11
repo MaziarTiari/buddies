@@ -4,7 +4,7 @@ import { ApiClient } from "../../api/ApiClient";
 import { getServiceUrl } from "../../api/channels";
 import { AxiosError } from "axios";
 import { NOT_FOUND } from "http-status-codes";
-import { Activity } from "../../models/Activity";
+import { IActivity } from "../../models/Activity";
 import { IUser } from "../../models/User";
 import { ISessionContextState, initialState } from "./stateFrame";
 // end import ////////////////////////////////////////////////////////////////
@@ -26,7 +26,7 @@ export function SessionContextProvider(props: { children: ReactNode }) {
 
     const [user, setUser] = useState<IUser>(initialState.user);
     const [userProfile, setUserProfile] = useState<IUserProfile>(initialState.userProfile);
-    const [activity, setActivity] = useState<Activity>(initialState.activity);
+    const [activity, setActivity] = useState<IActivity>(initialState.activity);
 
     const userProfileApi = new ApiClient<IUserProfile>(
         { baseURL: getServiceUrl("UserProfiles") }

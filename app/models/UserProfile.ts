@@ -1,4 +1,4 @@
-import { CategorizedInput } from "./CategorizedInput";
+import { ICategorizedInput } from "./CategorizedInput";
 
 export interface INewUserProfile {
     userId: string;
@@ -11,8 +11,8 @@ export interface INewUserProfile {
     languages?: string[];
     info?: string;
     relationshipState?: string;
-    jobs?: CategorizedInput[];
-    hobbies?: CategorizedInput[];
+    jobs?: ICategorizedInput[];
+    hobbies?: ICategorizedInput[];
     profileImage?: string;
     friends?: string[];
     groups?: string[];
