@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import Container from "../Container/Container";
 import ActivityListItem from "../ActivityListItem/ActivityListItem";
 import { SwipeListView } from "react-native-swipe-list-view";
@@ -8,21 +8,15 @@ import useStyle from "./ActivityList.style";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
 import Toast from "react-native-simple-toast";
-import { IActivity } from "../../models/Activity";
-import { SessionContext } from "../../context/SessionContext/SessionContext";
+import { Activity } from "../../models/Activity";
+import { useActivities } from "../../Hooks/useActivities";
 
 // TODO : Add Translations
 
 const ActivityList = () => {
     const { theme } = useContext(ThemeContext);
-    const { activityList, fetchActivityList } = useContext(SessionContext);
-
+    const { activities, isLoading ,fetchActivityList} = useActivities();
     const style = useStyle();
-
-    const [isRefreshing, setIsRefreshing] = useState<boolean>(() => {
-        fetchActivityList();
-        return true;
-    });
 
     let rightOpen: boolean, leftOpen: boolean, currentId: string;
 
@@ -56,17 +50,7 @@ const ActivityList = () => {
         leftOpen = isActivated;
     };
 
-    const handleRefresh = (): void => {
-        fetchActivityList();
-        setIsRefreshing(true);
-    }
-
-    useEffect(() => {
-        if (isRefreshing)
-            setIsRefreshing(false);
-    }, [activityList])
-
-    const renderBackground = (activity: IActivity) => {
+    const renderBackground = (activity: Activity) => {
         return (
             <View style={style.backgroundContainer}>
                 <View style={style.backgroundSideContainer}>
@@ -93,7 +77,7 @@ const ActivityList = () => {
         <Container type="screen" layout="root">
             <Container type="screen" layout="body">
                 <SwipeListView
-                    data={activityList}
+                    data={activities}
                     renderItem={({ item }) => <ActivityListItem {...item} />}
                     keyExtractor={(item) => item.id}
                     renderHiddenItem={({ item }) => renderBackground(item)}
@@ -108,8 +92,8 @@ const ActivityList = () => {
                     leftActionValue={0}
                     rightActionValue={0}
                     onTouchEnd={handleTouchEnd}
-                    refreshing={isRefreshing}
-                    onRefresh={handleRefresh}
+                    refreshing={isLoading}
+                    onRefresh={fetchActivityList}
                 />
             </Container>
         </Container>

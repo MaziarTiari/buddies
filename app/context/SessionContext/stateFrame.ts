@@ -6,12 +6,10 @@ export interface ISessionContextState {
     user: IUser;
     userProfile: IUserProfile;
     activity: Activity;
-    activityList: Activity[];
     setUser: (user: IUser) => void;
     setUserProfile: (profile: IUserProfile) => void;
     setActivity: (activity: Activity) => void;
     updateUserProfile: (newUserProfile: IUserProfile) => void;
-    fetchActivityList: () => void;
 }
 
 export const initialState: ISessionContextState = {
@@ -43,10 +41,8 @@ export const initialState: ISessionContextState = {
         memberUserIds: [],
         applicantUserIds: []
     },
-    activityList: [],
     setUser: () => console.warn("setUser() not implemeted!"),
     setUserProfile: () => console.warn("setUserProfile() not implemeted!"),
     setActivity: () => console.warn("setActivity() not implemented!"),
     updateUserProfile: () => console.warn("updateUserProfile() not implemented!"),
-    fetchActivityList: () => console.warn("fetchActivityList() not implemented!")
 };
