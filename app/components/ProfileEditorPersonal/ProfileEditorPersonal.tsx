@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react'
 import ProfilePersonalInfoForm from '../ProfilePersonalInfoForm/ProfilePersonalInfoForm'
-import { INewUserProfile } from '../../models/User/UserProfile'
+import { INewUserProfile } from '../../models/UserProfile'
 import { SessionContext } from '../../context/SessionContext/SessionContext'
 import { useNavigation } from '@react-navigation/native'
 import { RouteName } from '../../navigation/Navigation.config'

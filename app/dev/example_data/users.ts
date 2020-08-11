@@ -1,4 +1,4 @@
-import { IUserProfile } from "../../models/User/UserProfile";
+import { IUserProfile } from "../../models/UserProfile";
 
 export const users: IUserProfile[] = [
     {

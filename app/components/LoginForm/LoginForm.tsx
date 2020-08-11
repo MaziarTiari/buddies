@@ -6,7 +6,7 @@ import {userApi} from '../../api/User/UserApi';
 import { AuthenticationStatus } from '../../../App';
 import FormWithRequest from '../FormWithRequest/FormWithRequest';
 import { ApiClient } from '../../api/ApiClient';
-import { IUserProfile } from '../../models/User/UserProfile';
+import { IUserProfile } from '../../models/UserProfile';
 import { getServiceUrl } from '../../api/channels';
 import { AxiosError } from 'axios';
 import { NOT_FOUND, UNAUTHORIZED } from 'http-status-codes';

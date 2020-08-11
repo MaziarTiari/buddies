@@ -1,7 +1,7 @@
 import React, {useContext, useState } from 'react';
 import { LanguageContext } from '../../context/LanguageContext/LanguageContext';
 import FormInput from '../FormInput/FormInput';
-import { INewUser, IUser } from '../../models/User/User';
+import { INewUser, IUser } from '../../models/User';
 import { IForm, INITIAL_FORM, FormKey } from './constants';
 import { SessionContext } from '../../context/SessionContext/SessionContext';
 import { AuthenticationStatus } from '../../../App'

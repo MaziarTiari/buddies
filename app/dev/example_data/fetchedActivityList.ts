@@ -1,5 +1,4 @@
-import { ImageSourcePropType } from "react-native";
-import { CategorizedInput } from "../../models/User/UserProfile";
+import { CategorizedInput } from "../../models/CategorizedInput";
 
 export interface IActivity {
 

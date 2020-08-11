@@ -1,4 +1,4 @@
-import { IVerifyingUser, IUser } from '../../models/User/User';
+import { IVerifyingUser, IUser } from '../../models/User';
 import { getServiceUrl } from '../channels';
 import { AxiosRequestConfig, AxiosError } from 'axios';
 import { ApiClient } from '../ApiClient';

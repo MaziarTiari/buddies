@@ -6,7 +6,7 @@ import moment from 'moment';
 import { Selector } from '../Selector/Selector';
 import { isUndefinedOrEmpty } from '../../utils/generics';
 import { UserProfileApi } from '../../api/ApiClient';
-import { IUserProfile, INewUserProfile } from '../../models/User/UserProfile';
+import { IUserProfile, INewUserProfile } from '../../models/UserProfile';
 import { SessionContext } from '../../context/SessionContext/SessionContext';
 import FormWithRequest from '../FormWithRequest/FormWithRequest';
 import { AxiosError } from 'axios';

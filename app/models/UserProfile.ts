@@ -1,3 +1,5 @@
+import { CategorizedInput } from "./CategorizedInput";
+
 export interface INewUserProfile {
     userId: string;
     username: string;
@@ -18,10 +20,4 @@ export interface INewUserProfile {
 
 export interface IUserProfile extends INewUserProfile {
     id: string;
-}
-
-export interface CategorizedInput {
-    category: string;
-    title: string;
-    place?: string;
 }

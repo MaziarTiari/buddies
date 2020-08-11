@@ -1,5 +1,5 @@
-import { IUser } from '../../models/User/User'
-import { IUserProfile } from "../../models/User/UserProfile";
+import { IUser } from '../../models/User'
+import { IUserProfile } from "../../models/UserProfile";
 import { IActivity } from '../../dev/example_data/fetchedActivityList';
 
 export interface ISessionContextState {

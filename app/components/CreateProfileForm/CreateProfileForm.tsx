@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react'
 import { ApiClient } from '../../api/ApiClient';
-import { IUserProfile, INewUserProfile } from '../../models/User/UserProfile';
+import { IUserProfile, INewUserProfile } from '../../models/UserProfile';
 import { SessionContext } from '../../context/SessionContext/SessionContext';
 import { CONFLICT } from 'http-status-codes';
 import ProfilePersonalInfoForm from '../ProfilePersonalInfoForm/ProfilePersonalInfoForm'
@@ -38,7 +38,7 @@ const CreateProfileForm = (Props: CreateProfileFormProps) => {
 
     return (
         <ProfilePersonalInfoForm 
-            responceError={responceError}
+            responseError={responceError}
             onSubmit={onSubmit} buttonTitle={translations.createProfile.submit_button}
             title={translations.ScreenHeading.createProfile}/>
     );

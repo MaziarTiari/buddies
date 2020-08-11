@@ -4,7 +4,7 @@ import Container from "../Container/Container";
 import { LanguageContext } from "../../context/LanguageContext/LanguageContext";
 import useStyle from "./ProfileAbout.style";
 import TouchableRippleCircle from "../TouchableRippleCircle/TouchableRippleCircle";
-import { CategorizedInput } from "../../models/User/UserProfile";
+import { CategorizedInput } from "../../models/UserProfile";
 import { SessionContext } from "../../context/SessionContext/SessionContext";
 import Swiper from "react-native-swiper";
 import moment from 'moment';

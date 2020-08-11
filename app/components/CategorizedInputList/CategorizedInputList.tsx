@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, FlatList, Text } from "react-native";
 import Container from "../Container/Container";
-import { CategorizedInput } from "../../models/User/UserProfile";
+import { CategorizedInput } from "../../models/UserProfile";
 import { TouchableRipple } from "react-native-paper";
 import useStyle from "./CategorizedInputList.style";
 import { useRoute, useNavigation } from "@react-navigation/native";

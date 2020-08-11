@@ -1,6 +1,6 @@
 import React, { createContext, useState, ReactNode } from "react";
 import { initialState } from "./stateFrame";
-import { IUserProfile } from "../../models/User/UserProfile";
+import { IUserProfile } from "../../models/UserProfile";
 import { ApiClient } from "../../api/ApiClient";
 import { getServiceUrl } from "../../api/channels";
 import { AxiosError } from "axios";

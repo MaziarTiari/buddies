@@ -1,6 +1,6 @@
 import { Api } from "./Api";
 import { AxiosRequestConfig, AxiosResponse, AxiosError } from "axios";
-import { IUserProfile } from "../models/User/UserProfile";
+import { IUserProfile } from "../models/UserProfile";
 import { getServiceUrl } from "./channels";
 
 export class ApiClient<T> extends Api<T> {
