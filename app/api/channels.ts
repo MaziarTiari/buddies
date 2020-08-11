@@ -1,6 +1,6 @@
-export type BuddiesResource =  'Users' | 'UserProfiles' | 'Users/login' | 'Categories';
+export type BuddiesResource = 'Users' | 'UserProfiles' | 'Users/login' | 'Categories' | 'Activities';
 
 export const baseApiUrl = 'http://40.113.114.86/api/'
-export const getServiceUrl = ( resource: BuddiesResource): string => {
+export const getServiceUrl = (resource: BuddiesResource): string => {
     return baseApiUrl + resource + "/";
 }

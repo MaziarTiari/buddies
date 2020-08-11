@@ -3,18 +3,18 @@ import { getServiceUrl } from '../channels';
 import { AxiosRequestConfig, AxiosError } from 'axios';
 import { ApiClient } from '../ApiClient';
 
-class UserApi<T> extends ApiClient<T>  {
-    
+class UserApi extends ApiClient<IUser>  {
+
     constructor(config: AxiosRequestConfig) {
         super(config);
         this.VerifyUser = this.VerifyUser.bind(this);
     }
-    
+
     public VerifyUser(verifyingUser: IVerifyingUser) {
         return this.post<IUser, IVerifyingUser>("login/", verifyingUser)
             .then(this.success)
-            .catch((error: AxiosError) => {throw error});
+            .catch((error: AxiosError) => { throw error });
     }
 }
 
-export const userApi = new UserApi<IUser>({ baseURL: getServiceUrl("Users") });
+export const userApi = new UserApi({ baseURL: getServiceUrl("Users") });

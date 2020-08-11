@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import { View, Image, Text, GestureResponderEvent } from "react-native";
-import { IActivity } from "../../dev/example_data/fetchedActivityList";
 import { IconButton, Headline, TouchableRipple } from "react-native-paper";
 import { fontsizes } from "../../utils/font/font";
 import { users } from "../../dev/example_data/users";
@@ -12,6 +11,7 @@ import { RouteName } from "../../navigation/Navigation.config";
 import { LanguageContext } from "../../context/LanguageContext/LanguageContext";
 import { getDateRangeString } from "../../utils/date";
 import { SessionContext } from "../../context/SessionContext/SessionContext";
+import { IActivity } from "../../models/Activity";
 
 const defaultImg = require("../../../assets/img/default-activity-img.jpg");
 
@@ -21,12 +21,13 @@ const ActivityListItem = (Props: IActivity) => {
     const { translations } = useContext(LanguageContext);
     const { setActivity } = useContext(SessionContext);
 
-    const owner = users.find((user) => user.id === Props.ownerUserId) as IUserProfile;
-    const ownerName = owner.firstname + " " + owner.lastname;
-    const participatesCount = Props.memberUserIds?.length + (Props.maxApplications ? "/" + Props.maxApplications : "");
-    const titleContent = Props.title;
-    const imageSource = getImageSource(Props.imageName);
+    const owner = users.find((user) => user.id === Props.userId) as IUserProfile;
+    //const ownerName = owner.firstname + " " + owner.lastname;
+    const ownerName = "OwnerName"; // TODO Get From UserAvatar
+    const participatesCount = Props.memberUserIds?.length + (Props.maxMember ? "/" + Props.maxMember : "");
     const dateString = getDateRangeString(Props.startDate, translations.dateRangePreposition, Props.endDate)
+
+    const imageSource = defaultImg;
 
     const onPress = () => {
         setActivity(Props);
@@ -65,9 +66,7 @@ const ActivityListItem = (Props: IActivity) => {
                 <View style={styles.bodyContainer}>
                     <Image style={styles.image} source={imageSource} />
                     <View style={styles.infoContainer}>
-                        <Headline numberOfLines={2} style={styles.title}>
-                            {titleContent}
-                        </Headline>
+                        <Headline numberOfLines={2} style={styles.title}>{Props.title}</Headline>
                         <View style={styles.bodyContainer}>
                             <View>
                                 <Text
@@ -91,33 +90,6 @@ const ActivityListItem = (Props: IActivity) => {
             </Container>
         </TouchableRipple>
     );
-};
-
-/*
-const getDateScale = (startDate?: Date, endDate?: Date) => {
-    const start = startDate?.toLocaleDateString();
-    const end = endDate?.toLocaleDateString();
-    if (start === end || !end) return start;
-    return start + " - " + end;
-};
-
-const getTimeScale = (startTime?: Date, endTime?: Date) => {
-    const start = startTime?.toLocaleTimeString();
-    const end = endTime?.toLocaleTimeString();
-    if (start === end || !end) return start;
-    return start + " - " + end;
-};
-*/
-
-const getImageSource = (title: string) => {
-    switch (title) {
-        case "meditation.jpg":
-            return require("../../../assets/img/meditation.jpg");
-        case "mountain-bike.jpg":
-            return require("../../../assets/img/mountain-bike.jpg");
-        default:
-            return defaultImg;
-    }
 };
 
 export default ActivityListItem;

@@ -1,47 +1,52 @@
 import { IUser } from '../../models/User'
 import { IUserProfile } from "../../models/UserProfile";
-import { IActivity } from '../../dev/example_data/fetchedActivityList';
+import { Activity } from '../../models/Activity';
 
 export interface ISessionContextState {
     user: IUser;
     userProfile: IUserProfile;
-    activity: IActivity;
+    activity: Activity;
+    activityList: Activity[];
     setUser: (user: IUser) => void;
     setUserProfile: (profile: IUserProfile) => void;
-    setActivity: (activity: IActivity) => void;
+    setActivity: (activity: Activity) => void;
     updateUserProfile: (newUserProfile: IUserProfile) => void;
+    fetchActivityList: () => void;
 }
 
 export const initialState: ISessionContextState = {
-    userProfile: { 
-        id: "", 
-        birthDate: 0, 
-        city: "", 
-        firstname: "", 
-        lastname: "", 
-        sex: "", 
-        userId: "", 
-        username: "" 
+    userProfile: {
+        id: "",
+        birthDate: 0,
+        city: "",
+        firstname: "",
+        lastname: "",
+        sex: "",
+        userId: "",
+        username: ""
     },
-    user: { 
-        email: "", 
-        id: "", 
-        password: "", 
-        phone: "", 
-        salt: "" 
+    user: {
+        email: "",
+        id: "",
+        password: "",
+        phone: "",
+        salt: ""
     },
-    activity: { 
-        title: "", 
-        id: "", 
-        visibility: "friends", 
-        startDate: 0, 
-        ownerUserId: "", 
-        location: "", 
-        description: "", 
-        imageName: "" 
+    activity: {
+        title: "",
+        id: "",
+        visibility: 0,
+        startDate: 0,
+        userId: "",
+        location: "",
+        description: "",
+        memberUserIds: [],
+        applicantUserIds: []
     },
+    activityList: [],
     setUser: () => console.warn("setUser() not implemeted!"),
     setUserProfile: () => console.warn("setUserProfile() not implemeted!"),
     setActivity: () => console.warn("setActivity() not implemented!"),
     updateUserProfile: () => console.warn("updateUserProfile() not implemented!"),
+    fetchActivityList: () => console.warn("fetchActivityList() not implemented!")
 };

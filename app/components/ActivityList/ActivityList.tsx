@@ -1,6 +1,5 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import Container from "../Container/Container";
-import { IActivity, activities } from "../../dev/example_data/fetchedActivityList";
 import ActivityListItem from "../ActivityListItem/ActivityListItem";
 import { SwipeListView } from "react-native-swipe-list-view";
 import { View, Text } from "react-native";
@@ -9,21 +8,28 @@ import useStyle from "./ActivityList.style";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
 import Toast from "react-native-simple-toast";
+import { IActivity } from "../../models/Activity";
+import { SessionContext } from "../../context/SessionContext/SessionContext";
 
 // TODO : Add Translations
 
 const ActivityList = () => {
     const { theme } = useContext(ThemeContext);
+    const { activityList, fetchActivityList } = useContext(SessionContext);
+
     const style = useStyle();
 
-    const [allActivities, setAllActivities] = useState<IActivity[]>(activities);
+    const [isRefreshing, setIsRefreshing] = useState<boolean>(() => {
+        fetchActivityList();
+        return true;
+    });
 
     let rightOpen: boolean, leftOpen: boolean, currentId: string;
 
     const hideActivity = (id: string) => {
-        setAllActivities((activities) =>
+        /*setAllActivities((activities) =>
             activities.filter((activity) => activity.id !== id)
-        );
+        );*/
         Toast.show("Activity hidden.", Toast.SHORT);
         // TODO : Send hide to API
     };
@@ -49,6 +55,16 @@ const ActivityList = () => {
         currentId = key;
         leftOpen = isActivated;
     };
+
+    const handleRefresh = (): void => {
+        fetchActivityList();
+        setIsRefreshing(true);
+    }
+
+    useEffect(() => {
+        if (isRefreshing)
+            setIsRefreshing(false);
+    }, [activityList])
 
     const renderBackground = (activity: IActivity) => {
         return (
@@ -77,7 +93,7 @@ const ActivityList = () => {
         <Container type="screen" layout="root">
             <Container type="screen" layout="body">
                 <SwipeListView
-                    data={allActivities}
+                    data={activityList}
                     renderItem={({ item }) => <ActivityListItem {...item} />}
                     keyExtractor={(item) => item.id}
                     renderHiddenItem={({ item }) => renderBackground(item)}
@@ -92,6 +108,8 @@ const ActivityList = () => {
                     leftActionValue={0}
                     rightActionValue={0}
                     onTouchEnd={handleTouchEnd}
+                    refreshing={isRefreshing}
+                    onRefresh={handleRefresh}
                 />
             </Container>
         </Container>

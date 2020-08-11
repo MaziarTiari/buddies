@@ -1,12 +1,12 @@
-import { Image } from './Image'
+import { IImage } from './Image'
 
-export interface PhotoGallery {
+export interface IPhotoGallery {
     id: string;
     userId: string;
-    images: Array<ProfileImage>
+    images: Array<IProfileImage>
 }
 
-interface ProfileImage extends Image {
+interface IProfileImage extends IImage {
     asProfile: boolean;
     userId: string;
     uploadedDate: number;
