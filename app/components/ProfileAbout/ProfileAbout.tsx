@@ -1,4 +1,4 @@
-import React, { useContext, useState, useMemo } from "react";
+import React, { useContext, useState } from "react";
 import { Text, View, ScrollView, Image } from "react-native";
 import Container from "../Container/Container";
 import { LanguageContext } from "../../context/LanguageContext/LanguageContext";
@@ -16,10 +16,8 @@ import { ICategorizedInputListConfig } from '../CategorizedInputList/Categorized
 import SwiperPagination from "../SwiperPagination/SwiperPagination";
 import CustomModal from "../CustomModal/CustomModal";
 import InputField from "../InputField/InputField";
-import { ApiClient } from "../../api/ApiClient";
-import { ICategory } from "../../models/Category";
-import { getServiceUrl } from "../../api/channels";
 import { ICategorizedInput } from "../../models/CategorizedInput";
+import useCategories from "../../Hooks/useCategories";
 
 // TODO: Remove example_img Array and use Profile Context instead
 const example_img: string[] = [
@@ -32,31 +30,13 @@ const ProfileAbout = () => {
     const navigation = useNavigation();
     const style = useStyle();
     const { userProfile, user, updateUserProfile } = useContext(SessionContext);
-    const { translations, language } = useContext(LanguageContext);
+    const { translations } = useContext(LanguageContext);
+    const { jobCategories, hobbyCategories } = useCategories();
 
     const [showInfoEditor, setShowInfoEditor] = useState(false);
     const [profileInfo, setProfileInfo] = useState(userProfile.info || "");
-    const [jobCategories, setJobCategories] = useState<string[]>([]);
-    const [hobbyCategories, setHobbyCategories] = useState<string[]>([]);
 
     const isEditable = userProfile.userId === user.id;
-
-    const categoryApi = new ApiClient<ICategory>(
-        { baseURL: getServiceUrl("Categories") }
-    );
-
-    useMemo(async () => {
-        try {
-            const jobCategoriesFromApi = await categoryApi.Get<ICategory>("jobs");
-            const hobbyCategoriesFromApi = await categoryApi.Get<ICategory>("hobbies");
-            setJobCategories(jobCategoriesFromApi.categories[language]);
-            setHobbyCategories(hobbyCategoriesFromApi.categories[language]);
-        } catch (error) {
-            console.error(error);
-            setJobCategories(["sonstige"]); // TODO
-            setHobbyCategories(["sonstige"]); // TODO
-        }
-    }, []);
 
     const onInfoEditorClose = () => {
         setShowInfoEditor(false);
@@ -67,11 +47,6 @@ const ProfileAbout = () => {
         setShowInfoEditor(false);
         updateUserProfile({ ...userProfile, info: profileInfo });
     }
-
-    // useEffect(() => {
-    //     navigation.addListener("blur", () => setIsOnEdit(false));
-    //     return () => navigation.removeListener("blur", () => setIsOnEdit(false));
-    // }, [])
 
     const handleJobItemsChanged = (items: ICategorizedInput[]): void => {
         updateUserProfile({ ...userProfile, jobs: items });
