@@ -13,15 +13,20 @@ export function useActivities() {
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => fetchActivityList(), []);
-    
+
     const fetchActivityList = () => {
         setIsLoading(true);
         activityApi.GetAll<IActivity[]>()
             .then((response: IActivity[]) => {
                 setActivities(response);
-                setIsLoading(false);
             })
-            .catch((error: AxiosError) => console.log(error));
+            .catch((error: AxiosError) => {
+                console.error(error);
+                setActivities([]);
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
     };
 
     return ({
