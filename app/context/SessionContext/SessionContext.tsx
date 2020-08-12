@@ -32,6 +32,10 @@ export function SessionContextProvider(props: { children: ReactNode }) {
         { baseURL: getServiceUrl("UserProfiles") }
     );
 
+    const activityApi = new ApiClient<IActivity>(
+        { baseURL: getServiceUrl("Activities") }
+    )
+
     const updateUserProfile = (updatedUserProfile: IUserProfile) => {
         userProfileApi.Update<string, IUserProfile>(updatedUserProfile.id, updatedUserProfile)
             .then(() => setUserProfile(updatedUserProfile))
@@ -43,6 +47,12 @@ export function SessionContextProvider(props: { children: ReactNode }) {
             })
     };
 
+    const updateActivity = (updatedActivity: IActivity) => {
+        activityApi.Update<string, IActivity>(updatedActivity.id, updatedActivity)
+            .then(() => setActivity(updatedActivity))
+            .catch((error: AxiosError) => console.error(error));
+    }
+
     const value: ISessionContextState = {
         user,
         setUser,
@@ -51,6 +61,7 @@ export function SessionContextProvider(props: { children: ReactNode }) {
         activity,
         setActivity,
         updateUserProfile,
+        updateActivity
     };
 
     return (
