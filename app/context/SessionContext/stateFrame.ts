@@ -44,5 +44,5 @@ export const initialState: ISessionContextState = {
     setUser: () => console.warn("setUser() not implemeted!"),
     setUserProfile: () => console.warn("setUserProfile() not implemeted!"),
     setActivity: () => console.warn("setActivity() not implemented!"),
-    updateUserProfile: () => console.warn("updateUserProfile() not implemented!"),
+    updateUserProfile: () => console.warn("updateUserProfile() not implemented!")
 };
