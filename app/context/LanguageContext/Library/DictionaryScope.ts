@@ -135,6 +135,7 @@ export interface Dictionary {
         reqJob: string;
         reqLanguage: string;
         members: string;
+        applicants: string;
     }
     dateRangePreposition: string;
 }

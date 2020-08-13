@@ -130,6 +130,7 @@ export const englishDictionary: Dictionary = {
         reqRelationshipState: "Relationship State",
         reqJob: "Employments",
         reqLanguage: "Language",
-        members: "Member"
+        members: "Member",
+        applicants: "Applicants",
     }
 }

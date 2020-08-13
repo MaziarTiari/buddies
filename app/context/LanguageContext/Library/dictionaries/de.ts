@@ -132,5 +132,6 @@ export const germanDictionary: Dictionary = {
         reqJob: "Tätigkeiten",
         reqLanguage: "Sprache",
         members: "Teilnehmer",
+        applicants: "Bewerber",
     }
 }
