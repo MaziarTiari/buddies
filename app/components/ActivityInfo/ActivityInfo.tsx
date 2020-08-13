@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { View, Text, ScrollView, Image } from "react-native";
 import useStyle from "./ActivityInfo.style";
 import { LanguageContext } from "../../context/LanguageContext/LanguageContext";
@@ -10,40 +10,52 @@ import InfoItem from "../InfoItem/InfoItem";
 import moment from "moment";
 import TouchableRippleCircle from "../TouchableRippleCircle/TouchableRippleCircle";
 import Swiper from "react-native-swiper";
-import SwiperPagination from "../SwiperPagination/SwiperPagination";
 import { SessionContext } from "../../context/SessionContext/SessionContext";
+import { RouteName } from "../../navigation/Navigation.config";
+import { ICategorizedInputListConfig } from "../CategorizedInputList/CategorizedInputList";
+import { ICategorizedInput } from "../../models/CategorizedInput";
+import useCategories from "../../Hooks/useCategories";
+import CustomModal from "../CustomModal/CustomModal";
+import InputField from "../InputField/InputField";
 
-// TODO: Remove example_img Array and use Session Context instead
-const example_img: string[] = [
-    "https://www.bootdey.com/img/Content/avatar/avatar1.png",
-    "https://upload.wikimedia.org/wikipedia/commons/3/30/%C5%A0koda_Superb_III_at_IAA_2019_IMG_0397.jpg",
-    "https://www.thesun.co.uk/wp-content/uploads/2020/01/NINTCHDBPICT000554673258.jpg",
-];
+const defaultImg = require("../../../assets/img/default-activity-img.jpg");
 
 const ActivityInfo = () => {
     const style = useStyle();
     const navigation = useNavigation();
     const { translations } = useContext(LanguageContext);
-    const { activity } = useContext(SessionContext);
+    const { activity, user, updateActivity } = useContext(SessionContext);
+    const { hobbyCategories } = useCategories();
 
     navigation.setOptions({ title: activity.title });
 
+    const isEditable = activity.userId === user.id;
+    const imageSource = activity.image ? { uri: "data:image/gif;base64," + activity.image.base64 } : defaultImg;
+
+    const [showDescriptionEditor, setShowDescriptionEditor] = useState<boolean>(false);
+    const [activityDescription, setActivityDescription] = useState<string>(activity.description || "");
+
+    const handleTagItemsChanged = (tags: ICategorizedInput[]): void => {
+        updateActivity({ ...activity, tags: tags });
+    };
+
+    const handleDescriptionEditorSubmit = (): void => {
+        setShowDescriptionEditor(false);
+        updateActivity({ ...activity, description: activityDescription })
+    };
+
+    const handleDescriptionEditorClose = (): void => {
+        setShowDescriptionEditor(false);
+        setActivityDescription(activity.description || "");
+    };
+
     return (
         <Container layout="root" type="screen">
-            <ScrollView style={{ flex: 1, alignSelf: "stretch" }}>
+            <ScrollView style={{ flex: 1, alignSelf: "stretch" }} >
 
-                {/* Images */}
-                <Swiper
-                    containerStyle={style.galleryContainer}
-                    renderPagination={(index, total) => <SwiperPagination index={index} total={total} />}
-                >
-                    {example_img.length > 0
-                        ? (example_img.map((url, index) => (
-                            <Image key={index} style={style.image} source={{ uri: url }} />)))
-                        : (<Image
-                            style={style.image}
-                            source={require("../../../assets/img/defaultProfileImage.png")}
-                        />)}
+                {/* Image */}
+                <Swiper containerStyle={style.galleryContainer}>
+                    <Image style={style.image} source={imageSource} />
                 </Swiper>
 
                 {/* Quick Info */}
@@ -56,13 +68,19 @@ const ActivityInfo = () => {
                             {activity.location}
                         </Text>
                         <Text numberOfLines={1} style={style.text}>
-                            {moment.unix(activity.startDate).format("L")}
+                            {activity.visibility.toString()}
                         </Text>
                     </View>
                     <TouchableRippleCircle onPress={() => { }}>
                         <View style={style.innerRippleContainer}>
+                            <Text style={style.headline}>{activity.applicantUserIds.length}</Text>
+                            <Text style={style.text}>{translations.activity.applicants}</Text>
+                        </View>
+                    </TouchableRippleCircle>
+                    <TouchableRippleCircle onPress={() => { }}>
+                        <View style={style.innerRippleContainer}>
                             <Text style={style.headline}>
-                                {(activity.memberUserIds ? activity.memberUserIds.length : 0) + (activity.maxApplications ? " / " + activity.maxApplications : "")}
+                                {activity.memberUserIds.length + (activity.maxMember ? " / " + activity.maxMember : "")}
                             </Text>
                             <Text style={style.text}>{translations.activity.members}</Text>
                         </View>
@@ -70,26 +88,47 @@ const ActivityInfo = () => {
                 </View>
 
                 {/* Description */}
-                <EditableSection editable={true} onEdit={() => { }}>
+                <EditableSection editable={isEditable} onEdit={() => setShowDescriptionEditor(true)}>
                     <Headline style={style.headline}>{translations.activity.description}</Headline>
                     <Text style={style.text}>{activity.description}</Text>
                 </EditableSection>
 
                 {/* Information */}
-                <EditableSection editable={true} onEdit={() => { }}>
+                <EditableSection editable={isEditable} onEdit={() => { }}>
                     <Headline style={style.headline}>{translations.activity.information}</Headline>
                     <InfoItem keyText={translations.activity.location} valueText={activity.location} />
-                    <InfoItem keyText={translations.activity.startTime} valueText={moment.unix(activity.startDate).format("LLL")} />
+                    {activity.startDate !== undefined &&
+                        <InfoItem keyText={translations.activity.startTime} valueText={moment.unix(activity.startDate).format("LLL")} />}
                     {activity.endDate !== undefined &&
                         <InfoItem keyText={translations.activity.endTime} valueText={moment.unix(activity.endDate).format("LLL")} />}
-                    {activity.hobbies && activity.hobbies.length > 0 &&
-                        <InfoItem keyText={translations.activity.hobbies} valueText={activity.hobbies.map(hobby => hobby.title + " (" + hobby.category + ")").join(", ")} />}
+                    <InfoItem keyText={translations.activity.visibility} valueText={activity.visibility.toString()} />
+                </EditableSection>
+
+                {/* Tags */}
+                <EditableSection editable={isEditable} onEdit={() => {
+                    navigation.navigate(RouteName.Profile.Editor.Taglist, {
+                        categories: hobbyCategories,
+                        editorEditHeadline: translations.profile.editor.hobbies.heading_when_edit,
+                        editorAddHeadline: translations.profile.editor.hobbies.heading_when_add,
+                        editorInstitutionPlaceholder: translations.profile.editor.hobbies.place_label,
+                        editorTitlePlaceholder: translations.profile.editor.hobbies.hobbie_title_label,
+                        editorCategoryPlaceholder: translations.profile.category,
+                        items: activity.tags,
+                        headerTitle: translations.profile.editor.hobbies.editor_heading,
+                        onItemsChanged: handleTagItemsChanged,
+                    } as ICategorizedInputListConfig)
+                }}>
+                    <Headline style={style.headline}>{translations.activity.hobbies}</Headline>
+                    {activity.tags?.map((tag, index) => (
+                        <InfoItem key={index} keyText={tag.category} valueText={tag.title} />
+                    ))}
                 </EditableSection>
 
                 {/* Criteria */}
-                <EditableSection editable={true} onEdit={() => { }}>
+                {/*
+                <EditableSection editable={isEditable} onEdit={() => { }}>
                     <Headline style={style.headline}>{translations.activity.criteria}</Headline>
-                    <InfoItem keyText={translations.activity.visibility} valueText={activity.visibility} />
+                    
                     {activity.applicationDeadline !== undefined &&
                         <InfoItem keyText={translations.activity.applicationDeadline} valueText={moment.unix(activity.applicationDeadline).format("LLL")} />}
                     {activity.reqLocation !== undefined &&
@@ -103,8 +142,23 @@ const ActivityInfo = () => {
                     {activity.reqRelationshipState !== undefined &&
                         <InfoItem keyText={translations.activity.reqRelationshipState} valueText={activity.reqRelationshipState} />}
                     {activity.reqJob !== undefined && activity.reqJob.length > 0 &&
-                        <InfoItem keyText={translations.activity.reqJob} valueText={activity.reqJob.map(job => job.title + " (" + job.category + ")").join(",")} />}
+                        <InfoItem keyText={translations.activity.reqJob} valueText={activity.reqJob.map(job => job.title + " (" + job.category + ")").join(",")} />} 
                 </EditableSection>
+                */}
+
+                {/* Modal for description */}
+                <CustomModal
+                    onSubmit={handleDescriptionEditorSubmit}
+                    onCloseModal={handleDescriptionEditorClose}
+                    showModal={showDescriptionEditor}
+                >
+                    <InputField
+                        value={activityDescription}
+                        multiline
+                        dynamicHeight={{ min: 150, max: 300 }}
+                        onChangeText={setActivityDescription}
+                    />
+                </CustomModal>
 
             </ScrollView>
         </Container>

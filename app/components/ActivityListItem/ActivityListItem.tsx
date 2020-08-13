@@ -2,8 +2,6 @@ import React, { useContext } from "react";
 import { View, Image, Text, GestureResponderEvent } from "react-native";
 import { IconButton, Headline, TouchableRipple } from "react-native-paper";
 import { fontsizes } from "../../utils/font/font";
-import { users } from "../../dev/example_data/users";
-import { IUserProfile } from "../../models/UserProfile";
 import { useStyle } from "./ActivityListItem.style";
 import Container from "../Container/Container";
 import { useNavigation } from "@react-navigation/native";
@@ -15,22 +13,21 @@ import { IActivity } from "../../models/Activity";
 
 const defaultImg = require("../../../assets/img/default-activity-img.jpg");
 
-const ActivityListItem = (Props: IActivity) => {
+const ActivityListItem = (activity: IActivity) => {
     const { styles, theme } = useStyle();
     const navigation = useNavigation();
     const { translations } = useContext(LanguageContext);
     const { setActivity } = useContext(SessionContext);
 
-    const owner = users.find((user) => user.id === Props.userId)!;
-    //const ownerName = owner.firstname + " " + owner.lastname;
+    // const owner = users.find((user) => user.id === activity.userId)!;
+    // const ownerName = owner.firstname + " " + owner.lastname;
     const ownerName = "OwnerName"; // TODO Get From UserAvatar
-    const participatesCount = Props.memberUserIds?.length + (Props.maxMember ? "/" + Props.maxMember : "");
-    const dateString = getDateRangeString(Props.startDate, translations.dateRangePreposition, Props.endDate)
-
-    const imageSource = defaultImg;
+    const memberCount = activity.memberUserIds.length + (activity.maxMember ? "/" + activity.maxMember : "");
+    const dateString = getDateRangeString(activity.startDate, translations.dateRangePreposition, activity.endDate);
+    const imageSource = activity.image ? { uri: "data:image/gif;base64," + activity.image.base64 } : defaultImg;
 
     const onPress = () => {
-        setActivity(Props);
+        setActivity(activity);
         navigation.navigate(RouteName.Activity.Info)
     };
 
@@ -53,7 +50,7 @@ const ActivityListItem = (Props: IActivity) => {
                         <Text style={styles.iconText}>{ownerName}</Text>
                     </View>
                     <View style={styles.headerContainer}>
-                        <Text style={styles.iconText}>{participatesCount}</Text>
+                        <Text style={styles.iconText}>{memberCount}</Text>
                         <IconButton
                             icon="account-group"
                             color={theme.App.basicItem}
@@ -66,14 +63,14 @@ const ActivityListItem = (Props: IActivity) => {
                 <View style={styles.bodyContainer}>
                     <Image style={styles.image} source={imageSource} />
                     <View style={styles.infoContainer}>
-                        <Headline numberOfLines={2} style={styles.title}>{Props.title}</Headline>
+                        <Headline numberOfLines={2} style={styles.title}>{activity.title}</Headline>
                         <View style={styles.bodyContainer}>
                             <View>
                                 <Text
                                     numberOfLines={2}
                                     style={[styles.info, styles.address]}
                                 >
-                                    {Props.location}
+                                    {activity.location}
                                 </Text>
                                 <Text style={styles.info}>{dateString}</Text>
                             </View>
