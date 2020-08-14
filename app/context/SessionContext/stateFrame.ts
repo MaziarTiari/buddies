@@ -1,8 +1,12 @@
-import { IUser } from '../../models/User'
-import { IUserProfile } from "../../models/UserProfile";
+import { IUser, INewUser } from '../../models/User'
+import { IUserProfile, INewUserProfile } from "../../models/UserProfile";
 import { IActivity } from '../../models/Activity';
 
+export enum AuthState { UNREGISTERED, UNAUTHORIZED, AUTHORIZED, AUTHORIZED_WITHOUT_PROFILE };
+
 export interface ISessionContextState {
+    authState: AuthState;
+    setAuthState: (authState: AuthState) => void;
     user: IUser;
     userProfile: IUserProfile;
     activity: IActivity;
@@ -11,9 +15,22 @@ export interface ISessionContextState {
     setActivity: (activity: IActivity) => void;
     updateUserProfile: (updatedUserProfile: IUserProfile) => void;
     updateActivity: (updatedActivity: IActivity) => void;
+
+    createUser: (createdUser: INewUser) => void;
+    createUserIsLoading: boolean;
+    createUserError?: string;
+
+    loginUser: (email: string, password: string) => void;
+    loginUserIsLoading: boolean;
+    loginUserError?: string;
+
+    createUserProfile: (createdUserProfile: INewUserProfile) => void;
+    createUserProfileIsLoading: boolean;
+    createUserProfileError?: string;
 }
 
 export const initialState: ISessionContextState = {
+    authState: AuthState.UNREGISTERED,
     userProfile: {
         id: "",
         birthDate: 0,
@@ -42,9 +59,23 @@ export const initialState: ISessionContextState = {
         memberUserIds: [],
         applicantUserIds: []
     },
-    setUser: () => console.warn("setUser() not implemeted!"),
-    setUserProfile: () => console.warn("setUserProfile() not implemeted!"),
+    setAuthState: () => console.warn("setAuthState() not implemented!"),
+    setUser: () => console.warn("setUser() not implemented!"),
+    setUserProfile: () => console.warn("setUserProfile() not implemented!"),
     setActivity: () => console.warn("setActivity() not implemented!"),
     updateUserProfile: () => console.warn("updateUserProfile() not implemented!"),
-    updateActivity: () => console.warn("updateActivity() not implemeted!")
+    updateActivity: () => console.warn("updateActivity() not implemented!"),
+
+    createUser: () => console.warn("createUser() not implemented!"),
+    createUserIsLoading: false,
+    createUserError: undefined,
+
+    loginUser: () => console.warn("loginUser() not implemented!"),
+    loginUserIsLoading: false,
+    loginUserError: undefined,
+
+    createUserProfile: () => console.warn("createUserProfile() not implemented!"),
+    createUserProfileIsLoading: false,
+    createUserProfileError: undefined,
+
 };
