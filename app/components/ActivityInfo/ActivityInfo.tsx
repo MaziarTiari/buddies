@@ -94,7 +94,7 @@ const ActivityInfo = () => {
                 </EditableSection>
 
                 {/* Information */}
-                <EditableSection editable={isEditable} onEdit={() => { }}>
+                <EditableSection editable={isEditable} onEdit={() => navigation.navigate(RouteName.Activity.Editor)}>
                     <Headline style={style.headline}>{translations.activity.information}</Headline>
                     <InfoItem keyText={translations.activity.location} valueText={activity.location} />
                     {activity.startDate !== undefined &&

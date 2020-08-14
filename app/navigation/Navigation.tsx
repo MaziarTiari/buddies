@@ -8,6 +8,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import ActivityInfo from '../components/ActivityInfo/ActivityInfo';
 import ProfileEditorPersonal from '../components/ProfileEditorPersonal/ProfileEditorPersonal';
 import CategorizedInputList from '../components/CategorizedInputList/CategorizedInputList';
+import ActivityInfoEditor from '../components/ActivityInfoEditor/ActivityInfoEditor';
 
 const Stack = createStackNavigator();
 
@@ -23,6 +24,7 @@ const Navigation = () => {
             <Stack.Screen name={RouteName.Activity.Info} component={ActivityInfo} />
             <Stack.Screen name={RouteName.Profile.Editor.Taglist} component={CategorizedInputList} />
             <Stack.Screen name={RouteName.Profile.Editor.Personal} component={ProfileEditorPersonal} />
+            <Stack.Screen name={RouteName.Activity.Editor} component={ActivityInfoEditor} />
         </Stack.Navigator>
     );
 };
