@@ -13,10 +13,10 @@ export const useStyle = (editable: boolean) => {
             flex: editable ? 0 : 1,
             justifyContent: "flex-start",
             alignItems: "flex-start",
-            top:"15%"
+            top: "15%"
         },
         selectorContainer: {
-            flex: 1, alignSelf:"stretch"
+            flex: 1, alignSelf: "stretch"
         },
         autosuggestInputField: {
             backgroundColor: theme.App.menuBackground,
@@ -26,14 +26,14 @@ export const useStyle = (editable: boolean) => {
         },
         dropDownListContainer: {
             maxHeight: MAX_HEIGHT,
-            backgroundColor:theme.App.menuBackground,
+            backgroundColor: theme.App.menuBackground,
             borderRadius: editable ? 0 : getResponsiveSize(10),
             borderBottomLeftRadius: getResponsiveSize(10),
             borderBottomRightRadius: getResponsiveSize(10),
             marginBottom: getResponsiveSize(20),
         },
         item: {
-            paddingHorizontal: getResponsiveSize(15), 
+            paddingHorizontal: getResponsiveSize(15),
             paddingVertical: getResponsiveSize(4),
         },
         itemText: {
@@ -41,12 +41,12 @@ export const useStyle = (editable: boolean) => {
             color: theme.App.primaryText,
         },
         modalView: {
-            flex:1,
+            flex: 1,
             top: "20%",
-            position:"absolute",
-            width:"90%",
-            alignSelf:"center",
-            alignItems:"stretch",
+            position: "absolute",
+            width: "90%",
+            alignSelf: "center",
+            alignItems: "stretch",
             backgroundColor: theme.App.screenBackground,
             borderRadius: 20,
             paddingHorizontal: getResponsiveSize(20),
@@ -60,7 +60,7 @@ export const useStyle = (editable: boolean) => {
             elevation: 20
         },
         modalIcon: {
-            alignSelf:"flex-end",
+            alignSelf: "flex-end",
         }
     });
 }

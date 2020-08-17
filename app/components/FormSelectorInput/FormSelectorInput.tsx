@@ -1,23 +1,22 @@
 import React, { useContext, useState } from "react";
-import { StyleProp, TextStyle, View, Text, ScrollView, Modal } from "react-native";
+import { StyleProp, TextStyle, View, Text, ScrollView } from "react-native";
 import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
 import { TouchableRipple, IconButton } from "react-native-paper";
-import FormInput from "../FormInput/FormInput";
+import FormTextInput, { FormTextInputProps } from "../FormTextInput/FormTextInput";
 import { getResponsiveSize } from "../../utils/font/font";
-import { useStyle } from "./Selector.style";
+import { useStyle } from "./FormSelectorInput.style";
 import CustomModal from '../CustomModal/CustomModal';
 
-interface SelectorProps {
-    error?: boolean;
-    placeholder?: string;
+export interface FormSelectorInputProps extends FormTextInputProps {
     modalTitle: string;
     items: string[];
     onSelect: (item: string) => void;
-	selectedItem?: string;
+    selectedItem?: string;
     style?: StyleProp<TextStyle>
     editable?: boolean;
 }
-export function Selector( Props: SelectorProps) {
+
+const FormSelectorInput = (Props: FormSelectorInputProps) => {
     const { theme } = useContext(ThemeContext);
     const styles = useStyle(Props.editable || false);
     const [showModal, setShowModal] = useState(false);
@@ -25,14 +24,14 @@ export function Selector( Props: SelectorProps) {
     const [value, setValue] = useState(Props.selectedItem || "");
     const [items, setItems] = useState<string[]>(Props.items);
 
-    const onSelect = (item: string) => {
-        const selectedValue = item.length > getResponsiveSize(25) 
-                            ? item.slice(0, getResponsiveSize(25)) 
-                                + "..." : item;
+    const handleItemPressed = (item: string) => {
+        const selectedValue = item.length > getResponsiveSize(25)
+            ? item.slice(0, getResponsiveSize(25))
+            + "..." : item;
         setShowModal(false);
         setSelectedItem(selectedValue);
         Props.onSelect(item);
-        if(Props.editable)
+        if (Props.editable)
             filterItems(item);
         setValue("");
         setItems(Props.items);
@@ -55,8 +54,9 @@ export function Selector( Props: SelectorProps) {
     }
 
     const deleteInputValue = () => {
-        setValue(""),
+        setValue("");
         setItems(Props.items);
+        Props.onSelect("");
     }
 
     const setToDefault = () => {
@@ -72,69 +72,70 @@ export function Selector( Props: SelectorProps) {
     const renderItem = (item: string, index: number) => {
         const lastItem = items.length - 1;
         return (
-            <TouchableRipple 
-                onPress={() => onSelect(item)} 
+            <TouchableRipple
+                onPress={() => handleItemPressed(item)}
                 style={[
-                    styles.item, 
-                    { 
+                    styles.item,
+                    {
                         marginTop: index === 0 ? 15 : 0,
                         marginBottom: index === lastItem ? 15 : 0,
                     }
                 ]}
-                key={index} 
+                key={index}
             >
-                <Text onPress={() => onSelect(item)} style={styles.itemText}>
+                <Text onPress={() => handleItemPressed(item)} style={styles.itemText}>
                     {item}
                 </Text>
             </TouchableRipple>
         )
     }
 
+    console.log("hasError: ", Props.hasError);
+
     return (
         <View style={Props.style}>
-            <TouchableRipple 
+            <TouchableRipple
                 style={styles.selectorContainer}
                 onPress={() => setShowModal(!showModal)}>
-                <FormInput
-                    verify={Props.error}
-                    placeholder={Props.placeholder}
+                <FormTextInput
+                    {...Props}
                     value={selectedItem}
-                    defaultValue={Props.selectedItem} 
+                    defaultValue={Props.selectedItem}
                     editable={false}
                     onTouchStart={() => setShowModal(!showModal)}
                     rightComponent={
                         selectedItem !== "" ?
-                        <IconButton
-                            style={{margin:0}}
-                            size={getResponsiveSize(18)}
-                            icon="close" 
-                            onPress={() => setToDefault()} 
-                            color={theme.App.primaryText}/>
-                        : undefined
+                            <IconButton
+                                style={{ margin: 0 }}
+                                size={getResponsiveSize(18)}
+                                icon="close"
+                                onPress={() => setToDefault()}
+                                color={theme.App.primaryText} />
+                            : undefined
                     }
                 />
             </TouchableRipple>
-            <CustomModal 
-                onCloseModal={onCloseModal} 
-                showModal={showModal} 
+            <CustomModal
+                onCloseModal={onCloseModal}
+                showModal={showModal}
                 fixPosition={Props.editable || false}
             >
                 {Props.editable &&
-                    <FormInput
+                    <FormTextInput
                         containerStyle={styles.autosuggestInputField}
                         onChangeText={onChangeText}
                         placeholder={Props.placeholder}
                         value={value}
                         rightComponent={
                             value !== "" ?
-                            <IconButton
-                                style={{margin:0}}
-                                size={getResponsiveSize(18)}
-                                icon="close" 
-                                onPress={() => setToDefault()} 
-                                color={theme.App.primaryText}
-                            />
-                            : undefined
+                                <IconButton
+                                    style={{ margin: 0 }}
+                                    size={getResponsiveSize(18)}
+                                    icon="close"
+                                    onPress={() => setToDefault()}
+                                    color={theme.App.primaryText}
+                                />
+                                : undefined
                         }
                     />
                 }
@@ -145,3 +146,5 @@ export function Selector( Props: SelectorProps) {
         </View>
     );
 }
+
+export default FormSelectorInput;

@@ -7,7 +7,7 @@ import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
 import Button from "../Button/Button";
 import { LanguageContext } from "../../context/LanguageContext/LanguageContext";
 import { getResponsiveSize } from "../../utils/font/font";
-import { Selector } from "../Selector/Selector";
+import FormSelectorInput from "../FormSelectorInput/FormSelectorInput";
 
 export interface CategorizedInputEditorProps {
     visible: boolean;
@@ -141,7 +141,7 @@ const CategorizedInputEditor = (props: CategorizedInputEditorProps) => {
             <View style={style.centeredView}>
                 <View style={style.modalView}>
                     <Text style={style.headline}>{props.headline}</Text>
-                    <Selector
+                    <FormSelectorInput
                         style={[style.picker, { borderColor: categoryBorderColor }]}
                         modalTitle={props.categoryPlaceholder || ""}
                         placeholder={props.categoryPlaceholder}
