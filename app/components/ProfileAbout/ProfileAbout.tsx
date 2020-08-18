@@ -132,69 +132,76 @@ const ProfileAbout = () => {
                 </EditableSection>
 
                 {/* Jobs */}
-                <EditableSection
-                    editable={userIsEditingProfile}
-                    onEdit={() => {
-                        navigation.navigate(
-                            RouteName.Profile.Editor.Taglist,
-                            {
-                                categories: jobCategories,
-                                editorEditHeadline: translations.profile.edit_employment,
-                                editorAddHeadline: translations.profile.add_employment,
-                                editorInstitutionPlaceholder: translations.profile.employment_institution_placeholder,
-                                editorTitlePlaceholder: translations.profile.employment_title_placeholder,
-                                editorCategoryPlaceholder: translations.profile.category,
-                                items: userProfile.jobs,
-                                headerTitle: translations.profile.edit_employments,
-                                onItemsChanged: handleJobItemsChanged,
-                            } as ICategorizedInputListConfig)
-                    }}>
-                    <Headline style={style.headline}>
-                        {translations.profile.employments}
-                    </Headline>
-                    {userProfile.jobs?.map((job, i) =>
-                        <InfoItem
-                            key={i}
-                            keyText={job.category}
-                            valueText={job.title + (job.place ? " (" + job.place + ")" : "")}
-                        />
-                    )}
-                </EditableSection>
+                {((userProfile.jobs && userProfile.jobs.length > 0) || userIsEditingProfile) &&
+                    <EditableSection
+                        editable={userIsEditingProfile}
+                        onEdit={() => {
+                            navigation.navigate(
+                                RouteName.Profile.Editor.Taglist,
+                                {
+                                    categories: jobCategories,
+                                    editorEditHeadline: translations.profile.edit_employment,
+                                    editorAddHeadline: translations.profile.add_employment,
+                                    editorInstitutionPlaceholder: translations.profile.employment_institution_placeholder,
+                                    editorTitlePlaceholder: translations.profile.employment_title_placeholder,
+                                    editorCategoryPlaceholder: translations.profile.category,
+                                    items: userProfile.jobs,
+                                    headerTitle: translations.profile.edit_employments,
+                                    onItemsChanged: handleJobItemsChanged,
+                                } as ICategorizedInputListConfig)
+                        }}>
+                        <Headline style={style.headline}>
+                            {translations.profile.employments}
+                        </Headline>
+                        {userProfile.jobs?.map((job, i) =>
+                            <InfoItem
+                                key={i}
+                                keyText={job.category}
+                                valueText={job.title + (job.place ? " (" + job.place + ")" : "")}
+                            />
+                        )}
+                    </EditableSection>
+                }
 
                 {/* Hobbies */}
-                <EditableSection
-                    editable={userIsEditingProfile}
-                    onEdit={() => {
-                        navigation.navigate(
-                            RouteName.Profile.Editor.Taglist,
-                            {
-                                categories: hobbyCategories,
-                                editorEditHeadline: translations.profile.editor.hobbies.heading_when_edit,
-                                editorAddHeadline: translations.profile.editor.hobbies.heading_when_add,
-                                editorInstitutionPlaceholder: translations.profile.editor.hobbies.place_label,
-                                editorTitlePlaceholder: translations.profile.editor.hobbies.hobbie_title_label,
-                                editorCategoryPlaceholder: translations.profile.category,
-                                items: userProfile.hobbies,
-                                headerTitle: translations.profile.editor.hobbies.editor_heading,
-                                onItemsChanged: handleHobbyItemsChanged,
-                            } as ICategorizedInputListConfig)
-                    }}
-                >
-                    <Headline style={style.headline}>
-                        {translations.profile.hobbies}
-                    </Headline>
-                    {userProfile.hobbies && (
-                        <View>
-                            {renderHobbies(userProfile.hobbies, style)}
-                        </View>
-                    )}
-                </EditableSection>
+                {((userProfile.hobbies && userProfile.hobbies.length > 0) || userIsEditingProfile) &&
+                    <EditableSection
+                        editable={userIsEditingProfile}
+                        onEdit={() => {
+                            navigation.navigate(
+                                RouteName.Profile.Editor.Taglist,
+                                {
+                                    categories: hobbyCategories,
+                                    editorEditHeadline: translations.profile.editor.hobbies.heading_when_edit,
+                                    editorAddHeadline: translations.profile.editor.hobbies.heading_when_add,
+                                    editorInstitutionPlaceholder: translations.profile.editor.hobbies.place_label,
+                                    editorTitlePlaceholder: translations.profile.editor.hobbies.hobbie_title_label,
+                                    editorCategoryPlaceholder: translations.profile.category,
+                                    items: userProfile.hobbies,
+                                    headerTitle: translations.profile.editor.hobbies.editor_heading,
+                                    onItemsChanged: handleHobbyItemsChanged,
+                                } as ICategorizedInputListConfig)
+                        }}
+                    >
+                        <Headline style={style.headline}>
+                            {translations.profile.hobbies}
+                        </Headline>
+                        {userProfile.hobbies && (
+                            <View>
+                                {renderHobbies(userProfile.hobbies, style)}
+                            </View>
+                        )}
+                    </EditableSection>
+                }
 
                 {/* About Text */}
-                <EditableSection editable={userIsEditingProfile} onEdit={() => setShowInfoEditor(true)}>
-                    <Text style={style.headline}>{translations.profile.about_me}</Text>
-                    {userProfile.info && <Text style={style.text}>{userProfile.info}</Text>}
-                </EditableSection>
+                {((userProfile.info && userProfile.info.trim().length > 0) || userIsEditingProfile) &&
+                    <EditableSection editable={userIsEditingProfile} onEdit={() => setShowInfoEditor(true)}>
+                        <Text style={style.headline}>{translations.profile.about_me}</Text>
+                        {userProfile.info && <Text style={style.text}>{userProfile.info}</Text>}
+                    </EditableSection>
+                }
+
                 <CustomModal
                     onSubmit={onInfoEditorSubmit}
                     onCloseModal={onInfoEditorClose}
