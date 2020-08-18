@@ -29,14 +29,12 @@ const example_img: string[] = [
 const ProfileAbout = () => {
     const navigation = useNavigation();
     const style = useStyle();
-    const { userProfile, user, updateUserProfile } = useContext(SessionContext);
+    const { userProfile, setUserProfile, userIsEditingProfile } = useContext(SessionContext);
     const { translations } = useContext(LanguageContext);
     const { jobCategories, hobbyCategories } = useCategories();
 
     const [showInfoEditor, setShowInfoEditor] = useState(false);
     const [profileInfo, setProfileInfo] = useState(userProfile.info || "");
-
-    const isEditable = userProfile.userId === user.id;
 
     const onInfoEditorClose = () => {
         setShowInfoEditor(false);
@@ -45,15 +43,15 @@ const ProfileAbout = () => {
 
     const onInfoEditorSubmit = () => {
         setShowInfoEditor(false);
-        updateUserProfile({ ...userProfile, info: profileInfo });
+        setUserProfile({ ...userProfile, info: profileInfo });
     }
 
     const handleJobItemsChanged = (items: ICategorizedInput[]): void => {
-        updateUserProfile({ ...userProfile, jobs: items });
+        setUserProfile({ ...userProfile, jobs: items });
     }
 
     const handleHobbyItemsChanged = (items: ICategorizedInput[]): void => {
-        updateUserProfile({ ...userProfile, hobbies: items });
+        setUserProfile({ ...userProfile, hobbies: items });
     }
 
     return (
@@ -110,7 +108,7 @@ const ProfileAbout = () => {
 
                 {/* Personell */}
                 <EditableSection
-                    editable={isEditable}
+                    editable={userIsEditingProfile}
                     onEdit={() => navigation.navigate(RouteName.Profile.Editor.Personal)}>
                     <Headline style={style.headline}>
                         {translations.profile.personal_info}
@@ -135,7 +133,7 @@ const ProfileAbout = () => {
 
                 {/* Jobs */}
                 <EditableSection
-                    editable={isEditable}
+                    editable={userIsEditingProfile}
                     onEdit={() => {
                         navigation.navigate(
                             RouteName.Profile.Editor.Taglist,
@@ -165,7 +163,7 @@ const ProfileAbout = () => {
 
                 {/* Hobbies */}
                 <EditableSection
-                    editable={isEditable}
+                    editable={userIsEditingProfile}
                     onEdit={() => {
                         navigation.navigate(
                             RouteName.Profile.Editor.Taglist,
@@ -193,7 +191,7 @@ const ProfileAbout = () => {
                 </EditableSection>
 
                 {/* About Text */}
-                <EditableSection editable={isEditable} onEdit={() => setShowInfoEditor(true)}>
+                <EditableSection editable={userIsEditingProfile} onEdit={() => setShowInfoEditor(true)}>
                     <Text style={style.headline}>{translations.profile.about_me}</Text>
                     {userProfile.info && <Text style={style.text}>{userProfile.info}</Text>}
                 </EditableSection>

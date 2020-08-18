@@ -5,41 +5,76 @@ import { Menu, MenuTrigger, MenuOption, MenuOptions } from "react-native-popup-m
 import { fontsizes, getResponsiveSize } from "../../utils/font/font";
 import { useNavigation } from '@react-navigation/native';
 import { SessionContext } from "../../context/SessionContext/SessionContext";
+import { View } from "react-native";
 
 
 const ProfileHeader = () => {
     const navigation = useNavigation();
     const { theme } = useContext(ThemeContext);
-    const {actionState, ...session} = useContext(SessionContext);
+    const {
+        user,
+        userProfile,
+        userIsEditingProfile,
+        startEditingProfile,
+        cancelEditingProfile,
+        saveEditingProfile
+    } = useContext(SessionContext);
+
+    const isOwnProfile = user.id === userProfile.userId;
 
     return (
-        <Menu>
-            <MenuTrigger>
+        <View style={{ flexDirection: "row" }}>
+            {isOwnProfile && !userIsEditingProfile &&
                 <IconButton
+                    icon="lead-pencil"
                     color={theme.App.basicItem}
-                    icon="dots-vertical-circle-outline"
+                    onPress={startEditingProfile}
                 />
-            </MenuTrigger>
-            <MenuOptions
-                customStyles={{
-                    optionsWrapper: {
-                        backgroundColor: theme.App.menuBackground,
-                    },
-                    optionWrapper: {
-                        padding: getResponsiveSize(12),
-                    },
-                    optionText: {
-                        fontSize: fontsizes.small,
-                        color: theme.App.primaryText,
-                    },
-                }}
-            >
-                <MenuOption onSelect={() => {}} text="Option 1"/>
-                <MenuOption onSelect={() => {}} text="Option 2" />
-                <MenuOption onSelect={() => {}} text="Option 3" />
-                <MenuOption onSelect={() => {}} text="Option 4" />
-            </MenuOptions>
-        </Menu>
+            }
+            {isOwnProfile && userIsEditingProfile &&
+                <React.Fragment>
+                    <IconButton
+                        icon="close"
+                        color={theme.App.basicItem}
+                        onPress={cancelEditingProfile}
+                    />
+                    <IconButton
+                        icon="check"
+                        color={theme.App.basicItem}
+                        onPress={saveEditingProfile}
+                    />
+                </React.Fragment>
+            }
+            {!isOwnProfile &&
+                <Menu>
+                    <MenuTrigger>
+                        <IconButton
+                            color={theme.App.basicItem}
+                            icon="dots-vertical-circle-outline"
+                        />
+                    </MenuTrigger>
+                    <MenuOptions
+                        customStyles={{
+                            optionsWrapper: {
+                                backgroundColor: theme.App.menuBackground,
+                            },
+                            optionWrapper: {
+                                padding: getResponsiveSize(12),
+                            },
+                            optionText: {
+                                fontSize: fontsizes.small,
+                                color: theme.App.primaryText,
+                            },
+                        }}
+                    >
+                        <MenuOption onSelect={() => { }} text="Option 1" />
+                        <MenuOption onSelect={() => { }} text="Option 2" />
+                        <MenuOption onSelect={() => { }} text="Option 3" />
+                        <MenuOption onSelect={() => { }} text="Option 4" />
+                    </MenuOptions>
+                </Menu>
+            }
+        </View>
     );
 };
 

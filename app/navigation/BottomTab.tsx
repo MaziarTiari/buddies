@@ -12,6 +12,7 @@ import { LanguageContext } from "../context/LanguageContext/LanguageContext";
 import ActivityList from "../components/ActivityList/ActivityList";
 import Map from "../components/Map/Map";
 import { useNavigation } from "@react-navigation/native";
+import { SessionContext } from "../context/SessionContext/SessionContext";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -21,6 +22,7 @@ const BottomTab = ({ route }: any) => {
     const { theme } = useContext(ThemeContext);
     const { screen: screenOptions } = useNavOption();
     const { translations } = useContext(LanguageContext);
+    const { userIsEditingProfile } = useContext(SessionContext);
 
     // TODO: find nicer solution - maybe HOC or FAC
     const getHeaderTitle = (routeName: string): string => {
@@ -76,6 +78,7 @@ const BottomTab = ({ route }: any) => {
             initialRouteName={RouteName.FeedList}
             screenOptions={{ tabBarColor: theme.App.layoutBackground }}
             labeled={false}
+            barStyle={{ height: userIsEditingProfile ? 0 : undefined }}
         >
             <Tab.Screen
                 name={RouteName.FeedList}

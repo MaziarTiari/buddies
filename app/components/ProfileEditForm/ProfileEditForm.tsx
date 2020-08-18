@@ -5,17 +5,20 @@ import { INewUserProfile } from '../../models/UserProfile';
 import { SessionContext } from '../../context/SessionContext/SessionContext';
 import Form, { IFormField, InputType } from '../Form/Form';
 import { AuthState } from '../../context/SessionContext/stateFrame';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, NavigationProp } from '@react-navigation/native';
+import { RouteName } from '../../navigation/Navigation.config';
 
 // const SIXTEEN_YEARS_AGO = moment.utc().subtract(16, "years").unix();
 
 const ProfileEditForm = () => {
 
     const { translations } = useContext(LanguageContext);
-    const { userProfile, user, authState, createUserProfile, updateUserProfile, createUserProfileError } = useContext(SessionContext);
+    const { userProfile, user, authState, createUserProfile, setUserProfile, createUserProfileError } = useContext(SessionContext);
+
+    let navigation: NavigationProp<any>;
 
     if (authState === AuthState.AUTHORIZED) {
-        const navigation = useNavigation();
+        navigation = useNavigation();
         navigation.setOptions({ title: translations.menu_profile_editor });
     }
 
@@ -85,7 +88,7 @@ const ProfileEditForm = () => {
             };
             createUserProfile(createdUserProfile)
         } else if (authState === AuthState.AUTHORIZED) {
-            updateUserProfile({
+            setUserProfile({
                 ...userProfile,
                 username: data[Field.NICKNAME],
                 birthDate: moment(data[Field.BIRTHDATE] as Date).unix(),
@@ -94,6 +97,7 @@ const ProfileEditForm = () => {
                 lastname: data[Field.SURNAME],
                 sex: data[Field.SEX],
             });
+            navigation.navigate(RouteName.Profile.About);
         }
     }
 
