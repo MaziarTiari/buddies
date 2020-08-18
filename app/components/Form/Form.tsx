@@ -76,7 +76,6 @@ const Form = (Props: FormProps) => {
         updatedFormErrors[index] = !verifyInput(index, value);
         setFormData(updatedFormData);
         setFormErrors(updatedFormErrors);
-        console.log(updatedFormData);
     };
 
     return (

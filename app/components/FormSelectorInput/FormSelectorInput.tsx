@@ -90,8 +90,6 @@ const FormSelectorInput = (Props: FormSelectorInputProps) => {
         )
     }
 
-    console.log("hasError: ", Props.hasError);
-
     return (
         <View style={Props.style}>
             <TouchableRipple
