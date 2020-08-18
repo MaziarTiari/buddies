@@ -44,7 +44,11 @@ export function SessionContextProvider(props: { children: ReactNode }) {
     const [activity, setActivity] = useState<IActivity>(initialState.activity);
     const [isLoading, setIsLoading] = useState<boolean>(initialState.isLoading);
     const [userIsEditingProfile, setUserIsEditingProfile] = useState<boolean>(initialState.userIsEditingProfile);
+    const [userIsEditingActivity, setUserIsEditingActivity] = useState<boolean>(initialState.userIsEditingActivity);
+
+    // Temporary Backups
     const [userProfileBackup, setUserProfileBackup] = useState<IUserProfile>(initialState.userProfile);
+    const [activityBackup, setActivityBackup] = useState<IActivity>(initialState.activity);
 
     // Error Messages
     const [createUserProfileError, setCreateUserProfileError] = useState<string | undefined>(undefined);
@@ -147,6 +151,26 @@ export function SessionContextProvider(props: { children: ReactNode }) {
         setUserIsEditingProfile(false);
     };
 
+    const startEditingActivity = () => {
+        if (userIsEditingActivity) return;
+        setActivityBackup({ ...activity });
+        setUserIsEditingActivity(true);
+    };
+
+    const saveEditingActivity = () => {
+        if (!userIsEditingActivity) return;
+        updateActivity({ ...activity });
+        setUserIsEditingActivity(false);
+    };
+
+    const cancelEditingActivity = () => {
+        if (!userIsEditingActivity) return;
+        setActivity({ ...activityBackup });
+        setUserIsEditingActivity(false);
+    }
+
+
+
     const value: ISessionContextState = {
         user,
         setUser,
@@ -154,7 +178,6 @@ export function SessionContextProvider(props: { children: ReactNode }) {
         setUserProfile,
         activity,
         setActivity,
-        updateActivity,
         isLoading,
         createUser,
         createUserError,
@@ -167,7 +190,11 @@ export function SessionContextProvider(props: { children: ReactNode }) {
         userIsEditingProfile,
         startEditingProfile,
         saveEditingProfile,
-        cancelEditingProfile
+        cancelEditingProfile,
+        userIsEditingActivity,
+        startEditingActivity,
+        saveEditingActivity,
+        cancelEditingActivity,
     };
 
     return (

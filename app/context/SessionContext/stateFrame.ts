@@ -13,7 +13,6 @@ export interface ISessionContextState {
     setUser: (user: IUser) => void;
     setUserProfile: (profile: IUserProfile) => void;
     setActivity: (activity: IActivity) => void;
-    updateActivity: (updatedActivity: IActivity) => void;
     isLoading: boolean;
     createUser: (createdUser: INewUser) => void;
     createUserError?: string;
@@ -25,6 +24,10 @@ export interface ISessionContextState {
     startEditingProfile: () => void;
     saveEditingProfile: () => void;
     cancelEditingProfile: () => void;
+    userIsEditingActivity: boolean;
+    startEditingActivity: () => void;
+    saveEditingActivity: () => void;
+    cancelEditingActivity: () => void;
 }
 
 export const initialState: ISessionContextState = {
@@ -61,7 +64,6 @@ export const initialState: ISessionContextState = {
     setUser: () => console.warn("setUser() not implemented!"),
     setUserProfile: () => console.warn("setUserProfile() not implemented!"),
     setActivity: () => console.warn("setActivity() not implemented!"),
-    updateActivity: () => console.warn("updateActivity() not implemented!"),
     isLoading: false,
     createUser: () => console.warn("createUser() not implemented!"),
     createUserError: undefined,
@@ -73,4 +75,8 @@ export const initialState: ISessionContextState = {
     startEditingProfile: () => console.warn("startEditingProfile() not implemented!"),
     saveEditingProfile: () => console.warn("saveEditingProfile() not implemented!"),
     cancelEditingProfile: () => console.warn("cancelEditingProfile() not implemented!"),
+    userIsEditingActivity: false,
+    startEditingActivity: () => console.warn("startEditingActivity() not implemented!"),
+    saveEditingActivity: () => console.warn("saveEditingActivity() not implemented!"),
+    cancelEditingActivity: () => console.warn("cancelEditingActivity() not implemented!"),
 };

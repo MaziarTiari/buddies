@@ -24,24 +24,23 @@ const ActivityInfo = () => {
     const style = useStyle();
     const navigation = useNavigation();
     const { translations } = useContext(LanguageContext);
-    const { activity, user, updateActivity } = useContext(SessionContext);
+    const { activity, setActivity, userIsEditingActivity } = useContext(SessionContext);
     const { hobbyCategories } = useCategories();
 
     navigation.setOptions({ title: activity.title });
 
-    const isEditable = activity.userId === user.id;
     const imageSource = activity.image ? { uri: "data:image/gif;base64," + activity.image.base64 } : defaultImg;
 
     const [showDescriptionEditor, setShowDescriptionEditor] = useState<boolean>(false);
     const [activityDescription, setActivityDescription] = useState<string>(activity.description || "");
 
     const handleTagItemsChanged = (tags: ICategorizedInput[]): void => {
-        updateActivity({ ...activity, tags: tags });
+        setActivity({ ...activity, tags: tags });
     };
 
     const handleDescriptionEditorSubmit = (): void => {
         setShowDescriptionEditor(false);
-        updateActivity({ ...activity, description: activityDescription })
+        setActivity({ ...activity, description: activityDescription })
     };
 
     const handleDescriptionEditorClose = (): void => {
@@ -88,13 +87,15 @@ const ActivityInfo = () => {
                 </View>
 
                 {/* Description */}
-                <EditableSection editable={isEditable} onEdit={() => setShowDescriptionEditor(true)}>
-                    <Headline style={style.headline}>{translations.activity.description}</Headline>
-                    <Text style={style.text}>{activity.description}</Text>
-                </EditableSection>
+                {((activity.description && activity.description.trim().length > 0) || userIsEditingActivity) &&
+                    <EditableSection editable={userIsEditingActivity} onEdit={() => setShowDescriptionEditor(true)}>
+                        <Headline style={style.headline}>{translations.activity.description}</Headline>
+                        <Text style={style.text}>{activity.description}</Text>
+                    </EditableSection>
+                }
 
                 {/* Information */}
-                <EditableSection editable={isEditable} onEdit={() => navigation.navigate(RouteName.Activity.Editor)}>
+                <EditableSection editable={userIsEditingActivity} onEdit={() => navigation.navigate(RouteName.Activity.Editor)}>
                     <Headline style={style.headline}>{translations.activity.information}</Headline>
                     <InfoItem keyText={translations.activity.location} valueText={activity.location} />
                     {activity.startDate !== undefined &&
@@ -105,24 +106,26 @@ const ActivityInfo = () => {
                 </EditableSection>
 
                 {/* Tags */}
-                <EditableSection editable={isEditable} onEdit={() => {
-                    navigation.navigate(RouteName.Profile.Editor.Taglist, {
-                        categories: hobbyCategories,
-                        editorEditHeadline: translations.profile.editor.hobbies.heading_when_edit,
-                        editorAddHeadline: translations.profile.editor.hobbies.heading_when_add,
-                        editorInstitutionPlaceholder: translations.profile.editor.hobbies.place_label,
-                        editorTitlePlaceholder: translations.profile.editor.hobbies.hobbie_title_label,
-                        editorCategoryPlaceholder: translations.profile.category,
-                        items: activity.tags,
-                        headerTitle: translations.profile.editor.hobbies.editor_heading,
-                        onItemsChanged: handleTagItemsChanged,
-                    } as ICategorizedInputListConfig)
-                }}>
-                    <Headline style={style.headline}>{translations.activity.hobbies}</Headline>
-                    {activity.tags?.map((tag, index) => (
-                        <InfoItem key={index} keyText={tag.category} valueText={tag.title} />
-                    ))}
-                </EditableSection>
+                {((activity.tags && activity.tags.length > 0) || userIsEditingActivity) &&
+                    <EditableSection editable={userIsEditingActivity} onEdit={() => {
+                        navigation.navigate(RouteName.Profile.Editor.Taglist, {
+                            categories: hobbyCategories,
+                            editorEditHeadline: translations.profile.editor.hobbies.heading_when_edit,
+                            editorAddHeadline: translations.profile.editor.hobbies.heading_when_add,
+                            editorInstitutionPlaceholder: translations.profile.editor.hobbies.place_label,
+                            editorTitlePlaceholder: translations.profile.editor.hobbies.hobbie_title_label,
+                            editorCategoryPlaceholder: translations.profile.category,
+                            items: activity.tags,
+                            headerTitle: translations.profile.editor.hobbies.editor_heading,
+                            onItemsChanged: handleTagItemsChanged,
+                        } as ICategorizedInputListConfig)
+                    }}>
+                        <Headline style={style.headline}>{translations.activity.hobbies}</Headline>
+                        {activity.tags?.map((tag, index) => (
+                            <InfoItem key={index} keyText={tag.category} valueText={tag.title} />
+                        ))}
+                    </EditableSection>
+                }
 
                 {/* Criteria */}
                 {/*
@@ -161,7 +164,7 @@ const ActivityInfo = () => {
                 </CustomModal>
 
             </ScrollView>
-        </Container>
+        </Container >
     );
 };
 
