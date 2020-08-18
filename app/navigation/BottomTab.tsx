@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import { RouteName, useNavOption } from "./Navigation.config";
 import ActivityHeader from "../components/ActivityHeader/ActivityHeader";
@@ -11,23 +11,16 @@ import { ThemeContext } from "../context/ThemeContext/ThemeContext";
 import { LanguageContext } from "../context/LanguageContext/LanguageContext";
 import ActivityList from "../components/ActivityList/ActivityList";
 import Map from "../components/Map/Map";
+import { useNavigation } from "@react-navigation/native";
 
 const Tab = createMaterialBottomTabNavigator();
 
-function getHeaderRight(routeName: string, navigation: any): (() => JSX.Element) | null {
-    switch (routeName) {
-        case RouteName.Activity.List:
-            return () => <ActivityHeader navigation={navigation} />;
-        case RouteName.Profile.Tab:
-            return () => <ProfileHeader />;
-    }
-    return null;
-}
+const BottomTab = ({ route }: any) => {
 
-const BottomTab = ({ navigation, route }: any) => {
-    const theme = useContext(ThemeContext).theme;
-    const screenOptions = useNavOption().screen;
-    const translations = useContext(LanguageContext).translations;
+    const navigation = useNavigation();
+    const { theme } = useContext(ThemeContext);
+    const { screen: screenOptions } = useNavOption();
+    const { translations } = useContext(LanguageContext);
 
     // TODO: find nicer solution - maybe HOC or FAC
     const getHeaderTitle = (routeName: string): string => {
@@ -48,16 +41,15 @@ const BottomTab = ({ navigation, route }: any) => {
         }
     };
 
-    useLayoutEffect(() => {
-        const routeName = route.state
-            ? route.state.routes[route.state.index].name
-            : route.params?.screen || RouteName.Root;
-        navigation.setOptions({
-            headerTitle: getHeaderTitle(routeName),
-            headerRight: getHeaderRight(routeName, navigation),
-            screenOptions: screenOptions,
-        });
-    }, [navigation, route]);
+    const getHeaderRight = (routeName: string): (() => JSX.Element) | undefined => {
+        switch (routeName) {
+            case RouteName.Activity.List:
+                return () => <ActivityHeader />;
+            case RouteName.Profile.Tab:
+                return () => <ProfileHeader />;
+        }
+        return undefined;
+    };
 
     const getBottomIcon = (icon: string, focused: boolean): React.ReactNode => (
         <MaterialCommunityIcons
@@ -67,9 +59,21 @@ const BottomTab = ({ navigation, route }: any) => {
         />
     );
 
+    const currentRoute = route.state
+        ? route.state.routes[route.state.index].name
+        : route.params?.screen || RouteName.Root;
+
+    useEffect(() => {
+        navigation.setOptions({
+            headerTitle: getHeaderTitle(currentRoute),
+            headerRight: getHeaderRight(currentRoute),
+            screenOptions: screenOptions,
+        });
+    }, [navigation, currentRoute]);
+
     return (
         <Tab.Navigator
-            initialRouteName={RouteName.Profile.Tab}
+            initialRouteName={RouteName.FeedList}
             screenOptions={{ tabBarColor: theme.App.layoutBackground }}
             labeled={false}
         >
