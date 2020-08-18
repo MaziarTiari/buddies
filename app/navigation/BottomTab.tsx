@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import { RouteName, useNavOption } from "./Navigation.config";
-import ActivityHeader from "../components/ActivityHeader/ActivityHeader";
+import ActivityListHeader from "../components/ActivityListHeader/ActivityListHeader";
 import FeedList from "../components/FeedList/FeedList";
 import ChatList from "../components/ChatList/ChatList";
 import ProfileTab from "./ProfileTab";
@@ -46,7 +46,7 @@ const BottomTab = ({ route }: any) => {
     const getHeaderRight = (routeName: string): (() => JSX.Element) | undefined => {
         switch (routeName) {
             case RouteName.Activity.List:
-                return () => <ActivityHeader />;
+                return () => <ActivityListHeader />;
             case RouteName.Profile.Tab:
                 return () => <ProfileHeader />;
         }

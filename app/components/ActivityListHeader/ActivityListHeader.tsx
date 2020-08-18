@@ -5,7 +5,7 @@ import { RouteName } from "../../navigation/Navigation.config";
 import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
 import { useNavigation } from "@react-navigation/native";
 
-const ActivityHeader = () => {
+const ActivityListHeader = () => {
 
     const navigation = useNavigation();
     const theme = useContext(ThemeContext).theme;
@@ -26,4 +26,4 @@ const ActivityHeader = () => {
     );
 }
 
-export default ActivityHeader;
+export default ActivityListHeader;
