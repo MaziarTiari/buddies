@@ -15,17 +15,12 @@ export interface ISessionContextState {
     setActivity: (activity: IActivity) => void;
     updateUserProfile: (updatedUserProfile: IUserProfile) => void;
     updateActivity: (updatedActivity: IActivity) => void;
-
+    isLoading: boolean;
     createUser: (createdUser: INewUser) => void;
-    createUserIsLoading: boolean;
     createUserError?: string;
-
     loginUser: (email: string, password: string) => void;
-    loginUserIsLoading: boolean;
     loginUserError?: string;
-
     createUserProfile: (createdUserProfile: INewUserProfile) => void;
-    createUserProfileIsLoading: boolean;
     createUserProfileError?: string;
 }
 
@@ -65,17 +60,11 @@ export const initialState: ISessionContextState = {
     setActivity: () => console.warn("setActivity() not implemented!"),
     updateUserProfile: () => console.warn("updateUserProfile() not implemented!"),
     updateActivity: () => console.warn("updateActivity() not implemented!"),
-
+    isLoading: false,
     createUser: () => console.warn("createUser() not implemented!"),
-    createUserIsLoading: false,
     createUserError: undefined,
-
     loginUser: () => console.warn("loginUser() not implemented!"),
-    loginUserIsLoading: false,
     loginUserError: undefined,
-
     createUserProfile: () => console.warn("createUserProfile() not implemented!"),
-    createUserProfileIsLoading: false,
     createUserProfileError: undefined,
-
 };

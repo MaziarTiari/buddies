@@ -133,5 +133,6 @@ export const germanDictionary: Dictionary = {
         reqLanguage: "Sprache",
         members: "Teilnehmer",
         applicants: "Bewerber",
-    }
+    },
+    please_wait: "Bitte warten ..."
 }

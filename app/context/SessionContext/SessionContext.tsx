@@ -42,11 +42,7 @@ export function SessionContextProvider(props: { children: ReactNode }) {
     const [user, setUser] = useState<IUser>(initialState.user);
     const [userProfile, setUserProfile] = useState<IUserProfile>(initialState.userProfile);
     const [activity, setActivity] = useState<IActivity>(initialState.activity);
-
-    // Loading States
-    const [createUserProfileIsLoading, setCreateUserProfileIsLoading] = useState<boolean>(false);
-    const [createUserIsLoading, setCreateUserIsLoading] = useState<boolean>(false);
-    const [loginUserIsLoading, setLoginUserIsLoading] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     // Error Messages
     const [createUserProfileError, setCreateUserProfileError] = useState<string | undefined>(undefined);
@@ -54,7 +50,7 @@ export function SessionContextProvider(props: { children: ReactNode }) {
     const [loginUserError, setLoginUserError] = useState<string | undefined>(undefined);
 
     const createUser = (createdUser: INewUser) => {
-        setCreateUserIsLoading(true);
+        setIsLoading(true);
         userApi.Create<IUser, INewUser>(createdUser)
             .then((user: IUser) => {
                 setCreateUserError(undefined);
@@ -66,12 +62,12 @@ export function SessionContextProvider(props: { children: ReactNode }) {
                 setCreateUserError("Error") // TODO Select Error Message
             })
             .finally(() => {
-                setCreateUserIsLoading(false);
+                setIsLoading(false);
             })
     };
 
     const loginUser = (email: string, password: string) => {
-        setLoginUserIsLoading(true);
+        setIsLoading(true);
         userApi.VerifyUser({ email: email, password: password })
             .then((user: IUser) => {
                 setLoginUserError(undefined);
@@ -89,12 +85,12 @@ export function SessionContextProvider(props: { children: ReactNode }) {
                 setLoginUserError("Error"); // TODO Select Error Message
             })
             .finally(() => {
-                setLoginUserIsLoading(false);
+                setIsLoading(false);
             });
     };
 
     const createUserProfile = (createdUserProfile: INewUserProfile) => {
-        setCreateUserProfileIsLoading(true);
+        setIsLoading(true);
         userProfileApi.Create<IUserProfile, INewUserProfile>(createdUserProfile)
             .then((userProfile: IUserProfile) => {
                 setCreateUserProfileError(undefined);
@@ -105,11 +101,12 @@ export function SessionContextProvider(props: { children: ReactNode }) {
                 setCreateUserProfileError("Error"); // TODO Select Error Message
             })
             .finally(() => {
-                setCreateUserProfileIsLoading(false)
+                setIsLoading(false)
             });
     };
 
     const updateUserProfile = (updatedUserProfile: IUserProfile) => {
+        setIsLoading(true);
         userProfileApi.Update<string, IUserProfile>(updatedUserProfile.id, updatedUserProfile)
             .then(() => setUserProfile(updatedUserProfile))
             .catch((error: AxiosError) => {
@@ -117,13 +114,17 @@ export function SessionContextProvider(props: { children: ReactNode }) {
                     alert("Benutzer konnte nicht gefunden werden");
                 else
                     alert("Es gibt im moment ein Problem, bitte versuche später wieder!")
+            }).finally(() => {
+                setIsLoading(false);
             });
     };
 
     const updateActivity = (updatedActivity: IActivity) => {
+        setIsLoading(true);
         activityApi.Update<string, IActivity>(updatedActivity.id, updatedActivity)
             .then(() => setActivity(updatedActivity))
-            .catch((error: AxiosError) => console.error(error));
+            .catch((error: AxiosError) => console.error(error))
+            .finally(() => setIsLoading(false));
     };
 
     const value: ISessionContextState = {
@@ -135,19 +136,13 @@ export function SessionContextProvider(props: { children: ReactNode }) {
         setActivity,
         updateUserProfile,
         updateActivity,
-
+        isLoading,
         createUser,
-        createUserIsLoading,
         createUserError,
-
         loginUser,
-        loginUserIsLoading,
         loginUserError,
-
         createUserProfile,
-        createUserProfileIsLoading,
         createUserProfileError,
-
         authState,
         setAuthState,
     };

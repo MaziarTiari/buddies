@@ -132,5 +132,6 @@ export const englishDictionary: Dictionary = {
         reqLanguage: "Language",
         members: "Member",
         applicants: "Applicants",
-    }
+    },
+    please_wait: "Please wait ..."
 }

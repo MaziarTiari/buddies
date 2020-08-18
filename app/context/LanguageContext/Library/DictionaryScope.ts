@@ -138,4 +138,5 @@ export interface Dictionary {
         applicants: string;
     }
     dateRangePreposition: string;
+    please_wait: string;
 }
