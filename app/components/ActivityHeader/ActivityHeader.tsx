@@ -5,11 +5,32 @@ import { Menu, MenuTrigger, MenuOption, MenuOptions } from "react-native-popup-m
 import { fontsizes, getResponsiveSize } from "../../utils/font/font";
 import { useNavigation } from '@react-navigation/native';
 import { SessionContext } from "../../context/SessionContext/SessionContext";
-import { View } from "react-native";
 
-
-const ActivityHeader = () => {
+export const LeftActivityHeader = () => {
     const navigation = useNavigation();
+    const { theme } = useContext(ThemeContext);
+    const { userIsEditingActivity, cancelEditingActivity, activity } = useContext(SessionContext);
+
+    const handleCancelPressed = () => {
+        cancelEditingActivity();
+        if (activity.id === "")
+            navigation.goBack();
+    }
+
+    return userIsEditingActivity
+        ? <IconButton
+            icon="close"
+            color={theme.App.basicItem}
+            onPress={handleCancelPressed}
+        />
+        : <IconButton
+            icon="arrow-left"
+            color={theme.App.basicItem}
+            onPress={navigation.goBack}
+        />
+}
+
+export const RightActivityHeader = () => {
     const { theme } = useContext(ThemeContext);
     const {
         user,
@@ -17,13 +38,12 @@ const ActivityHeader = () => {
         userIsEditingActivity,
         startEditingActivity,
         saveEditingActivity,
-        cancelEditingActivity
     } = useContext(SessionContext);
 
     const isOwnActivity = user.id === activity.userId;
 
     return (
-        <View style={{ flexDirection: "row" }}>
+        <React.Fragment>
             {isOwnActivity && !userIsEditingActivity &&
                 <IconButton
                     icon="lead-pencil"
@@ -32,18 +52,11 @@ const ActivityHeader = () => {
                 />
             }
             {isOwnActivity && userIsEditingActivity &&
-                <React.Fragment>
-                    <IconButton
-                        icon="close"
-                        color={theme.App.basicItem}
-                        onPress={cancelEditingActivity}
-                    />
-                    <IconButton
-                        icon="check"
-                        color={theme.App.basicItem}
-                        onPress={saveEditingActivity}
-                    />
-                </React.Fragment>
+                <IconButton
+                    icon="check"
+                    color={theme.App.basicItem}
+                    onPress={saveEditingActivity}
+                />
             }
             {!isOwnActivity &&
                 <Menu>
@@ -74,8 +87,6 @@ const ActivityHeader = () => {
                     </MenuOptions>
                 </Menu>
             }
-        </View>
+        </React.Fragment>
     );
 };
-
-export default ActivityHeader;
