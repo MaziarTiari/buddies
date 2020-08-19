@@ -133,6 +133,14 @@ export function SessionContextProvider(props: { children: ReactNode }) {
             .finally(() => setIsLoading(false));
     };
 
+    const createActivity = (createdActivity: IActivity) => {
+        setIsLoading(true);
+        activityApi.Create<IActivity>(createdActivity)
+            .then((activity: IActivity) => setActivity(activity))
+            .catch((error: AxiosError) => console.error(error))
+            .finally(() => setIsLoading(false));
+    };
+
     const startEditingProfile = () => {
         if (userIsEditingProfile) return;
         setUserProfileBackup({ ...userProfile });
@@ -159,7 +167,8 @@ export function SessionContextProvider(props: { children: ReactNode }) {
 
     const saveEditingActivity = () => {
         if (!userIsEditingActivity) return;
-        updateActivity({ ...activity });
+        if (activity.id !== "") updateActivity({ ...activity });
+        else createActivity({ ...activity });
         setUserIsEditingActivity(false);
     };
 
@@ -167,9 +176,7 @@ export function SessionContextProvider(props: { children: ReactNode }) {
         if (!userIsEditingActivity) return;
         setActivity({ ...activityBackup });
         setUserIsEditingActivity(false);
-    }
-
-
+    };
 
     const value: ISessionContextState = {
         user,

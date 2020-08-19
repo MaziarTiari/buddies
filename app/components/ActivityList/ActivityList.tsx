@@ -10,12 +10,18 @@ import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
 import Toast from "react-native-simple-toast";
 import { IActivity } from "../../models/Activity";
 import { useActivities } from "../../Hooks/useActivities";
+import ActionButton from "../ActionButton/ActionButton";
+import { SessionContext } from "../../context/SessionContext/SessionContext";
+import { useNavigation } from "@react-navigation/native";
+import { RouteName } from "../../navigation/Navigation.config";
 
 // TODO : Add Translations
 
 const ActivityList = () => {
+    const navigation = useNavigation();
     const { theme } = useContext(ThemeContext);
-    const { activities, isLoading ,fetchActivityList} = useActivities();
+    const { activities, isLoading, fetchActivityList } = useActivities();
+    const { startEditingActivity, setActivity, user } = useContext(SessionContext);
     const style = useStyle();
 
     let rightOpen: boolean, leftOpen: boolean, currentId: string;
@@ -95,6 +101,11 @@ const ActivityList = () => {
                     refreshing={isLoading}
                     onRefresh={fetchActivityList}
                 />
+                <ActionButton icon="plus" onPress={() => {
+                    setActivity({ id: "", title: "My default Title", userId: user.id, location: "My default Location", memberUserIds: [], applicantUserIds: [], visibility: 0 });
+                    startEditingActivity();
+                    navigation.navigate(RouteName.Activity.Info);
+                }} />
             </Container>
         </Container>
     );
