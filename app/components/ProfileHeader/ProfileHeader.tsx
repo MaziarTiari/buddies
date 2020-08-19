@@ -3,20 +3,29 @@ import { IconButton } from "react-native-paper";
 import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
 import { Menu, MenuTrigger, MenuOption, MenuOptions } from "react-native-popup-menu";
 import { fontsizes, getResponsiveSize } from "../../utils/font/font";
-import { useNavigation } from '@react-navigation/native';
 import { SessionContext } from "../../context/SessionContext/SessionContext";
 import { View } from "react-native";
 
+export const LeftProfileHeader = () => {
+    const { theme } = useContext(ThemeContext);
+    const { userIsEditingProfile, cancelEditingProfile, } = useContext(SessionContext);
 
-const ProfileHeader = () => {
-    const navigation = useNavigation();
+    return userIsEditingProfile
+        ? <IconButton
+            icon="close"
+            color={theme.App.basicItem}
+            onPress={cancelEditingProfile}
+        />
+        : <View />
+};
+
+export const RightProfileHeader = () => {
     const { theme } = useContext(ThemeContext);
     const {
         user,
         userProfile,
         userIsEditingProfile,
         startEditingProfile,
-        cancelEditingProfile,
         saveEditingProfile
     } = useContext(SessionContext);
 
@@ -32,18 +41,11 @@ const ProfileHeader = () => {
                 />
             }
             {isOwnProfile && userIsEditingProfile &&
-                <React.Fragment>
-                    <IconButton
-                        icon="close"
-                        color={theme.App.basicItem}
-                        onPress={cancelEditingProfile}
-                    />
-                    <IconButton
-                        icon="check"
-                        color={theme.App.basicItem}
-                        onPress={saveEditingProfile}
-                    />
-                </React.Fragment>
+                <IconButton
+                    icon="check"
+                    color={theme.App.basicItem}
+                    onPress={saveEditingProfile}
+                />
             }
             {!isOwnProfile &&
                 <Menu>
@@ -77,5 +79,3 @@ const ProfileHeader = () => {
         </View>
     );
 };
-
-export default ProfileHeader;

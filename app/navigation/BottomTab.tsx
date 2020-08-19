@@ -5,7 +5,7 @@ import ActivityListHeader from "../components/ActivityListHeader/ActivityListHea
 import FeedList from "../components/FeedList/FeedList";
 import ChatList from "../components/ChatList/ChatList";
 import ProfileTab from "./ProfileTab";
-import ProfileHeader from "../components/ProfileHeader/ProfileHeader";
+import { LeftProfileHeader, RightProfileHeader } from "../components/ProfileHeader/ProfileHeader";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { ThemeContext } from "../context/ThemeContext/ThemeContext";
 import { LanguageContext } from "../context/LanguageContext/LanguageContext";
@@ -48,10 +48,18 @@ const BottomTab = ({ route }: any) => {
             case RouteName.Activity.List:
                 return () => <ActivityListHeader />;
             case RouteName.Profile.Tab:
-                return () => <ProfileHeader />;
+                return () => <RightProfileHeader />;
         }
         return undefined;
     };
+
+    const getHeaderLeft = (routeName: string): (() => JSX.Element) | undefined => {
+        switch (routeName) {
+            case RouteName.Profile.Tab:
+                return () => <LeftProfileHeader />;
+        }
+        return undefined;
+    }
 
     const getBottomIcon = (icon: string, focused: boolean): React.ReactNode => (
         <MaterialCommunityIcons
@@ -69,6 +77,7 @@ const BottomTab = ({ route }: any) => {
         navigation.setOptions({
             headerTitle: getHeaderTitle(currentRoute),
             headerRight: getHeaderRight(currentRoute),
+            headerLeft: getHeaderLeft(currentRoute),
             screenOptions: screenOptions,
         });
     }, [navigation, currentRoute]);
