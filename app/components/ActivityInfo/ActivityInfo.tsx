@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { View, Text, ScrollView, Image } from "react-native";
 import useStyle from "./ActivityInfo.style";
 import { LanguageContext } from "../../context/LanguageContext/LanguageContext";
@@ -24,7 +24,7 @@ const ActivityInfo = () => {
     const style = useStyle();
     const navigation = useNavigation();
     const { translations } = useContext(LanguageContext);
-    const { activity, setActivity, userIsEditingActivity } = useContext(SessionContext);
+    const { activity, setActivity, userIsEditingActivity, cancelEditingActivity } = useContext(SessionContext);
     const { hobbyCategories } = useCategories();
 
     navigation.setOptions({ title: activity.title });
@@ -47,6 +47,14 @@ const ActivityInfo = () => {
         setShowDescriptionEditor(false);
         setActivityDescription(activity.description || "");
     };
+
+    // cancels edit when user navigates back to previous screen
+    useEffect(() => {
+        const unsubscribe = navigation.addListener("blur", () => {
+            if (userIsEditingActivity) cancelEditingActivity();
+        });
+        return unsubscribe;
+    }, [navigation, userIsEditingActivity]);
 
     return (
         <Container layout="root" type="screen">

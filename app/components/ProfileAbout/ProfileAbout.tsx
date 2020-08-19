@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Text, View, ScrollView, Image } from "react-native";
 import Container from "../Container/Container";
 import { LanguageContext } from "../../context/LanguageContext/LanguageContext";
@@ -29,7 +29,7 @@ const example_img: string[] = [
 const ProfileAbout = () => {
     const navigation = useNavigation();
     const style = useStyle();
-    const { userProfile, setUserProfile, userIsEditingProfile } = useContext(SessionContext);
+    const { userProfile, setUserProfile, userIsEditingProfile, cancelEditingProfile } = useContext(SessionContext);
     const { translations } = useContext(LanguageContext);
     const { jobCategories, hobbyCategories } = useCategories();
 
@@ -53,6 +53,14 @@ const ProfileAbout = () => {
     const handleHobbyItemsChanged = (items: ICategorizedInput[]): void => {
         setUserProfile({ ...userProfile, hobbies: items });
     }
+
+    // cancels edit when user navigates back to previous screen
+    useEffect(() => {
+        const unsubscribe = navigation.addListener("blur", () => {
+            if (userIsEditingProfile) cancelEditingProfile();
+        });
+        return unsubscribe;
+    }, [navigation, userIsEditingProfile]);
 
     return (
         <Container type="screen" layout="root">
