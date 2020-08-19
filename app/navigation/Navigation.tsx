@@ -7,9 +7,9 @@ import ActivityList from '../components/ActivityList/ActivityList';
 import { createStackNavigator } from '@react-navigation/stack';
 import ActivityInfo from '../components/ActivityInfo/ActivityInfo';
 import CategorizedInputList from '../components/CategorizedInputList/CategorizedInputList';
-import ActivityInfoEditor from '../components/ActivityInfoEditor/ActivityInfoEditor';
 import ProfileEditForm from '../components/ProfileEditForm/ProfileEditForm';
 import ActivityHeader from '../components/ActivityHeader/ActivityHeader';
+import ActivityEditForm from '../components/ActivityEditForm/ActivityEditForm';
 
 const Stack = createStackNavigator();
 
@@ -25,7 +25,7 @@ const Navigation = () => {
             <Stack.Screen name={RouteName.Activity.Info} component={ActivityInfo} options={{ headerRight: () => <ActivityHeader /> }} />
             <Stack.Screen name={RouteName.Profile.Editor.Taglist} component={CategorizedInputList} />
             <Stack.Screen name={RouteName.Profile.Editor.Personal} component={ProfileEditForm} />
-            <Stack.Screen name={RouteName.Activity.Editor} component={ActivityInfoEditor} />
+            <Stack.Screen name={RouteName.Activity.Editor} component={ActivityEditForm} />
         </Stack.Navigator>
     );
 };
