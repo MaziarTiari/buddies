@@ -7,6 +7,7 @@ import Form, { IFormField, InputType } from '../Form/Form';
 import { AuthState } from '../../context/SessionContext/stateFrame';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
 import { RouteName } from '../../navigation/Navigation.config';
+import { translationStore } from '../../context/LanguageContext/translationStore';
 
 // const SIXTEEN_YEARS_AGO = moment.utc().subtract(16, "years").unix();
 
@@ -19,12 +20,7 @@ const ProfileEditForm = () => {
 
     if (authState === AuthState.AUTHORIZED) {
         navigation = useNavigation();
-        navigation.setOptions({ title: translations.menu_profile_editor });
-    }
-
-    const getGenderLabels = () => {
-        const genders = translations.profile.gender_pick_labels as any;
-        return Object.keys(genders).map(key => genders[key])
+        navigation.setOptions({ title: translations.edit_profile });
     }
 
     enum Field { NICKNAME, FIRSTNAME, SURNAME, CITY, BIRTHDATE, SEX };
@@ -35,35 +31,35 @@ const ProfileEditForm = () => {
         inputType: InputType.TEXT,
         initialValue: userProfile.username,
         required: true,
-        placeholder: translations.profile.username,
+        placeholder: translations.username,
     };
 
     fieldList[Field.FIRSTNAME] = {
         inputType: InputType.TEXT,
         initialValue: userProfile.firstname,
         required: true,
-        placeholder: translations.profile.firstname
+        placeholder: translations.firstname
     };
 
     fieldList[Field.SURNAME] = {
         inputType: InputType.TEXT,
         initialValue: userProfile.lastname,
         required: true,
-        placeholder: translations.profile.lastname
+        placeholder: translations.surname
     };
 
     fieldList[Field.CITY] = {
         inputType: InputType.TEXT,
         initialValue: userProfile.city,
         required: true,
-        placeholder: translations.profile.city,
+        placeholder: translations.city,
     };
 
     fieldList[Field.BIRTHDATE] = {
         inputType: InputType.DATE,
         initialValue: moment.unix(userProfile.birthDate).toDate(),
         required: true,
-        placeholder: translations.profile.birthDate,
+        placeholder: translations.birthdate,
         icon: "calendar",
     };
 
@@ -71,8 +67,8 @@ const ProfileEditForm = () => {
         inputType: InputType.SELECTOR,
         initialValue: userProfile.sex,
         required: true,
-        placeholder: translations.profile.gender,
-        items: getGenderLabels(),
+        placeholder: translations.sex,
+        items: [translations.female, translations.male, translations.diverse],
     };
 
     const onSubmit = (data: any[]) => {
@@ -106,10 +102,14 @@ const ProfileEditForm = () => {
             errorMessage={createUserProfileError}
             heading={
                 authState === AuthState.AUTHORIZED_WITHOUT_PROFILE
-                    ? translations.createProfile.submit_button
+                    ? translations.create_your_profile
                     : undefined
             }
-            buttonTitle={"CHANGE"}
+            buttonTitle={
+                authState === AuthState.AUTHORIZED_WITHOUT_PROFILE
+                    ? translations.create
+                    : translations.apply_changes
+            }
             onSubmit={onSubmit}
             fieldList={fieldList}
         />

@@ -17,13 +17,13 @@ export const ChatListItem = (Props: ChatListItemProps) => {
     function getRelationText(relation: Relation): string {
         switch (relation) {
             case Relation.FRIEND:
-                return translate.message_relation_friend;
+                return translate.is_friend;
             case Relation.STRANGER:
-                return translate.message_relation_stranger;
+                return translate.is_stranger;
             case Relation.BLOCKED:
-                return translate.message_relation_blocked;
+                return translate.is_blocked;
             case Relation.GROUP:
-                return translate.message_relation_group;
+                return translate.is_group;
         }
     }
 

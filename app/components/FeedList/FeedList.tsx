@@ -4,7 +4,7 @@ import Container from "../Container/Container";
 import { LanguageContext } from "../../context/LanguageContext/LanguageContext";
 import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
 import FormSelectorInput from '../FormSelectorInput/FormSelectorInput'
-import { Language } from "../../context/LanguageContext/Library/DictionaryScope";
+import { Language } from "../../context/LanguageContext/LanguageLibrary/type";
 import { IThemeType } from "../../context/ThemeContext/ThemeLibrary/type";
 
 const FeedList = () => {
@@ -15,7 +15,7 @@ const FeedList = () => {
 		<Container type="screen" layout="root">
 			<Container type="screen" layout="body">
 				<Text style={{ color: theme.theme.App.primaryText }}>
-					{translations.menu_activities}
+					{translations.activities}
 				</Text>
 				<FormSelectorInput
 					items={availableLanguages} selectedItem={language}

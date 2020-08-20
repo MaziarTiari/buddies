@@ -22,7 +22,7 @@ const SignUpForm = () => {
         validationType: "email",
         icon: "email",
         required: true,
-        placeholder: translations.profile.email,
+        placeholder: translations.email,
     };
 
     fieldList[Field.PHONE] = {
@@ -31,7 +31,7 @@ const SignUpForm = () => {
         validationType: "phone",
         icon: "cellphone",
         required: true,
-        placeholder: translations.profile.phone
+        placeholder: translations.phone
     };
 
     fieldList[Field.PASSWORD] = {
@@ -40,7 +40,7 @@ const SignUpForm = () => {
         hideInput: true,
         icon: "onepassword",
         required: true,
-        placeholder: translations.register.password,
+        placeholder: translations.password,
     };
 
     fieldList[Field.REPEAT_PASSWORD] = {
@@ -49,7 +49,7 @@ const SignUpForm = () => {
         hideInput: true,
         icon: "onepassword",
         required: true,
-        placeholder: translations.register.repeat_password,
+        placeholder: translations.repeat_password,
     };
 
     const onSubmit = (data: string[]) => {
@@ -68,14 +68,14 @@ const SignUpForm = () => {
 
     return (
         <Form
-            linkLabel={translations.login.submit_button}
+            linkLabel={translations.login}
             onLink={() => setAuthState(AuthState.UNAUTHORIZED)}
-            buttonTitle={translations.register.submit_button}
+            buttonTitle={translations.register}
             onSubmit={onSubmit}
-            heading={translations.ScreenHeading.register}
+            heading={translations.create_your_account}
             errorMessage={
                 passwordMismatch
-                    ? translations.register.errorMessage.password
+                    ? translations.password_mismatch
                     : createUserError}
             fieldList={fieldList}
         />

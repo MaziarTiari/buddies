@@ -101,7 +101,7 @@ const ProfileAbout = () => {
                             <Text style={style.headline}>
                                 {userProfile.friends ? userProfile.friends.length : 0}
                             </Text>
-                            <Text style={style.text}>{translations.profile.friends}</Text>
+                            <Text style={style.text}>{translations.friends}</Text>
                         </View>
                     </TouchableRippleCircle>
                     <TouchableRippleCircle onPress={() => { }}>
@@ -109,7 +109,7 @@ const ProfileAbout = () => {
                             <Text style={style.headline}>
                                 {userProfile.groups ? userProfile.groups.length : 0}
                             </Text>
-                            <Text style={style.text}>{translations.profile.groups}</Text>
+                            <Text style={style.text}>{translations.groups}</Text>
                         </View>
                     </TouchableRippleCircle>
                 </View>
@@ -119,23 +119,23 @@ const ProfileAbout = () => {
                     editable={userIsEditingProfile}
                     onEdit={() => navigation.navigate(RouteName.Profile.Editor.Personal)}>
                     <Headline style={style.headline}>
-                        {translations.profile.personal_info}
+                        {translations.personal}
                     </Headline>
                     <InfoItem
-                        keyText={translations.profile.name}
+                        keyText={translations.fullname}
                         valueText={
                             userProfile.firstname + " " +
                             userProfile.lastname} />
                     <InfoItem
-                        keyText={translations.profile.city}
+                        keyText={translations.city}
                         valueText={userProfile.city} />
                     <InfoItem
-                        keyText={translations.profile.birthDate}
+                        keyText={translations.birthdate}
                         valueText={
                             moment.unix(userProfile.birthDate).format('L')
                         } />
                     <InfoItem
-                        keyText={translations.profile.gender}
+                        keyText={translations.sex}
                         valueText={userProfile.sex} />
                 </EditableSection>
 
@@ -148,18 +148,18 @@ const ProfileAbout = () => {
                                 RouteName.Profile.Editor.Taglist,
                                 {
                                     categories: jobCategories,
-                                    editorEditHeadline: translations.profile.edit_employment,
-                                    editorAddHeadline: translations.profile.add_employment,
-                                    editorInstitutionPlaceholder: translations.profile.employment_institution_placeholder,
-                                    editorTitlePlaceholder: translations.profile.employment_title_placeholder,
-                                    editorCategoryPlaceholder: translations.profile.category,
+                                    editorEditHeadline: translations.edit_job,
+                                    editorAddHeadline: translations.add_job,
+                                    editorInstitutionPlaceholder: translations.company_or_institution_optional,
+                                    editorTitlePlaceholder: translations.description,
+                                    editorCategoryPlaceholder: translations.category,
                                     items: userProfile.jobs,
-                                    headerTitle: translations.profile.edit_employments,
+                                    headerTitle: translations.my_jobs,
                                     onItemsChanged: handleJobItemsChanged,
                                 } as ICategorizedInputListConfig)
                         }}>
                         <Headline style={style.headline}>
-                            {translations.profile.employments}
+                            {translations.jobs}
                         </Headline>
                         {userProfile.jobs?.map((job, i) =>
                             <InfoItem
@@ -180,19 +180,19 @@ const ProfileAbout = () => {
                                 RouteName.Profile.Editor.Taglist,
                                 {
                                     categories: hobbyCategories,
-                                    editorEditHeadline: translations.profile.editor.hobbies.heading_when_edit,
-                                    editorAddHeadline: translations.profile.editor.hobbies.heading_when_add,
-                                    editorInstitutionPlaceholder: translations.profile.editor.hobbies.place_label,
-                                    editorTitlePlaceholder: translations.profile.editor.hobbies.hobbie_title_label,
-                                    editorCategoryPlaceholder: translations.profile.category,
+                                    editorEditHeadline: translations.edit_hobby,
+                                    editorAddHeadline: translations.add_hobby,
+                                    editorInstitutionPlaceholder: translations.place_or_club_optional,
+                                    editorTitlePlaceholder: translations.description,
+                                    editorCategoryPlaceholder: translations.category,
                                     items: userProfile.hobbies,
-                                    headerTitle: translations.profile.editor.hobbies.editor_heading,
+                                    headerTitle: translations.my_hobbies,
                                     onItemsChanged: handleHobbyItemsChanged,
                                 } as ICategorizedInputListConfig)
                         }}
                     >
                         <Headline style={style.headline}>
-                            {translations.profile.hobbies}
+                            {translations.hobbies}
                         </Headline>
                         {userProfile.hobbies && (
                             <View>
@@ -205,7 +205,7 @@ const ProfileAbout = () => {
                 {/* About Text */}
                 {((userProfile.info && userProfile.info.trim().length > 0) || userIsEditingProfile) &&
                     <EditableSection editable={userIsEditingProfile} onEdit={() => setShowInfoEditor(true)}>
-                        <Text style={style.headline}>{translations.profile.about_me}</Text>
+                        <Text style={style.headline}>{translations.biography}</Text>
                         {userProfile.info && <Text style={style.text}>{userProfile.info}</Text>}
                     </EditableSection>
                 }
