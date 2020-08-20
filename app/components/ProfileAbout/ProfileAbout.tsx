@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import { Text, View, ScrollView, Image } from "react-native";
+import { Text, View, ScrollView, Image, BackHandler } from "react-native";
 import Container from "../Container/Container";
 import { LanguageContext } from "../../context/LanguageContext/LanguageContext";
 import useStyle from "./ProfileAbout.style";
@@ -54,13 +54,11 @@ const ProfileAbout = () => {
         setUserProfile({ ...userProfile, hobbies: items });
     }
 
-    // cancels edit when user navigates back to previous screen
+    // cancel when user navigates back to previous screen
     useEffect(() => {
-        const unsubscribe = navigation.addListener("blur", () => {
-            if (userIsEditingProfile) cancelEditingProfile();
-        });
-        return unsubscribe;
-    }, [navigation, userIsEditingProfile]);
+        const backHandler = BackHandler.addEventListener("hardwareBackPress", () => userIsEditingProfile);
+        return () => backHandler.remove();
+    }, [userIsEditingProfile]);
 
     return (
         <Container type="screen" layout="root">
