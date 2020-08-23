@@ -64,6 +64,9 @@ export interface Dictionary {
     apply: string;
     hide: string;
     create: string;
+    settings: string;
+    theme: string;
+    language: string;
 
     // Tags: Hobbies
     my_hobbies: string;

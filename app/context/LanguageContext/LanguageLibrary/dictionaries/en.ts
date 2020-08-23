@@ -59,6 +59,9 @@ export const englishDictionary: Dictionary = {
     apply: "Apply",
     hide: "Hide",
     create: "Create",
+    settings: "Settings",
+    theme: "Theme",
+    language: "Language",
 
     // Tags: Hobbies
     my_hobbies: "My hobbies",

@@ -59,6 +59,9 @@ export const germanDictionary: Dictionary = {
     apply: "Bewerben",
     hide: "Ausblenden",
     create: "Erstellen",
+    settings: "Einstellungen",
+    theme: "Theme",
+    language: "Sprache",
 
     // Tags: Hobbies
     my_hobbies: "Meine Hobbys",
