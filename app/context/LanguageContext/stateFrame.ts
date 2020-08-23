@@ -1,5 +1,5 @@
-import { library } from "./Library";
-import { Language, Dictionary } from "./Library/DictionaryScope";
+import { library } from "./LanguageLibrary";
+import { Language, Dictionary } from "./LanguageLibrary/type";
 
 export const defaultLanguage: Language = "de";
 

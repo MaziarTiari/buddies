@@ -17,17 +17,17 @@ const ProfileTab = () => {
             <Tab.Screen
                 name={RouteName.Profile.About}
                 component={ProfileAbout}
-                options={{ tabBarLabel: translations.profile_tab_about }}
+                options={{ tabBarLabel: translations.about }}
             />
             <Tab.Screen
                 name={RouteName.Profile.Activity}
                 component={ProfileActivity}
-                options={{ tabBarLabel: translations.profile_tab_activity }}
+                options={{ tabBarLabel: translations.activities }}
             />
             <Tab.Screen
                 name={RouteName.Profile.Galery}
                 component={ProfileGallery}
-                options={{ tabBarLabel: translations.profile_tab_galery }}
+                options={{ tabBarLabel: translations.gallery }}
             />
         </Tab.Navigator>
     );

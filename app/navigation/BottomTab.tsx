@@ -29,15 +29,15 @@ const BottomTab = ({ route }: any) => {
         switch (routeName) {
             case RouteName.Root:
             case RouteName.FeedList:
-                return translations.menu_feed;
+                return translations.feed;
             case RouteName.Profile.Tab:
-                return translations.menu_profile;
+                return translations.profile;
             case RouteName.Map:
-                return translations.menu_map;
+                return translations.explore;
             case RouteName.Activity.List:
-                return translations.menu_activities;
+                return translations.activities;
             case RouteName.Chat.List:
-                return translations.menu_chat;
+                return translations.messages;
             default:
                 return "unknown_route";
         }
