@@ -90,13 +90,6 @@ const BottomTab = ({ route }: any) => {
             barStyle={{ height: userIsEditingProfile ? 0 : undefined }}
         >
             <Tab.Screen
-                name={RouteName.FeedList}
-                component={FeedList}
-                options={{
-                    tabBarIcon: ({ focused }) => getBottomIcon("home", focused),
-                }}
-            />
-            <Tab.Screen
                 name={RouteName.Activity.List}
                 component={ActivityList}
                 options={{
@@ -115,6 +108,13 @@ const BottomTab = ({ route }: any) => {
                 component={ChatList}
                 options={{
                     tabBarIcon: ({ focused }) => getBottomIcon("chat", focused),
+                }}
+            />
+            <Tab.Screen
+                name={RouteName.FeedList}
+                component={FeedList}
+                options={{
+                    tabBarIcon: ({ focused }) => getBottomIcon("bell", focused),
                 }}
             />
             <Tab.Screen
