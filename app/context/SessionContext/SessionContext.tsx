@@ -125,6 +125,21 @@ export function SessionContextProvider(props: { children: ReactNode }) {
             });
     };
 
+    const fetchUserProfile = (userId: string) => {
+        if (userProfile.userId === userId) return;
+        setIsLoading(true);
+        userProfileApi.Get<IUserProfile>(userId)
+            .then((userProfile: IUserProfile) => {
+                setUserProfile(userProfile);
+            })
+            .catch((axiosError: AxiosError) => {
+                console.log(axiosError);
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
+    };
+
     const updateActivity = (updatedActivity: IActivity) => {
         setIsLoading(true);
         activityApi.Update<string, IActivity>(updatedActivity.id, updatedActivity)
@@ -192,6 +207,7 @@ export function SessionContextProvider(props: { children: ReactNode }) {
         loginUserError,
         createUserProfile,
         createUserProfileError,
+        fetchUserProfile,
         authState,
         setAuthState,
         userIsEditingProfile,

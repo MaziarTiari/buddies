@@ -19,7 +19,7 @@ const ActivityListItem = (activity: IActivity) => {
     const { styles, theme } = useStyle();
     const navigation = useNavigation();
     const { translations } = useContext(LanguageContext);
-    const { setActivity } = useContext(SessionContext);
+    const { setActivity, fetchUserProfile } = useContext(SessionContext);
 
     const ownerName = "OwnerName"; // TODO Get From UserAvatar
     const memberCount = activity.memberUserIds.length + (activity.maxMember ? "/" + activity.maxMember : "") + " " + translations.member;
@@ -31,7 +31,8 @@ const ActivityListItem = (activity: IActivity) => {
     };
 
     const handleAvatarPressed = () => {
-        // Get Profile from API & navigate to it
+        fetchUserProfile(activity.userId);
+        navigation.navigate(RouteName.Profile.OtherTab);
     };
 
     const InfoWithIcon = (icon: string, text: string) => {
