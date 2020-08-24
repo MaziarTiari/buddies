@@ -20,11 +20,6 @@ const ProfileTab = () => {
                 options={{ tabBarLabel: translations.about }}
             />
             <Tab.Screen
-                name={RouteName.Profile.Activity}
-                component={ProfileActivity}
-                options={{ tabBarLabel: translations.activities }}
-            />
-            <Tab.Screen
                 name={RouteName.Profile.Galery}
                 component={ProfileGallery}
                 options={{ tabBarLabel: translations.gallery }}
