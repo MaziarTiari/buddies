@@ -20,8 +20,8 @@ import { RouteName } from "../../navigation/Navigation.config";
 const ActivityList = () => {
     const navigation = useNavigation();
     const { theme } = useContext(ThemeContext);
-    const { activities, isLoading, fetchActivityList } = useActivities();
     const { startEditingActivity, setActivity, user } = useContext(SessionContext);
+    const { activities, isLoading, fetchActivityList } = useActivities("exclude", user.id);
     const style = useStyle();
 
     let rightOpen: boolean, leftOpen: boolean, currentId: string;

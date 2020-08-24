@@ -1,33 +1,91 @@
-import { ApiClient } from "../api/ApiClient";
-import { IActivity } from "../models/Activity";
-import { getServiceUrl } from "../api/channels";
-import { useState, useEffect } from "react";
+import { ApiClient, activityApi } from "../api/ApiClient";
+import { IActivity, IApplication, IOthersActivity } from "../models/Activity";
+import { getServiceUrl, baseUrl, hubs } from "../api/channels";
+import { useState, useEffect, useMemo, useLayoutEffect, useContext } from "react";
 import { AxiosError } from "axios";
+import { HubConnectionBuilder } from '@microsoft/signalr';
+import { SessionContext } from "../context/SessionContext/SessionContext";
 
-const activityApi = new ApiClient<IActivity>(
-    { baseURL: getServiceUrl("Activities") }
-);
+export function useActivities(filterType: "exclude" | "user", userId: string,) {
 
-export function useActivities() {
-    const [activities, setActivities] = useState<Array<IActivity>>();
+    const { user } = useContext(SessionContext);
+
+    const activityHubConnection = useMemo(() => {
+        const connection = new HubConnectionBuilder()
+            .withUrl(baseUrl + hubs.activities)
+            .withAutomaticReconnect()
+            .build();
+
+        connection.start()
+            .then(() => console.log("Connection started!"))
+            .catch(err => console.warn("Could not connect to websocket: " + err));
+        return connection;
+    }, []);
+
+    const [activities, setActivities] = useState<Array<IActivity|IOthersActivity>>([]);
     const [isLoading, setIsLoading] = useState(false);
 
-    useEffect(() => fetchActivityList(), []);
+    useEffect(() => activityHubConnection.on("updateActivity", (activity: IActivity) => {
+        updateActivity(activity);
+    }), [activities])
 
-    const fetchActivityList = () => {
+    useEffect(() => activityHubConnection.on(
+            "newApplicant", (application: IApplication) => {
+        onNewApplication(application)
+    }), [activities])
+
+    useEffect(() => activityHubConnection.on(
+        "newActivity", (activity: IOthersActivity) => {
+        if (filterType === "exclude" && activity.userId !== user.id
+                || filterType === "user" && activity.userId === user.id) {
+            setActivities([...activities, activity]);
+        }
+    })), [activities];
+
+    useLayoutEffect(() => fetchActivityList(), []);
+
+    function onNewApplication(application: IApplication) {
+        let index;
+        let activity: IActivity | undefined = undefined;
+        activities.forEach((a, i) => {
+            if (a.id === application.activityId) {
+                index = i;
+                activity = a;
+            }
+        });
+        if (activity) {
+            activity = activity as IActivity;
+            if (!activity.applicantUserIds.includes(application.applicantId)) {
+                activity.applicantUserIds.push(application.applicantId);
+                // TODO...
+            }
+        } else {
+            console.error("Activity of application not found!");
+        } 
+    }
+
+    function fetchActivityList() {
         setIsLoading(true);
-        activityApi.GetAll<IActivity[]>()
-            .then((response: IActivity[]) => {
-                setActivities(response);
+        activityApi.GetAll<Array<IActivity | IOthersActivity>>(filterType + "/" + userId)
+            .then(activities => {
+                setActivities(activities);
+                const activityIds = activities.map(a => a.id);
+                activityHubConnection.invoke("addToActivityGroups", activityIds)
+                    .catch(err => console.error(err));
             })
-            .catch((error: AxiosError) => {
-                console.error(error);
-                setActivities([]);
-            })
-            .finally(() => {
-                setIsLoading(false);
-            });
-    };
+            .catch((error: AxiosError) => console.error(error))
+            .finally(() => setIsLoading(false))
+        ;
+    }
+
+    function updateActivity(newActivity: IActivity) {
+        let updatingActivities = [...activities];
+        const indexOfOldActivity = activities.findIndex(a => a.id === newActivity.id);
+        updatingActivities[indexOfOldActivity] = Object.assign(
+            {}, updatingActivities[indexOfOldActivity], {...newActivity}
+        );
+        setActivities(updatingActivities);
+    }
 
     return ({
         activities: activities,

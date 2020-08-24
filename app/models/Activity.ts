@@ -1,5 +1,6 @@
 import { ICategorizedInput } from './CategorizedInput';
 import { IImage } from './Image';
+import { IUserAvatar } from './UserAvatar';
 
 export interface IActivity {
     id: string;
@@ -17,3 +18,10 @@ export interface IActivity {
     tags?: Array<ICategorizedInput>;
     maxMember?: number ;
 }
+
+export interface IApplication {
+    applicantId: string;
+    activityId: string;
+}
+
+export type IOthersActivity = IActivity & IUserAvatar;

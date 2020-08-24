@@ -17,4 +17,4 @@ class UserApi extends ApiClient<IUser>  {
     }
 }
 
-export default UserApi;
+export const userApi = new UserApi({ baseURL: getServiceUrl("Users") });

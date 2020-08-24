@@ -2,6 +2,7 @@ import { Api } from "./Api";
 import { AxiosRequestConfig, AxiosResponse, AxiosError } from "axios";
 import { IUserProfile } from "../models/UserProfile";
 import { getServiceUrl } from "./channels";
+import { IActivity } from "../models/Activity";
 
 export class ApiClient<T> extends Api<T> {
     constructor(config: AxiosRequestConfig) {
@@ -79,7 +80,10 @@ export class ApiClient<T> extends Api<T> {
     }
 }
 
-export const UserProfileApi = new ApiClient<IUserProfile>(
+export const userProfileApi = new ApiClient<IUserProfile>(
     {baseURL: getServiceUrl("UserProfiles")}
 );
 
+export const activityApi = new ApiClient<IActivity>(
+    { baseURL: getServiceUrl("Activities") }
+);
