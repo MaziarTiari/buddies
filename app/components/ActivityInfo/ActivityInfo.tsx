@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import { View, Text, ScrollView, Image } from "react-native";
+import { View, Text, ScrollView, Image, BackHandler } from "react-native";
 import useStyle from "./ActivityInfo.style";
 import { LanguageContext } from "../../context/LanguageContext/LanguageContext";
 import Container from "../Container/Container";
@@ -48,13 +48,11 @@ const ActivityInfo = () => {
         setActivityDescription(activity.description || "");
     };
 
-    // cancels edit when user navigates back to previous screen
+    // cancel when user navigates back to previous screen
     useEffect(() => {
-        const unsubscribe = navigation.addListener("blur", () => {
-            if (userIsEditingActivity) cancelEditingActivity();
-        });
-        return unsubscribe;
-    }, [navigation, userIsEditingActivity]);
+        const backHandler = BackHandler.addEventListener("hardwareBackPress", () => userIsEditingActivity);
+        return () => backHandler.remove();
+    }, [userIsEditingActivity]);
 
     return (
         <Container layout="root" type="screen">
