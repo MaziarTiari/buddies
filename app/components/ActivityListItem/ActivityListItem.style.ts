@@ -4,73 +4,52 @@ import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
 import { useContext } from "react";
 
 export const useStyle = () => {
-    const theme = useContext(ThemeContext).theme;
+    const { theme } = useContext(ThemeContext);
     const styles = StyleSheet.create({
         root: {
             flex: 1,
             backgroundColor: theme.App.screenBackground,
         },
-        container: {
+        outerContainer: {
             borderBottomWidth: 1,
             borderColor: theme.App.layoutBackground,
             borderBottomStartRadius: getResponsiveSize(25),
             borderBottomEndRadius: getResponsiveSize(25),
-            paddingTop: getResponsiveSize(20),
-            paddingBottom: getResponsiveSize(45),
-            position: "relative",
         },
-        headerContainer: {
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
+        innerContainer: {
+            marginHorizontal: getResponsiveSize(15),
+            marginVertical: getResponsiveSize(25),
+            overflow: "hidden",
         },
-        iconText: {
-            color: theme.App.basicItem,
-            fontSize: fontsizes.medium,
-            lineHeight: getLineHeight(fontsizes.medium),
-        },
-        bodyContainer: {
-            flexDirection: "row",
-            justifyContent: "space-between",
+        imageContainer: {
+            flex: 3,
+            aspectRatio: 1,
+            backgroundColor: "black",
+            marginRight: getResponsiveSize(15),
         },
         image: {
-            width: getResponsiveSize(150),
-            height: getResponsiveSize(150),
-            alignSelf: "center",
-            borderRadius: getResponsiveSize(25),
+            flex: 1,
+            aspectRatio: 1,
+            resizeMode: "contain",
         },
         infoContainer: {
-            flex: 1,
-            marginLeft: getResponsiveSize(15),
-            justifyContent: "space-between",
-            marginRight: getResponsiveSize(4),
+            flex: 7,
         },
-        title: {
-            color: theme.App.primaryText,
-            fontSize: fontsizes.medium,
-            fontWeight: "bold",
-            lineHeight: getLineHeight(fontsizes.medium),
-        },
-        address: {
-            marginBottom: getResponsiveSize(4),
-        },
-        info: {
-            color: theme.App.primaryText,
+        titleText: {
             fontSize: fontsizes.small,
             lineHeight: getLineHeight(fontsizes.small),
+            fontWeight: "bold",
+            color: theme.App.primaryText,
         },
-        iconContainer: {
+        infoText: {
+            fontSize: fontsizes.small,
+            lineHeight: getLineHeight(fontsizes.small),
+            color: theme.App.secondaryText,
+            marginLeft: getResponsiveSize(5),
+        },
+        infoIconContainer: {
             flexDirection: "row",
-            justifyContent: "space-between",
-            alignSelf: "stretch",
-        },
-        icon: {
-            margin: 0,
-            alignSelf: "flex-end",
-        },
-        favoriteIcon: {
-            position: "absolute",
-            top: "97%",
+            marginVertical: getResponsiveSize(1),
         },
     });
 

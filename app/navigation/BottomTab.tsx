@@ -30,7 +30,7 @@ const BottomTab = ({ route }: any) => {
             case RouteName.Root:
             case RouteName.FeedList:
                 return translations.feed;
-            case RouteName.Profile.Tab:
+            case RouteName.Profile.OwnTab:
                 return translations.profile;
             case RouteName.Map:
                 return translations.explore;
@@ -47,7 +47,7 @@ const BottomTab = ({ route }: any) => {
         switch (routeName) {
             case RouteName.Activity.List:
                 return () => <ActivityListHeader />;
-            case RouteName.Profile.Tab:
+            case RouteName.Profile.OwnTab:
                 return () => <RightProfileHeader />;
         }
         return undefined;
@@ -55,8 +55,8 @@ const BottomTab = ({ route }: any) => {
 
     const getHeaderLeft = (routeName: string): (() => JSX.Element) | undefined => {
         switch (routeName) {
-            case RouteName.Profile.Tab:
-                return () => <LeftProfileHeader />;
+            case RouteName.Profile.OwnTab:
+                return userIsEditingProfile ? (() => <LeftProfileHeader />) : undefined;
         }
         return undefined;
     }
@@ -80,7 +80,7 @@ const BottomTab = ({ route }: any) => {
             headerLeft: getHeaderLeft(currentRoute),
             screenOptions: screenOptions,
         });
-    }, [navigation, currentRoute]);
+    }, [navigation, currentRoute, userIsEditingProfile]);
 
     return (
         <Tab.Navigator
@@ -118,7 +118,7 @@ const BottomTab = ({ route }: any) => {
                 }}
             />
             <Tab.Screen
-                name={RouteName.Profile.Tab}
+                name={RouteName.Profile.OwnTab}
                 component={ProfileTab}
                 options={{
                     tabBarIcon: ({ focused }) => getBottomIcon("account", focused),

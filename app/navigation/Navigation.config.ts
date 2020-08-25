@@ -21,7 +21,8 @@ export const RouteName = {
         Chat: "Chat",
     },
     Profile: {
-        Tab: "ProfileTab",
+        OwnTab: "OwnProfileTab",
+        OtherTab: "OtherProfileTab",
         About: "ProfileAbout",
         Activity: "ProfileActivity",
         Galery: "ProfileGalery",
