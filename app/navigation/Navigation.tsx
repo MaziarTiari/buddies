@@ -10,6 +10,7 @@ import CategorizedInputList from '../components/CategorizedInputList/Categorized
 import ProfileEditForm from '../components/ProfileEditForm/ProfileEditForm';
 import ActivityEditForm from '../components/ActivityEditForm/ActivityEditForm';
 import { LeftActivityHeader, RightActivityHeader } from '../components/ActivityHeader/ActivityHeader';
+import SettingsForm from '../components/SettingsForm/SettingsForm';
 
 const Stack = createStackNavigator();
 
@@ -29,6 +30,7 @@ const Navigation = () => {
             <Stack.Screen name={RouteName.Profile.Editor.Taglist} component={CategorizedInputList} />
             <Stack.Screen name={RouteName.Profile.Editor.Personal} component={ProfileEditForm} />
             <Stack.Screen name={RouteName.Activity.Editor} component={ActivityEditForm} />
+            <Stack.Screen name={RouteName.Settings} component={SettingsForm} />
         </Stack.Navigator>
     );
 };

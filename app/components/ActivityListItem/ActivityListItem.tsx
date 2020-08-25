@@ -23,7 +23,7 @@ const ActivityListItem = (activity: IActivity) => {
     // const ownerName = owner.firstname + " " + owner.lastname;
     const ownerName = "OwnerName"; // TODO Get From UserAvatar
     const memberCount = activity.memberUserIds.length + (activity.maxMember ? "/" + activity.maxMember : "");
-    const dateString = getDateRangeString(activity.startDate, translations.dateRangePreposition, activity.endDate);
+    const dateString = getDateRangeString(activity.startDate, translations.date_range_preposition, activity.endDate);
     const imageSource = activity.image ? { uri: "data:image/gif;base64," + activity.image.base64 } : defaultImg;
 
     const onPress = () => {

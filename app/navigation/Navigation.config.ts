@@ -32,6 +32,7 @@ export const RouteName = {
             Taglist: "ProfileEditorTagList",
         },
     },
+    Settings: "Settings",
 };
 
 export const useNavOption = () => {

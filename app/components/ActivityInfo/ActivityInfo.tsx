@@ -79,7 +79,7 @@ const ActivityInfo = () => {
                     <TouchableRippleCircle onPress={() => { }}>
                         <View style={style.innerRippleContainer}>
                             <Text style={style.headline}>{activity.applicantUserIds.length}</Text>
-                            <Text style={style.text}>{translations.activity.applicants}</Text>
+                            <Text style={style.text}>{translations.applicants}</Text>
                         </View>
                     </TouchableRippleCircle>
                     <TouchableRippleCircle onPress={() => { }}>
@@ -87,7 +87,7 @@ const ActivityInfo = () => {
                             <Text style={style.headline}>
                                 {activity.memberUserIds.length + (activity.maxMember ? " / " + activity.maxMember : "")}
                             </Text>
-                            <Text style={style.text}>{translations.activity.members}</Text>
+                            <Text style={style.text}>{translations.member}</Text>
                         </View>
                     </TouchableRippleCircle>
                 </View>
@@ -95,20 +95,20 @@ const ActivityInfo = () => {
                 {/* Description */}
                 {((activity.description && activity.description.trim().length > 0) || userIsEditingActivity) &&
                     <EditableSection editable={userIsEditingActivity} onEdit={() => setShowDescriptionEditor(true)}>
-                        <Headline style={style.headline}>{translations.activity.description}</Headline>
+                        <Headline style={style.headline}>{translations.description}</Headline>
                         <Text style={style.text}>{activity.description}</Text>
                     </EditableSection>
                 }
 
                 {/* Information */}
                 <EditableSection editable={userIsEditingActivity} onEdit={() => navigation.navigate(RouteName.Activity.Editor)}>
-                    <Headline style={style.headline}>{translations.activity.information}</Headline>
-                    <InfoItem keyText={translations.activity.location} valueText={activity.location} />
+                    <Headline style={style.headline}>{translations.information}</Headline>
+                    <InfoItem keyText={translations.meeting_point} valueText={activity.location} />
                     {activity.startDate !== undefined &&
-                        <InfoItem keyText={translations.activity.startTime} valueText={moment.unix(activity.startDate).format("LLL")} />}
+                        <InfoItem keyText={translations.start_time} valueText={moment.unix(activity.startDate).format("LLL")} />}
                     {activity.endDate !== undefined &&
-                        <InfoItem keyText={translations.activity.endTime} valueText={moment.unix(activity.endDate).format("LLL")} />}
-                    <InfoItem keyText={translations.activity.visibility} valueText={activity.visibility.toString()} />
+                        <InfoItem keyText={translations.end_time} valueText={moment.unix(activity.endDate).format("LLL")} />}
+                    <InfoItem keyText={translations.visibility} valueText={activity.visibility.toString()} />
                 </EditableSection>
 
                 {/* Tags */}
@@ -116,17 +116,16 @@ const ActivityInfo = () => {
                     <EditableSection editable={userIsEditingActivity} onEdit={() => {
                         navigation.navigate(RouteName.Profile.Editor.Taglist, {
                             categories: hobbyCategories,
-                            editorEditHeadline: translations.profile.editor.hobbies.heading_when_edit,
-                            editorAddHeadline: translations.profile.editor.hobbies.heading_when_add,
-                            editorInstitutionPlaceholder: translations.profile.editor.hobbies.place_label,
-                            editorTitlePlaceholder: translations.profile.editor.hobbies.hobbie_title_label,
-                            editorCategoryPlaceholder: translations.profile.category,
+                            editorEditHeadline: translations.edit_subject,
+                            editorAddHeadline: translations.add_subject,
+                            editorTitlePlaceholder: translations.description,
+                            editorCategoryPlaceholder: translations.category,
                             items: activity.tags,
-                            headerTitle: translations.profile.editor.hobbies.editor_heading,
+                            headerTitle: translations.subjects,
                             onItemsChanged: handleTagItemsChanged,
                         } as ICategorizedInputListConfig)
                     }}>
-                        <Headline style={style.headline}>{translations.activity.hobbies}</Headline>
+                        <Headline style={style.headline}>{translations.subjects}</Headline>
                         {activity.tags?.map((tag, index) => (
                             <InfoItem key={index} keyText={tag.category} valueText={tag.title} />
                         ))}

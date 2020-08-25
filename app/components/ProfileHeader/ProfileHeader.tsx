@@ -5,6 +5,8 @@ import { Menu, MenuTrigger, MenuOption, MenuOptions } from "react-native-popup-m
 import { fontsizes, getResponsiveSize } from "../../utils/font/font";
 import { SessionContext } from "../../context/SessionContext/SessionContext";
 import { View } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { RouteName } from "../../navigation/Navigation.config";
 
 export const LeftProfileHeader = () => {
     const { theme } = useContext(ThemeContext);
@@ -21,6 +23,7 @@ export const LeftProfileHeader = () => {
 
 export const RightProfileHeader = () => {
     const { theme } = useContext(ThemeContext);
+    const navigation = useNavigation();
     const {
         user,
         userProfile,
@@ -34,11 +37,18 @@ export const RightProfileHeader = () => {
     return (
         <View style={{ flexDirection: "row" }}>
             {isOwnProfile && !userIsEditingProfile &&
-                <IconButton
-                    icon="lead-pencil"
-                    color={theme.App.basicItem}
-                    onPress={startEditingProfile}
-                />
+                <React.Fragment>
+                    <IconButton
+                        icon="lead-pencil"
+                        color={theme.App.basicItem}
+                        onPress={startEditingProfile}
+                    />
+                    <IconButton
+                        icon="cogs"
+                        color={theme.App.basicItem}
+                        onPress={() => navigation.navigate(RouteName.Settings)}
+                    />
+                </React.Fragment>
             }
             {isOwnProfile && userIsEditingProfile &&
                 <IconButton

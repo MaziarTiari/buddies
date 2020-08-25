@@ -1,4 +1,4 @@
-import { DictionaryLibrary } from "./DictionaryScope";
+import { DictionaryLibrary } from "./type";
 import { germanDictionary } from "./dictionaries/de";
 import { englishDictionary } from "./dictionaries/en";
 

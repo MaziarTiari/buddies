@@ -78,6 +78,15 @@ const Form = (Props: FormProps) => {
         setFormErrors(updatedFormErrors);
     };
 
+    const getTypeErrorMessage = (validationType: string) => {
+        switch (validationType) {
+            case "email": return translations.error_invalid_email;
+            case "number": return translations.error_invalid_number;
+            case "phone": return translations.error_invalid_phone;
+            default: return undefined;
+        }
+    };
+
     return (
         <Container type="screen" layout="root">
             <Container type="screen" layout="body">
@@ -121,7 +130,7 @@ const Form = (Props: FormProps) => {
                                     placeholder={field.placeholder}
                                     icon={field.icon}
                                     hasError={showErrors && formErrors[index]}
-                                    errorMessage={(showErrors && formErrors[index] && field.validationType && translations.formInput.error[field.validationType]) || undefined}
+                                    errorMessage={(showErrors && formErrors[index] && field.validationType && getTypeErrorMessage(field.validationType)) || undefined}
                                     secureTextEntry={field.hideInput}
                                 />
                         }

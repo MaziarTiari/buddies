@@ -14,12 +14,14 @@ import ActionButton from "../ActionButton/ActionButton";
 import { SessionContext } from "../../context/SessionContext/SessionContext";
 import { useNavigation } from "@react-navigation/native";
 import { RouteName } from "../../navigation/Navigation.config";
+import { LanguageContext } from "../../context/LanguageContext/LanguageContext";
 
 // TODO : Add Translations
 
 const ActivityList = () => {
     const navigation = useNavigation();
     const { theme } = useContext(ThemeContext);
+    const { translations } = useContext(LanguageContext);
     const { activities, isLoading, fetchActivityList } = useActivities();
     const { startEditingActivity, setActivity, user } = useContext(SessionContext);
     const style = useStyle();
@@ -65,7 +67,7 @@ const ActivityList = () => {
                         color={theme.App.primaryText}
                         size={getResponsiveSize(30)}
                     />
-                    <Text style={style.text}>Apply</Text>
+                    <Text style={style.text}>{translations.apply}</Text>
                 </View>
                 <View style={style.backgroundSideContainer}>
                     <MaterialCommunityIcons
@@ -73,7 +75,7 @@ const ActivityList = () => {
                         color={theme.App.primaryText}
                         size={getResponsiveSize(30)}
                     />
-                    <Text style={style.text}>Hide</Text>
+                    <Text style={style.text}>{translations.hide}</Text>
                 </View>
             </View>
         );

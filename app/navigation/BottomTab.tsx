@@ -29,15 +29,15 @@ const BottomTab = ({ route }: any) => {
         switch (routeName) {
             case RouteName.Root:
             case RouteName.FeedList:
-                return translations.menu_feed;
+                return translations.feed;
             case RouteName.Profile.Tab:
-                return translations.menu_profile;
+                return translations.profile;
             case RouteName.Map:
-                return translations.menu_map;
+                return translations.explore;
             case RouteName.Activity.List:
-                return translations.menu_activities;
+                return translations.activities;
             case RouteName.Chat.List:
-                return translations.menu_chat;
+                return translations.messages;
             default:
                 return "unknown_route";
         }
@@ -90,13 +90,6 @@ const BottomTab = ({ route }: any) => {
             barStyle={{ height: userIsEditingProfile ? 0 : undefined }}
         >
             <Tab.Screen
-                name={RouteName.FeedList}
-                component={FeedList}
-                options={{
-                    tabBarIcon: ({ focused }) => getBottomIcon("home", focused),
-                }}
-            />
-            <Tab.Screen
                 name={RouteName.Activity.List}
                 component={ActivityList}
                 options={{
@@ -115,6 +108,13 @@ const BottomTab = ({ route }: any) => {
                 component={ChatList}
                 options={{
                     tabBarIcon: ({ focused }) => getBottomIcon("chat", focused),
+                }}
+            />
+            <Tab.Screen
+                name={RouteName.FeedList}
+                component={FeedList}
+                options={{
+                    tabBarIcon: ({ focused }) => getBottomIcon("bell", focused),
                 }}
             />
             <Tab.Screen

@@ -17,7 +17,7 @@ const LoginForm = () => {
         inputType: InputType.TEXT,
         required: true,
         validationType: "email",
-        placeholder: translations.profile.email,
+        placeholder: translations.email,
         icon: "email",
     };
 
@@ -25,7 +25,7 @@ const LoginForm = () => {
         inputType: InputType.TEXT,
         required: true,
         hideInput: true,
-        placeholder: translations.register.password,
+        placeholder: translations.password,
         icon: "onepassword",
     };
 
@@ -35,11 +35,11 @@ const LoginForm = () => {
 
     return (
         <Form
-            linkLabel={translations.register.submit_button}
+            linkLabel={translations.register}
             onLink={() => setAuthState(AuthState.UNREGISTERED)}
-            buttonTitle={translations.login.submit_button}
+            buttonTitle={translations.login}
             onSubmit={onSubmit}
-            heading={translations.ScreenHeading.login}
+            heading={translations.please_log_in}
             errorMessage={loginUserError}
             fieldList={fieldList}
         />
