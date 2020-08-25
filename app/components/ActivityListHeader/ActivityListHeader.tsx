@@ -14,11 +14,6 @@ const ActivityListHeader = () => {
         <View style={{ flexDirection: "row" }}>
             <IconButton
                 color={theme.App.contentBasicButton}
-                icon="heart"
-                onPress={() => navigation.navigate(RouteName.Activity.MyFavorite)}
-            />
-            <IconButton
-                color={theme.App.contentBasicButton}
                 icon="wunderlist"
                 onPress={() => navigation.navigate(RouteName.Activity.MyList)}
             />

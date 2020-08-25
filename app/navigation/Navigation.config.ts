@@ -11,7 +11,6 @@ export const RouteName = {
     Activity: {
         List: "ActivityList",
         MyList: "ActivityMyList",
-        MyFavorite: "ActivityMyFavorite",
         Info: "ActivityInfo",
         Editor: "ActivityInfoEditor",
     },

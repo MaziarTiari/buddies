@@ -23,7 +23,6 @@ const Navigation = () => {
             <Stack.Screen name={RouteName.Root} component={BottomTab} />
             <Stack.Screen name={RouteName.Profile.FriendList} component={FriendList} />
             <Stack.Screen name={RouteName.Chat.Chat} component={Chat} />
-            <Stack.Screen name={RouteName.Activity.MyFavorite} component={ActivityList} />
             <Stack.Screen name={RouteName.Activity.MyList} component={ActivityList} />
             <Stack.Screen name={RouteName.Activity.Info} component={ActivityInfo} options={{
                 headerRight: () => <RightActivityHeader />,
