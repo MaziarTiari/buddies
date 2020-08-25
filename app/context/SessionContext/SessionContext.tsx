@@ -1,28 +1,17 @@
-import React, { createContext, useState, ReactNode } from "react";
+import React, { createContext, useState, ReactNode, useMemo } from "react";
 import { IUserProfile, INewUserProfile } from "../../models/UserProfile";
-import { ApiClient } from "../../api/ApiClient";
-import { getServiceUrl } from "../../api/channels";
+import { userProfileApi, activityApi } from "../../api/ApiClient";
+// import { baseUrl, hubs } from "../../api/channels";
 import { AxiosError } from "axios";
 import { NOT_FOUND } from "http-status-codes";
 import { IActivity } from "../../models/Activity";
 import { IUser, INewUser } from "../../models/User";
-import { ISessionContextState, initialState, AuthState } from "./stateFrame";
-import UserApi from "../../api/User/UserApi";
+import { ISessionContextState, initialState as initState, AuthState } from "./stateFrame";
+// import { HubConnectionBuilder } from '@aspnet/signalr';
+import { userApi } from "../../api/User/UserApi";
 // end import ////////////////////////////////////////////////////////////////
 
-export const SessionContext = createContext<ISessionContextState>(initialState);
-
-const userApi = new UserApi(
-    { baseURL: getServiceUrl("Users") }
-);
-
-const userProfileApi = new ApiClient<IUserProfile>(
-    { baseURL: getServiceUrl("UserProfiles") }
-);
-
-const activityApi = new ApiClient<IActivity>(
-    { baseURL: getServiceUrl("Activities") }
-);
+export const SessionContext = createContext<ISessionContextState>(initState);
 
 /*****************************************************************************
  * Provides context of users current session
@@ -37,22 +26,56 @@ const activityApi = new ApiClient<IActivity>(
  */
 export function SessionContextProvider(props: { children: ReactNode }) {
 
+    /* Websocket
+    const userHubConnection = useMemo(() => {
+        const connection = new HubConnectionBuilder()
+            .withUrl(baseUrl + hubs.user)
+            .build();
+
+        connection.start()
+            .then(res => console.log("connection with userHub started!"))
+            .catch(err => console.error("Could not connect to userHub! ", err));
+        return connection;
+    }, [])
+    */
+
     // Session
     const [authState, setAuthState] = useState<AuthState>(AuthState.UNAUTHORIZED);
-    const [user, setUser] = useState<IUser>(initialState.user);
-    const [userProfile, setUserProfile] = useState<IUserProfile>(initialState.userProfile);
-    const [activity, setActivity] = useState<IActivity>(initialState.activity);
-    const [isLoading, setIsLoading] = useState<boolean>(initialState.isLoading);
-    const [userIsEditingProfile, setUserIsEditingProfile] = useState<boolean>(initialState.userIsEditingProfile);
-    const [userIsEditingActivity, setUserIsEditingActivity] = useState<boolean>(initialState.userIsEditingActivity);
+
+    const [user, setUser] = useState<IUser>(initState.user);
+
+    const [userProfile, setUserProfile] = useState<IUserProfile>(initState.userProfile);
+
+    const [activity, setActivity] = useState<IActivity>(initState.activity);
+
+    const [isLoading, setIsLoading] = useState<boolean>(initState.isLoading);
+
+    const [
+        userIsEditingProfile,
+        setUserIsEditingProfile] = useState<boolean>(initState.userIsEditingProfile);
+
+    const [
+        userIsEditingActivity,
+        setUserIsEditingActivity] = useState<boolean>(initState.userIsEditingActivity);
 
     // Temporary Backups
-    const [userProfileBackup, setUserProfileBackup] = useState<IUserProfile>(initialState.userProfile);
-    const [activityBackup, setActivityBackup] = useState<IActivity>(initialState.activity);
+    const [
+        userProfileBackup,
+        setUserProfileBackup] = useState<IUserProfile>(initState.userProfile);
+
+    const [
+        activityBackup,
+        setActivityBackup] = useState<IActivity>(initState.activity);
 
     // Error Messages
-    const [createUserProfileError, setCreateUserProfileError] = useState<string | undefined>(undefined);
-    const [createUserError, setCreateUserError] = useState<string | undefined>(undefined);
+    const [
+        createUserProfileError,
+        setCreateUserProfileError] = useState<string | undefined>(undefined);
+
+    const [
+        createUserError,
+        setCreateUserError] = useState<string | undefined>(undefined);
+
     const [loginUserError, setLoginUserError] = useState<string | undefined>(undefined);
 
     const createUser = (createdUser: INewUser) => {
@@ -74,10 +97,11 @@ export function SessionContextProvider(props: { children: ReactNode }) {
 
     const loginUser = (email: string, password: string) => {
         setIsLoading(true);
+        let loggedInUser;
         userApi.VerifyUser({ email: email, password: password })
             .then((user: IUser) => {
                 setLoginUserError(undefined);
-                setUser(user);
+                loggedInUser = user;
                 userProfileApi.Get<IUserProfile>(user.id)
                     .then((userProfile: IUserProfile) => {
                         setUserProfile(userProfile);
@@ -86,6 +110,8 @@ export function SessionContextProvider(props: { children: ReactNode }) {
                     .catch((axiosError: AxiosError) => {
                         setAuthState(AuthState.AUTHORIZED_WITHOUT_PROFILE);
                     });
+                setUser(loggedInUser);
+                // Websocket userHubConnection.invoke("addToUserGroup", loggedInUser.id);
             })
             .catch((axiosError: AxiosError) => {
                 setLoginUserError("Error"); // TODO Select Error Message

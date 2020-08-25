@@ -16,29 +16,24 @@ import { useNavigation } from "@react-navigation/native";
 import { RouteName } from "../../navigation/Navigation.config";
 import { LanguageContext } from "../../context/LanguageContext/LanguageContext";
 
-// TODO : Add Translations
-
 const ActivityList = () => {
     const navigation = useNavigation();
     const { theme } = useContext(ThemeContext);
     const { translations } = useContext(LanguageContext);
-    const { activities, isLoading, fetchActivityList } = useActivities();
     const { startEditingActivity, setActivity, user } = useContext(SessionContext);
+    const { activities, isLoading, fetchActivityList } = useActivities("exclude", user.id);
     const style = useStyle();
 
     let rightOpen: boolean, leftOpen: boolean, currentId: string;
 
     const hideActivity = (id: string) => {
-        /*setAllActivities((activities) =>
-            activities.filter((activity) => activity.id !== id)
-        );*/
-        Toast.show("Activity hidden.", Toast.SHORT);
         // TODO : Send hide to API
+        Toast.show("Activity hidden.", Toast.SHORT); // TODO Translation
     };
 
     const applyActivity = (id: string) => {
         // TODO : Send apply to API and check if user already applied
-        Toast.show("Application sent.", Toast.SHORT);
+        Toast.show("Application sent.", Toast.SHORT); // TODO Translation
     };
 
     const handleTouchEnd = () => {
