@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import Container from "../Container/Container";
 import ActivityListItem from "../ActivityListItem/ActivityListItem";
 import { SwipeListView } from "react-native-swipe-list-view";
@@ -24,11 +24,16 @@ const ActivityList = () => {
     const { translations } = useContext(LanguageContext);
     const { startEditingActivity, setActivity, user } = useContext(SessionContext);
 
-    const showOwnActivites = routeName === RouteName.Activity.OwnList;
+    const showOwnActivities = routeName === RouteName.Activity.OwnList;
 
-    const { activities, isLoading, fetchActivityList } = showOwnActivites
+    const { activities, isLoading, fetchActivityList } = showOwnActivities
         ? useActivities("user", user.id)
         : useActivities("exclude", user.id);
+
+    useEffect(() => {
+        if (showOwnActivities)
+            navigation.setOptions({ title: translations.my_activities })
+    }, [navigation, showOwnActivities, translations])
 
     let rightOpen: boolean, leftOpen: boolean, currentId: string;
 
@@ -103,10 +108,10 @@ const ActivityList = () => {
                     onTouchEnd={handleTouchEnd}
                     refreshing={isLoading}
                     onRefresh={fetchActivityList}
-                    disableLeftSwipe={showOwnActivites}
-                    disableRightSwipe={showOwnActivites}
+                    disableLeftSwipe={showOwnActivities}
+                    disableRightSwipe={showOwnActivities}
                 />
-                {showOwnActivites &&
+                {showOwnActivities &&
                     <ActionButton icon="plus" onPress={() => {
                         setActivity({ id: "", title: "My default Title", userId: user.id, location: "My default Location", memberUserIds: [], applicantUserIds: [], visibility: 0 });
                         startEditingActivity();
