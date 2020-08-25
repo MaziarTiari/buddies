@@ -24,7 +24,7 @@ const ActivityList = () => {
     const { translations } = useContext(LanguageContext);
     const { startEditingActivity, setActivity, user } = useContext(SessionContext);
 
-    const showOwnActivites = routeName === RouteName.Activity.MyList;
+    const showOwnActivites = routeName === RouteName.Activity.OwnList;
 
     const { activities, isLoading, fetchActivityList } = showOwnActivites
         ? useActivities("user", user.id)

@@ -21,16 +21,15 @@ const Navigation = () => {
     return (
         <Stack.Navigator screenOptions={screenOptions} initialRouteName={RouteName.Root}>
             <Stack.Screen name={RouteName.Root} component={BottomTab} />
-            <Stack.Screen name={RouteName.Profile.FriendList} component={FriendList} />
-            <Stack.Screen name={RouteName.Chat.Chat} component={Chat} />
-            <Stack.Screen name={RouteName.Activity.MyList} component={ActivityList} />
+            <Stack.Screen name={RouteName.Messages.Chat} component={Chat} />
+            <Stack.Screen name={RouteName.Activity.OwnList} component={ActivityList} />
             <Stack.Screen name={RouteName.Activity.Info} component={ActivityInfo} options={{
                 headerRight: () => <RightActivityHeader />,
                 headerLeft: () => <LeftActivityHeader />
             }} />
-            <Stack.Screen name={RouteName.Profile.Editor.Taglist} component={CategorizedInputList} />
-            <Stack.Screen name={RouteName.Profile.Editor.Personal} component={ProfileEditForm} />
-            <Stack.Screen name={RouteName.Activity.Editor} component={ActivityEditForm} />
+            <Stack.Screen name={RouteName.Taglist} component={CategorizedInputList} />
+            <Stack.Screen name={RouteName.Profile.EditForm} component={ProfileEditForm} />
+            <Stack.Screen name={RouteName.Activity.EditForm} component={ActivityEditForm} />
             <Stack.Screen name={RouteName.Settings} component={SettingsForm} />
             <Stack.Screen name={RouteName.Profile.OtherTab} component={ProfileTab} options={{
                 headerRight: () => <RightProfileHeader />

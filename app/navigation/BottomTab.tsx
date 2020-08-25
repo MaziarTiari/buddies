@@ -28,15 +28,15 @@ const BottomTab = ({ route }: any) => {
     const getHeaderTitle = (routeName: string): string => {
         switch (routeName) {
             case RouteName.Root:
-            case RouteName.FeedList:
+            case RouteName.Feed:
                 return translations.feed;
             case RouteName.Profile.OwnTab:
                 return translations.my_profile;
             case RouteName.Map:
                 return translations.explore;
-            case RouteName.Activity.List:
+            case RouteName.Activity.OtherList:
                 return translations.activities;
-            case RouteName.Chat.List:
+            case RouteName.Messages.List:
                 return translations.messages;
             default:
                 return "unknown_route";
@@ -45,7 +45,7 @@ const BottomTab = ({ route }: any) => {
 
     const getHeaderRight = (routeName: string): (() => JSX.Element) | undefined => {
         switch (routeName) {
-            case RouteName.Activity.List:
+            case RouteName.Activity.OtherList:
                 return () => <ActivityListHeader />;
             case RouteName.Profile.OwnTab:
                 return () => <RightProfileHeader />;
@@ -84,13 +84,13 @@ const BottomTab = ({ route }: any) => {
 
     return (
         <Tab.Navigator
-            initialRouteName={RouteName.FeedList}
+            initialRouteName={RouteName.Feed}
             screenOptions={{ tabBarColor: theme.App.layoutBackground }}
             labeled={false}
             barStyle={{ height: userIsEditingProfile ? 0 : undefined }}
         >
             <Tab.Screen
-                name={RouteName.Activity.List}
+                name={RouteName.Activity.OtherList}
                 component={ActivityList}
                 options={{
                     tabBarIcon: ({ focused }) => getBottomIcon("rocket", focused),
@@ -104,14 +104,14 @@ const BottomTab = ({ route }: any) => {
                 }}
             />
             <Tab.Screen
-                name={RouteName.Chat.List}
+                name={RouteName.Messages.List}
                 component={ChatList}
                 options={{
                     tabBarIcon: ({ focused }) => getBottomIcon("chat", focused),
                 }}
             />
             <Tab.Screen
-                name={RouteName.FeedList}
+                name={RouteName.Feed}
                 component={FeedList}
                 options={{
                     tabBarIcon: ({ focused }) => getBottomIcon("bell", focused),

@@ -101,7 +101,7 @@ const ActivityInfo = () => {
                 }
 
                 {/* Information */}
-                <EditableSection editable={userIsEditingActivity} onEdit={() => navigation.navigate(RouteName.Activity.Editor)}>
+                <EditableSection editable={userIsEditingActivity} onEdit={() => navigation.navigate(RouteName.Activity.EditForm)}>
                     <Headline style={style.headline}>{translations.information}</Headline>
                     <InfoItem keyText={translations.meeting_point} valueText={activity.location} />
                     {activity.startDate !== undefined &&
@@ -114,7 +114,7 @@ const ActivityInfo = () => {
                 {/* Tags */}
                 {((activity.tags && activity.tags.length > 0) || userIsEditingActivity) &&
                     <EditableSection editable={userIsEditingActivity} onEdit={() => {
-                        navigation.navigate(RouteName.Profile.Editor.Taglist, {
+                        navigation.navigate(RouteName.Taglist, {
                             categories: hobbyCategories,
                             editorEditHeadline: translations.edit_subject,
                             editorAddHeadline: translations.add_subject,

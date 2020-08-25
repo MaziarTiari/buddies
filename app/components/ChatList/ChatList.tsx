@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from "react";
 import { FlatList, Text } from "react-native";
-import { 
+import {
     exampleResponse, IChatPartner, Relation,
 } from "../../dev/example_data/MessageListQueryResponse";
 import { RouteName } from "../../navigation/Navigation.config";
@@ -16,7 +16,7 @@ const ChatList = ({ navigation }: any) => {
     );
 
     const handlePress = (chatPartner: IChatPartner) => {
-        navigation.navigate(RouteName.Chat.Chat, {
+        navigation.navigate(RouteName.Messages.Chat, {
             isGroup: chatPartner.relation == Relation.GROUP,
             displayName: chatPartner.displayName,
         });
@@ -29,7 +29,7 @@ const ChatList = ({ navigation }: any) => {
 
     return (
         <Container type="screen" layout="root">
-            <Container  type='screen' layout='body'>
+            <Container type='screen' layout='body'>
                 <FlatList
                     data={sortedChatPartners}
                     renderItem={({ item: chatPartner }) => (

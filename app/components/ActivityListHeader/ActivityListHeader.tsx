@@ -15,7 +15,7 @@ const ActivityListHeader = () => {
             <IconButton
                 color={theme.App.contentBasicButton}
                 icon="wunderlist"
-                onPress={() => navigation.navigate(RouteName.Activity.MyList)}
+                onPress={() => navigation.navigate(RouteName.Activity.OwnList)}
             />
         </View>
     );

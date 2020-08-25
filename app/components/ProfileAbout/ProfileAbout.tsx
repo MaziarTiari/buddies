@@ -92,9 +92,7 @@ const ProfileAbout = () => {
                             {userProfile.username}
                         </Text>
                     </View>
-                    <TouchableRippleCircle
-                        onPress={() => navigation.navigate("FriendList")}
-                    >
+                    <TouchableRippleCircle onPress={() => { }}>
                         <View style={style.innerRippleContainer}>
                             <Text style={style.headline}>
                                 {userProfile.friends ? userProfile.friends.length : 0}
@@ -115,7 +113,7 @@ const ProfileAbout = () => {
                 {/* Personell */}
                 <EditableSection
                     editable={userIsEditingProfile}
-                    onEdit={() => navigation.navigate(RouteName.Profile.Editor.Personal)}>
+                    onEdit={() => navigation.navigate(RouteName.Profile.EditForm)}>
                     <Headline style={style.headline}>
                         {translations.personal}
                     </Headline>
@@ -143,7 +141,7 @@ const ProfileAbout = () => {
                         editable={userIsEditingProfile}
                         onEdit={() => {
                             navigation.navigate(
-                                RouteName.Profile.Editor.Taglist,
+                                RouteName.Taglist,
                                 {
                                     categories: jobCategories,
                                     editorEditHeadline: translations.edit_job,
@@ -175,7 +173,7 @@ const ProfileAbout = () => {
                         editable={userIsEditingProfile}
                         onEdit={() => {
                             navigation.navigate(
-                                RouteName.Profile.Editor.Taglist,
+                                RouteName.Taglist,
                                 {
                                     categories: hobbyCategories,
                                     editorEditHeadline: translations.edit_hobby,
