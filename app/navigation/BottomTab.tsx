@@ -31,7 +31,7 @@ const BottomTab = ({ route }: any) => {
             case RouteName.FeedList:
                 return translations.feed;
             case RouteName.Profile.OwnTab:
-                return translations.profile;
+                return translations.my_profile;
             case RouteName.Map:
                 return translations.explore;
             case RouteName.Activity.List:

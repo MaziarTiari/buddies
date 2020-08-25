@@ -9,7 +9,8 @@ export interface Dictionary {
 
     // General
     please_wait: string;
-    profile: string;
+    my_profile: string;
+    other_profile: string;
     feed: string;
     activities: string;
     my_activities: string;

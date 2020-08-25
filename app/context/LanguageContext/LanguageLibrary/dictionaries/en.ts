@@ -4,7 +4,8 @@ export const englishDictionary: Dictionary = {
 
     // General
     please_wait: "Please wait ...",
-    profile: "Profile",
+    my_profile: "My profile",
+    other_profile: "Profile of ",
     feed: "Feed",
     activities: "Activities",
     my_activities: "My activities",
