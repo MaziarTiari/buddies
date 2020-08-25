@@ -12,17 +12,23 @@ import { IActivity } from "../../models/Activity";
 import { useActivities } from "../../Hooks/useActivities";
 import ActionButton from "../ActionButton/ActionButton";
 import { SessionContext } from "../../context/SessionContext/SessionContext";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { RouteName } from "../../navigation/Navigation.config";
 import { LanguageContext } from "../../context/LanguageContext/LanguageContext";
 
 const ActivityList = () => {
     const navigation = useNavigation();
+    const { name: routeName } = useRoute();
+    const style = useStyle();
     const { theme } = useContext(ThemeContext);
     const { translations } = useContext(LanguageContext);
     const { startEditingActivity, setActivity, user } = useContext(SessionContext);
-    const { activities, isLoading, fetchActivityList } = useActivities("exclude", user.id);
-    const style = useStyle();
+
+    const showOwnActivites = routeName === RouteName.Activity.MyList;
+
+    const { activities, isLoading, fetchActivityList } = showOwnActivites
+        ? useActivities("user", user.id)
+        : useActivities("exclude", user.id);
 
     let rightOpen: boolean, leftOpen: boolean, currentId: string;
 
@@ -97,12 +103,16 @@ const ActivityList = () => {
                     onTouchEnd={handleTouchEnd}
                     refreshing={isLoading}
                     onRefresh={fetchActivityList}
+                    disableLeftSwipe={showOwnActivites}
+                    disableRightSwipe={showOwnActivites}
                 />
-                <ActionButton icon="plus" onPress={() => {
-                    setActivity({ id: "", title: "My default Title", userId: user.id, location: "My default Location", memberUserIds: [], applicantUserIds: [], visibility: 0 });
-                    startEditingActivity();
-                    navigation.navigate(RouteName.Activity.Info);
-                }} />
+                {showOwnActivites &&
+                    <ActionButton icon="plus" onPress={() => {
+                        setActivity({ id: "", title: "My default Title", userId: user.id, location: "My default Location", memberUserIds: [], applicantUserIds: [], visibility: 0 });
+                        startEditingActivity();
+                        navigation.navigate(RouteName.Activity.Info);
+                    }} />
+                }
             </Container>
         </Container>
     );

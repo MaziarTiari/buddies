@@ -8,20 +8,20 @@ import { RouteName } from "../../navigation/Navigation.config";
 import { LanguageContext } from "../../context/LanguageContext/LanguageContext";
 import { getDateDiffString } from "../../utils/date";
 import { SessionContext } from "../../context/SessionContext/SessionContext";
-import { IActivity } from "../../models/Activity";
+import { IActivity, IOthersActivity } from "../../models/Activity";
 import Avatar from "../Avatar/Avatar";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import moment from "moment";
 
 const defaultImg = require("../../../assets/img/default-activity-img.jpg");
 
-const ActivityListItem = (activity: IActivity) => {
+const ActivityListItem = (activity: IActivity | IOthersActivity) => {
     const { styles, theme } = useStyle();
     const navigation = useNavigation();
     const { translations } = useContext(LanguageContext);
-    const { setActivity, fetchUserProfile } = useContext(SessionContext);
+    const { setActivity, fetchUserProfile, user } = useContext(SessionContext);
 
-    const ownerName = "OwnerName"; // TODO Get From UserAvatar
+    const isOwnActivity = activity.userId === user.id;
     const memberCount = activity.memberUserIds.length + (activity.maxMember ? "/" + activity.maxMember : "") + " " + translations.member;
     const imageSource = activity.image ? { uri: "data:image/gif;base64," + activity.image.base64 } : defaultImg;
 
@@ -43,12 +43,17 @@ const ActivityListItem = (activity: IActivity) => {
             </View>
         );
     };
-
     return (
         <TouchableRipple style={styles.root} onPress={handleItemPressed}>
             <View style={styles.outerContainer}>
                 <View style={styles.innerContainer}>
-                    <Avatar username={ownerName} onPress={handleAvatarPressed} />
+                    {!isOwnActivity &&
+                        <Avatar
+                            username={(activity as IOthersActivity).username}
+                            base64={(activity as IOthersActivity).image?.base64}
+                            onPress={handleAvatarPressed}
+                        />
+                    }
                     <View style={{ flexDirection: "row", marginTop: getResponsiveSize(15) }}>
                         <View style={styles.imageContainer} >
                             <Image source={imageSource} style={styles.image} />
