@@ -1,6 +1,7 @@
 import { IUser, INewUser } from '../../models/User'
 import { IUserProfile, INewUserProfile } from "../../models/UserProfile";
 import { IActivity } from '../../models/Activity';
+import { IPhotoGallery, IProfileImage } from '../../models/PhotoGallery';
 
 export enum AuthState { UNREGISTERED, UNAUTHORIZED, AUTHORIZED, AUTHORIZED_WITHOUT_PROFILE };
 
@@ -29,6 +30,9 @@ export interface ISessionContextState {
     startEditingActivity: () => void;
     saveEditingActivity: () => void;
     cancelEditingActivity: () => void;
+    gallery: IPhotoGallery,
+    fetchGallery: (userId: string) => void;
+    uploadToGallery: (image: IProfileImage) => void;
 }
 
 export const initialState: ISessionContextState = {
@@ -61,6 +65,11 @@ export const initialState: ISessionContextState = {
         memberUserIds: [],
         applicantUserIds: []
     },
+    gallery: {
+        id: "",
+        userId: "",
+        images: [],
+    },
     setAuthState: () => console.warn("setAuthState() not implemented!"),
     setUser: () => console.warn("setUser() not implemented!"),
     setUserProfile: () => console.warn("setUserProfile() not implemented!"),
@@ -81,4 +90,6 @@ export const initialState: ISessionContextState = {
     startEditingActivity: () => console.warn("startEditingActivity() not implemented!"),
     saveEditingActivity: () => console.warn("saveEditingActivity() not implemented!"),
     cancelEditingActivity: () => console.warn("cancelEditingActivity() not implemented!"),
+    fetchGallery: () => console.warn("fetchGallery() not implemented!"),
+    uploadToGallery: () => console.warn("uploadToGallery() not implemented!")
 };

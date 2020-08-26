@@ -8,14 +8,14 @@ import { RouteName } from "../../navigation/Navigation.config";
 import { LanguageContext } from "../../context/LanguageContext/LanguageContext";
 import { getDateDiffString } from "../../utils/date";
 import { SessionContext } from "../../context/SessionContext/SessionContext";
-import { IActivity, IOthersActivity } from "../../models/Activity";
+import { IActivity, IForeignActivity } from "../../models/Activity";
 import Avatar from "../Avatar/Avatar";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import moment from "moment";
 
 const defaultImg = require("../../../assets/img/default-activity-img.jpg");
 
-const ActivityListItem = (activity: IActivity | IOthersActivity) => {
+const ActivityListItem = (activity: IActivity | IForeignActivity) => {
     const { styles, theme } = useStyle();
     const navigation = useNavigation();
     const { translations } = useContext(LanguageContext);
@@ -55,8 +55,8 @@ const ActivityListItem = (activity: IActivity | IOthersActivity) => {
                 <View style={styles.innerContainer}>
                     {!isOwnActivity &&
                         <Avatar
-                            username={(activity as IOthersActivity).username}
-                            base64={(activity as IOthersActivity).image?.base64}
+                            username={(activity as IForeignActivity).username}
+                            base64={(activity as IForeignActivity).avatar?.base64}
                             onPress={handleAvatarPressed}
                         />
                     }
