@@ -1,6 +1,8 @@
 import { IUser, INewUser } from '../../models/User'
 import { IUserProfile, INewUserProfile } from "../../models/UserProfile";
 import { IActivity } from '../../models/Activity';
+import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
+import { hubs, baseUrl } from '../../api/channels';
 
 export enum AuthState { UNREGISTERED, UNAUTHORIZED, AUTHORIZED, AUTHORIZED_WITHOUT_PROFILE };
 

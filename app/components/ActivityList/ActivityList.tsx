@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useMemo } from "react";
 import Container from "../Container/Container";
 import ActivityListItem from "../ActivityListItem/ActivityListItem";
 import { SwipeListView } from "react-native-swipe-list-view";
@@ -9,12 +9,12 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
 import Toast from "react-native-simple-toast";
 import { IActivity } from "../../models/Activity";
-import { useActivities } from "../../Hooks/useActivities";
 import ActionButton from "../ActionButton/ActionButton";
 import { SessionContext } from "../../context/SessionContext/SessionContext";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { RouteName } from "../../navigation/Navigation.config";
 import { LanguageContext } from "../../context/LanguageContext/LanguageContext";
+import { ActivityContext } from '../../context/ActivityContext/ActivityContext';
 
 const ActivityList = () => {
     const navigation = useNavigation();
@@ -23,12 +23,22 @@ const ActivityList = () => {
     const { theme } = useContext(ThemeContext);
     const { translations } = useContext(LanguageContext);
     const { startEditingActivity, setActivity, user } = useContext(SessionContext);
+    const activityContext = useContext(ActivityContext);
 
-    const showOwnActivities = routeName === RouteName.Activity.OwnList;
+    const showOwnActivities = routeName === RouteName.Activity.MyList;
 
-    const { activities, isLoading, fetchActivityList } = showOwnActivities
-        ? useActivities("user", user.id)
-        : useActivities("exclude", user.id);
+    const { activities, isLoading, fetchActivities } = useMemo(() => showOwnActivities 
+        ? {
+            activities: activityContext.ownActivities,
+            isLoading: activityContext.isLoadingOwn,
+            fetchActivities: activityContext.fetchOwnActivities
+        }
+        : {
+            activities: activityContext.foreignActivities,
+            isLoading: activityContext.isLoadingForeign,
+            fetchActivities: activityContext.fetchForeignActivities
+        }
+    , [activityContext])
 
     useEffect(() => {
         if (showOwnActivities)
@@ -107,7 +117,7 @@ const ActivityList = () => {
                     rightActionValue={0}
                     onTouchEnd={handleTouchEnd}
                     refreshing={isLoading}
-                    onRefresh={fetchActivityList}
+                    onRefresh={fetchActivities}
                     disableLeftSwipe={showOwnActivities}
                     disableRightSwipe={showOwnActivities}
                 />
