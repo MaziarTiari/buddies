@@ -1,27 +1,25 @@
 import React, { useContext } from "react";
-import { IconButton } from "react-native-paper";
 import { RouteName } from "../../navigation/Navigation.config";
 import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
 import { useNavigation } from "@react-navigation/native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { withBadge } from "react-native-elements";
-import TouchableRippleCircle from "../TouchableRippleCircle/TouchableRippleCircle";
+import BadgedIcon from "../BadgedIcon/BadgedIcon";
+import { getResponsiveSize } from "../../utils/font/font";
+import { ActivityContext } from "../../context/ActivityContext/ActivityContext";
 
 const ActivityListHeader = () => {
 
     const navigation = useNavigation();
-    const theme = useContext(ThemeContext).theme;
-
-    const BadgedIcon = 3 ? withBadge(3, { badgeStyle: { top: -5, right: 5 } })(MaterialCommunityIcons) : MaterialCommunityIcons;
+    const { theme } = useContext(ThemeContext);
+    const { unhandledApplications } = useContext(ActivityContext);
 
     return (
-        <TouchableRippleCircle onPress={() => navigation.navigate(RouteName.Activity.OwnList)}>
-            <BadgedIcon
-                color={theme.App.basicItem}
-                name="wunderlist"
-                size={26}
-            />
-        </TouchableRippleCircle>
+        <BadgedIcon
+            color={theme.App.basicItem}
+            icon="wunderlist"
+            size={getResponsiveSize(30)}
+            onPress={() => navigation.navigate(RouteName.Activity.OwnList)}
+            value={unhandledApplications}
+        />
     );
 }
 
