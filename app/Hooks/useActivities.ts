@@ -1,10 +1,10 @@
-import { ApiClient, activityApi } from "../api/ApiClient";
+import { activityApi } from "../api/ApiClient";
 import { IActivity, IApplication, IOthersActivity } from "../models/Activity";
-import { getServiceUrl, baseUrl, hubs } from "../api/channels";
 import { useState, useEffect, useMemo, useLayoutEffect, useContext } from "react";
 import { AxiosError } from "axios";
-import { HubConnectionBuilder } from '@microsoft/signalr';
+ import { HubConnectionBuilder } from '@microsoft/signalr';
 import { SessionContext } from "../context/SessionContext/SessionContext";
+import { baseUrl, hubs } from "../api/channels";
 
 export function useActivities(filterType: "exclude" | "user", userId: string,) {
 
@@ -22,7 +22,7 @@ export function useActivities(filterType: "exclude" | "user", userId: string,) {
         return connection;
     }, []);
 
-    const [activities, setActivities] = useState<Array<IActivity|IOthersActivity>>([]);
+    const [activities, setActivities] = useState<Array<IActivity | IOthersActivity>>([]);
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => activityHubConnection.on("updateActivity", (activity: IActivity) => {
@@ -30,17 +30,17 @@ export function useActivities(filterType: "exclude" | "user", userId: string,) {
     }), [activities])
 
     useEffect(() => activityHubConnection.on(
-            "newApplicant", (application: IApplication) => {
-        onNewApplication(application)
-    }), [activities])
+        "newApplicant", (application: IApplication) => {
+            onNewApplication(application)
+        }), [activities])
 
     useEffect(() => activityHubConnection.on(
         "newActivity", (activity: IOthersActivity) => {
-        if (filterType === "exclude" && activity.userId !== user.id
+            if (filterType === "exclude" && activity.userId !== user.id
                 || filterType === "user" && activity.userId === user.id) {
-            setActivities([...activities, activity]);
-        }
-    })), [activities];
+                setActivities([...activities, activity]);
+            }
+        })), [activities];
 
     useLayoutEffect(() => fetchActivityList(), []);
 
@@ -61,7 +61,7 @@ export function useActivities(filterType: "exclude" | "user", userId: string,) {
             }
         } else {
             console.error("Activity of application not found!");
-        } 
+        }
     }
 
     function fetchActivityList() {
@@ -74,15 +74,14 @@ export function useActivities(filterType: "exclude" | "user", userId: string,) {
                     .catch(err => console.error(err));
             })
             .catch((error: AxiosError) => console.error(error))
-            .finally(() => setIsLoading(false))
-        ;
+            .finally(() => setIsLoading(false));
     }
 
     function updateActivity(newActivity: IActivity) {
         let updatingActivities = [...activities];
         const indexOfOldActivity = activities.findIndex(a => a.id === newActivity.id);
         updatingActivities[indexOfOldActivity] = Object.assign(
-            {}, updatingActivities[indexOfOldActivity], {...newActivity}
+            {}, updatingActivities[indexOfOldActivity], { ...newActivity }
         );
         setActivities(updatingActivities);
     }

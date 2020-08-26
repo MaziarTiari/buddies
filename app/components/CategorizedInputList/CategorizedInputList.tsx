@@ -1,23 +1,23 @@
 import React, { useState } from "react";
 import { View, FlatList, Text } from "react-native";
 import Container from "../Container/Container";
-import { CategorizedInput } from "../../models/UserProfile";
 import { TouchableRipple } from "react-native-paper";
 import useStyle from "./CategorizedInputList.style";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import CategorizedInputEditor from "../CategorizedInputEditor/CategorizedInputEditor";
 import ActionButton from "../ActionButton/ActionButton";
+import { ICategorizedInput } from "../../models/CategorizedInput";
 
 export interface ICategorizedInputListConfig {
     categories: string[];
-    items: CategorizedInput[] | undefined;
+    items: ICategorizedInput[] | undefined;
     headerTitle: string;
     editorCategoryPlaceholder: string;
     editorTitlePlaceholder: string;
     editorInstitutionPlaceholder: string;
     editorAddHeadline: string;
     editorEditHeadline: string;
-    onItemsChanged: (items: CategorizedInput[]) => void;
+    onItemsChanged: (items: ICategorizedInput[]) => void;
 }
 
 const CategorizedInputList = () => {
@@ -28,11 +28,11 @@ const CategorizedInputList = () => {
 
     navigation.setOptions({ title: config.headerTitle });
 
-    const [editingItem, setEditingItem] = useState<CategorizedInput | undefined>();
+    const [editingItem, setEditingItem] = useState<ICategorizedInput | undefined>();
     const [showEditor, setShowEditor] = useState<boolean>(false);
-    const [items, setItems] = useState<CategorizedInput[]>(config.items ? config.items : []);
+    const [items, setItems] = useState<ICategorizedInput[]>(config.items ? config.items : []);
 
-    const handleItemPressed = (item: CategorizedInput) => {
+    const handleItemPressed = (item: ICategorizedInput) => {
         setEditingItem(item);
         setShowEditor(true);
     };
@@ -72,7 +72,7 @@ const CategorizedInputList = () => {
         config.onItemsChanged(updatedItems);
     };
 
-    const renderItem = (item: CategorizedInput) => {
+    const renderItem = (item: ICategorizedInput) => {
         return (
             <TouchableRipple onPress={() => handleItemPressed(item)}>
                 <View style={style.container}>

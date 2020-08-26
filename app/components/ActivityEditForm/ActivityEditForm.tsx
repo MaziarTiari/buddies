@@ -20,28 +20,28 @@ const ActivityEditForm = () => {
         inputType: InputType.TEXT,
         initialValue: activity.title,
         required: true,
-        placeholder: "Placeholder TItle"
+        placeholder: translations.title
     };
 
     fieldList[Field.LOCATION] = {
         inputType: InputType.TEXT,
         initialValue: activity.location,
         required: true,
-        placeholder: "Placeholder Location"
+        placeholder: translations.meeting_point
     };
 
     fieldList[Field.START_DATE] = {
         inputType: InputType.DATE,
         initialValue: activity.startDate ? moment.unix(activity.startDate).toDate() : undefined,
         required: false,
-        placeholder: "Placeholder (optional)"
+        placeholder: translations.start_time_optional
     };
 
     fieldList[Field.END_DATE] = {
         inputType: InputType.DATE,
         initialValue: activity.endDate ? moment.unix(activity.endDate).toDate() : undefined,
         required: false,
-        placeholder: "Placeholder (optional)"
+        placeholder: translations.end_time_optional
     };
 
     const handleSubmit = (data: any[]) => {
@@ -57,7 +57,7 @@ const ActivityEditForm = () => {
 
     return (
         <Form
-            buttonTitle="CHANGE"
+            buttonTitle={translations.apply_changes}
             onSubmit={handleSubmit}
             fieldList={fieldList}
         />

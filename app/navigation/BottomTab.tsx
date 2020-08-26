@@ -28,16 +28,16 @@ const BottomTab = ({ route }: any) => {
     const getHeaderTitle = (routeName: string): string => {
         switch (routeName) {
             case RouteName.Root:
-            case RouteName.FeedList:
-                return translations.menu_feed;
-            case RouteName.Profile.Tab:
-                return translations.menu_profile;
+            case RouteName.Feed:
+                return translations.feed;
+            case RouteName.Profile.OwnTab:
+                return translations.my_profile;
             case RouteName.Map:
-                return translations.menu_map;
-            case RouteName.Activity.List:
-                return translations.menu_activities;
-            case RouteName.Chat.List:
-                return translations.menu_chat;
+                return translations.explore;
+            case RouteName.Activity.OtherList:
+                return translations.activities;
+            case RouteName.Messages.List:
+                return translations.messages;
             default:
                 return "unknown_route";
         }
@@ -45,9 +45,9 @@ const BottomTab = ({ route }: any) => {
 
     const getHeaderRight = (routeName: string): (() => JSX.Element) | undefined => {
         switch (routeName) {
-            case RouteName.Activity.List:
+            case RouteName.Activity.OtherList:
                 return () => <ActivityListHeader />;
-            case RouteName.Profile.Tab:
+            case RouteName.Profile.OwnTab:
                 return () => <RightProfileHeader />;
         }
         return undefined;
@@ -55,8 +55,8 @@ const BottomTab = ({ route }: any) => {
 
     const getHeaderLeft = (routeName: string): (() => JSX.Element) | undefined => {
         switch (routeName) {
-            case RouteName.Profile.Tab:
-                return () => <LeftProfileHeader />;
+            case RouteName.Profile.OwnTab:
+                return userIsEditingProfile ? (() => <LeftProfileHeader />) : undefined;
         }
         return undefined;
     }
@@ -80,24 +80,17 @@ const BottomTab = ({ route }: any) => {
             headerLeft: getHeaderLeft(currentRoute),
             screenOptions: screenOptions,
         });
-    }, [navigation, currentRoute]);
+    }, [navigation, currentRoute, userIsEditingProfile]);
 
     return (
         <Tab.Navigator
-            initialRouteName={RouteName.FeedList}
+            initialRouteName={RouteName.Feed}
             screenOptions={{ tabBarColor: theme.App.layoutBackground }}
             labeled={false}
             barStyle={{ height: userIsEditingProfile ? 0 : undefined }}
         >
             <Tab.Screen
-                name={RouteName.FeedList}
-                component={FeedList}
-                options={{
-                    tabBarIcon: ({ focused }) => getBottomIcon("home", focused),
-                }}
-            />
-            <Tab.Screen
-                name={RouteName.Activity.List}
+                name={RouteName.Activity.OtherList}
                 component={ActivityList}
                 options={{
                     tabBarIcon: ({ focused }) => getBottomIcon("rocket", focused),
@@ -111,14 +104,21 @@ const BottomTab = ({ route }: any) => {
                 }}
             />
             <Tab.Screen
-                name={RouteName.Chat.List}
+                name={RouteName.Messages.List}
                 component={ChatList}
                 options={{
                     tabBarIcon: ({ focused }) => getBottomIcon("chat", focused),
                 }}
             />
             <Tab.Screen
-                name={RouteName.Profile.Tab}
+                name={RouteName.Feed}
+                component={FeedList}
+                options={{
+                    tabBarIcon: ({ focused }) => getBottomIcon("bell", focused),
+                }}
+            />
+            <Tab.Screen
+                name={RouteName.Profile.OwnTab}
                 component={ProfileTab}
                 options={{
                     tabBarIcon: ({ focused }) => getBottomIcon("account", focused),

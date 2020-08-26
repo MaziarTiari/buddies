@@ -20,6 +20,7 @@ export interface ISessionContextState {
     loginUserError?: string;
     createUserProfile: (createdUserProfile: INewUserProfile) => void;
     createUserProfileError?: string;
+    fetchUserProfile: (userId: string) => void;
     userIsEditingProfile: boolean;
     startEditingProfile: () => void;
     saveEditingProfile: () => void;
@@ -72,6 +73,7 @@ export const initialState: ISessionContextState = {
     createUserProfile: () => console.warn("createUserProfile() not implemented!"),
     createUserProfileError: undefined,
     userIsEditingProfile: false,
+    fetchUserProfile: () => console.warn("fetchUserProfile() not implemented!"),
     startEditingProfile: () => console.warn("startEditingProfile() not implemented!"),
     saveEditingProfile: () => console.warn("saveEditingProfile() not implemented!"),
     cancelEditingProfile: () => console.warn("cancelEditingProfile() not implemented!"),

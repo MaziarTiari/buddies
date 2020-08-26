@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import Container from "../Container/Container";
 import ActivityListItem from "../ActivityListItem/ActivityListItem";
 import { SwipeListView } from "react-native-swipe-list-view";
@@ -12,31 +12,39 @@ import { IActivity } from "../../models/Activity";
 import { useActivities } from "../../Hooks/useActivities";
 import ActionButton from "../ActionButton/ActionButton";
 import { SessionContext } from "../../context/SessionContext/SessionContext";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { RouteName } from "../../navigation/Navigation.config";
-
-// TODO : Add Translations
+import { LanguageContext } from "../../context/LanguageContext/LanguageContext";
 
 const ActivityList = () => {
     const navigation = useNavigation();
-    const { theme } = useContext(ThemeContext);
-    const { startEditingActivity, setActivity, user } = useContext(SessionContext);
-    const { activities, isLoading, fetchActivityList } = useActivities("exclude", user.id);
+    const { name: routeName } = useRoute();
     const style = useStyle();
+    const { theme } = useContext(ThemeContext);
+    const { translations } = useContext(LanguageContext);
+    const { startEditingActivity, setActivity, user } = useContext(SessionContext);
+
+    const showOwnActivities = routeName === RouteName.Activity.OwnList;
+
+    const { activities, isLoading, fetchActivityList } = showOwnActivities
+        ? useActivities("user", user.id)
+        : useActivities("exclude", user.id);
+
+    useEffect(() => {
+        if (showOwnActivities)
+            navigation.setOptions({ title: translations.my_activities })
+    }, [navigation, showOwnActivities, translations])
 
     let rightOpen: boolean, leftOpen: boolean, currentId: string;
 
     const hideActivity = (id: string) => {
-        /*setAllActivities((activities) =>
-            activities.filter((activity) => activity.id !== id)
-        );*/
-        Toast.show("Activity hidden.", Toast.SHORT);
         // TODO : Send hide to API
+        Toast.show("Activity hidden.", Toast.SHORT); // TODO Translation
     };
 
     const applyActivity = (id: string) => {
         // TODO : Send apply to API and check if user already applied
-        Toast.show("Application sent.", Toast.SHORT);
+        Toast.show("Application sent.", Toast.SHORT); // TODO Translation
     };
 
     const handleTouchEnd = () => {
@@ -65,7 +73,7 @@ const ActivityList = () => {
                         color={theme.App.primaryText}
                         size={getResponsiveSize(30)}
                     />
-                    <Text style={style.text}>Apply</Text>
+                    <Text style={style.text}>{translations.apply}</Text>
                 </View>
                 <View style={style.backgroundSideContainer}>
                     <MaterialCommunityIcons
@@ -73,7 +81,7 @@ const ActivityList = () => {
                         color={theme.App.primaryText}
                         size={getResponsiveSize(30)}
                     />
-                    <Text style={style.text}>Hide</Text>
+                    <Text style={style.text}>{translations.hide}</Text>
                 </View>
             </View>
         );
@@ -100,12 +108,16 @@ const ActivityList = () => {
                     onTouchEnd={handleTouchEnd}
                     refreshing={isLoading}
                     onRefresh={fetchActivityList}
+                    disableLeftSwipe={showOwnActivities}
+                    disableRightSwipe={showOwnActivities}
                 />
-                <ActionButton icon="plus" onPress={() => {
-                    setActivity({ id: "", title: "My default Title", userId: user.id, location: "My default Location", memberUserIds: [], applicantUserIds: [], visibility: 0 });
-                    startEditingActivity();
-                    navigation.navigate(RouteName.Activity.Info);
-                }} />
+                {showOwnActivities &&
+                    <ActionButton icon="plus" onPress={() => {
+                        setActivity({ id: "", title: "My default Title", userId: user.id, location: "My default Location", memberUserIds: [], applicantUserIds: [], visibility: 0 });
+                        startEditingActivity();
+                        navigation.navigate(RouteName.Activity.Info);
+                    }} />
+                }
             </Container>
         </Container>
     );

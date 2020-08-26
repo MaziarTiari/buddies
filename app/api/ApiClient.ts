@@ -1,8 +1,9 @@
 import { Api } from "./Api";
-import { AxiosRequestConfig, AxiosResponse, AxiosError } from "axios";
+import { AxiosRequestConfig, AxiosError } from "axios";
 import { IUserProfile } from "../models/UserProfile";
 import { getServiceUrl } from "./channels";
 import { IActivity } from "../models/Activity";
+import { ICategory } from "../models/Category";
 
 export class ApiClient<T> extends Api<T> {
     constructor(config: AxiosRequestConfig) {
@@ -27,7 +28,7 @@ export class ApiClient<T> extends Api<T> {
      */
     public Get<T>(id: string) {
         return this.get<T>(id).then(this.success)
-            .catch((error: AxiosError) => {throw error});
+            .catch((error: AxiosError) => { throw error });
     }
 
     /**
@@ -38,7 +39,7 @@ export class ApiClient<T> extends Api<T> {
      */
     public GetAll<T>(url?: string) {
         return this.get<T>(url).then(this.success)
-            .catch((error: AxiosError) => {throw error});
+            .catch((error: AxiosError) => { throw error });
     }
 
     /**
@@ -55,9 +56,9 @@ export class ApiClient<T> extends Api<T> {
      *         return setResponceError(genericResponceError);
      * })
      */
-    public Create<T,B=T>(obj: B) {
-        return this.post<T,B>("", obj).then(this.success)
-            .catch((error: AxiosError) => {throw error});
+    public Create<T, B = T>(obj: B) {
+        return this.post<T, B>("", obj).then(this.success)
+            .catch((error: AxiosError) => { throw error });
     }
 
     /**
@@ -74,16 +75,20 @@ export class ApiClient<T> extends Api<T> {
      *         return setResponceError(genericResponceError);
      * })
      */
-    public Update<T,B=T>(id: string, newObj: B) {
-        return this.put<T,B>(id, newObj).then(this.success)
-            .catch((error: AxiosError) => {throw error});
+    public Update<T, B = T>(id: string, newObj: B) {
+        return this.put<T, B>(id, newObj).then(this.success)
+            .catch((error: AxiosError) => { throw error });
     }
 }
 
 export const userProfileApi = new ApiClient<IUserProfile>(
-    {baseURL: getServiceUrl("UserProfiles")}
+    { baseURL: getServiceUrl("UserProfiles") }
 );
 
 export const activityApi = new ApiClient<IActivity>(
     { baseURL: getServiceUrl("Activities") }
+);
+
+export const categoryApi = new ApiClient<ICategory>(
+    { baseURL: getServiceUrl("Categories") }
 );

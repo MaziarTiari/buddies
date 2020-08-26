@@ -1,7 +1,7 @@
 import React, { createContext, useState, ReactNode, useMemo } from "react";
 import { IUserProfile, INewUserProfile } from "../../models/UserProfile";
 import { userProfileApi, activityApi } from "../../api/ApiClient";
-import { getServiceUrl, baseUrl, hubs } from "../../api/channels";
+// import { baseUrl, hubs } from "../../api/channels";
 import { AxiosError } from "axios";
 import { NOT_FOUND } from "http-status-codes";
 import { IActivity } from "../../models/Activity";
@@ -9,6 +9,7 @@ import { IUser, INewUser } from "../../models/User";
 import { ISessionContextState, initialState as initState, AuthState } from "./stateFrame";
 import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 import { userApi } from "../../api/User/UserApi";
+import { baseUrl, hubs } from "../../api/channels";
 // end import ////////////////////////////////////////////////////////////////
 
 export const SessionContext = createContext<ISessionContextState>(initState);
@@ -36,44 +37,44 @@ export function SessionContextProvider(props: { children: ReactNode }) {
             .then(res => console.log("connection with userHub started!"))
             .catch(err => console.error("Could not connect to userHub! ", err));
         return connection;
-    },[])
+    }, [])
 
     // Session
     const [authState, setAuthState] = useState<AuthState>(AuthState.UNAUTHORIZED);
-    
+
     const [user, setUser] = useState<IUser>(initState.user);
-    
+
     const [userProfile, setUserProfile] = useState<IUserProfile>(initState.userProfile);
-    
+
     const [activity, setActivity] = useState<IActivity>(initState.activity);
-    
+
     const [isLoading, setIsLoading] = useState<boolean>(initState.isLoading);
-    
+
     const [
-        userIsEditingProfile, 
-        setUserIsEditingProfile ] = useState<boolean>(initState.userIsEditingProfile);
-    
+        userIsEditingProfile,
+        setUserIsEditingProfile] = useState<boolean>(initState.userIsEditingProfile);
+
     const [
-        userIsEditingActivity, 
-        setUserIsEditingActivity ] = useState<boolean>(initState.userIsEditingActivity);
+        userIsEditingActivity,
+        setUserIsEditingActivity] = useState<boolean>(initState.userIsEditingActivity);
 
     // Temporary Backups
     const [
-        userProfileBackup, 
-        setUserProfileBackup ] = useState<IUserProfile>(initState.userProfile);
-    
+        userProfileBackup,
+        setUserProfileBackup] = useState<IUserProfile>(initState.userProfile);
+
     const [
-        activityBackup, 
-        setActivityBackup ] = useState<IActivity>(initState.activity);
+        activityBackup,
+        setActivityBackup] = useState<IActivity>(initState.activity);
 
     // Error Messages
     const [
-        createUserProfileError, 
-        setCreateUserProfileError ] = useState<string | undefined>(undefined);
+        createUserProfileError,
+        setCreateUserProfileError] = useState<string | undefined>(undefined);
 
     const [
-        createUserError, 
-        setCreateUserError ] = useState<string | undefined>(undefined);
+        createUserError,
+        setCreateUserError] = useState<string | undefined>(undefined);
 
     const [loginUserError, setLoginUserError] = useState<string | undefined>(undefined);
 
@@ -110,7 +111,9 @@ export function SessionContextProvider(props: { children: ReactNode }) {
                         setAuthState(AuthState.AUTHORIZED_WITHOUT_PROFILE);
                     });
                 setUser(loggedInUser);
-                userHubConnection.invoke("addToUserGroup", loggedInUser.id);
+                userHubConnection.invoke("addToUserGroup", loggedInUser.id)
+                    .then(res => "Added to User Group")
+                    .catch(err => "Could not Add to User Group");
             })
             .catch((axiosError: AxiosError) => {
                 setLoginUserError("Error"); // TODO Select Error Message
@@ -146,6 +149,21 @@ export function SessionContextProvider(props: { children: ReactNode }) {
                 else
                     alert("Es gibt im moment ein Problem, bitte versuche später wieder!")
             }).finally(() => {
+                setIsLoading(false);
+            });
+    };
+
+    const fetchUserProfile = (userId: string) => {
+        if (userProfile.userId === userId) return;
+        setIsLoading(true);
+        userProfileApi.Get<IUserProfile>(userId)
+            .then((userProfile: IUserProfile) => {
+                setUserProfile(userProfile);
+            })
+            .catch((axiosError: AxiosError) => {
+                console.log(axiosError);
+            })
+            .finally(() => {
                 setIsLoading(false);
             });
     };
@@ -217,6 +235,7 @@ export function SessionContextProvider(props: { children: ReactNode }) {
         loginUserError,
         createUserProfile,
         createUserProfileError,
+        fetchUserProfile,
         authState,
         setAuthState,
         userIsEditingProfile,

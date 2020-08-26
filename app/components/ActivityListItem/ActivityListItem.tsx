@@ -1,90 +1,75 @@
 import React, { useContext } from "react";
-import { View, Image, Text, GestureResponderEvent } from "react-native";
-import { IconButton, Headline, TouchableRipple } from "react-native-paper";
-import { fontsizes } from "../../utils/font/font";
+import { View, Image, Text } from "react-native";
+import { TouchableRipple } from "react-native-paper";
+import { fontsizes, getLineHeight, getResponsiveSize } from "../../utils/font/font";
 import { useStyle } from "./ActivityListItem.style";
-import Container from "../Container/Container";
 import { useNavigation } from "@react-navigation/native";
 import { RouteName } from "../../navigation/Navigation.config";
 import { LanguageContext } from "../../context/LanguageContext/LanguageContext";
-import { getDateRangeString } from "../../utils/date";
+import { getDateDiffString } from "../../utils/date";
 import { SessionContext } from "../../context/SessionContext/SessionContext";
-import { IActivity } from "../../models/Activity";
+import { IActivity, IOthersActivity } from "../../models/Activity";
+import Avatar from "../Avatar/Avatar";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import moment from "moment";
 
 const defaultImg = require("../../../assets/img/default-activity-img.jpg");
 
-const ActivityListItem = (activity: IActivity) => {
+const ActivityListItem = (activity: IActivity | IOthersActivity) => {
     const { styles, theme } = useStyle();
     const navigation = useNavigation();
     const { translations } = useContext(LanguageContext);
-    const { setActivity } = useContext(SessionContext);
+    const { setActivity, fetchUserProfile, user } = useContext(SessionContext);
 
-    // const owner = users.find((user) => user.id === activity.userId)!;
-    // const ownerName = owner.firstname + " " + owner.lastname;
-    const ownerName = "OwnerName"; // TODO Get From UserAvatar
-    const memberCount = activity.memberUserIds.length + (activity.maxMember ? "/" + activity.maxMember : "");
-    const dateString = getDateRangeString(activity.startDate, translations.dateRangePreposition, activity.endDate);
+    const isOwnActivity = activity.userId === user.id;
+    const memberCount = activity.memberUserIds.length + (activity.maxMember ? "/" + activity.maxMember : "") + " " + translations.member;
     const imageSource = activity.image ? { uri: "data:image/gif;base64," + activity.image.base64 } : defaultImg;
 
-    const onPress = () => {
+    const handleItemPressed = () => {
         setActivity(activity);
         navigation.navigate(RouteName.Activity.Info)
     };
 
-    const onParticipates = () => { };
-    const onChat = (event?: GestureResponderEvent) => { };
-    const onFavorite = () => { };
+    const handleAvatarPressed = () => {
+        fetchUserProfile(activity.userId);
+        navigation.navigate(RouteName.Profile.OtherTab);
+    };
 
+    const InfoWithIcon = (icon: string, text: string) => {
+        return (
+            <View style={styles.infoIconContainer}>
+                <MaterialCommunityIcons name={icon} size={getLineHeight(fontsizes.small)} color={theme.App.primaryText} />
+                <Text style={styles.infoText} numberOfLines={1}>{text}</Text>
+            </View>
+        );
+    };
     return (
-        <TouchableRipple style={styles.root} onPress={onPress}>
-            <Container type="component" layout="root" style={styles.container}>
-                <View style={styles.headerContainer}>
-                    <View style={styles.headerContainer}>
-                        <IconButton
-                            icon="chat"
-                            color={theme.App.basicItem}
-                            size={fontsizes.icon}
-                            style={styles.icon}
-                            onPress={onChat}
+        <TouchableRipple style={styles.root} onPress={handleItemPressed}>
+            <View style={styles.outerContainer}>
+                <View style={styles.innerContainer}>
+                    {!isOwnActivity &&
+                        <Avatar
+                            username={(activity as IOthersActivity).username}
+                            base64={(activity as IOthersActivity).image?.base64}
+                            onPress={handleAvatarPressed}
                         />
-                        <Text style={styles.iconText}>{ownerName}</Text>
-                    </View>
-                    <View style={styles.headerContainer}>
-                        <Text style={styles.iconText}>{memberCount}</Text>
-                        <IconButton
-                            icon="account-group"
-                            color={theme.App.basicItem}
-                            size={fontsizes.icon}
-                            onPress={onParticipates}
-                            style={styles.icon}
-                        />
-                    </View>
-                </View>
-                <View style={styles.bodyContainer}>
-                    <Image style={styles.image} source={imageSource} />
-                    <View style={styles.infoContainer}>
-                        <Headline numberOfLines={2} style={styles.title}>{activity.title}</Headline>
-                        <View style={styles.bodyContainer}>
-                            <View>
-                                <Text
-                                    numberOfLines={2}
-                                    style={[styles.info, styles.address]}
-                                >
-                                    {activity.location}
-                                </Text>
-                                <Text style={styles.info}>{dateString}</Text>
-                            </View>
+                    }
+                    <View style={{ flexDirection: "row", marginTop: getResponsiveSize(15) }}>
+                        <View style={styles.imageContainer} >
+                            <Image source={imageSource} style={styles.image} />
+                        </View>
+                        <View style={styles.infoContainer} >
+                            <Text numberOfLines={1} style={styles.titleText}>{activity.title}</Text>
+                            {InfoWithIcon("pin", activity.location)}
+                            {activity.startDate !== undefined &&
+                                InfoWithIcon("calendar", moment.unix(activity.startDate).format("LLL"))}
+                            {activity.startDate !== undefined && activity.endDate !== undefined &&
+                                InfoWithIcon("clock", getDateDiffString(activity.startDate, activity.endDate))}
+                            {InfoWithIcon("account-group", memberCount)}
                         </View>
                     </View>
                 </View>
-                <IconButton
-                    icon="star-outline"
-                    color={theme.App.basicItem}
-                    onPress={onFavorite}
-                    size={fontsizes.icon}
-                    style={[styles.icon, styles.favoriteIcon]}
-                />
-            </Container>
+            </View>
         </TouchableRipple>
     );
 };

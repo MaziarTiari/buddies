@@ -1,12 +1,7 @@
-import { ApiClient } from "../api/ApiClient";
+import { categoryApi } from "../api/ApiClient";
 import { ICategory } from "../models/Category";
 import { useState, useEffect, useContext } from "react";
-import { getServiceUrl } from "../api/channels";
 import { LanguageContext } from "../context/LanguageContext/LanguageContext";
-
-const categoryApi = new ApiClient<ICategory>({
-    baseURL: getServiceUrl("Categories")
-});
 
 const useCategories = () => {
 

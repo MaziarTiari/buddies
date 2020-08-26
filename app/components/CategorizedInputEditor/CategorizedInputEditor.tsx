@@ -181,7 +181,7 @@ const CategorizedInputEditor = (props: CategorizedInputEditorProps) => {
                                 <Button
                                     style={style.button}
                                     textStyle={style.buttonText}
-                                    title={translations.button.delete}
+                                    title={translations.delete}
                                     onPress={props.onDelete}
                                     isDangerous={true}
                                 />
@@ -191,13 +191,13 @@ const CategorizedInputEditor = (props: CategorizedInputEditorProps) => {
                             <Button
                                 style={[style.button, { marginHorizontal: getResponsiveSize(5) }]}
                                 textStyle={style.buttonText}
-                                title={translations.button.cancel}
+                                title={translations.cancel}
                                 onPress={props.onCancel}
                             />
                             <Button
                                 style={style.button}
                                 textStyle={style.buttonText}
-                                title={translations.button.save}
+                                title={translations.save}
                                 onPress={handleSave}
                             />
                         </View>

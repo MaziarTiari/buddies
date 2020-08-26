@@ -7,31 +7,27 @@ import { ThemeContext } from "../context/ThemeContext/ThemeContext";
 
 export const RouteName = {
     Root: "Root",
-    FeedList: "FeedList",
+    Feed: "Feed",
     Activity: {
-        List: "ActivityList",
-        MyList: "ActivityMyList",
-        MyFavorite: "ActivityMyFavorite",
+        OwnList: "ActivityOwnList",
+        OtherList: "ActivityOtherList",
         Info: "ActivityInfo",
-        Editor: "ActivityInfoEditor",
+        EditForm: "ActivityEditForm",
     },
     Map: "Map",
-    Chat: {
+    Messages: {
         List: "ChatList",
         Chat: "Chat",
     },
+    Taglist: "TagList",
     Profile: {
-        Tab: "ProfileTab",
+        OwnTab: "OwnProfileTab",
+        OtherTab: "OtherProfileTab",
         About: "ProfileAbout",
-        Activity: "ProfileActivity",
-        Galery: "ProfileGalery",
-        FriendList: "FriendList",
-        Editor: {
-            Menu: "ProfileEditorMenu",
-            Personal: "ProfileEditorPersonal",
-            Taglist: "ProfileEditorTagList",
-        },
+        Gallery: "ProfileGallery",
+        EditForm: "ProfileEditForm",
     },
+    Settings: "Settings",
 };
 
 export const useNavOption = () => {
