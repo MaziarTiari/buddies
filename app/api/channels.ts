@@ -3,7 +3,7 @@ export type BuddiesResource = (
     'Activities/user' | 'Activities/apply'
 );
 
-export const baseUrl = "http://192.168.2.126:5000/";
+export const baseUrl = "http://80.132.214.69/";
 export const baseApiUrl = baseUrl + "api/";
 export const getServiceUrl = (resource: BuddiesResource): string => {
     return baseApiUrl + resource + "/";

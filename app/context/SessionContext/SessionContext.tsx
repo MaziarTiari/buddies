@@ -7,7 +7,7 @@ import { NOT_FOUND } from "http-status-codes";
 import { IActivity } from "../../models/Activity";
 import { IUser, INewUser } from "../../models/User";
 import { ISessionContextState, initialState as initState, AuthState } from "./stateFrame";
-import { HubConnectionBuilder } from '@aspnet/signalr';
+import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 import { userApi } from "../../api/User/UserApi";
 // end import ////////////////////////////////////////////////////////////////
 
@@ -29,6 +29,7 @@ export function SessionContextProvider(props: { children: ReactNode }) {
     const userHubConnection = useMemo(() => {
         const connection = new HubConnectionBuilder()
             .withUrl(baseUrl + hubs.user)
+            .configureLogging(LogLevel.Information)
             .build();
 
         connection.start()
