@@ -1,6 +1,6 @@
 export type BuddiesResource = (
     'Users' | 'UserProfiles' | 'Users/login' | 'Categories' | 'Activities' |
-    'Activities/user' | 'Activities/apply'
+    'Activities/user' | 'Activities/apply' | 'PhotoGalleries' | 'PhotoGalleries/addImage'
 );
 
 export const baseUrl = "http://40.113.114.86/";

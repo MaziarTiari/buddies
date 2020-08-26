@@ -6,7 +6,7 @@ export interface IPhotoGallery {
     images: Array<IProfileImage>
 }
 
-interface IProfileImage extends IImage {
+export interface IProfileImage extends IImage {
     asProfile: boolean;
     userId: string;
     uploadedDate: number;
