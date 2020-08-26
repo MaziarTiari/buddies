@@ -13,6 +13,7 @@ import ActivityList from "../components/ActivityList/ActivityList";
 import Map from "../components/Map/Map";
 import { useNavigation } from "@react-navigation/native";
 import { SessionContext } from "../context/SessionContext/SessionContext";
+import { withBadge } from "react-native-elements";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -61,13 +62,16 @@ const BottomTab = ({ route }: any) => {
         return undefined;
     }
 
-    const getBottomIcon = (icon: string, focused: boolean): React.ReactNode => (
-        <MaterialCommunityIcons
-            name={icon}
-            size={26}
-            color={focused ? theme.App.primaryItem : theme.App.basicItem}
-        />
-    );
+    const getBottomIcon = (icon: string, focused: boolean, badgeValue?: number): JSX.Element => {
+        const BadgedIcon = badgeValue ? withBadge(badgeValue)(MaterialCommunityIcons) : MaterialCommunityIcons;
+        return (
+            <BadgedIcon
+                name={icon}
+                size={26}
+                color={focused ? theme.App.primaryItem : theme.App.basicItem}
+            />
+        );
+    };
 
     const currentRoute = route.state
         ? route.state.routes[route.state.index].name
@@ -82,6 +86,8 @@ const BottomTab = ({ route }: any) => {
         });
     }, [navigation, currentRoute, userIsEditingProfile]);
 
+
+
     return (
         <Tab.Navigator
             initialRouteName={RouteName.Feed}
@@ -93,7 +99,7 @@ const BottomTab = ({ route }: any) => {
                 name={RouteName.Activity.OtherList}
                 component={ActivityList}
                 options={{
-                    tabBarIcon: ({ focused }) => getBottomIcon("rocket", focused),
+                    tabBarIcon: ({ focused }) => getBottomIcon("rocket", focused, 3),
                 }}
             />
             <Tab.Screen
