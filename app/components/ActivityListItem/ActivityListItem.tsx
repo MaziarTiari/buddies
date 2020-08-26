@@ -50,7 +50,7 @@ const ActivityListItem = (activity: IActivity | IForeignActivity) => {
                     {!isOwnActivity &&
                         <Avatar
                             username={(activity as IForeignActivity).username}
-                            base64={(activity as IForeignActivity).image?.base64}
+                            base64={(activity as IForeignActivity).avatar?.base64}
                             onPress={handleAvatarPressed}
                         />
                     }

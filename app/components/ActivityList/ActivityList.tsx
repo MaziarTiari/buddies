@@ -25,7 +25,7 @@ const ActivityList = () => {
     const { startEditingActivity, setActivity, user } = useContext(SessionContext);
     const activityContext = useContext(ActivityContext);
 
-    const showOwnActivities = routeName === RouteName.Activity.MyList;
+    const showOwnActivities = routeName === RouteName.Activity.OwnList;
 
     const { activities, isLoading, fetchActivities } = useMemo(() => showOwnActivities 
         ? {
@@ -38,7 +38,7 @@ const ActivityList = () => {
             isLoading: activityContext.isLoadingForeign,
             fetchActivities: activityContext.fetchForeignActivities
         }
-    , [activityContext])
+    , [activityContext.foreignActivities, activityContext.fetchOwnActivities, showOwnActivities])
 
     useEffect(() => {
         if (showOwnActivities)
@@ -123,7 +123,7 @@ const ActivityList = () => {
                 />
                 {showOwnActivities &&
                     <ActionButton icon="plus" onPress={() => {
-                        setActivity({ id: "", title: "My default Title", userId: user.id, location: "My default Location", memberUserIds: [], applicantUserIds: [], visibility: 0 });
+                        setActivity({ id: "", title: "Title", userId: user.id, location: "Location", memberUserIds: [], applicantUserIds: [], visibility: 0 });
                         startEditingActivity();
                         navigation.navigate(RouteName.Activity.Info);
                     }} />

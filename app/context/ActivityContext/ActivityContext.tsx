@@ -29,6 +29,8 @@ export const initState: ActivityContextModel = {
 
 export const ActivityContext = createContext(initState);
 
+type ContextActivity = IActivity | IForeignActivity;
+
 export function ActivityContextProvider(props: {children: ReactNode}) {
     const { user } = useContext(SessionContext);
     const [ownActivities, setOwnActivities] = useState(initState.ownActivities);
@@ -81,15 +83,18 @@ export function ActivityContextProvider(props: {children: ReactNode}) {
             .finally(() => setIsLoadingForeign(false))
     }
 
-    useEffect(() => 
+    useEffect(() => {
         activityHubConnection.on("updateActivity", (activity: IForeignActivity) => {
             console.log("new activity: ", activity)
             updateForeignActivity(activity);
+        });
+        return () => {
+            activityHubConnection.off("updateActivity");
         }
-    ), [foreignActivities])
+    }, [foreignActivities]);
 
-    useEffect(() => activityHubConnection.on(
-        "newApplicant", (application: IApplication) => {
+    useEffect(() => {
+        activityHubConnection.on("newApplicant", (application: IApplication) => {
             let activity = ownActivities.find(a => a.id === application.activityId);
             if (activity) {
                 activity.applicantUserIds = activity?.applicantUserIds 
@@ -98,23 +103,36 @@ export function ActivityContextProvider(props: {children: ReactNode}) {
                 ;
                 setOwnActivities(getUpdatedActivities([...ownActivities], activity));
             }
-    }), [ownActivities]);
+        });
+        return () => activityHubConnection.off("newApplicant");
+    }, [ownActivities]);
 
-    useEffect(() => activityHubConnection.on(
-        "newActivity", (activity: IForeignActivity) => {
-            setForeignActivities([...foreignActivities, activity]);
-    })), [foreignActivities];
+    useEffect(() => {
+        activityHubConnection.on("newActivity", (activity: IForeignActivity) => {
+            if (activity.userId === user.id) {
+                setOwnActivities([...ownActivities, activity])
+            } else {
+                setForeignActivities([...foreignActivities, activity]);
+            }
+        })
+        return () => activityHubConnection.off("newActivity");
+    }), [foreignActivities, ownActivities];
 
-    function getUpdatedActivities(activities: Array<IActivity>, activity: IActivity) {
+    function getUpdatedActivities(
+            activities: Array<ContextActivity>, 
+            activity: ContextActivity ) {
         const activityIndex = activities.findIndex(a => a.id === activity.id);
         activities[activityIndex] = activity;
         return activities;
     }
 
     function updateForeignActivity(activity: IForeignActivity) {
-        setIsLoadingOwn(true);
-        setOwnActivities(getUpdatedActivities([...foreignActivities], activity));
-        setIsLoadingOwn(false);
+        setIsLoadingForeign(true);
+        setForeignActivities(
+            getUpdatedActivities(
+                [...foreignActivities], activity) as Array<IForeignActivity>
+        );
+        setIsLoadingForeign(false);
     }
 
     function updateOwnActivity(activity: IActivity) {
