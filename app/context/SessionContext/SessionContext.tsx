@@ -9,6 +9,8 @@ import { IUser, INewUser } from "../../models/User";
 import { ISessionContextState, initialState as initState, AuthState } from "./stateFrame";
 // import { HubConnectionBuilder } from '@aspnet/signalr';
 import { userApi } from "../../api/User/UserApi";
+import { IPhotoGallery, IProfileImage } from "../../models/PhotoGallery";
+import { galleryApi } from "../../api/GalleryApi";
 // end import ////////////////////////////////////////////////////////////////
 
 export const SessionContext = createContext<ISessionContextState>(initState);
@@ -45,6 +47,8 @@ export function SessionContextProvider(props: { children: ReactNode }) {
     const [user, setUser] = useState<IUser>(initState.user);
 
     const [userProfile, setUserProfile] = useState<IUserProfile>(initState.userProfile);
+
+    const [gallery, setGallery] = useState<IPhotoGallery>(initState.gallery);
 
     const [activity, setActivity] = useState<IActivity>(initState.activity);
 
@@ -125,12 +129,16 @@ export function SessionContextProvider(props: { children: ReactNode }) {
         setIsLoading(true);
         userProfileApi.Create<IUserProfile, INewUserProfile>(createdUserProfile)
             .then((userProfile: IUserProfile) => {
-                setCreateUserProfileError(undefined);
                 setUserProfile(userProfile);
+                return galleryApi.Create<IPhotoGallery>({ id: "", userId: userProfile.userId, images: [] })
+            })
+            .then((gallery: IPhotoGallery) => {
+                setCreateUserProfileError(undefined);
                 setAuthState(AuthState.AUTHORIZED);
+                setGallery(gallery);
             })
             .catch((axiosError: AxiosError) => {
-                setCreateUserProfileError("Error"); // TODO Select Error Message
+                setCreateUserProfileError(axiosError.message); // TODO Select Error Message
             })
             .finally(() => {
                 setIsLoading(false)
@@ -160,6 +168,37 @@ export function SessionContextProvider(props: { children: ReactNode }) {
             })
             .catch((axiosError: AxiosError) => {
                 console.log(axiosError);
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
+    };
+
+    const fetchGallery = (userId: string) => {
+        if (gallery.userId === userId) return;
+        setGallery(initState.gallery)
+        setIsLoading(true);
+        galleryApi.Get<IPhotoGallery>(userId)
+            .then((gallery: IPhotoGallery) => {
+                setGallery(gallery);
+            })
+            .catch((error: AxiosError) => {
+                console.log(error);
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
+    };
+
+    const uploadToGallery = (image: IProfileImage) => {
+        if (gallery.userId !== user.id) return;
+        setIsLoading(true);
+        galleryApi.UploadImage(image, gallery.id)
+            .then(() => {
+                setGallery({ ...gallery, images: [...gallery.images, image] });
+            })
+            .catch((error: AxiosError) => {
+                console.log(error);
             })
             .finally(() => {
                 setIsLoading(false);
@@ -244,6 +283,9 @@ export function SessionContextProvider(props: { children: ReactNode }) {
         startEditingActivity,
         saveEditingActivity,
         cancelEditingActivity,
+        gallery,
+        fetchGallery,
+        uploadToGallery,
     };
 
     return (
