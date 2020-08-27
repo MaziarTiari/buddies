@@ -17,7 +17,7 @@ import SwiperPagination from "../SwiperPagination/SwiperPagination";
 import CustomModal from "../CustomModal/CustomModal";
 import InputField from "../InputField/InputField";
 import { ICategorizedInput } from "../../models/CategorizedInput";
-import useCategories from "../../Hooks/useCategories";
+import { CategoryContext } from "../../context/CategoryContext/CategoryContext";
 
 // TODO: Remove example_img Array and use Profile Context instead
 const example_img: string[] = [
@@ -31,7 +31,7 @@ const ProfileAbout = () => {
     const style = useStyle();
     const { userProfile, setUserProfile, userIsEditingProfile, cancelEditingProfile } = useContext(SessionContext);
     const { translations } = useContext(LanguageContext);
-    const { jobCategories, hobbyCategories } = useCategories();
+    const { jobCategories, hobbyCategories } = useContext(CategoryContext);
 
     const [showInfoEditor, setShowInfoEditor] = useState(false);
     const [profileInfo, setProfileInfo] = useState(userProfile.info || "");

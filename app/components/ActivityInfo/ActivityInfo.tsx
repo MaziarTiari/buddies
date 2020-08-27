@@ -13,7 +13,6 @@ import { SessionContext } from "../../context/SessionContext/SessionContext";
 import { RouteName } from "../../navigation/Navigation.config";
 import { ICategorizedInputListConfig } from "../CategorizedInputList/CategorizedInputList";
 import { ICategorizedInput } from "../../models/CategorizedInput";
-import useCategories from "../../Hooks/useCategories";
 import CustomModal from "../CustomModal/CustomModal";
 import InputField from "../InputField/InputField";
 import Button from "../Button/Button";
@@ -22,6 +21,7 @@ import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
 import FormTextInput from "../FormTextInput/FormTextInput";
 import { Menu, MenuTrigger, MenuOptions, MenuOption } from "react-native-popup-menu";
 import useImagePicker from "../../Hooks/useImagePicker";
+import { CategoryContext } from "../../context/CategoryContext/CategoryContext";
 
 const defaultImg = require("../../../assets/img/default-activity-img.jpg");
 const MIN_TITLE_LENGTH = 10;
@@ -31,7 +31,7 @@ const ActivityInfo = () => {
     const navigation = useNavigation();
     const { translations } = useContext(LanguageContext);
     const { activity, setActivity, userIsEditingActivity, user } = useContext(SessionContext);
-    const { hobbyCategories } = useCategories();
+    const { hobbyCategories } = useContext(CategoryContext);
     const { theme } = useContext(ThemeContext);
     const { selectImage } = useImagePicker();
 
