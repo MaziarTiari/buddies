@@ -64,6 +64,9 @@ export const germanDictionary: Dictionary = {
     theme: "Theme",
     language: "Sprache",
     activity_title_hint: "Gib einen attraktiven Titel ein, der die Aufmerksamkeit des Benutzers einfängt!\nEr sollte mindestes 10 Zeichen lang sein.",
+    upload_from_filesystem: "Bild aus Dateien auswählen",
+    upload_from_camera: "Bild mit Kamera auswählen",
+    remove_image: "Bild entfernen",
 
     // Tags: Hobbies
     my_hobbies: "Meine Hobbys",

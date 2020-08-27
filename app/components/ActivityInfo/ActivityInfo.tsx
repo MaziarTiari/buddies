@@ -9,7 +9,6 @@ import { Headline, IconButton } from "react-native-paper";
 import InfoItem from "../InfoItem/InfoItem";
 import moment from "moment";
 import TouchableRippleCircle from "../TouchableRippleCircle/TouchableRippleCircle";
-import Swiper from "react-native-swiper";
 import { SessionContext } from "../../context/SessionContext/SessionContext";
 import { RouteName } from "../../navigation/Navigation.config";
 import { ICategorizedInputListConfig } from "../CategorizedInputList/CategorizedInputList";
@@ -18,9 +17,11 @@ import useCategories from "../../Hooks/useCategories";
 import CustomModal from "../CustomModal/CustomModal";
 import InputField from "../InputField/InputField";
 import Button from "../Button/Button";
-import { getResponsiveSize } from "../../utils/font/font";
+import { getResponsiveSize, fontsizes, getLineHeight } from "../../utils/font/font";
 import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
 import FormTextInput from "../FormTextInput/FormTextInput";
+import { Menu, MenuTrigger, MenuOptions, MenuOption } from "react-native-popup-menu";
+import useImagePicker from "../../Hooks/useImagePicker";
 
 const defaultImg = require("../../../assets/img/default-activity-img.jpg");
 const MIN_TITLE_LENGTH = 10;
@@ -32,6 +33,7 @@ const ActivityInfo = () => {
     const { activity, setActivity, userIsEditingActivity, user } = useContext(SessionContext);
     const { hobbyCategories } = useCategories();
     const { theme } = useContext(ThemeContext);
+    const { selectImage } = useImagePicker();
 
     navigation.setOptions({ title: activity.title });
 
@@ -75,6 +77,14 @@ const ActivityInfo = () => {
         setActivityTitle(activity.title);
     };
 
+    const handleImagePicked = (base64: string, width: number, height: number) => {
+        setActivity({ ...activity, image: { base64: base64, width: width, height: height } });
+    };
+
+    const handleDeleteImage = () => {
+        setActivity({ ...activity, image: undefined });
+    }
+
     const handleApplyActivity = (): void => {
         // TODO
     }
@@ -94,9 +104,46 @@ const ActivityInfo = () => {
             <ScrollView style={{ flex: 1, alignSelf: "stretch" }} >
 
                 {/* Image */}
-                <Swiper containerStyle={style.galleryContainer}>
+                <View style={style.galleryContainer}>
                     <Image style={style.image} source={imageSource} />
-                </Swiper>
+                    {userIsEditingActivity &&
+                        <View style={style.imageEditContainer}>
+                            <Menu>
+                                <MenuTrigger>
+                                    <IconButton icon="lead-pencil" color={theme.App.primaryText} />
+                                </MenuTrigger>
+                                <MenuOptions
+                                    customStyles={{
+                                        optionsWrapper: {
+                                            backgroundColor: theme.App.menuBackground,
+                                        },
+                                        optionWrapper: {
+                                            padding: getResponsiveSize(12),
+                                        },
+                                        optionText: {
+                                            fontSize: fontsizes.small,
+                                            lineHeight: getLineHeight(fontsizes.small),
+                                            color: theme.App.primaryText,
+                                        },
+                                    }}
+                                >
+                                    <MenuOption
+                                        onSelect={() => { selectImage("file", handleImagePicked) }}
+                                        text={translations.upload_from_filesystem}
+                                    />
+                                    <MenuOption
+                                        onSelect={() => { selectImage("camera", handleImagePicked) }}
+                                        text={translations.upload_from_camera}
+                                    />
+                                    <MenuOption
+                                        onSelect={handleDeleteImage}
+                                        text={translations.remove_image}
+                                    />
+                                </MenuOptions>
+                            </Menu>
+                        </View>
+                    }
+                </View>
 
                 {/* Hide and Apply Buttons */}
                 {activity.userId !== user.id &&

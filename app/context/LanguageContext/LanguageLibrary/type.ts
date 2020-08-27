@@ -69,6 +69,9 @@ export interface Dictionary {
     theme: string;
     language: string;
     activity_title_hint: string;
+    upload_from_filesystem: string;
+    upload_from_camera: string;
+    remove_image: string;
 
     // Tags: Hobbies
     my_hobbies: string;
