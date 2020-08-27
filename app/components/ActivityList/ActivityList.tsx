@@ -8,13 +8,15 @@ import useStyle from "./ActivityList.style";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
 import Toast from "react-native-simple-toast";
-import { IActivity } from "../../models/Activity";
+import { IActivity, IActivityRequest } from "../../models/Activity";
 import ActionButton from "../ActionButton/ActionButton";
 import { SessionContext } from "../../context/SessionContext/SessionContext";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { RouteName } from "../../navigation/Navigation.config";
 import { LanguageContext } from "../../context/LanguageContext/LanguageContext";
 import { ActivityContext } from '../../context/ActivityContext/ActivityContext';
+import { activityApi } from "../../api/ApiClient";
+import { AxiosResponse } from 'axios';
 
 const ActivityList = () => {
     const navigation = useNavigation();
@@ -48,12 +50,21 @@ const ActivityList = () => {
     let rightOpen: boolean, leftOpen: boolean, currentId: string;
 
     const hideActivity = (id: string) => {
-        // TODO : Send hide to API
+        const activityRequest: IActivityRequest = {
+            activityId: id, 
+            applicantId: user.id
+        };
+        activityApi.Post<AxiosResponse, IActivityRequest>("hide", activityRequest)
+            .then(() => activityContext.removeForeignActivity(id))
+            .catch(err => console.error(err)); // TODO Error Handling
         Toast.show("Activity hidden.", Toast.SHORT); // TODO Translation
     };
 
     const applyActivity = (id: string) => {
-        // TODO : Send apply to API and check if user already applied
+        const application: IActivityRequest = { activityId: id, applicantId: user.id };
+        activityApi.Post<AxiosResponse, IActivityRequest>("apply", application)
+            .then(() => activityContext.removeForeignActivity(id))
+            .catch(err => console.error(err)) // TODO error handling
         Toast.show("Application sent.", Toast.SHORT); // TODO Translation
     };
 

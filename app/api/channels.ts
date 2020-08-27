@@ -3,7 +3,7 @@ export type BuddiesResource = (
     'Activities/user' | 'Activities/apply' | 'PhotoGalleries' | 'PhotoGalleries/addImage'
 );
 
-export const baseUrl = "http://40.113.114.86/";
+export const baseUrl = "http://192.168.2.126:5000/";
 export const baseApiUrl = baseUrl + "api/";
 export const getServiceUrl = (resource: BuddiesResource): string => {
     return baseApiUrl + resource + "/";

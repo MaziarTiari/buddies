@@ -61,6 +61,11 @@ export class ApiClient<T> extends Api<T> {
             .catch((error: AxiosError) => { throw error });
     }
 
+    public Post<T, B = T>(url: string, obj: B) {
+        return this.post<T, B>(url, obj).then(this.success)
+            .catch((error: AxiosError) => { throw error });
+    }
+
     /**
      * 
      * @param obj - the object you want to create

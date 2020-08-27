@@ -1,5 +1,5 @@
 import React from 'react';
-import { IForeignActivity, IActivity, IApplication } from '../../models/Activity'
+import { IForeignActivity, IActivity, IActivityRequest } from '../../models/Activity'
 import { createContext, useState, ReactNode, useMemo, useEffect, useContext } from 'react'
 import { HubConnectionBuilder } from '@microsoft/signalr';
 import { hubs, baseUrl } from '../../api/channels';
@@ -15,6 +15,8 @@ export interface ActivityContextModel {
     updateOwnActivity: (activity: IActivity) => void;
     fetchOwnActivities: () => void;
     fetchForeignActivities: () => void;
+    removeForeignActivity: (activityId: string) => void;
+    removeOwnActivity: (activityId: string) => void;
 }
 
 export const initState: ActivityContextModel = {
@@ -24,7 +26,9 @@ export const initState: ActivityContextModel = {
     isLoadingForeign: false,
     updateOwnActivity: () => console.warn("updateActivity() not implemented!"),
     fetchOwnActivities: () => console.warn("fetchOwnActivities() not implemented!"),
-    fetchForeignActivities: () => console.warn("fetchForeignActivities() not implemented!")
+    fetchForeignActivities: () => console.warn("fetchForeignActivities() not implemented!"),
+    removeForeignActivity: () => console.warn("removeForeignActivity() not implemented!"),
+    removeOwnActivity: () => console.warn("removeOwnActivity() not implemented!"),
 }
 
 export const ActivityContext = createContext(initState);
@@ -46,12 +50,14 @@ export function ActivityContextProvider(props: {children: ReactNode}) {
     
         connection.start()
             .then(() => console.log("Connection started!"))
-            .catch(err => console.warn("Could not connect to websocket: " + err));
+            .catch(err => console.error("Could not connect to websocket: " + err));
         return connection;
     }, []);
 
     useEffect(() => {
         if (user.id !== "") {
+            activityHubConnection.invoke("addToActivityUserGroup", user.id)
+                .catch(err => console.error(err));
             fetchForeignActivities();
             fetchOwnActivities();
         }
@@ -94,7 +100,8 @@ export function ActivityContextProvider(props: {children: ReactNode}) {
     }, [foreignActivities]);
 
     useEffect(() => {
-        activityHubConnection.on("newApplicant", (application: IApplication) => {
+        activityHubConnection.on("newApplicant", (application: IActivityRequest) => {
+            console.log("new application: ", application);
             let activity = ownActivities.find(a => a.id === application.activityId);
             if (activity) {
                 activity.applicantUserIds = activity?.applicantUserIds 
@@ -104,7 +111,9 @@ export function ActivityContextProvider(props: {children: ReactNode}) {
                 setOwnActivities(getUpdatedActivities([...ownActivities], activity));
             }
         });
-        return () => activityHubConnection.off("newApplicant");
+        return () => { 
+            activityHubConnection.off("newApplicant")
+        };
     }, [ownActivities]);
 
     useEffect(() => {
@@ -115,7 +124,9 @@ export function ActivityContextProvider(props: {children: ReactNode}) {
                 setForeignActivities([...foreignActivities, activity]);
             }
         })
-        return () => activityHubConnection.off("newActivity");
+        return () => {
+            activityHubConnection.off("newActivity")
+        };
     }), [foreignActivities, ownActivities];
 
     function getUpdatedActivities(
@@ -148,7 +159,13 @@ export function ActivityContextProvider(props: {children: ReactNode}) {
         foreignActivities,
         updateOwnActivity: updateOwnActivity,
         fetchOwnActivities: fetchOwnActivities,
-        fetchForeignActivities: fetchForeignActivities
+        fetchForeignActivities: fetchForeignActivities,
+        removeForeignActivity: (activityId: string) => 
+            setForeignActivities(
+                [...foreignActivities.filter(a => a.id !== activityId)]),
+        removeOwnActivity: (activityId: string) =>
+            setOwnActivities([...ownActivities.filter(a => a.id !== activityId)])
+        
     };
 
     return (

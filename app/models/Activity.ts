@@ -19,7 +19,7 @@ export interface IActivity {
     maxMember?: number ;
 }
 
-export interface IApplication {
+export interface IActivityRequest {
     applicantId: string;
     activityId: string;
 }
