@@ -39,6 +39,17 @@ const useStyle = () => {
             flex: 1,
             resizeMode: "contain",
             backgroundColor: "black",
+        },
+        buttonContainer: {
+            flexDirection: "row",
+        },
+        button: {
+            flex: 1,
+            borderColor: theme.App.devider,
+            borderWidth: 1,
+            borderRadius: 0,
+            backgroundColor: theme.App.menuBackground,
+
         }
     });
 };

@@ -49,4 +49,6 @@ target 'buddies' do
 
   pod 'react-native-simple-toast', :path => '../node_modules/react-native-simple-toast'
 
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+
 end

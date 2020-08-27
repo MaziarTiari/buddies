@@ -1,23 +1,25 @@
 import React, { useContext } from "react";
-import { View } from "react-native";
-import { IconButton } from "react-native-paper";
 import { RouteName } from "../../navigation/Navigation.config";
 import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
 import { useNavigation } from "@react-navigation/native";
+import BadgedIcon from "../BadgedIcon/BadgedIcon";
+import { getResponsiveSize } from "../../utils/font/font";
+import { ActivityContext } from "../../context/ActivityContext/ActivityContext";
 
 const ActivityListHeader = () => {
 
     const navigation = useNavigation();
-    const theme = useContext(ThemeContext).theme;
+    const { theme } = useContext(ThemeContext);
+    const { unhandledApplications } = useContext(ActivityContext);
 
     return (
-        <View style={{ flexDirection: "row" }}>
-            <IconButton
-                color={theme.App.contentBasicButton}
-                icon="wunderlist"
-                onPress={() => navigation.navigate(RouteName.Activity.OwnList)}
-            />
-        </View>
+        <BadgedIcon
+            color={theme.App.basicItem}
+            icon="wunderlist"
+            size={getResponsiveSize(30)}
+            onPress={() => navigation.navigate(RouteName.Activity.OwnList)}
+            value={unhandledApplications}
+        />
     );
 }
 

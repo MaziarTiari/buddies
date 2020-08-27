@@ -5,7 +5,7 @@ import { LanguageContext } from "../../context/LanguageContext/LanguageContext";
 import Container from "../Container/Container";
 import { useNavigation } from "@react-navigation/native";
 import EditableSection from "../EditableSection/EditableSection";
-import { Headline } from "react-native-paper";
+import { Headline, IconButton } from "react-native-paper";
 import InfoItem from "../InfoItem/InfoItem";
 import moment from "moment";
 import TouchableRippleCircle from "../TouchableRippleCircle/TouchableRippleCircle";
@@ -17,22 +17,31 @@ import { ICategorizedInput } from "../../models/CategorizedInput";
 import useCategories from "../../Hooks/useCategories";
 import CustomModal from "../CustomModal/CustomModal";
 import InputField from "../InputField/InputField";
+import Button from "../Button/Button";
+import { getResponsiveSize } from "../../utils/font/font";
+import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
+import FormTextInput from "../FormTextInput/FormTextInput";
 
 const defaultImg = require("../../../assets/img/default-activity-img.jpg");
+const MIN_TITLE_LENGTH = 10;
 
 const ActivityInfo = () => {
     const style = useStyle();
     const navigation = useNavigation();
     const { translations } = useContext(LanguageContext);
-    const { activity, setActivity, userIsEditingActivity, cancelEditingActivity } = useContext(SessionContext);
+    const { activity, setActivity, userIsEditingActivity, user } = useContext(SessionContext);
     const { hobbyCategories } = useCategories();
+    const { theme } = useContext(ThemeContext);
 
     navigation.setOptions({ title: activity.title });
 
     const imageSource = activity.image ? { uri: "data:image/gif;base64," + activity.image.base64 } : defaultImg;
 
     const [showDescriptionEditor, setShowDescriptionEditor] = useState<boolean>(false);
+    const [showTitleEditor, setShowTitleEditor] = useState<boolean>(userIsEditingActivity && activity.title === "");
     const [activityDescription, setActivityDescription] = useState<string>(activity.description || "");
+    const [activityTitle, setActivityTitle] = useState<string>(activity.title);
+    const [showError, setShowError] = useState<boolean>(false);
 
     const handleTagItemsChanged = (tags: ICategorizedInput[]): void => {
         setActivity({ ...activity, tags: tags });
@@ -47,6 +56,32 @@ const ActivityInfo = () => {
         setShowDescriptionEditor(false);
         setActivityDescription(activity.description || "");
     };
+
+    const handleTitleEditorSubmit = (): void => {
+        if (activityTitle.length < MIN_TITLE_LENGTH) {
+            setShowError(true);
+            return;
+        }
+        setShowTitleEditor(false);
+        setActivity({ ...activity, title: activityTitle });
+    };
+
+    const handleTitleEditorClose = (): void => {
+        if (activityTitle.length < MIN_TITLE_LENGTH) {
+            setShowError(true);
+            return;
+        }
+        setShowTitleEditor(false);
+        setActivityTitle(activity.title);
+    };
+
+    const handleApplyActivity = (): void => {
+        // TODO
+    }
+
+    const handleHideActivity = (): void => {
+        // TODO
+    }
 
     // cancel when user navigates back to previous screen
     useEffect(() => {
@@ -63,12 +98,43 @@ const ActivityInfo = () => {
                     <Image style={style.image} source={imageSource} />
                 </Swiper>
 
+                {/* Hide and Apply Buttons */}
+                {activity.userId !== user.id &&
+                    <View style={style.buttonContainer}>
+                        <Button
+                            title={translations.hide}
+                            style={style.button}
+                            textStyle={{ fontWeight: "normal" }}
+                            onPress={handleHideActivity}
+                        />
+                        <Button
+                            title={translations.apply}
+                            style={[style.button, { borderLeftWidth: 0 }]}
+                            textStyle={{ fontWeight: "normal" }}
+                            onPress={handleApplyActivity}
+                        />
+                    </View>
+                }
+
                 {/* Quick Info */}
                 <View style={style.primaryInfoContainer}>
                     <View style={style.innerInfoContainer}>
-                        <Text numberOfLines={1} style={style.headline}>
-                            {activity.title}
-                        </Text>
+                        <View style={{ flexDirection: "row" }}>
+
+                            <Text numberOfLines={1} style={style.headline}>
+                                {activity.title}
+                            </Text>
+                            {userIsEditingActivity &&
+                                <IconButton
+                                    icon="lead-pencil"
+                                    size={getResponsiveSize(26)}
+                                    style={{ margin: getResponsiveSize(-6) }}
+                                    color={theme.App.primaryText}
+                                    onPress={() => setShowTitleEditor(true)}
+                                />
+                            }
+
+                        </View>
                         <Text numberOfLines={1} style={style.text}>
                             {activity.location}
                         </Text>
@@ -165,6 +231,23 @@ const ActivityInfo = () => {
                         multiline
                         dynamicHeight={{ min: 150, max: 300 }}
                         onChangeText={setActivityDescription}
+                    />
+                </CustomModal>
+
+                {/* Modal for title */}
+                <CustomModal
+                    onSubmit={handleTitleEditorSubmit}
+                    onCloseModal={handleTitleEditorClose}
+                    showModal={showTitleEditor}
+                >
+                    <Text style={[style.text, { marginBottom: getResponsiveSize(10) }]}>
+                        {translations.activity_title_hint}
+                    </Text>
+                    <FormTextInput
+                        value={activityTitle}
+                        onChangeText={setActivityTitle}
+                        placeholder={translations.title}
+                        hasError={showError && activityTitle.length < MIN_TITLE_LENGTH}
                     />
                 </CustomModal>
 
