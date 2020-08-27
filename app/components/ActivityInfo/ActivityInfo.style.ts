@@ -40,6 +40,11 @@ const useStyle = () => {
             resizeMode: "contain",
             backgroundColor: "black",
         },
+        imageEditContainer: {
+            position: "absolute",
+            bottom: 0,
+            right: 0,
+        },
         buttonContainer: {
             flexDirection: "row",
         },

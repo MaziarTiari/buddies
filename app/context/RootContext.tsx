@@ -4,6 +4,7 @@ import ThemeContextProvider from "./ThemeContext/ThemeContext";
 import { MenuProvider } from "react-native-popup-menu";
 import { SessionContextProvider } from "./SessionContext/SessionContext";
 import { ActivityContextProvider } from "./ActivityContext/ActivityContext";
+import { CategoryContextProvider } from "./CategoryContext/CategoryContext";
 
 export default class RootContextProvider extends Component {
     render() {
@@ -13,7 +14,9 @@ export default class RootContextProvider extends Component {
                     <ThemeContextProvider>
                         <SessionContextProvider>
                             <ActivityContextProvider>
-                                {this.props.children}
+                                <CategoryContextProvider>
+                                    {this.props.children}
+                                </CategoryContextProvider>
                             </ActivityContextProvider>
                         </SessionContextProvider>
                     </ThemeContextProvider>

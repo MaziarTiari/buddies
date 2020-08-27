@@ -64,6 +64,9 @@ export const englishDictionary: Dictionary = {
     theme: "Theme",
     language: "Language",
     activity_title_hint: "Enter an attractive title that will catch the user's attention! It should be at least 10 characters long.",
+    upload_from_filesystem: "Select image from files",
+    upload_from_camera: "Select image from camera",
+    remove_image: "Remove image",
 
     // Tags: Hobbies
     my_hobbies: "My hobbies",
