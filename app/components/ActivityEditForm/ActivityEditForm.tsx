@@ -12,16 +12,9 @@ const ActivityEditForm = () => {
     const { activity, setActivity } = useContext(SessionContext);
     const { translations } = useContext(LanguageContext);
 
-    enum Field { TITLE, LOCATION, START_DATE, END_DATE };
+    enum Field { LOCATION, START_DATE, END_DATE };
 
     const fieldList: IFormField[] = [];
-
-    fieldList[Field.TITLE] = {
-        inputType: InputType.TEXT,
-        initialValue: activity.title,
-        required: true,
-        placeholder: translations.title
-    };
 
     fieldList[Field.LOCATION] = {
         inputType: InputType.TEXT,
@@ -47,7 +40,6 @@ const ActivityEditForm = () => {
     const handleSubmit = (data: any[]) => {
         setActivity({
             ...activity,
-            title: data[Field.TITLE],
             location: data[Field.LOCATION],
             startDate: data[Field.START_DATE] ? moment(data[Field.START_DATE] as Date).unix() : undefined,
             endDate: data[Field.END_DATE] ? moment(data[Field.END_DATE] as Date).unix() : undefined,

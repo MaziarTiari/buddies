@@ -27,7 +27,7 @@ const ActivityList = () => {
 
     const showOwnActivities = routeName === RouteName.Activity.OwnList;
 
-    const { activities, isLoading, fetchActivities } = useMemo(() => showOwnActivities 
+    const { activities, isLoading, fetchActivities } = useMemo(() => showOwnActivities
         ? {
             activities: activityContext.ownActivities,
             isLoading: activityContext.isLoadingOwn,
@@ -38,7 +38,7 @@ const ActivityList = () => {
             isLoading: activityContext.isLoadingForeign,
             fetchActivities: activityContext.fetchForeignActivities
         }
-    , [activityContext.foreignActivities, activityContext.fetchOwnActivities, showOwnActivities])
+        , [activityContext.foreignActivities, activityContext.fetchOwnActivities, showOwnActivities])
 
     useEffect(() => {
         if (showOwnActivities)
@@ -123,7 +123,7 @@ const ActivityList = () => {
                 />
                 {showOwnActivities &&
                     <ActionButton icon="plus" onPress={() => {
-                        setActivity({ id: "", title: "Title", userId: user.id, location: "Location", memberUserIds: [], applicantUserIds: [], visibility: 0 });
+                        setActivity({ id: "", title: "", userId: user.id, location: "", memberUserIds: [], applicantUserIds: [], visibility: 0 });
                         startEditingActivity();
                         navigation.navigate(RouteName.Activity.Info);
                     }} />

@@ -63,6 +63,7 @@ export const germanDictionary: Dictionary = {
     settings: "Einstellungen",
     theme: "Theme",
     language: "Sprache",
+    activity_title_hint: "Gib einen attraktiven Titel ein, der die Aufmerksamkeit des Benutzers einfängt!\nEr sollte mindestes 10 Zeichen lang sein.",
 
     // Tags: Hobbies
     my_hobbies: "Meine Hobbys",

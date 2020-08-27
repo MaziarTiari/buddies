@@ -63,6 +63,7 @@ export const englishDictionary: Dictionary = {
     settings: "Settings",
     theme: "Theme",
     language: "Language",
+    activity_title_hint: "Enter an attractive title that will catch the user's attention! It should be at least 10 characters long.",
 
     // Tags: Hobbies
     my_hobbies: "My hobbies",
