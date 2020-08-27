@@ -54,6 +54,8 @@ export function SessionContextProvider(props: { children: ReactNode }) {
 
     const [isLoading, setIsLoading] = useState<boolean>(initState.isLoading);
 
+    const [errorMessage, setErrorMessage] = useState<string | undefined>(initState.errorMessage)
+
     const [
         userIsEditingProfile,
         setUserIsEditingProfile] = useState<boolean>(initState.userIsEditingProfile);
@@ -71,28 +73,15 @@ export function SessionContextProvider(props: { children: ReactNode }) {
         activityBackup,
         setActivityBackup] = useState<IActivity>(initState.activity);
 
-    // Error Messages
-    const [
-        createUserProfileError,
-        setCreateUserProfileError] = useState<string | undefined>(undefined);
-
-    const [
-        createUserError,
-        setCreateUserError] = useState<string | undefined>(undefined);
-
-    const [loginUserError, setLoginUserError] = useState<string | undefined>(undefined);
-
     const createUser = (createdUser: INewUser) => {
         setIsLoading(true);
         userApi.Create<IUser, INewUser>(createdUser)
             .then((user: IUser) => {
-                setCreateUserError(undefined);
                 setUser(user);
                 setAuthState(AuthState.AUTHORIZED_WITHOUT_PROFILE);
             })
             .catch((axiosError: AxiosError) => {
-                console.log(axiosError);
-                setCreateUserError("Error") // TODO Select Error Message
+                setErrorMessage(axiosError.message)
             })
             .finally(() => {
                 setIsLoading(false);
@@ -104,7 +93,6 @@ export function SessionContextProvider(props: { children: ReactNode }) {
         let loggedInUser;
         userApi.VerifyUser({ email: email, password: password })
             .then((user: IUser) => {
-                setLoginUserError(undefined);
                 loggedInUser = user;
                 userProfileApi.Get<IUserProfile>(user.id)
                     .then((userProfile: IUserProfile) => {
@@ -120,7 +108,7 @@ export function SessionContextProvider(props: { children: ReactNode }) {
                     .catch(err => "Could not Add to User Group");
             })
             .catch((axiosError: AxiosError) => {
-                setLoginUserError("Error"); // TODO Select Error Message
+                setErrorMessage(axiosError.message);
             })
             .finally(() => {
                 setIsLoading(false);
@@ -135,12 +123,11 @@ export function SessionContextProvider(props: { children: ReactNode }) {
                 return galleryApi.Create<IPhotoGallery>({ id: "", userId: userProfile.userId, images: [] })
             })
             .then((gallery: IPhotoGallery) => {
-                setCreateUserProfileError(undefined);
                 setAuthState(AuthState.AUTHORIZED);
                 setGallery(gallery);
             })
             .catch((axiosError: AxiosError) => {
-                setCreateUserProfileError(axiosError.message); // TODO Select Error Message
+                setErrorMessage(axiosError.message);
             })
             .finally(() => {
                 setIsLoading(false)
@@ -150,12 +137,11 @@ export function SessionContextProvider(props: { children: ReactNode }) {
     const updateUserProfile = (updatedUserProfile: IUserProfile) => {
         setIsLoading(true);
         userProfileApi.Update<string, IUserProfile>(updatedUserProfile.id, updatedUserProfile)
-            .then(() => setUserProfile(updatedUserProfile))
-            .catch((error: AxiosError) => {
-                if (error.response?.status === NOT_FOUND)
-                    alert("Benutzer konnte nicht gefunden werden");
-                else
-                    alert("Es gibt im moment ein Problem, bitte versuche später wieder!")
+            .then(() => {
+                setUserProfile(updatedUserProfile)
+            })
+            .catch((axiosError: AxiosError) => {
+                setErrorMessage(axiosError.message);
             }).finally(() => {
                 setIsLoading(false);
             });
@@ -169,7 +155,7 @@ export function SessionContextProvider(props: { children: ReactNode }) {
                 setUserProfile(userProfile);
             })
             .catch((axiosError: AxiosError) => {
-                console.log(axiosError);
+                setErrorMessage(axiosError.message);
             })
             .finally(() => {
                 setIsLoading(false);
@@ -184,8 +170,8 @@ export function SessionContextProvider(props: { children: ReactNode }) {
             .then((gallery: IPhotoGallery) => {
                 setGallery(gallery);
             })
-            .catch((error: AxiosError) => {
-                console.log(error);
+            .catch((axiosError: AxiosError) => {
+                setErrorMessage(axiosError.message);
             })
             .finally(() => {
                 setIsLoading(false);
@@ -199,8 +185,8 @@ export function SessionContextProvider(props: { children: ReactNode }) {
             .then(() => {
                 setGallery({ ...gallery, images: [...gallery.images, image] });
             })
-            .catch((error: AxiosError) => {
-                console.log(error);
+            .catch((axiosError: AxiosError) => {
+                setErrorMessage(axiosError.message);
             })
             .finally(() => {
                 setIsLoading(false);
@@ -211,7 +197,7 @@ export function SessionContextProvider(props: { children: ReactNode }) {
         setIsLoading(true);
         activityApi.Update<string, IActivity>(updatedActivity.id, updatedActivity)
             .then(() => setActivity(updatedActivity))
-            .catch((error: AxiosError) => console.error(error))
+            .catch((error: AxiosError) => setErrorMessage(error.message))
             .finally(() => setIsLoading(false));
     };
 
@@ -219,7 +205,7 @@ export function SessionContextProvider(props: { children: ReactNode }) {
         setIsLoading(true);
         activityApi.Create<IActivity>(createdActivity)
             .then((activity: IActivity) => setActivity(activity))
-            .catch((error: AxiosError) => console.error(error))
+            .catch((error: AxiosError) => setErrorMessage(error.message))
             .finally(() => setIsLoading(false));
     };
 
@@ -269,11 +255,8 @@ export function SessionContextProvider(props: { children: ReactNode }) {
         setActivity,
         isLoading,
         createUser,
-        createUserError,
         loginUser,
-        loginUserError,
         createUserProfile,
-        createUserProfileError,
         fetchUserProfile,
         authState,
         setAuthState,
@@ -288,6 +271,8 @@ export function SessionContextProvider(props: { children: ReactNode }) {
         gallery,
         fetchGallery,
         uploadToGallery,
+        errorMessage,
+        setErrorMessage,
     };
 
     return (

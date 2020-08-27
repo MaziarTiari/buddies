@@ -7,7 +7,7 @@ import Form, { IFormField, InputType } from '../Form/Form';
 const LoginForm = () => {
 
     const { translations } = useContext(LanguageContext);
-    const { loginUser, loginUserError, setAuthState } = useContext(SessionContext);
+    const { loginUser, setAuthState } = useContext(SessionContext);
 
     enum Field { EMAIL, PASSWORD };
 
@@ -40,7 +40,6 @@ const LoginForm = () => {
             buttonTitle={translations.login}
             onSubmit={onSubmit}
             heading={translations.please_log_in}
-            errorMessage={loginUserError}
             fieldList={fieldList}
         />
     );

@@ -7,14 +7,13 @@ import Form, { IFormField, InputType } from '../Form/Form';
 import { AuthState } from '../../context/SessionContext/stateFrame';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
 import { RouteName } from '../../navigation/Navigation.config';
-import { translationStore } from '../../context/LanguageContext/translationStore';
 
 // const SIXTEEN_YEARS_AGO = moment.utc().subtract(16, "years").unix();
 
 const ProfileEditForm = () => {
 
     const { translations } = useContext(LanguageContext);
-    const { userProfile, user, authState, createUserProfile, setUserProfile, createUserProfileError } = useContext(SessionContext);
+    const { userProfile, user, authState, createUserProfile, setUserProfile } = useContext(SessionContext);
 
     let navigation: NavigationProp<any>;
 
@@ -99,7 +98,6 @@ const ProfileEditForm = () => {
 
     return (
         <Form
-            errorMessage={createUserProfileError}
             heading={
                 authState === AuthState.AUTHORIZED_WITHOUT_PROFILE
                     ? translations.create_your_profile

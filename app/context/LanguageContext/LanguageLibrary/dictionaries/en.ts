@@ -67,6 +67,8 @@ export const englishDictionary: Dictionary = {
     upload_from_filesystem: "Select image from files",
     upload_from_camera: "Select image from camera",
     remove_image: "Remove image",
+    error: "Error",
+    continue: "Continue",
 
     // Tags: Hobbies
     my_hobbies: "My hobbies",

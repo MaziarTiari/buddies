@@ -72,6 +72,8 @@ export interface Dictionary {
     upload_from_filesystem: string;
     upload_from_camera: string;
     remove_image: string;
+    error: string;
+    continue: string;
 
     // Tags: Hobbies
     my_hobbies: string;

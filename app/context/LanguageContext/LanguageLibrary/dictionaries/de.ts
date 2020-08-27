@@ -67,6 +67,8 @@ export const germanDictionary: Dictionary = {
     upload_from_filesystem: "Bild aus Dateien auswählen",
     upload_from_camera: "Bild mit Kamera auswählen",
     remove_image: "Bild entfernen",
+    error: "Fehler",
+    continue: "Weiter",
 
     // Tags: Hobbies
     my_hobbies: "Meine Hobbys",

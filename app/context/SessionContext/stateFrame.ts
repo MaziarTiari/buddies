@@ -16,11 +16,8 @@ export interface ISessionContextState {
     setActivity: (activity: IActivity) => void;
     isLoading: boolean;
     createUser: (createdUser: INewUser) => void;
-    createUserError?: string;
     loginUser: (email: string, password: string) => void;
-    loginUserError?: string;
     createUserProfile: (createdUserProfile: INewUserProfile) => void;
-    createUserProfileError?: string;
     fetchUserProfile: (userId: string) => void;
     userIsEditingProfile: boolean;
     startEditingProfile: () => void;
@@ -33,6 +30,8 @@ export interface ISessionContextState {
     gallery: IPhotoGallery,
     fetchGallery: (userId: string) => void;
     uploadToGallery: (image: IProfileImage) => void;
+    errorMessage: string | undefined;
+    setErrorMessage: (errorMessage: string | undefined) => void;
 }
 
 export const initialState: ISessionContextState = {
@@ -70,17 +69,15 @@ export const initialState: ISessionContextState = {
         userId: "",
         images: [],
     },
+    errorMessage: undefined,
     setAuthState: () => console.warn("setAuthState() not implemented!"),
     setUser: () => console.warn("setUser() not implemented!"),
     setUserProfile: () => console.warn("setUserProfile() not implemented!"),
     setActivity: () => console.warn("setActivity() not implemented!"),
     isLoading: false,
     createUser: () => console.warn("createUser() not implemented!"),
-    createUserError: undefined,
     loginUser: () => console.warn("loginUser() not implemented!"),
-    loginUserError: undefined,
     createUserProfile: () => console.warn("createUserProfile() not implemented!"),
-    createUserProfileError: undefined,
     userIsEditingProfile: false,
     fetchUserProfile: () => console.warn("fetchUserProfile() not implemented!"),
     startEditingProfile: () => console.warn("startEditingProfile() not implemented!"),
@@ -91,5 +88,6 @@ export const initialState: ISessionContextState = {
     saveEditingActivity: () => console.warn("saveEditingActivity() not implemented!"),
     cancelEditingActivity: () => console.warn("cancelEditingActivity() not implemented!"),
     fetchGallery: () => console.warn("fetchGallery() not implemented!"),
-    uploadToGallery: () => console.warn("uploadToGallery() not implemented!")
+    uploadToGallery: () => console.warn("uploadToGallery() not implemented!"),
+    setErrorMessage: () => console.warn("setErrorMessage() not implemented!")
 };

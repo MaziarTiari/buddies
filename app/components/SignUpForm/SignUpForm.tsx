@@ -7,7 +7,7 @@ import Form, { IFormField, InputType } from '../Form/Form';
 
 const SignUpForm = () => {
 
-    const { createUser, createUserError, setAuthState } = useContext(SessionContext);
+    const { createUser, setAuthState } = useContext(SessionContext);
     const { translations } = useContext(LanguageContext);
 
     const [passwordMismatch, setPasswordMismatch] = useState<boolean>(false);
@@ -73,10 +73,9 @@ const SignUpForm = () => {
             buttonTitle={translations.register}
             onSubmit={onSubmit}
             heading={translations.create_your_account}
-            errorMessage={
-                passwordMismatch
-                    ? translations.password_mismatch
-                    : createUserError}
+            errorMessage={passwordMismatch
+                ? translations.password_mismatch
+                : undefined}
             fieldList={fieldList}
         />
     );
