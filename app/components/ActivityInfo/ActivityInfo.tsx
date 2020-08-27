@@ -21,6 +21,10 @@ import Button from "../Button/Button";
 import { getResponsiveSize } from "../../utils/font/font";
 import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
 import FormTextInput from "../FormTextInput/FormTextInput";
+import { ActivityContext } from "../../context/ActivityContext/ActivityContext";
+import { ProfileListProps } from "../ProfileList/ProfileList";
+import { userProfileApi } from "../../api/ApiClient";
+import { IUserAvatar } from "../../models/UserAvatar";
 
 const defaultImg = require("../../../assets/img/default-activity-img.jpg");
 const MIN_TITLE_LENGTH = 10;
@@ -29,9 +33,10 @@ const ActivityInfo = () => {
     const style = useStyle();
     const navigation = useNavigation();
     const { translations } = useContext(LanguageContext);
-    const { activity, setActivity, userIsEditingActivity, user } = useContext(SessionContext);
     const { hobbyCategories } = useCategories();
     const { theme } = useContext(ThemeContext);
+    const { hideActivity, applyToActivity } = useContext(ActivityContext);
+    const { activity, setActivity, userIsEditingActivity, user } = useContext(SessionContext);
 
     navigation.setOptions({ title: activity.title });
 
@@ -76,11 +81,40 @@ const ActivityInfo = () => {
     };
 
     const handleApplyActivity = (): void => {
-        // TODO
+        applyToActivity(activity.id)
     }
 
     const handleHideActivity = (): void => {
-        // TODO
+        applyToActivity(activity.id);
+    }
+
+    const onApplicants = () => {
+        userProfileApi.Post<Array<IUserAvatar>, Array<string>>(
+            "getUserAvatars", activity.applicantUserIds
+        ).then(avatars => {
+            navigation.navigate(
+                RouteName.Profile.ProfileList,
+                {
+                    avatars: avatars,
+                    getAvatarsRightComponent: avatar => (
+                        <View style={{display: "flex"}}>
+                            <IconButton
+                                color={theme.App.primaryText}
+                                style={{marginRight: 4, backgroundColor: "green"}}
+                                icon="hand-okay" 
+                                onPress={() => alert("on accept")}
+                            />
+                            <IconButton
+                                color={theme.App.primaryText}
+                                style={{marginRight: 4, backgroundColor: "red"}}
+                                icon="account-remove" 
+                                onPress={() => alert("on accept")}
+                            />
+                        </View>
+                    )
+                } as ProfileListProps
+            )
+        })
     }
 
     // cancel when user navigates back to previous screen
@@ -142,13 +176,13 @@ const ActivityInfo = () => {
                             {activity.visibility.toString()}
                         </Text>
                     </View>
-                    <TouchableRippleCircle onPress={() => { }}>
+                    <TouchableRippleCircle onPress={() => onApplicants()}>
                         <View style={style.innerRippleContainer}>
                             <Text style={style.headline}>{activity.applicantUserIds.length}</Text>
                             <Text style={style.text}>{translations.applicants}</Text>
                         </View>
                     </TouchableRippleCircle>
-                    <TouchableRippleCircle onPress={() => { }}>
+                    <TouchableRippleCircle onPress={() => alert("on members")}>
                         <View style={style.innerRippleContainer}>
                             <Text style={style.headline}>
                                 {activity.memberUserIds.length + (activity.maxMember ? " / " + activity.maxMember : "")}

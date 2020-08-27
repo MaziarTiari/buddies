@@ -5,7 +5,7 @@ import { TouchableRipple } from "react-native-paper";
 import Container from "../Container/Container";
 
 export interface ProfileListItemProps {
-    uuid: string;
+    id: string;
     title: string;
     subTitle: string;
     isOnline: boolean;

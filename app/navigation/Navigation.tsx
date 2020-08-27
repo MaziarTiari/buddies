@@ -1,7 +1,6 @@
 import React from 'react'
 import { useNavOption, RouteName } from './Navigation.config';
 import BottomTab from './BottomTab';
-import FriendList from '../components/FriendList/FriendList';
 import Chat from '../components/Chat/Chat';
 import ActivityList from '../components/ActivityList/ActivityList';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -13,6 +12,7 @@ import { LeftActivityHeader, RightActivityHeader } from '../components/ActivityH
 import SettingsForm from '../components/SettingsForm/SettingsForm';
 import ProfileTab from './ProfileTab';
 import { RightProfileHeader } from '../components/ProfileHeader/ProfileHeader';
+import ProfileList from '../components/ProfileList/ProfileList';
 
 const Stack = createStackNavigator();
 
@@ -34,6 +34,7 @@ const Navigation = () => {
             <Stack.Screen name={RouteName.Profile.OtherTab} component={ProfileTab} options={{
                 headerRight: () => <RightProfileHeader />
             }} />
+            <Stack.Screen name={RouteName.Profile.ProfileList} component={ProfileList} />
         </Stack.Navigator>
     );
 };

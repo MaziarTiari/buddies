@@ -50,21 +50,12 @@ const ActivityList = () => {
     let rightOpen: boolean, leftOpen: boolean, currentId: string;
 
     const hideActivity = (id: string) => {
-        const activityRequest: IActivityRequest = {
-            activityId: id, 
-            applicantId: user.id
-        };
-        activityApi.Post<AxiosResponse, IActivityRequest>("hide", activityRequest)
-            .then(() => activityContext.removeForeignActivity(id))
-            .catch(err => console.error(err)); // TODO Error Handling
+        activityContext.hideActivity(id);
         Toast.show("Activity hidden.", Toast.SHORT); // TODO Translation
     };
 
     const applyActivity = (id: string) => {
-        const application: IActivityRequest = { activityId: id, applicantId: user.id };
-        activityApi.Post<AxiosResponse, IActivityRequest>("apply", application)
-            .then(() => activityContext.removeForeignActivity(id))
-            .catch(err => console.error(err)) // TODO error handling
+        activityContext.applyToActivity(id);
         Toast.show("Application sent.", Toast.SHORT); // TODO Translation
     };
 

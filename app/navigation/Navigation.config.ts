@@ -26,6 +26,7 @@ export const RouteName = {
         About: "ProfileAbout",
         Gallery: "ProfileGallery",
         EditForm: "ProfileEditForm",
+        ProfileList: "ProfileList"
     },
     Settings: "Settings",
 };
