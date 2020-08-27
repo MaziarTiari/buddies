@@ -6,13 +6,14 @@ import FeedList from "../components/FeedList/FeedList";
 import ChatList from "../components/ChatList/ChatList";
 import ProfileTab from "./ProfileTab";
 import { LeftProfileHeader, RightProfileHeader } from "../components/ProfileHeader/ProfileHeader";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { ThemeContext } from "../context/ThemeContext/ThemeContext";
 import { LanguageContext } from "../context/LanguageContext/LanguageContext";
 import ActivityList from "../components/ActivityList/ActivityList";
 import Map from "../components/Map/Map";
 import { useNavigation } from "@react-navigation/native";
 import { SessionContext } from "../context/SessionContext/SessionContext";
+import BadgedIcon from "../components/BadgedIcon/BadgedIcon";
+import { ActivityContext } from "../context/ActivityContext/ActivityContext";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -23,6 +24,7 @@ const BottomTab = ({ route }: any) => {
     const { screen: screenOptions } = useNavOption();
     const { translations } = useContext(LanguageContext);
     const { userIsEditingProfile } = useContext(SessionContext);
+    const { unhandledApplications } = useContext(ActivityContext);
 
     // TODO: find nicer solution - maybe HOC or FAC
     const getHeaderTitle = (routeName: string): string => {
@@ -61,11 +63,12 @@ const BottomTab = ({ route }: any) => {
         return undefined;
     }
 
-    const getBottomIcon = (icon: string, focused: boolean): React.ReactNode => (
-        <MaterialCommunityIcons
-            name={icon}
+    const getBottomIcon = (icon: string, focused: boolean, badgeValue?: number): JSX.Element => (
+        <BadgedIcon
+            icon={icon}
             size={26}
             color={focused ? theme.App.primaryItem : theme.App.basicItem}
+            value={badgeValue}
         />
     );
 
@@ -82,6 +85,8 @@ const BottomTab = ({ route }: any) => {
         });
     }, [navigation, currentRoute, userIsEditingProfile]);
 
+
+
     return (
         <Tab.Navigator
             initialRouteName={RouteName.Feed}
@@ -93,7 +98,7 @@ const BottomTab = ({ route }: any) => {
                 name={RouteName.Activity.OtherList}
                 component={ActivityList}
                 options={{
-                    tabBarIcon: ({ focused }) => getBottomIcon("rocket", focused),
+                    tabBarIcon: ({ focused }) => getBottomIcon("rocket", focused, unhandledApplications),
                 }}
             />
             <Tab.Screen

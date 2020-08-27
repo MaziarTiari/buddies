@@ -8,14 +8,14 @@ import { RouteName } from "../../navigation/Navigation.config";
 import { LanguageContext } from "../../context/LanguageContext/LanguageContext";
 import { getDateDiffString } from "../../utils/date";
 import { SessionContext } from "../../context/SessionContext/SessionContext";
-import { IActivity, IOthersActivity } from "../../models/Activity";
+import { IActivity, IForeignActivity } from "../../models/Activity";
 import Avatar from "../Avatar/Avatar";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import moment from "moment";
 
 const defaultImg = require("../../../assets/img/default-activity-img.jpg");
 
-const ActivityListItem = (activity: IActivity | IOthersActivity) => {
+const ActivityListItem = (activity: IActivity | IForeignActivity) => {
     const { styles, theme } = useStyle();
     const navigation = useNavigation();
     const { translations } = useContext(LanguageContext);
@@ -23,6 +23,9 @@ const ActivityListItem = (activity: IActivity | IOthersActivity) => {
 
     const isOwnActivity = activity.userId === user.id;
     const memberCount = activity.memberUserIds.length + (activity.maxMember ? "/" + activity.maxMember : "") + " " + translations.member;
+    const applicantCount = (isOwnActivity && activity.applicantUserIds.length > 0)
+        ? activity.applicantUserIds.length + " " + translations.applicants
+        : undefined;
     const imageSource = activity.image ? { uri: "data:image/gif;base64," + activity.image.base64 } : defaultImg;
 
     const handleItemPressed = () => {
@@ -35,11 +38,14 @@ const ActivityListItem = (activity: IActivity | IOthersActivity) => {
         navigation.navigate(RouteName.Profile.OtherTab);
     };
 
-    const InfoWithIcon = (icon: string, text: string) => {
+    const InfoWithIcon = (icon: string, text: string, redText?: string) => {
         return (
             <View style={styles.infoIconContainer}>
                 <MaterialCommunityIcons name={icon} size={getLineHeight(fontsizes.small)} color={theme.App.primaryText} />
                 <Text style={styles.infoText} numberOfLines={1}>{text}</Text>
+                {redText !== undefined &&
+                    <Text style={[styles.infoText, { color: theme.App.errorColor }]} numberOfLines={1}>{redText}</Text>
+                }
             </View>
         );
     };
@@ -49,8 +55,8 @@ const ActivityListItem = (activity: IActivity | IOthersActivity) => {
                 <View style={styles.innerContainer}>
                     {!isOwnActivity &&
                         <Avatar
-                            username={(activity as IOthersActivity).username}
-                            base64={(activity as IOthersActivity).image?.base64}
+                            username={(activity as IForeignActivity).username}
+                            base64={(activity as IForeignActivity).avatar?.base64}
                             onPress={handleAvatarPressed}
                         />
                     }
@@ -65,7 +71,7 @@ const ActivityListItem = (activity: IActivity | IOthersActivity) => {
                                 InfoWithIcon("calendar", moment.unix(activity.startDate).format("LLL"))}
                             {activity.startDate !== undefined && activity.endDate !== undefined &&
                                 InfoWithIcon("clock", getDateDiffString(activity.startDate, activity.endDate))}
-                            {InfoWithIcon("account-group", memberCount)}
+                            {InfoWithIcon("account-group", memberCount, applicantCount)}
                         </View>
                     </View>
                 </View>

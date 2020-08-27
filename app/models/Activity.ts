@@ -24,4 +24,4 @@ export interface IApplication {
     activityId: string;
 }
 
-export type IOthersActivity = IActivity & IUserAvatar;
+export type IForeignActivity = IActivity & IUserAvatar;
