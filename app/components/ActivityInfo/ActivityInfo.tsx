@@ -17,6 +17,7 @@ import { ICategorizedInput } from "../../models/CategorizedInput";
 import useCategories from "../../Hooks/useCategories";
 import CustomModal from "../CustomModal/CustomModal";
 import InputField from "../InputField/InputField";
+import Button from "../Button/Button";
 
 const defaultImg = require("../../../assets/img/default-activity-img.jpg");
 
@@ -24,7 +25,7 @@ const ActivityInfo = () => {
     const style = useStyle();
     const navigation = useNavigation();
     const { translations } = useContext(LanguageContext);
-    const { activity, setActivity, userIsEditingActivity, cancelEditingActivity } = useContext(SessionContext);
+    const { activity, setActivity, userIsEditingActivity, user } = useContext(SessionContext);
     const { hobbyCategories } = useCategories();
 
     navigation.setOptions({ title: activity.title });
@@ -48,6 +49,14 @@ const ActivityInfo = () => {
         setActivityDescription(activity.description || "");
     };
 
+    const handleApplyActivity = (): void => {
+        // TODO
+    }
+
+    const handleHideActivity = (): void => {
+        // TODO
+    }
+
     // cancel when user navigates back to previous screen
     useEffect(() => {
         const backHandler = BackHandler.addEventListener("hardwareBackPress", () => userIsEditingActivity);
@@ -62,6 +71,24 @@ const ActivityInfo = () => {
                 <Swiper containerStyle={style.galleryContainer}>
                     <Image style={style.image} source={imageSource} />
                 </Swiper>
+
+                {/* Hide and Apply Buttons */}
+                {activity.userId !== user.id &&
+                    <View style={style.buttonContainer}>
+                        <Button
+                            title={translations.hide}
+                            style={style.button}
+                            textStyle={{ fontWeight: "normal" }}
+                            onPress={handleHideActivity}
+                        />
+                        <Button
+                            title={translations.apply}
+                            style={[style.button, { borderLeftWidth: 0 }]}
+                            textStyle={{ fontWeight: "normal" }}
+                            onPress={handleApplyActivity}
+                        />
+                    </View>
+                }
 
                 {/* Quick Info */}
                 <View style={style.primaryInfoContainer}>
