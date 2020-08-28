@@ -6,7 +6,7 @@ import { getResponsiveSize, fontsizes } from "../../utils/font/font";
 const MAX_HEIGHT = Dimensions.get("screen").height * 0.4;
 
 export const useStyle = (editable: boolean) => {
-    const { theme } = useContext(ThemeContext);
+    const { theme, themeType } = useContext(ThemeContext);
 
     return StyleSheet.create({
         container: {
@@ -19,14 +19,14 @@ export const useStyle = (editable: boolean) => {
             flex: 1, alignSelf: "stretch"
         },
         autosuggestInputField: {
-            backgroundColor: theme.App.menuBackground,
+            backgroundColor: theme.App.inputBackground,
             borderWidth: 0,
             borderBottomLeftRadius: 0,
             borderBottomRightRadius: 0,
         },
         dropDownListContainer: {
             maxHeight: MAX_HEIGHT,
-            backgroundColor: theme.App.menuBackground,
+            backgroundColor: theme.App.inputBackground,
             borderRadius: editable ? 0 : getResponsiveSize(10),
             borderBottomLeftRadius: getResponsiveSize(10),
             borderBottomRightRadius: getResponsiveSize(10),

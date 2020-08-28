@@ -12,13 +12,13 @@ export interface InputFieldProps extends TextInputProps {
 }
 
 export const InputFieldContainer = ({style, content, ...Props}: InputFieldProps) => {
-    const { theme } = useContext(ThemeContext);
+    const { theme, themeType } = useContext(ThemeContext);
 
     const styles = StyleSheet.create({
         inputContainer: {
             flexDirection: "row",
             alignItems: "center",
-            backgroundColor: theme.App.menuBackground,
+            backgroundColor: theme.App.inputBackground,
             flex: 1,
             borderRadius: getResponsiveSize(8),
             paddingHorizontal: getResponsiveSize(10),

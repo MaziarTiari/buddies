@@ -19,7 +19,7 @@ const ProfileTab = () => {
     useFocusEffect(() => {
         // fetch own profile when user clicks on profile in bottom tab
         if (route.name === RouteName.Profile.OwnTab) {
-            fetchUserProfile(user.id);
+            fetchUserProfile(user.id).then(() => console.log("success"));
         } else {
             navigation.setOptions({ title: translations.other_profile + userProfile.username })
         }

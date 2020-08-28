@@ -8,13 +8,14 @@ import useStyle from "./ActivityList.style";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
 import Toast from "react-native-simple-toast";
-import { IActivity } from "../../models/Activity";
+import { IActivity, IActivityRequest } from "../../models/Activity";
 import ActionButton from "../ActionButton/ActionButton";
 import { SessionContext } from "../../context/SessionContext/SessionContext";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { RouteName } from "../../navigation/Navigation.config";
 import { LanguageContext } from "../../context/LanguageContext/LanguageContext";
-import { ActivityContext } from '../../context/ActivityContext/ActivityContext';
+import { ActivityContext } from "../../context/ActivityContext/ActivityContext";
+import { defaultActivity } from "../../context/SessionContext/stateFrame";
 
 const ActivityList = () => {
     const navigation = useNavigation();
@@ -48,12 +49,12 @@ const ActivityList = () => {
     let rightOpen: boolean, leftOpen: boolean, currentId: string;
 
     const hideActivity = (id: string) => {
-        // TODO : Send hide to API
+        activityContext.hideActivity(id);
         Toast.show("Activity hidden.", Toast.SHORT); // TODO Translation
     };
 
     const applyActivity = (id: string) => {
-        // TODO : Send apply to API and check if user already applied
+        activityContext.applyToActivity(id);
         Toast.show("Application sent.", Toast.SHORT); // TODO Translation
     };
 
@@ -79,17 +80,17 @@ const ActivityList = () => {
             <View style={style.backgroundContainer}>
                 <View style={style.backgroundSideContainer}>
                     <MaterialCommunityIcons
-                        name="account-plus"
-                        color={theme.App.primaryText}
-                        size={getResponsiveSize(30)}
+                        name="hand"
+                        color={theme.App.acceptColor}
+                        size={getResponsiveSize(50)}
                     />
                     <Text style={style.text}>{translations.apply}</Text>
                 </View>
                 <View style={style.backgroundSideContainer}>
                     <MaterialCommunityIcons
                         name="eye-off"
-                        color={theme.App.primaryText}
-                        size={getResponsiveSize(30)}
+                        color={theme.App.rejectColor}
+                        size={getResponsiveSize(50)}
                     />
                     <Text style={style.text}>{translations.hide}</Text>
                 </View>
@@ -123,7 +124,7 @@ const ActivityList = () => {
                 />
                 {showOwnActivities &&
                     <ActionButton icon="plus" onPress={() => {
-                        setActivity({ id: "", title: "", userId: user.id, location: "", memberUserIds: [], applicantUserIds: [], visibility: 0 });
+                        setActivity({ ...defaultActivity , userId: user.id });
                         startEditingActivity();
                         navigation.navigate(RouteName.Activity.Info);
                     }} />

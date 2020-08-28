@@ -139,6 +139,7 @@ const Form = (Props: FormProps) => {
                         onPress={handleSubmit}
                         title={Props.buttonTitle}
                         style={style.submitButton}
+                        textStyle={style.buttonText}
                     />
                     {Props.linkLabel &&
                         <LinkLabel label={Props.linkLabel} onPress={Props.onLink} />

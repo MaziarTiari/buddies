@@ -53,7 +53,9 @@ export const InputField = ({style, ...Props}: InputFieldProps) => {
                 style={Props.containerStyle}
                 content={
                     <TextInput
-                        onContentSizeChange={Props.dynamicHeight && handleContentSizeChange}
+                        onContentSizeChange={
+                            Props.dynamicHeight && handleContentSizeChange
+                        }
                         {...Props}
                         style={[
                             styles.textInput,

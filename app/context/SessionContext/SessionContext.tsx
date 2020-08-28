@@ -1,4 +1,4 @@
-import React, { createContext, useState, ReactNode, useMemo } from "react";
+import React, { createContext, useState, ReactNode } from "react";
 import { IUserProfile, INewUserProfile } from "../../models/UserProfile";
 import { userProfileApi, activityApi } from "../../api/ApiClient";
 // import { baseUrl, hubs } from "../../api/channels";
@@ -6,12 +6,11 @@ import { AxiosError } from "axios";
 import { NOT_FOUND } from "http-status-codes";
 import { IActivity } from "../../models/Activity";
 import { IUser, INewUser } from "../../models/User";
-import { ISessionContextState, initialState as initState, AuthState } from "./stateFrame";
-import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
+import { ISessionContextState, initialState as initState, AuthState, IAvatarBgColor } from "./stateFrame";
 import { userApi } from "../../api/User/UserApi";
-import { baseUrl, hubs } from "../../api/channels";
 import { IPhotoGallery, IProfileImage } from "../../models/PhotoGallery";
 import { galleryApi } from "../../api/GalleryApi";
+import { IUserAvatar } from "../../models/UserAvatar";
 // end import ////////////////////////////////////////////////////////////////
 
 export const SessionContext = createContext<ISessionContextState>(initState);
@@ -19,7 +18,7 @@ export const SessionContext = createContext<ISessionContextState>(initState);
 /*****************************************************************************
  * Provides context of users current session
  * @param props consumer components as children
- * @returns object {    
+ * @returns object {
  *      user: current user,     
  *      setUser: sets current user,     
  *      userProfile: profile of current user,   
@@ -28,18 +27,6 @@ export const SessionContext = createContext<ISessionContextState>(initState);
  * 
  */
 export function SessionContextProvider(props: { children: ReactNode }) {
-
-    const userHubConnection = useMemo(() => {
-        const connection = new HubConnectionBuilder()
-            .withUrl(baseUrl + hubs.user)
-            .configureLogging(LogLevel.Information)
-            .build();
-
-        connection.start()
-            .then(res => console.log("connection with userHub started!"))
-            .catch(err => console.error("Could not connect to userHub! ", err));
-        return connection;
-    }, [])
 
     // Session
     const [authState, setAuthState] = useState<AuthState>(AuthState.UNAUTHORIZED);
@@ -56,13 +43,15 @@ export function SessionContextProvider(props: { children: ReactNode }) {
 
     const [errorMessage, setErrorMessage] = useState<string | undefined>(initState.errorMessage)
 
-    const [
-        userIsEditingProfile,
-        setUserIsEditingProfile] = useState<boolean>(initState.userIsEditingProfile);
+    const [avatarList, setAvatarList] = useState<IUserAvatar[]>(initState.avatarList);
 
-    const [
-        userIsEditingActivity,
-        setUserIsEditingActivity] = useState<boolean>(initState.userIsEditingActivity);
+    const [ userIsEditingProfile, setUserIsEditingProfile] = useState<boolean>(
+        initState.userIsEditingProfile
+    );
+
+    const [ userIsEditingActivity, setUserIsEditingActivity ] = useState<boolean>(
+        initState.userIsEditingActivity
+    );
 
     // Temporary Backups
     const [
@@ -103,9 +92,6 @@ export function SessionContextProvider(props: { children: ReactNode }) {
                         setAuthState(AuthState.AUTHORIZED_WITHOUT_PROFILE);
                     });
                 setUser(loggedInUser);
-                userHubConnection.invoke("addToUserGroup", loggedInUser.id)
-                    .then(res => "Added to User Group")
-                    .catch(err => "Could not Add to User Group");
             })
             .catch((axiosError: AxiosError) => {
                 setErrorMessage(axiosError.message);
@@ -147,19 +133,21 @@ export function SessionContextProvider(props: { children: ReactNode }) {
             });
     };
 
-    const fetchUserProfile = (userId: string) => {
-        if (userProfile.userId === userId) return;
+    const fetchUserProfile = async (userId: string) => {
+        if (userProfile.userId === userId) {
+            return userProfile;
+        }
         setIsLoading(true);
-        userProfileApi.Get<IUserProfile>(userId)
+        return  userProfileApi.Get<IUserProfile>(userId)
             .then((userProfile: IUserProfile) => {
                 setUserProfile(userProfile);
+                return userProfile;
             })
             .catch((axiosError: AxiosError) => {
-                setErrorMessage(axiosError.message);
+                console.error(axiosError);
+                throw axiosError as AxiosError;
             })
-            .finally(() => {
-                setIsLoading(false);
-            });
+            .finally(() => setIsLoading(false));
     };
 
     const fetchGallery = (userId: string) => {
@@ -254,6 +242,7 @@ export function SessionContextProvider(props: { children: ReactNode }) {
         activity,
         setActivity,
         isLoading,
+        setIsLoading,
         createUser,
         loginUser,
         createUserProfile,
@@ -273,6 +262,8 @@ export function SessionContextProvider(props: { children: ReactNode }) {
         uploadToGallery,
         errorMessage,
         setErrorMessage,
+        avatarList,
+        setAvatarList,
     };
 
     return (

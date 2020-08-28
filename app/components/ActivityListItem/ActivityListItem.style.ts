@@ -12,7 +12,7 @@ export const useStyle = () => {
         },
         outerContainer: {
             borderBottomWidth: 1,
-            borderColor: theme.App.layoutBackground,
+            borderColor: theme.App.devider,
             borderBottomStartRadius: getResponsiveSize(25),
             borderBottomEndRadius: getResponsiveSize(25),
         },

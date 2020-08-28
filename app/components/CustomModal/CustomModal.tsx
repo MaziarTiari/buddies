@@ -22,22 +22,22 @@ const CustomModal = (Props: CenteredModalProps) => {
             top: Props.fixPosition ? "15%" : 0,
         },
         modalView: {
-        paddingBottom: getResponsiveSize(20),
-        position:"absolute",
-        width:"90%",
-        alignSelf:"center",
-        alignItems:"stretch",
-        backgroundColor: theme.App.screenBackground,
-        borderRadius: 20,
-        paddingHorizontal: getResponsiveSize(20),
-        shadowColor: "#0000",
-        shadowOffset: {
-            width: 5,
-            height: 5
-        },
-        shadowOpacity: 0.5,
-        shadowRadius: 3.84,
-        elevation: 20
+            paddingBottom: getResponsiveSize(20),
+            position:"absolute",
+            width:"90%",
+            alignSelf:"center",
+            alignItems:"stretch",
+            backgroundColor: theme.App.screenBackground,
+            borderRadius: 20,
+            paddingHorizontal: getResponsiveSize(20),
+            shadowColor: "#0000",
+            shadowOffset: {
+                width: 5,
+                height: 5
+            },
+            shadowOpacity: 0.5,
+            shadowRadius: 3.84,
+            elevation: 20
         },
         header: {
             justifyContent: "space-between",
@@ -63,14 +63,14 @@ const CustomModal = (Props: CenteredModalProps) => {
                     <View style={styles.modalView}>
                         <View style={styles.header}>
                             <IconButton
-                                color={theme.App.primaryText}
+                                color={theme.App.rejectColor}
                                 style={styles.closeIcon}
                                 icon="window-minimize" 
                                 onPress={Props.onCloseModal}
                             />
                             {Props.onSubmit &&
                                 <IconButton
-                                    color={theme.App.primaryText}
+                                    color={theme.App.acceptColor}
                                     style={styles.submitIcon}
                                     icon="hand-okay" 
                                     onPress={Props.onSubmit}

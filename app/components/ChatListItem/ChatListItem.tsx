@@ -47,7 +47,7 @@ export const ChatListItem = (Props: ChatListItemProps) => {
 
     return (
         <ProfileListItem
-            uuid={Props.chatPartner.uuid}
+            userId={Props.chatPartner.uuid}
             isOnline={Props.chatPartner.isOnline}
             rightComponent={rightComponent}
             title={Props.chatPartner.displayName}

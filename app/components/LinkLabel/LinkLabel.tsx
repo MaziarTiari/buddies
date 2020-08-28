@@ -14,7 +14,8 @@ const LinkLabel = (Props: LinkLabelProps) => {
     const styles = StyleSheet.create({
         label: {
             fontSize: fontsizes.medium,
-            color: theme.App.labelLinkColor
+            color: theme.App.labelLinkColor,
+            fontWeight: "700"
         }
     })
 

@@ -13,6 +13,7 @@ export const RouteName = {
         OtherList: "ActivityOtherList",
         Info: "ActivityInfo",
         EditForm: "ActivityEditForm",
+        ApplicantList: "ApplicantList"
     },
     Map: "Map",
     Messages: {
@@ -26,6 +27,7 @@ export const RouteName = {
         About: "ProfileAbout",
         Gallery: "ProfileGallery",
         EditForm: "ProfileEditForm",
+        ProfileList: "ProfileList"
     },
     Settings: "Settings",
 };

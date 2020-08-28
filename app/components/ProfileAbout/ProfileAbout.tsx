@@ -94,25 +94,25 @@ const ProfileAbout = () => {
                     </View>
                     <TouchableRippleCircle onPress={() => { }}>
                         <View style={style.innerRippleContainer}>
-                            <Text style={style.headline}>
+                            <Text style={style.linkHeadline}>
                                 {userProfile.friends ? userProfile.friends.length : 0}
                             </Text>
-                            <Text style={style.text}>{translations.friends}</Text>
+                            <Text style={style.linkText}>{translations.friends}</Text>
                         </View>
                     </TouchableRippleCircle>
                     <TouchableRippleCircle onPress={() => { }}>
                         <View style={style.innerRippleContainer}>
-                            <Text style={style.headline}>
+                            <Text style={style.linkHeadline}>
                                 {userProfile.groups ? userProfile.groups.length : 0}
                             </Text>
-                            <Text style={style.text}>{translations.groups}</Text>
+                            <Text style={style.linkText}>{translations.groups}</Text>
                         </View>
                     </TouchableRippleCircle>
                 </View>
 
                 {/* Personell */}
                 <EditableSection
-                    editable={userIsEditingProfile}
+                    isEditing={userIsEditingProfile}
                     onEdit={() => navigation.navigate(RouteName.Profile.EditForm)}>
                     <Headline style={style.headline}>
                         {translations.personal}
@@ -138,7 +138,7 @@ const ProfileAbout = () => {
                 {/* Jobs */}
                 {((userProfile.jobs && userProfile.jobs.length > 0) || userIsEditingProfile) &&
                     <EditableSection
-                        editable={userIsEditingProfile}
+                        isEditing={userIsEditingProfile}
                         onEdit={() => {
                             navigation.navigate(
                                 RouteName.Taglist,
@@ -170,7 +170,7 @@ const ProfileAbout = () => {
                 {/* Hobbies */}
                 {((userProfile.hobbies && userProfile.hobbies.length > 0) || userIsEditingProfile) &&
                     <EditableSection
-                        editable={userIsEditingProfile}
+                        isEditing={userIsEditingProfile}
                         onEdit={() => {
                             navigation.navigate(
                                 RouteName.Taglist,
@@ -200,7 +200,7 @@ const ProfileAbout = () => {
 
                 {/* About Text */}
                 {((userProfile.info && userProfile.info.trim().length > 0) || userIsEditingProfile) &&
-                    <EditableSection editable={userIsEditingProfile} onEdit={() => setShowInfoEditor(true)}>
+                    <EditableSection isEditing={userIsEditingProfile} onEdit={() => setShowInfoEditor(true)}>
                         <Text style={style.headline}>{translations.biography}</Text>
                         {userProfile.info && <Text style={style.text}>{userProfile.info}</Text>}
                     </EditableSection>

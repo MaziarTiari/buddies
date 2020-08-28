@@ -6,7 +6,7 @@ export interface IActivity {
     id: string;
     userId: string;
     title: string;
-    location: string;
+    location?: string;
     memberUserIds: Array<string>;
     applicantUserIds: Array<string>;
     visibility: number ;
@@ -19,7 +19,7 @@ export interface IActivity {
     maxMember?: number ;
 }
 
-export interface IApplication {
+export interface IActivityRequest {
     applicantId: string;
     activityId: string;
 }

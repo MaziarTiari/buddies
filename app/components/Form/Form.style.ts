@@ -4,7 +4,7 @@ import { getResponsiveSize, fontsizes, getLineHeight } from "../../utils/font/fo
 import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
 
 const useStyle = () => {
-    const { theme } = useContext(ThemeContext);
+    const { theme, themeType } = useContext(ThemeContext);
     return StyleSheet.create({
         contentContainer: {
             marginHorizontal: getResponsiveSize(30),
@@ -22,8 +22,12 @@ const useStyle = () => {
         },
         submitButton: {
             marginVertical: getResponsiveSize(20),
-            alignSelf: "center"
+            alignSelf: "center",
         },
+        buttonText: {
+            color: themeType === "light" 
+                ? theme.App.layoutBackground : theme.App.primaryText
+        }
     });
 };
 
