@@ -14,8 +14,8 @@ const ActivityListHeader = () => {
 
     return (
         <BadgedIcon
-            color={theme.App.basicItem}
-            icon="wunderlist"
+            color={theme.App.interactiveItem}
+            icon="store"
             size={getResponsiveSize(30)}
             onPress={() => navigation.navigate(RouteName.Activity.OwnList)}
             value={unhandledApplications}

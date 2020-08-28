@@ -20,7 +20,7 @@ const Tab = createMaterialBottomTabNavigator();
 const BottomTab = ({ route }: any) => {
 
     const navigation = useNavigation();
-    const { theme } = useContext(ThemeContext);
+    const { theme, themeType } = useContext(ThemeContext);
     const { screen: screenOptions } = useNavOption();
     const { translations } = useContext(LanguageContext);
     const { userIsEditingProfile } = useContext(SessionContext);
@@ -29,10 +29,10 @@ const BottomTab = ({ route }: any) => {
     // TODO: find nicer solution - maybe HOC or FAC
     const getHeaderTitle = (routeName: string): string => {
         switch (routeName) {
-            case RouteName.Root:
             case RouteName.Feed:
                 return translations.feed;
             case RouteName.Profile.OwnTab:
+            case RouteName.Root:
                 return translations.my_profile;
             case RouteName.Map:
                 return translations.explore;
@@ -89,16 +89,21 @@ const BottomTab = ({ route }: any) => {
 
     return (
         <Tab.Navigator
-            initialRouteName={RouteName.Feed}
+            initialRouteName={RouteName.Profile.About}
             screenOptions={{ tabBarColor: theme.App.layoutBackground }}
             labeled={false}
-            barStyle={{ height: userIsEditingProfile ? 0 : undefined }}
+            barStyle={{ 
+                height: userIsEditingProfile ? 0 : undefined, 
+                borderTopWidth: themeType === "light" ? 1 : 0,
+                borderColor: "#F0F0F0",
+            }}
         >
             <Tab.Screen
                 name={RouteName.Activity.OtherList}
                 component={ActivityList}
                 options={{
-                    tabBarIcon: ({ focused }) => getBottomIcon("rocket", focused, unhandledApplications),
+                    tabBarIcon: ({ focused }) => 
+                        getBottomIcon("rocket", focused, unhandledApplications),
                 }}
             />
             <Tab.Screen

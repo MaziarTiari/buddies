@@ -21,7 +21,14 @@ export interface ITheme {
         devider: string;
         buttonBackground: string;
         labelLinkColor: string;
+        acceptColor: string;
+        rejectColor: string;
         errorColor: string;
+        secondaryAcceptColor: string;
+        secondaryRejectColor: string;
+        interactiveItem: string;
+        secondaryInteractiveItem: string;
+        inputBackground: string;
     };
     ActivityListItem: {
         heartIconOn: string;

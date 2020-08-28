@@ -7,7 +7,6 @@ const useStyle = () => {
     const theme = useContext(ThemeContext).theme;
     return StyleSheet.create({
         root: {
-            borderBottomWidth: 1,
             borderBottomStartRadius: getResponsiveSize(25),
             borderBottomEndRadius: getResponsiveSize(25),
             borderColor: theme.App.layoutBackground,

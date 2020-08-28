@@ -7,9 +7,8 @@ const useStyle = () => {
     const { theme } = useContext(ThemeContext);
     return StyleSheet.create({
         container: {
-            //borderWidth: 1,
             borderColor: theme.App.layoutBackground,
-            backgroundColor: "#C2821F",
+            backgroundColor: theme.App.primaryItem,
             borderRadius: getResponsiveSize(50),
             alignSelf: "baseline",
         },

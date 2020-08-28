@@ -16,7 +16,7 @@ export const FriedListItem = (Props: IUserProfile) => {
 
     return (
         <ProfileListItem
-            id={Props.id.toString()}
+            userId={Props.id.toString()}
             isOnline={false}
             rightComponent={rightComponent}
             title={subTitle}

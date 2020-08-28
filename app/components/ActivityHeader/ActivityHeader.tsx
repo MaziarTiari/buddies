@@ -20,7 +20,7 @@ export const LeftActivityHeader = () => {
     return userIsEditingActivity
         ? <IconButton
             icon="close"
-            color={theme.App.basicItem}
+            color={theme.App.rejectColor}
             onPress={handleCancelPressed}
         />
         : <IconButton
@@ -47,45 +47,46 @@ export const RightActivityHeader = () => {
             {isOwnActivity && !userIsEditingActivity &&
                 <IconButton
                     icon="lead-pencil"
-                    color={theme.App.basicItem}
+                    color={theme.App.interactiveItem}
                     onPress={startEditingActivity}
                 />
             }
             {isOwnActivity && userIsEditingActivity &&
                 <IconButton
                     icon="check"
-                    color={theme.App.basicItem}
+                    color={theme.App.acceptColor}
                     onPress={saveEditingActivity}
                 />
             }
             {!isOwnActivity &&
-                <Menu>
-                    <MenuTrigger>
-                        <IconButton
-                            color={theme.App.basicItem}
-                            icon="dots-vertical-circle-outline"
-                        />
-                    </MenuTrigger>
-                    <MenuOptions
-                        customStyles={{
-                            optionsWrapper: {
-                                backgroundColor: theme.App.menuBackground,
-                            },
-                            optionWrapper: {
-                                padding: getResponsiveSize(12),
-                            },
-                            optionText: {
-                                fontSize: fontsizes.small,
-                                color: theme.App.primaryText,
-                            },
-                        }}
-                    >
-                        <MenuOption onSelect={() => { }} text="Option 1" />
-                        <MenuOption onSelect={() => { }} text="Option 2" />
-                        <MenuOption onSelect={() => { }} text="Option 3" />
-                        <MenuOption onSelect={() => { }} text="Option 4" />
-                    </MenuOptions>
-                </Menu>
+                null
+                // <Menu>
+                //     <MenuTrigger>
+                //         <IconButton
+                //             color={theme.App.basicItem}
+                //             icon="dots-vertical-circle-outline"
+                //         />
+                //     </MenuTrigger>
+                //     <MenuOptions
+                //         customStyles={{
+                //             optionsWrapper: {
+                //                 backgroundColor: theme.App.menuBackground,
+                //             },
+                //             optionWrapper: {
+                //                 padding: getResponsiveSize(12),
+                //             },
+                //             optionText: {
+                //                 fontSize: fontsizes.small,
+                //                 color: theme.App.primaryText,
+                //             },
+                //         }}
+                //     >
+                //         <MenuOption onSelect={() => { }} text="Option 1" />
+                //         <MenuOption onSelect={() => { }} text="Option 2" />
+                //         <MenuOption onSelect={() => { }} text="Option 3" />
+                //         <MenuOption onSelect={() => { }} text="Option 4" />
+                //     </MenuOptions>
+                // </Menu>
             }
         </React.Fragment>
     );

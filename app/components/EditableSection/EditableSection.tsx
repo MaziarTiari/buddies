@@ -34,7 +34,7 @@ const EditableSection = (Props: EditableSectionProp) => {
                 <IconButton
                     onPress={Props.onEdit}
                     style={styles.editIcon}
-                    color={theme.App.primaryText}
+                    color={theme.App.interactiveItem}
                     icon={"lead-pencil"}
                     size={getResponsiveSize(26)} />
             }

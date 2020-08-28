@@ -12,6 +12,17 @@ const useStyle = () => {
             color: theme.App.primaryText,
             lineHeight: getLineHeight(fontsizes.medium),
         },
+        linkHeadline: {
+            fontSize: fontsizes.medium,
+            fontWeight: "bold",
+            color: theme.App.secondaryInteractiveItem,
+            lineHeight: getLineHeight(fontsizes.medium),
+        },
+        linkText: {
+            fontSize: fontsizes.small,
+            color: theme.App.secondaryInteractiveItem,
+            lineHeight: getLineHeight(fontsizes.small),
+        },
         primaryInfoContainer: {
             flexDirection: "row",
             width: "100%",
@@ -33,6 +44,8 @@ const useStyle = () => {
         galleryContainer: {
             width: "100%",
             aspectRatio: 1, // sets the height equal to width
+            borderBottomWidth: 1,
+            borderBottomColor: theme.App.devider
         },
         image: {
             width: "100%",

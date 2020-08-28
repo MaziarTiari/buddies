@@ -38,7 +38,7 @@ export const ActivityContext = createContext(initState);
 type ContextActivity = IActivity | IForeignActivity;
 
 export function ActivityContextProvider(props: { children: ReactNode }) {
-    const { user } = useContext(SessionContext);
+    const { user, activity: sessionActiity, setActivity } = useContext(SessionContext);
     const [ownActivities, setOwnActivities] = useState(initState.ownActivities);
     const [foreignActivities, setForeignActivities] = useState(initState.foreignActivities);
     const [isLoadingOwn, setIsLoadingOwn] = useState(initState.isLoadingOwn);
@@ -84,7 +84,7 @@ export function ActivityContextProvider(props: { children: ReactNode }) {
                     ? [...activity.applicantUserIds, application.applicantId]
                     : [application.activityId]
                     ;
-                setOwnActivities(getUpdatedActivities([...ownActivities], activity));
+                setOwnActivities([...getUpdatedActivities([...ownActivities], activity)]);
             }
         });
         return () => { 
@@ -155,6 +155,9 @@ export function ActivityContextProvider(props: { children: ReactNode }) {
 
     function updateOwnActivity(activity: IActivity) {
         setIsLoadingOwn(true);
+        if (sessionActiity.id === activity.id) {
+            setActivity(activity);
+        }
         setOwnActivities(getUpdatedActivities([...ownActivities], activity));
         setIsLoadingOwn(false);
     }

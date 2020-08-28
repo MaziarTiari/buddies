@@ -12,7 +12,6 @@ import TouchableRippleCircle from "../TouchableRippleCircle/TouchableRippleCircl
 import { SessionContext } from "../../context/SessionContext/SessionContext";
 import { RouteName } from "../../navigation/Navigation.config";
 import { ICategorizedInputListConfig } from "../CategorizedInputList/CategorizedInputList";
-import { ICategorizedInput } from "../../models/CategorizedInput";
 import CustomModal from "../CustomModal/CustomModal";
 import InputField from "../InputField/InputField";
 import Button from "../Button/Button";
@@ -20,39 +19,63 @@ import { getResponsiveSize, fontsizes, getLineHeight } from "../../utils/font/fo
 import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
 import FormTextInput from "../FormTextInput/FormTextInput";
 import { ActivityContext } from "../../context/ActivityContext/ActivityContext";
-import { ProfileListProps } from "../ProfileList/ProfileList";
 import { userProfileApi } from "../../api/ApiClient";
 import { IUserAvatar } from "../../models/UserAvatar";
 import { Menu, MenuTrigger, MenuOptions, MenuOption } from "react-native-popup-menu";
 import useImagePicker from "../../Hooks/useImagePicker";
 import { CategoryContext } from "../../context/CategoryContext/CategoryContext";
-
+import { ApplicantListProps } from "../ApplicantList/ApplicantList";
 const defaultImg = require("../../../assets/img/default-activity-img.jpg");
-const MIN_TITLE_LENGTH = 10;
+// end imports ........................................................................ //
+
+const MIN_TITLE_LENGTH = 7;
 
 const ActivityInfo = () => {
+
+    // States ------------------------------------------------------------------------- \\
+
     const style = useStyle();
     const navigation = useNavigation();
     const { translations } = useContext(LanguageContext);
     const { hobbyCategories } = useContext(CategoryContext);
-    const { theme } = useContext(ThemeContext);
-    const { hideActivity, applyToActivity } = useContext(ActivityContext);
-    const { activity, setActivity, userIsEditingActivity, user } = useContext(SessionContext);
+    const { theme, themeType } = useContext(ThemeContext);
     const { selectImage } = useImagePicker();
+
+    const { 
+        hideActivity, 
+        applyToActivity, 
+    } = useContext(ActivityContext);
+
+    const { 
+        activity, 
+        setActivity, 
+        userIsEditingActivity, 
+        user,
+        setAvatarList,
+    } = useContext(SessionContext);
+
+
+
+    // end States ..................................................................... //
 
     navigation.setOptions({ title: activity.title });
 
-    const imageSource = activity.image ? { uri: "data:image/gif;base64," + activity.image.base64 } : defaultImg;
+    const imageSource = activity.image 
+        ? { 
+            uri: "data:image/gif;base64," + 
+            activity.image.base64 
+        } 
+        : defaultImg;
 
     const [showDescriptionEditor, setShowDescriptionEditor] = useState<boolean>(false);
-    const [showTitleEditor, setShowTitleEditor] = useState<boolean>(userIsEditingActivity && activity.title === "");
-    const [activityDescription, setActivityDescription] = useState<string>(activity.description || "");
+    const [showTitleEditor, setShowTitleEditor] = useState<boolean>(
+        userIsEditingActivity && activity.title === ""
+    );
+    const [activityDescription, setActivityDescription] = useState<string>(
+        activity.description || ""
+    );
     const [activityTitle, setActivityTitle] = useState<string>(activity.title);
     const [showError, setShowError] = useState<boolean>(false);
-
-    const handleTagItemsChanged = (tags: ICategorizedInput[]): void => {
-        setActivity({ ...activity, tags: tags });
-    };
 
     const handleDescriptionEditorSubmit = (): void => {
         setShowDescriptionEditor(false);
@@ -83,53 +106,50 @@ const ActivityInfo = () => {
     };
 
     const handleImagePicked = (base64: string, width: number, height: number) => {
-        setActivity({ ...activity, image: { base64: base64, width: width, height: height } });
+        console.log("IMAGEPICKER")
+        setActivity({ 
+            ...activity, 
+            image: { 
+                base64: base64, 
+                width: width, 
+                height: height 
+            } 
+        });
     };
 
-    const handleDeleteImage = () => {
-        setActivity({ ...activity, image: undefined });
-    }
-
-    const handleApplyActivity = (): void => {
-        applyToActivity(activity.id)
-    }
-
-    const handleHideActivity = (): void => {
-        hideActivity(activity.id);
-    }
-
-    const onApplicants = () => {
+    function handleOnApplicants() {
         userProfileApi.Post<Array<IUserAvatar>, Array<string>>(
             "getUserAvatars", activity.applicantUserIds
         ).then(avatars => {
+            setAvatarList(avatars);
+            navigation.navigate(
+                RouteName.Activity.ApplicantList,
+                {
+                    activity: activity,
+                } as ApplicantListProps
+            )
+        })
+    }
+
+    function handleOnMemebers() {
+        userProfileApi.Post<Array<IUserAvatar>, Array<string>>(
+            "getUserAvatars", activity.memberUserIds
+        ).then(avatars => {
+            setAvatarList(avatars);
             navigation.navigate(
                 RouteName.Profile.ProfileList,
                 {
-                    avatars: avatars,
-                    getAvatarsRightComponent: avatar => (
-                        <View style={{display: "flex"}}>
-                            <IconButton
-                                color={theme.App.primaryText}
-                                style={{marginRight: 4, backgroundColor: "green"}}
-                                icon="hand-okay" 
-                                onPress={() => alert("on accept")}
-                            />
-                            <IconButton
-                                color={theme.App.primaryText}
-                                style={{marginRight: 4, backgroundColor: "red"}}
-                                icon="account-remove" 
-                                onPress={() => alert("on accept")}
-                            />
-                        </View>
-                    )
-                } as ProfileListProps
+                    activity: activity,
+                } as ApplicantListProps
             )
         })
     }
 
     // cancel when user navigates back to previous screen
     useEffect(() => {
-        const backHandler = BackHandler.addEventListener("hardwareBackPress", () => userIsEditingActivity);
+        const backHandler = BackHandler.addEventListener(
+            "hardwareBackPress", () => userIsEditingActivity
+        );
         return () => backHandler.remove();
     }, [userIsEditingActivity]);
 
@@ -144,7 +164,20 @@ const ActivityInfo = () => {
                         <View style={style.imageEditContainer}>
                             <Menu>
                                 <MenuTrigger>
-                                    <IconButton icon="lead-pencil" color={theme.App.primaryText} />
+                                    <View 
+                                        style={{
+                                            backgroundColor: theme.App.screenBackground,
+                                            borderTopLeftRadius: 50,
+                                            paddingLeft: 10,
+                                            paddingTop: 10
+                                        }}
+                                    >
+                                        <IconButton 
+                                            icon="lead-pencil" 
+                                            color={theme.App.interactiveItem}
+                                            style={{margin: 2}}
+                                        />
+                                    </View>
                                 </MenuTrigger>
                                 <MenuOptions
                                     customStyles={{
@@ -162,15 +195,21 @@ const ActivityInfo = () => {
                                     }}
                                 >
                                     <MenuOption
-                                        onSelect={() => { selectImage("file", handleImagePicked) }}
+                                        onSelect={() => { 
+                                            selectImage("file", handleImagePicked) 
+                                        }}
                                         text={translations.upload_from_filesystem}
                                     />
                                     <MenuOption
-                                        onSelect={() => { selectImage("camera", handleImagePicked) }}
+                                        onSelect={() => { 
+                                            selectImage("camera", handleImagePicked) 
+                                        }}
                                         text={translations.upload_from_camera}
                                     />
                                     <MenuOption
-                                        onSelect={handleDeleteImage}
+                                        onSelect={() =>
+                                            setActivity({ ...activity, image: undefined })
+                                        }
                                         text={translations.remove_image}
                                     />
                                 </MenuOptions>
@@ -180,22 +219,22 @@ const ActivityInfo = () => {
                 </View>
 
                 {/* Hide and Apply Buttons */}
-                {activity.userId !== user.id &&
+                {/* {activity.userId !== user.id &&
                     <View style={style.buttonContainer}>
                         <Button
                             title={translations.hide}
                             style={style.button}
                             textStyle={{ fontWeight: "normal" }}
-                            onPress={handleHideActivity}
+                            onPress={() => hideActivity(activity.id)}
                         />
                         <Button
                             title={translations.apply}
                             style={[style.button, { borderLeftWidth: 0 }]}
                             textStyle={{ fontWeight: "normal" }}
-                            onPress={handleApplyActivity}
+                            onPress={() => applyToActivity(activity.id)}
                         />
                     </View>
-                }
+                } */}
 
                 {/* Quick Info */}
                 <View style={style.primaryInfoContainer}>
@@ -210,7 +249,7 @@ const ActivityInfo = () => {
                                     icon="lead-pencil"
                                     size={getResponsiveSize(26)}
                                     style={{ margin: getResponsiveSize(-6) }}
-                                    color={theme.App.primaryText}
+                                    color={theme.App.interactiveItem}
                                     onPress={() => setShowTitleEditor(true)}
                                 />
                             }
@@ -223,18 +262,39 @@ const ActivityInfo = () => {
                             {activity.visibility.toString()}
                         </Text>
                     </View>
-                    <TouchableRippleCircle onPress={() => onApplicants()}>
+                    <TouchableRippleCircle onPress={() => handleOnApplicants()}>
                         <View style={style.innerRippleContainer}>
-                            <Text style={style.headline}>{activity.applicantUserIds.length}</Text>
-                            <Text style={style.text}>{translations.applicants}</Text>
+                            <Text 
+                                style={[
+                                    style.linkHeadline, 
+                                    activity.applicantUserIds.length > 0  && {
+                                        color:  theme.App.rejectColor
+                                    }
+                                ]}
+                            >
+                                {activity.applicantUserIds.length}
+                            </Text>
+                            <Text 
+                                style={[
+                                    style.linkText, 
+                                    activity.applicantUserIds.length > 0  && {
+                                        color:  theme.App.rejectColor
+                                    }
+                                ]}
+                            >
+                                {translations.applicants}
+                            </Text>
                         </View>
                     </TouchableRippleCircle>
-                    <TouchableRippleCircle onPress={() => alert("on members")}>
+                    <TouchableRippleCircle onPress={() => handleOnMemebers()}>
                         <View style={style.innerRippleContainer}>
-                            <Text style={style.headline}>
-                                {activity.memberUserIds.length + (activity.maxMember ? " / " + activity.maxMember : "")}
+                            <Text style={style.linkHeadline}>
+                                {activity.memberUserIds.length + 
+                                (activity.maxMember ? " / " + activity.maxMember : "")}
                             </Text>
-                            <Text style={style.text}>{translations.member}</Text>
+                            <Text style={style.linkText}>
+                                {translations.member}
+                            </Text>
                         </View>
                     </TouchableRippleCircle>
                 </View>
@@ -269,7 +329,8 @@ const ActivityInfo = () => {
                             editorCategoryPlaceholder: translations.category,
                             items: activity.tags,
                             headerTitle: translations.subjects,
-                            onItemsChanged: handleTagItemsChanged,
+                            onItemsChanged: tags => 
+                                setActivity({ ...activity, tags: tags }),
                         } as ICategorizedInputListConfig)
                     }}>
                         <Headline style={style.headline}>{translations.subjects}</Headline>
@@ -331,8 +392,33 @@ const ActivityInfo = () => {
                         hasError={showError && activityTitle.length < MIN_TITLE_LENGTH}
                     />
                 </CustomModal>
-
             </ScrollView>
+            <View 
+                style={{
+                    display: "flex",
+                    width: "100%",
+                    justifyContent: "space-between",
+                    flexDirection: "row",
+                    backgroundColor: theme.App.layoutBackground,
+                    minHeight: "10%",
+                    maxHeight: 100,
+                    borderTopWidth: themeType === "light" ? 2.5 : 0,
+                    borderColor: "#ECECEC"
+                }}
+            >
+                <IconButton 
+                    icon="eye-off"
+                    size={60}
+                    onPress={() => hideActivity(activity.id)}
+                    color={theme.App.rejectColor}
+                />
+                <IconButton 
+                    icon="hand"
+                    size={60}
+                    onPress={() => applyToActivity(activity.id)}
+                    color={theme.App.acceptColor}
+                />
+            </View>
         </Container >
     );
 };

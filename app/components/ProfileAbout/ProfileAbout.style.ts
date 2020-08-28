@@ -28,6 +28,17 @@ const useStyle = () => {
             color: theme.App.primaryText,
             lineHeight: getLineHeight(fontsizes.medium),
         },
+        linkHeadline: {
+            fontSize: fontsizes.medium,
+            fontWeight: "bold",
+            color: theme.App.secondaryInteractiveItem,
+            lineHeight: getLineHeight(fontsizes.medium),
+        },
+        linkText: {
+            fontSize: fontsizes.small,
+            color: theme.App.secondaryInteractiveItem,
+            lineHeight: getLineHeight(fontsizes.small),
+        },
         text: {
             fontSize: fontsizes.small,
             color: theme.App.secondaryText,

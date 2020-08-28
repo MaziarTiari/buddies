@@ -94,18 +94,18 @@ const ProfileAbout = () => {
                     </View>
                     <TouchableRippleCircle onPress={() => { }}>
                         <View style={style.innerRippleContainer}>
-                            <Text style={style.headline}>
+                            <Text style={style.linkHeadline}>
                                 {userProfile.friends ? userProfile.friends.length : 0}
                             </Text>
-                            <Text style={style.text}>{translations.friends}</Text>
+                            <Text style={style.linkText}>{translations.friends}</Text>
                         </View>
                     </TouchableRippleCircle>
                     <TouchableRippleCircle onPress={() => { }}>
                         <View style={style.innerRippleContainer}>
-                            <Text style={style.headline}>
+                            <Text style={style.linkHeadline}>
                                 {userProfile.groups ? userProfile.groups.length : 0}
                             </Text>
-                            <Text style={style.text}>{translations.groups}</Text>
+                            <Text style={style.linkText}>{translations.groups}</Text>
                         </View>
                     </TouchableRippleCircle>
                 </View>

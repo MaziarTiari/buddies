@@ -14,9 +14,7 @@ import { SessionContext } from "../../context/SessionContext/SessionContext";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { RouteName } from "../../navigation/Navigation.config";
 import { LanguageContext } from "../../context/LanguageContext/LanguageContext";
-import { ActivityContext } from '../../context/ActivityContext/ActivityContext';
-import { activityApi } from "../../api/ApiClient";
-import { AxiosResponse } from 'axios';
+import { ActivityContext } from "../../context/ActivityContext/ActivityContext";
 
 const ActivityList = () => {
     const navigation = useNavigation();

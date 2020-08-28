@@ -15,7 +15,8 @@ export const LeftProfileHeader = () => {
     return userIsEditingProfile
         ? <IconButton
             icon="close"
-            color={theme.App.basicItem}
+            size={getResponsiveSize(35)}
+            color={theme.App.rejectColor}
             onPress={cancelEditingProfile}
         />
         : <View />
@@ -40,12 +41,12 @@ export const RightProfileHeader = () => {
                 <React.Fragment>
                     <IconButton
                         icon="lead-pencil"
-                        color={theme.App.basicItem}
+                        color={theme.App.interactiveItem}
                         onPress={startEditingProfile}
                     />
                     <IconButton
                         icon="cogs"
-                        color={theme.App.basicItem}
+                        color={theme.App.interactiveItem}
                         onPress={() => navigation.navigate(RouteName.Settings)}
                     />
                 </React.Fragment>
@@ -53,7 +54,8 @@ export const RightProfileHeader = () => {
             {isOwnProfile && userIsEditingProfile &&
                 <IconButton
                     icon="check"
-                    color={theme.App.basicItem}
+                    size={getResponsiveSize(35)}
+                    color={theme.App.acceptColor}
                     onPress={saveEditingProfile}
                 />
             }
