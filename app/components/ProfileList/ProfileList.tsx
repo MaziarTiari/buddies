@@ -6,6 +6,7 @@ import { useRoute, useNavigation } from "@react-navigation/native";
 import { ProfileListItem } from "../ProfileListItem/ProfileListItem";
 import { SessionContext } from "../../context/SessionContext/SessionContext";
 import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
+import { RouteName } from "../../navigation/Navigation.config";
 
 export interface ProfileListProps {
     getAvatarsRightComponent?: (avatar: IUserAvatar) => JSX.Element;
@@ -14,9 +15,15 @@ export interface ProfileListProps {
 export default function ProfileList() {
     const navigation = useNavigation();
     const route = useRoute();
-    const { theme } = useContext(ThemeContext);
-    const { avatarList } = useContext(SessionContext);
+    const { avatarList, fetchUserProfile } = useContext(SessionContext);
     const props = route.params as ProfileListProps;
+
+    function handleOnAvatarPress(userId: string) {
+        fetchUserProfile(userId)
+            .then( userProfile => {
+                navigation.navigate(RouteName.Profile.OtherTab);
+            });
+    }
 
     return (
         <Container type="screen" layout="root">
@@ -30,6 +37,7 @@ export default function ProfileList() {
                             subTitle={avatar.username}
                             title={avatar.firstname + " " + avatar.lastname}
                             rightComponent={props.getAvatarsRightComponent?.(avatar)}
+                            onPress={() => handleOnAvatarPress(avatar.userId)}
                         />
                     )}
                     keyExtractor={(avatar) => avatar.userId}

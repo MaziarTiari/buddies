@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useLayoutEffect } from "react";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import { RouteName, useNavOption } from "./Navigation.config";
 import ActivityListHeader from "../components/ActivityListHeader/ActivityListHeader";
@@ -10,7 +10,7 @@ import { ThemeContext } from "../context/ThemeContext/ThemeContext";
 import { LanguageContext } from "../context/LanguageContext/LanguageContext";
 import ActivityList from "../components/ActivityList/ActivityList";
 import Map from "../components/Map/Map";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { SessionContext } from "../context/SessionContext/SessionContext";
 import BadgedIcon from "../components/BadgedIcon/BadgedIcon";
 import { ActivityContext } from "../context/ActivityContext/ActivityContext";
@@ -32,11 +32,11 @@ const BottomTab = ({ route }: any) => {
             case RouteName.Feed:
                 return translations.feed;
             case RouteName.Profile.OwnTab:
-            case RouteName.Root:
                 return translations.my_profile;
             case RouteName.Map:
                 return translations.explore;
             case RouteName.Activity.OtherList:
+            case RouteName.Root:
                 return translations.activities;
             case RouteName.Messages.List:
                 return translations.messages;
@@ -48,6 +48,7 @@ const BottomTab = ({ route }: any) => {
     const getHeaderRight = (routeName: string): (() => JSX.Element) | undefined => {
         switch (routeName) {
             case RouteName.Activity.OtherList:
+            case RouteName.Root:
                 return () => <ActivityListHeader />;
             case RouteName.Profile.OwnTab:
                 return () => <RightProfileHeader />;
@@ -89,7 +90,7 @@ const BottomTab = ({ route }: any) => {
 
     return (
         <Tab.Navigator
-            initialRouteName={RouteName.Profile.About}
+            initialRouteName={RouteName.Activity.OtherList}
             screenOptions={{ tabBarColor: theme.App.layoutBackground }}
             labeled={false}
             barStyle={{ 

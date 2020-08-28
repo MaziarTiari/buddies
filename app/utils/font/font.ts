@@ -10,6 +10,11 @@ export const getResponsiveSize = (value: number) => {
     return scaling > maxScaling ? maxScaling * value : scaling * value;
 };
 
+export const getResponsiveHeight = (value: number) => {
+    const scaling = device.height / 800;
+    return scaling > maxScaling ? maxScaling * value : scaling * value;
+};
+
 export const fontsizes = {
     large: getResponsiveSize(26),
     medium: getResponsiveSize(22),

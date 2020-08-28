@@ -23,14 +23,7 @@ export interface ProfileListItemProps {
 export const ProfileListItem = (props: ProfileListItemProps) => {
     const styles = useStyle();
     const navigation = useNavigation();
-    const { fetchUserProfile, setIsLoading } = useContext(SessionContext);
-
-    async function handleOnPress() {
-        setIsLoading(true);
-        fetchUserProfile(props.userId)
-            .then( () => navigation.navigate(RouteName.Profile.OtherTab))
-            .finally(() => setIsLoading(false));
-    }
+    const { fetchUserProfile } = useContext(SessionContext);
 
     return (
         <View>
@@ -54,7 +47,7 @@ export const ProfileListItem = (props: ProfileListItemProps) => {
             </If>
             <TouchableRipple
                 rippleColor="rgba(0, 0, 0, 0.3)"
-                onPress={() => {handleOnPress()} }
+                onPress={props.onPress}
                 onLongPress={props.onLongPress}
                 style={{backgroundColor: props.backgroundColor}}
             >

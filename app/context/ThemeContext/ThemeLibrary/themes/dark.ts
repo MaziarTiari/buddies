@@ -14,7 +14,7 @@ export const darkTheme: ITheme = {
         basicItem: "#CAE6D8",
         profileIsOnlineDot: "#79C879",
         invalidInputBoarder: "#DC143C",
-        devider: "#374758",
+        devider: "#121618",
         buttonBackground: "#C2821F",
         labelLinkColor: "#20FEC8",
         errorColor: "#FF7573",

@@ -5,6 +5,7 @@ import { IPhotoGallery, IProfileImage } from '../../models/PhotoGallery';
 import { IUserAvatar } from '../../models/UserAvatar';
 import { loadOptions } from '@babel/core';
 import moment from 'moment';
+import { AxiosError } from 'axios';
 
 export enum AuthState { UNREGISTERED, UNAUTHORIZED, AUTHORIZED, AUTHORIZED_WITHOUT_PROFILE };
 
@@ -26,7 +27,7 @@ export interface ISessionContextState {
     loginUserError?: string;
     createUserProfile: (createdUserProfile: INewUserProfile) => void;
     createUserProfileError?: string;
-    fetchUserProfile: (userId: string) => Promise<void>;
+    fetchUserProfile: (userId: string) => Promise<IUserProfile>;
     userIsEditingProfile: boolean;
     startEditingProfile: () => void;
     saveEditingProfile: () => void;
@@ -42,18 +43,30 @@ export interface ISessionContextState {
     setAvatarList: (avatarList: Array<IUserAvatar>) => void;
 }
 
+export const defaultUserProfile = {
+    id: "",
+    birthDate: moment().subtract(18, "years").unix(),
+    city: "",
+    firstname: "",
+    lastname: "",
+    sex: "",
+    userId: "",
+    username: ""
+}
+
+export const defaultActivity = {
+    title: "",
+    id: "",
+    visibility: 0,
+    userId: "",
+    description: "",
+    memberUserIds: [],
+    applicantUserIds: []
+}
+
 export const initialState: ISessionContextState = {
     authState: AuthState.UNREGISTERED,
-    userProfile: {
-        id: "",
-        birthDate: moment().subtract(14, "years").unix(),
-        city: "",
-        firstname: "",
-        lastname: "",
-        sex: "",
-        userId: "",
-        username: ""
-    },
+    userProfile: defaultUserProfile,
     user: {
         email: "",
         id: "",
@@ -61,16 +74,7 @@ export const initialState: ISessionContextState = {
         phone: "",
         salt: ""
     },
-    activity: {
-        title: "",
-        id: "",
-        visibility: 0,
-        userId: "",
-        location: "",
-        description: "",
-        memberUserIds: [],
-        applicantUserIds: []
-    },
+    activity: defaultActivity,
     gallery: {
         id: "",
         userId: "",
@@ -89,7 +93,7 @@ export const initialState: ISessionContextState = {
     createUserProfile: () => console.warn("createUserProfile() not implemented!"),
     createUserProfileError: undefined,
     userIsEditingProfile: false,
-    fetchUserProfile: async () => console.warn("fetchUserProfile() not implemented!"),
+    fetchUserProfile: async () => defaultUserProfile,
     startEditingProfile: () => console.warn("startEditingProfile() not implemented!"),
     saveEditingProfile: () => console.warn("saveEditingProfile() not implemented!"),
     cancelEditingProfile: () => console.warn("cancelEditingProfile() not implemented!"),

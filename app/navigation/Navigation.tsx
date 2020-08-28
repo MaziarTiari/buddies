@@ -38,7 +38,7 @@ const Navigation = () => {
             <Stack.Screen 
                 name={RouteName.Profile.OtherTab} 
                 component={ProfileTab} 
-                options={{headerRight: () => <RightProfileHeader />}} 
+                options={{headerRight: () => <RightProfileHeader />}}
             />
             <Stack.Screen 
                 name={RouteName.Activity.ApplicantList} 

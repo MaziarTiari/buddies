@@ -59,7 +59,7 @@ export const RightProfileHeader = () => {
                     onPress={saveEditingProfile}
                 />
             }
-            {!isOwnProfile &&
+            {/* {!isOwnProfile &&
                 <Menu>
                     <MenuTrigger>
                         <IconButton
@@ -87,7 +87,7 @@ export const RightProfileHeader = () => {
                         <MenuOption onSelect={() => { }} text="Option 4" />
                     </MenuOptions>
                 </Menu>
-            }
+            } */}
         </View>
     );
 };

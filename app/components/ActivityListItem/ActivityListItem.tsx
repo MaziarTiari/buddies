@@ -66,10 +66,12 @@ const ActivityListItem = (activity: IActivity | IForeignActivity) => {
                         </View>
                         <View style={styles.infoContainer} >
                             <Text numberOfLines={1} style={styles.titleText}>{activity.title}</Text>
-                            {InfoWithIcon("pin", activity.location)}
-                            {activity.startDate !== undefined &&
+                            {activity.location &&
+                                InfoWithIcon("pin", activity.location)
+                            }
+                            {activity.startDate &&
                                 InfoWithIcon("calendar", moment.unix(activity.startDate).format("LLL"))}
-                            {activity.startDate !== undefined && activity.endDate !== undefined &&
+                            {activity.startDate && activity.endDate &&
                                 InfoWithIcon("clock", getDateDiffString(activity.startDate, activity.endDate))}
                             {InfoWithIcon("account-group", memberCount, applicantCount)}
                         </View>

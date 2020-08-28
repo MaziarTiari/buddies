@@ -25,12 +25,10 @@ const useStyle = () => {
         },
         primaryInfoContainer: {
             flexDirection: "row",
-            width: "100%",
-            justifyContent: "space-between",
-            paddingRight: getResponsiveSize(15),
+            alignSelf: "flex-end",
+            justifyContent: "space-evenly",
         },
         innerInfoContainer: {
-            padding: getResponsiveSize(15),
             flex: 1,
         },
         innerRippleContainer: {
@@ -44,8 +42,6 @@ const useStyle = () => {
         galleryContainer: {
             width: "100%",
             aspectRatio: 1, // sets the height equal to width
-            borderBottomWidth: 1,
-            borderBottomColor: theme.App.devider
         },
         image: {
             width: "100%",

@@ -15,6 +15,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { RouteName } from "../../navigation/Navigation.config";
 import { LanguageContext } from "../../context/LanguageContext/LanguageContext";
 import { ActivityContext } from "../../context/ActivityContext/ActivityContext";
+import { defaultActivity } from "../../context/SessionContext/stateFrame";
 
 const ActivityList = () => {
     const navigation = useNavigation();
@@ -79,17 +80,17 @@ const ActivityList = () => {
             <View style={style.backgroundContainer}>
                 <View style={style.backgroundSideContainer}>
                     <MaterialCommunityIcons
-                        name="account-plus"
-                        color={theme.App.primaryText}
-                        size={getResponsiveSize(30)}
+                        name="hand"
+                        color={theme.App.acceptColor}
+                        size={getResponsiveSize(50)}
                     />
                     <Text style={style.text}>{translations.apply}</Text>
                 </View>
                 <View style={style.backgroundSideContainer}>
                     <MaterialCommunityIcons
                         name="eye-off"
-                        color={theme.App.primaryText}
-                        size={getResponsiveSize(30)}
+                        color={theme.App.rejectColor}
+                        size={getResponsiveSize(50)}
                     />
                     <Text style={style.text}>{translations.hide}</Text>
                 </View>
@@ -123,7 +124,7 @@ const ActivityList = () => {
                 />
                 {showOwnActivities &&
                     <ActionButton icon="plus" onPress={() => {
-                        setActivity({ id: "", title: "", userId: user.id, location: "", memberUserIds: [], applicantUserIds: [], visibility: 0 });
+                        setActivity({ ...defaultActivity , userId: user.id });
                         startEditingActivity();
                         navigation.navigate(RouteName.Activity.Info);
                     }} />

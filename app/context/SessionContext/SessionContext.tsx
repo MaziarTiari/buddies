@@ -148,18 +148,20 @@ export function SessionContextProvider(props: { children: ReactNode }) {
     };
 
     const fetchUserProfile = async (userId: string) => {
-        if (userProfile.userId === userId) return;
+        if (userProfile.userId === userId) {
+            return userProfile;
+        }
         setIsLoading(true);
-        userProfileApi.Get<IUserProfile>(userId)
+        return  userProfileApi.Get<IUserProfile>(userId)
             .then((userProfile: IUserProfile) => {
                 setUserProfile(userProfile);
+                return userProfile;
             })
             .catch((axiosError: AxiosError) => {
-                console.log(axiosError);
+                console.error(axiosError);
+                throw axiosError as AxiosError;
             })
-            .finally(() => {
-                setIsLoading(false);
-            });
+            .finally(() => setIsLoading(false));
     };
 
     const fetchGallery = (userId: string) => {

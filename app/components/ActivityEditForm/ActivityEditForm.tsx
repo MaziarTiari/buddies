@@ -19,7 +19,7 @@ const ActivityEditForm = () => {
     fieldList[Field.LOCATION] = {
         inputType: InputType.TEXT,
         initialValue: activity.location,
-        required: true,
+        required: false,
         placeholder: translations.meeting_point
     };
 

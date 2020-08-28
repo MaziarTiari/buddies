@@ -20,7 +20,7 @@ export default function ApplicantList() {
     const navigation = useNavigation();
     const route = useRoute();
     const { theme } = useContext(ThemeContext);
-    const { avatarList, setAvatarList, setIsLoading, isLoading } = useContext(SessionContext);
+    const { avatarList, setAvatarList, setIsLoading } = useContext(SessionContext);
     const { updateOwnActivity } = useContext(ActivityContext);
     const [avatarBgColors, setAvatarBgColors] = useState<IAvatarBgColor[]>([])
     const [acceptedApplicants, setAcceptedApplicants] = useState<string[]>([]);
@@ -28,14 +28,10 @@ export default function ApplicantList() {
 
     const props = route.params as ApplicantListProps;
 
-    async function handleCancel() {
-        if (!isLoading) {
-            setIsLoading(true);
-        }
+    function handleCancel() {
         navigation.goBack();
         setAvatarList([]);
         setAvatarBgColors([]);
-        setIsLoading(false);
     }
 
     async function handleSubmit() {
@@ -63,6 +59,7 @@ export default function ApplicantList() {
         }
         updateOwnActivity(updatedActivity);
         handleCancel();
+        setIsLoading(false);
     }
 
     function setNewAvatarColor(userId: string, color: string) {
