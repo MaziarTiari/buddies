@@ -5,14 +5,17 @@ import moment from 'moment';
 import { LanguageContext } from '../../context/LanguageContext/LanguageContext';
 import { useNavigation } from '@react-navigation/native';
 import { RouteName } from '../../navigation/Navigation.config';
+import { ITime } from '../FormDateInput/FormDatePicker';
+import { useDate } from '../../hooks/useDate';
 
 function ActivityEditForm() {
     const navigation = useNavigation();
     const { activity, setActivity } = useContext(SessionContext);
     const { translations } = useContext(LanguageContext);
-    const [errorMessage, setErrorMessage] = useState<string|undefined>()
+    const { getTime } = useDate();
+    const [errorMessage, setErrorMessage] = useState<string | undefined>()
 
-    navigation.setOptions({title: activity.title});
+    navigation.setOptions({ title: activity.title });
 
     enum Field {
         LOCATION,
@@ -93,12 +96,17 @@ function ActivityEditForm() {
                 ? moment(data[Field.END_DATE] as Date).unix()
                 : undefined,
             startTime: data[Field.START_TIME]
-                ? data[Field.START_TIME]
+                ? (data[Field.START_TIME] as ITime)?.hour
+                    ? data[Field.START_TIME] as ITime
+                    : getTime(data[Field.START_TIME] as Date)
                 : undefined,
             endTime: data[Field.END_TIME]
-                ? data[Field.END_TIME]
+                ? (data[Field.END_TIME] as ITime)?.hour
+                    ? data[Field.END_TIME] as ITime
+                    : getTime(data[Field.END_TIME] as Date)
                 : undefined
         });
+        console.log(data);
         navigation.navigate(RouteName.Activity.Info);
     };
 

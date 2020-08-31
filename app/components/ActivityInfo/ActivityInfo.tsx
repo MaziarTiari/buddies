@@ -149,8 +149,8 @@ const ActivityInfo = () => {
                     activity: activity
                 } as ApplicantListProps);
             })
-            //.then(() =>)
-            .finally(() => setIsLoading(false)); // TODO catch
+            .catch(() => { })  // TODO catch
+            .finally(() => setIsLoading(false));
     }
 
     function handleOnMembers() {
@@ -169,7 +169,8 @@ const ActivityInfo = () => {
                     activity: activity
                 } as ApplicantListProps);
             })
-            .finally(() => setIsLoading(false)); // TODO catch
+            .catch(() => { }) // TODO catch
+            .finally(() => setIsLoading(false));
     }
 
     // cancel when user navigates back to previous screen
@@ -384,7 +385,7 @@ const ActivityInfo = () => {
                             <Headline style={styles.headline}>
                                 {translations.description}
                             </Headline>
-                            {((activity.description &&
+                            {((activity.description !== undefined && activity.description !== null &&
                                 activity.description.trim().length > 0) &&
                                 <Text style={styles.text}>{activity.description}</Text>
                             )}
@@ -428,7 +429,7 @@ const ActivityInfo = () => {
                                     )}
                                 />
                             )}
-                            {activity.startTime && (
+                            {activity.startTime?.hour && (
                                 <InfoItem
                                     keyText={translations.from}
                                     valueText={getTimeString(
@@ -436,7 +437,7 @@ const ActivityInfo = () => {
                                     )}
                                 />
                             )}
-                            {activity.endTime && (
+                            {activity.endTime?.hour && (
                                 <InfoItem
                                     keyText={translations.until}
                                     valueText={getTimeString(activity.endTime)}

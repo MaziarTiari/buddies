@@ -27,13 +27,13 @@ function FormDateInput(props: FormDateInputProps) {
     const { theme } = useContext(ThemeContext);
     const { getLocalDateString, getTimeString, getTime } = useDate();
     const [date, setDate] = useState<Date | undefined>(props.initialDate);
-    
+
     const [time, setTime] = useState<ITime | undefined>(
         props.initialDate && props.mode === "time"
-            ? getTime(props.initialDate) 
+            ? getTime(props.initialDate)
             : undefined
     );
-    
+
     const [show, setShow] = useState(false);
 
 
@@ -42,12 +42,12 @@ function FormDateInput(props: FormDateInputProps) {
         if (!dateIn) {
             return;
         }
-        let time: ITime = {
-            hour: dateIn.getHours(),
-            minute: dateIn.getMinutes()
-        };
         let date: Date = dateIn as Date;
-        switch(props.mode) {
+        let time: ITime = {
+            hour: date.getHours(),
+            minute: date.getMinutes()
+        };
+        switch (props.mode) {
             case "date":
                 date.setHours(0);
                 date.setMinutes(0);
@@ -57,7 +57,7 @@ function FormDateInput(props: FormDateInputProps) {
             case "time":
                 setTime(time);
                 break;
-            default: 
+            default:
                 return;
         }
         props.onDateChange(props.mode === "date" ? date : time);
@@ -91,13 +91,13 @@ function FormDateInput(props: FormDateInputProps) {
                 color={theme.App.primaryText}
             />
         );
-        inputText = props.mode === "date" 
+        inputText = props.mode === "date"
             ? date ? getLocalDateString(date, false) : undefined
             : time ? getTimeString(time) : undefined;
     }
 
     return (
-        <View style={[{flex: 1}, props.style]}>
+        <View style={[{ flex: 1 }, props.style]}>
             <TouchableRipple onPress={() => setShow(!show)}>
                 <FormTextInput
                     {...props}
