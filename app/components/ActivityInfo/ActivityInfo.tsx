@@ -39,7 +39,7 @@ import InfoWithIcon from '../InfoWithIcon/InfoWithIcon';
 import useAppNavigation from '../../hooks/useAppNavigation';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-const defaultImg = require('../../../assets/img/default-activity-img.jpg');
+const defaultImg = require('../../../assets/img/defaultActivityImg.png');
 
 const MIN_TITLE_LENGTH = 10;
 
@@ -53,11 +53,11 @@ const ActivityInfo = () => {
 
     const { hideActivity, applyToActivity } = useContext(ActivityContext);
 
-    const { 
-        getTimeRange, 
-        getLocalDateRange, 
-        getLocalDateString, 
-        getTimeString 
+    const {
+        getTimeRange,
+        getLocalDateRange,
+        getLocalDateString,
+        getTimeString
     } = useDate();
 
     const {
@@ -280,10 +280,10 @@ const ActivityInfo = () => {
                                             {
                                                 color:
                                                     isOwnActivity &&
-                                                    activity.applicantUserIds.length > 0
+                                                        activity.applicantUserIds.length > 0
                                                         ? theme.App.rejectColor
                                                         : theme.App
-                                                              .secondaryInteractiveItem
+                                                            .secondaryInteractiveItem
                                             }
                                         ]}
                                     >
@@ -377,16 +377,16 @@ const ActivityInfo = () => {
                 {((activity.description &&
                     activity.description.trim().length > 0) ||
                     userIsEditingActivity) && (
-                    <EditableSection
-                        isEditing={userIsEditingActivity}
-                        onEdit={() => setShowDescriptionEditor(true)}
-                    >
-                        <Headline style={styles.headline}>
-                            {translations.description}
-                        </Headline>
-                        <Text style={styles.text}>{activity.description}</Text>
-                    </EditableSection>
-                )}
+                        <EditableSection
+                            isEditing={userIsEditingActivity}
+                            onEdit={() => setShowDescriptionEditor(true)}
+                        >
+                            <Headline style={styles.headline}>
+                                {translations.description}
+                            </Headline>
+                            <Text style={styles.text}>{activity.description}</Text>
+                        </EditableSection>
+                    )}
 
                 {/* Information */}
                 {userIsEditingActivity &&
@@ -445,45 +445,45 @@ const ActivityInfo = () => {
                 {/* Tags */}
                 {((activity.tags && activity.tags.length > 0) ||
                     userIsEditingActivity) && (
-                    <EditableSection
-                        isEditing={userIsEditingActivity}
-                        onEdit={() => {
-                            navigation.navigate(RouteName.Taglist, {
-                                categories: hobbyCategories,
-                                editorEditHeadline: translations.edit_subject,
-                                editorAddHeadline: translations.add_subject,
-                                editorTitlePlaceholder:
-                                    translations.description,
-                                editorCategoryPlaceholder:
-                                    translations.category,
-                                items: activity.tags,
-                                headerTitle: translations.subjects,
-                                onItemsChanged: (tags) =>
-                                    setActivity({ ...activity, tags: tags })
-                            } as ICategorizedInputListConfig);
-                        }}
-                    >
-                        <Headline style={styles.headline}>
-                            {translations.subjects}
-                        </Headline>
-                        <If condition={userIsEditingActivity}>
-                            <Then>
-                                {activity.tags?.map((tag, index) => (
-                                    <InfoItem
-                                        key={index}
-                                        keyText={tag.category}
-                                        valueText={tag.title}
-                                    />
-                                ))}
-                            </Then>
-                            <Else>
-                                <Text style={styles.text}>
-                                    {activity.tags?.map((t) => t.title).join()}
-                                </Text>
-                            </Else>
-                        </If>
-                    </EditableSection>
-                )}
+                        <EditableSection
+                            isEditing={userIsEditingActivity}
+                            onEdit={() => {
+                                navigation.navigate(RouteName.Taglist, {
+                                    categories: hobbyCategories,
+                                    editorEditHeadline: translations.edit_subject,
+                                    editorAddHeadline: translations.add_subject,
+                                    editorTitlePlaceholder:
+                                        translations.description,
+                                    editorCategoryPlaceholder:
+                                        translations.category,
+                                    items: activity.tags,
+                                    headerTitle: translations.subjects,
+                                    onItemsChanged: (tags) =>
+                                        setActivity({ ...activity, tags: tags })
+                                } as ICategorizedInputListConfig);
+                            }}
+                        >
+                            <Headline style={styles.headline}>
+                                {translations.subjects}
+                            </Headline>
+                            <If condition={userIsEditingActivity}>
+                                <Then>
+                                    {activity.tags?.map((tag, index) => (
+                                        <InfoItem
+                                            key={index}
+                                            keyText={tag.category}
+                                            valueText={tag.title}
+                                        />
+                                    ))}
+                                </Then>
+                                <Else>
+                                    <Text style={styles.text}>
+                                        {activity.tags?.map((t) => t.title).join()}
+                                    </Text>
+                                </Else>
+                            </If>
+                        </EditableSection>
+                    )}
 
                 {/* Criteria */}
                 {/*
