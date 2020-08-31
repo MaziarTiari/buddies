@@ -1,32 +1,47 @@
-import React, { useContext } from "react";
-import { Text, TextStyle, StyleProp, ViewStyle } from "react-native";
-import useStyle from "./Button.style";
-import { TouchableRipple } from "react-native-paper";
+import React, { useContext, ReactNode } from "react";
+import { Text, TextStyle, StyleProp, ViewStyle, TouchableOpacityProps } from "react-native";
+import useButtonStyle from "./Button.style";
 import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
+import { TouchableHighlight } from "react-native";
+import { Utilities } from '../../utils/AppUtilities'
+import { TouchableDarken } from "../TouchableDarken/TouchableDarken";
 
 interface ButtonProps {
     title: string;
     textStyle?: StyleProp<TextStyle>;
-    style?: StyleProp<ViewStyle>;
-    isDangerous?: boolean;
+    style?: ViewStyle;
+    type?: "dangerous" | "secondary" | "primary";
     onPress?: () => void;
 }
 const Button = (props: ButtonProps) => {
-    const style = useStyle();
+    const styles = useButtonStyle();
     const { theme } = useContext(ThemeContext);
+
+    const getBgColor = () => {
+        if (!props.type) {
+            return props.style?.backgroundColor || theme.Button.primary;
+        }
+        switch(props.type) {
+            case "primary": return theme.Button.primary;
+            case "dangerous": return "#8C113C";
+            case "secondary": return theme.Button.secondary;
+        }
+    }
+    
     return (
-        <TouchableRipple
+        <TouchableHighlight
+            underlayColor={Utilities.LightenDarkenColor(getBgColor(), -30)}
             onPress={props.onPress}
             style={[
-                style.container,
-                props.isDangerous ? { backgroundColor: theme.Button.dangerousColor } : {},
+                styles.container,
+                {backgroundColor: getBgColor()},
                 props.style,
             ]}
         >
-            <Text numberOfLines={1} style={[style.text, props.textStyle]}>
+            <Text numberOfLines={1} style={[styles.text, props.textStyle]}>
                 {props.title}
             </Text>
-        </TouchableRipple>
+        </TouchableHighlight>
     );
 };
 

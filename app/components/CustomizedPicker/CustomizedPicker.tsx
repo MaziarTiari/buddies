@@ -5,7 +5,7 @@ import {
     FieldTemplateSettings,
     OptionTemplateSettings,
 } from "react-native-custom-picker";
-import useStyle from "./CustomizedPicker.style";
+import useCustomizedPickerStyle from "./CustomizedPicker.style";
 
 export interface CustomizedPickerProps {
     selectedItem?: any;
@@ -20,17 +20,17 @@ export interface CustomizedPickerProps {
 }
 
 const CustomizedPicker = (props: CustomizedPickerProps) => {
-    const style = useStyle();
+    const styles = useCustomizedPickerStyle();
 
     const renderHeader = () => (
-        <View style={style.header}>
-            <Text style={style.headerText}>{props.headerText}</Text>
+        <View style={styles.header}>
+            <Text style={styles.headerText}>{props.headerText}</Text>
         </View>
     );
 
     const renderOption = ({ getLabel, item }: OptionTemplateSettings) => (
-        <View style={style.option}>
-            <Text style={[style.label, props.labelTextStyle]}>{getLabel(item)}</Text>
+        <View style={styles.option}>
+            <Text style={[styles.label, props.labelTextStyle]}>{getLabel(item)}</Text>
         </View>
     );
 
@@ -39,11 +39,11 @@ const CustomizedPicker = (props: CustomizedPickerProps) => {
         selectedItem,
         defaultText,
     }: FieldTemplateSettings) => (
-        <View style={[style.field]}>
-            <Text style={[style.label, props.labelTextStyle]}>
+        <View style={[styles.field]}>
+            <Text style={[styles.label, props.labelTextStyle]}>
                 {(selectedItem && getLabel(selectedItem)) || defaultText}
             </Text>
-            <Text style={style.label}>▼</Text>
+            <Text style={styles.label}>▼</Text>
         </View>
     );
 
@@ -52,7 +52,7 @@ const CustomizedPicker = (props: CustomizedPickerProps) => {
             <CustomPicker
                 options={props.itemList || []}
                 value={props.selectedItem}
-                modalStyle={style.modal}
+                modalStyle={styles.modal}
                 fieldTemplate={renderField}
                 headerTemplate={(props.headerText && renderHeader) || undefined}
                 optionTemplate={renderOption}

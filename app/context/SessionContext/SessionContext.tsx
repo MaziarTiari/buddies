@@ -1,34 +1,26 @@
-import React, { createContext, useState, ReactNode } from "react";
-import { IUserProfile, INewUserProfile } from "../../models/UserProfile";
-import { userProfileApi, activityApi } from "../../api/ApiClient";
+import React, { createContext, useState, ReactNode, useEffect } from 'react';
+import { IUserProfile, INewUserProfile } from '../../models/UserProfile';
+import { userProfileApi, activityApi } from '../../api/ApiClient';
 // import { baseUrl, hubs } from "../../api/channels";
-import { AxiosError } from "axios";
-import { NOT_FOUND } from "http-status-codes";
-import { IActivity } from "../../models/Activity";
-import { IUser, INewUser } from "../../models/User";
-import { ISessionContextState, initialState as initState, AuthState, IAvatarBgColor } from "./stateFrame";
-import { userApi } from "../../api/User/UserApi";
-import { IPhotoGallery, IProfileImage } from "../../models/PhotoGallery";
-import { galleryApi } from "../../api/GalleryApi";
-import { IUserAvatar } from "../../models/UserAvatar";
-// end import ////////////////////////////////////////////////////////////////
+import { AxiosError } from 'axios';
+import { NOT_FOUND } from 'http-status-codes';
+import { IActivity } from '../../models/Activity';
+import { IUser, INewUser } from '../../models/User';
+import {
+    ISessionContextModel,
+    initSessionContextModel as initState,
+    AuthState,
+    IAvatarBgColor
+} from './sessionContextModel';
+import { userApi } from '../../api/User/UserApi';
+import { IPhotoGallery, IProfileImage } from '../../models/PhotoGallery';
+import { galleryApi } from '../../api/GalleryApi';
+import { IUserAvatar } from '../../models/UserAvatar';
 
-export const SessionContext = createContext<ISessionContextState>(initState);
+export const SessionContext = createContext<ISessionContextModel>(initState);
 
-/*****************************************************************************
- * Provides context of users current session
- * @param props consumer components as children
- * @returns object {
- *      user: current user,     
- *      setUser: sets current user,     
- *      userProfile: profile of current user,   
- *      setUserProfile: sets profile of current user,   
- * }
- * 
- */
 export function SessionContextProvider(props: { children: ReactNode }) {
 
-    // Session
     const [authState, setAuthState] = useState<AuthState>(AuthState.UNAUTHORIZED);
 
     const [user, setUser] = useState<IUser>(initState.user);
@@ -41,57 +33,38 @@ export function SessionContextProvider(props: { children: ReactNode }) {
 
     const [isLoading, setIsLoading] = useState<boolean>(initState.isLoading);
 
-    const [errorMessage, setErrorMessage] = useState<string | undefined>(initState.errorMessage)
+    const [errorMessage, setErrorMessage] = useState<string | undefined>(
+        initState.errorMessage
+    );
 
-    const [avatarList, setAvatarList] = useState<IUserAvatar[]>(initState.avatarList);
+    const [avatarList, setAvatarList] = useState<IUserAvatar[]>(
+        initState.avatarList
+    );
 
-    const [ userIsEditingProfile, setUserIsEditingProfile] = useState<boolean>(
+    const [userIsEditingProfile, setUserIsEditingProfile] = useState<boolean>(
         initState.userIsEditingProfile
     );
 
-    const [ userIsEditingActivity, setUserIsEditingActivity ] = useState<boolean>(
+    const [userIsEditingActivity, setUserIsEditingActivity] = useState<boolean>(
         initState.userIsEditingActivity
     );
 
     // Temporary Backups
-    const [
-        userProfileBackup,
-        setUserProfileBackup] = useState<IUserProfile>(initState.userProfile);
+    const [userProfileBackup, setUserProfileBackup] = useState<IUserProfile>(
+        initState.userProfile
+    );
 
-    const [
-        activityBackup,
-        setActivityBackup] = useState<IActivity>(initState.activity);
+    const [activityBackup, setActivityBackup] = useState<IActivity>(
+        initState.activity
+    );
 
     const createUser = (createdUser: INewUser) => {
         setIsLoading(true);
-        userApi.Create<IUser, INewUser>(createdUser)
+        userApi
+            .Create<IUser, INewUser>(createdUser)
             .then((user: IUser) => {
                 setUser(user);
                 setAuthState(AuthState.AUTHORIZED_WITHOUT_PROFILE);
-            })
-            .catch((axiosError: AxiosError) => {
-                setErrorMessage(axiosError.message)
-            })
-            .finally(() => {
-                setIsLoading(false);
-            })
-    };
-
-    const loginUser = (email: string, password: string) => {
-        setIsLoading(true);
-        let loggedInUser;
-        userApi.VerifyUser({ email: email, password: password })
-            .then((user: IUser) => {
-                loggedInUser = user;
-                userProfileApi.Get<IUserProfile>(user.id)
-                    .then((userProfile: IUserProfile) => {
-                        setUserProfile(userProfile);
-                        setAuthState(AuthState.AUTHORIZED);
-                    })
-                    .catch((axiosError: AxiosError) => {
-                        setAuthState(AuthState.AUTHORIZED_WITHOUT_PROFILE);
-                    });
-                setUser(loggedInUser);
             })
             .catch((axiosError: AxiosError) => {
                 setErrorMessage(axiosError.message);
@@ -101,12 +74,56 @@ export function SessionContextProvider(props: { children: ReactNode }) {
             });
     };
 
+    const logout = () => {
+        setUser(initState.user);
+        setUserProfile(initState.userProfile);
+        setAvatarList(initState.avatarList);
+        setActivity(initState.activity),
+        setErrorMessage(initState.errorMessage);
+        setGallery(initState.gallery);
+        setIsLoading(initState.isLoading);
+        setUserIsEditingActivity(initState.userIsEditingActivity);
+        setUserIsEditingProfile(initState.userIsEditingProfile);
+        setAuthState(AuthState.UNAUTHORIZED);
+    }
+
+    const loginUser = async (email: string, password: string) => {
+        setIsLoading(true);
+        let loggedInUser;
+        return userApi.VerifyUser({ email: email, password: password })
+            .then((user: IUser) => {
+                loggedInUser = user;
+                userProfileApi
+                    .Get<IUserProfile>(user.id)
+                    .then((userProfile: IUserProfile) => {
+                        setUserProfile(userProfile);
+                        setAuthState(AuthState.AUTHORIZED);
+                    })
+                    .catch((axiosError: AxiosError) => {
+                        setAuthState(AuthState.AUTHORIZED_WITHOUT_PROFILE);
+                    });
+                setUser(loggedInUser);
+                return user;
+            })
+            .catch((axiosError: AxiosError) => {
+                throw axiosError;
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
+    };
+
     const createUserProfile = (createdUserProfile: INewUserProfile) => {
         setIsLoading(true);
-        userProfileApi.Create<IUserProfile, INewUserProfile>(createdUserProfile)
+        userProfileApi
+            .Create<IUserProfile, INewUserProfile>(createdUserProfile)
             .then((userProfile: IUserProfile) => {
                 setUserProfile(userProfile);
-                return galleryApi.Create<IPhotoGallery>({ id: "", userId: userProfile.userId, images: [] })
+                return galleryApi.Create<IPhotoGallery>({
+                    id: '',
+                    userId: userProfile.userId,
+                    images: []
+                });
             })
             .then((gallery: IPhotoGallery) => {
                 setAuthState(AuthState.AUTHORIZED);
@@ -116,19 +133,24 @@ export function SessionContextProvider(props: { children: ReactNode }) {
                 setErrorMessage(axiosError.message);
             })
             .finally(() => {
-                setIsLoading(false)
+                setIsLoading(false);
             });
     };
 
     const updateUserProfile = (updatedUserProfile: IUserProfile) => {
         setIsLoading(true);
-        userProfileApi.Update<string, IUserProfile>(updatedUserProfile.id, updatedUserProfile)
+        userProfileApi
+            .Update<string, IUserProfile>(
+                updatedUserProfile.id,
+                updatedUserProfile
+            )
             .then(() => {
-                setUserProfile(updatedUserProfile)
+                setUserProfile(updatedUserProfile);
             })
             .catch((axiosError: AxiosError) => {
                 setErrorMessage(axiosError.message);
-            }).finally(() => {
+            })
+            .finally(() => {
                 setIsLoading(false);
             });
     };
@@ -138,7 +160,8 @@ export function SessionContextProvider(props: { children: ReactNode }) {
             return userProfile;
         }
         setIsLoading(true);
-        return  userProfileApi.Get<IUserProfile>(userId)
+        return userProfileApi
+            .Get<IUserProfile>(userId)
             .then((userProfile: IUserProfile) => {
                 setUserProfile(userProfile);
                 return userProfile;
@@ -152,9 +175,10 @@ export function SessionContextProvider(props: { children: ReactNode }) {
 
     const fetchGallery = (userId: string) => {
         if (gallery.userId === userId) return;
-        setGallery(initState.gallery)
+        setGallery(initState.gallery);
         setIsLoading(true);
-        galleryApi.Get<IPhotoGallery>(userId)
+        galleryApi
+            .Get<IPhotoGallery>(userId)
             .then((gallery: IPhotoGallery) => {
                 setGallery(gallery);
             })
@@ -169,7 +193,8 @@ export function SessionContextProvider(props: { children: ReactNode }) {
     const uploadToGallery = (image: IProfileImage) => {
         if (gallery.userId !== user.id) return;
         setIsLoading(true);
-        galleryApi.UploadImage(image, gallery.id)
+        galleryApi
+            .UploadImage(image, gallery.id)
             .then(() => {
                 setGallery({ ...gallery, images: [...gallery.images, image] });
             })
@@ -183,7 +208,8 @@ export function SessionContextProvider(props: { children: ReactNode }) {
 
     const updateActivity = (updatedActivity: IActivity) => {
         setIsLoading(true);
-        activityApi.Update<string, IActivity>(updatedActivity.id, updatedActivity)
+        activityApi
+            .Update<string, IActivity>(updatedActivity.id, updatedActivity)
             .then(() => setActivity(updatedActivity))
             .catch((error: AxiosError) => setErrorMessage(error.message))
             .finally(() => setIsLoading(false));
@@ -191,7 +217,8 @@ export function SessionContextProvider(props: { children: ReactNode }) {
 
     const createActivity = (createdActivity: IActivity) => {
         setIsLoading(true);
-        activityApi.Create<IActivity>(createdActivity)
+        activityApi
+            .Create<IActivity>(createdActivity)
             .then((activity: IActivity) => setActivity(activity))
             .catch((error: AxiosError) => setErrorMessage(error.message))
             .finally(() => setIsLoading(false));
@@ -223,7 +250,7 @@ export function SessionContextProvider(props: { children: ReactNode }) {
 
     const saveEditingActivity = () => {
         if (!userIsEditingActivity) return;
-        if (activity.id !== "") updateActivity({ ...activity });
+        if (activity.id !== '') updateActivity({ ...activity });
         else createActivity({ ...activity });
         setUserIsEditingActivity(false);
     };
@@ -234,7 +261,7 @@ export function SessionContextProvider(props: { children: ReactNode }) {
         setUserIsEditingActivity(false);
     };
 
-    const value: ISessionContextState = {
+    const value: ISessionContextModel = {
         user,
         setUser,
         userProfile,
@@ -264,6 +291,7 @@ export function SessionContextProvider(props: { children: ReactNode }) {
         setErrorMessage,
         avatarList,
         setAvatarList,
+        logout
     };
 
     return (

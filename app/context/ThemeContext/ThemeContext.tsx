@@ -1,11 +1,11 @@
 import React, { useState, ReactNode } from 'react'
 import { createContext } from "react";
-import { initialState, IThemeContextState } from './stateFrame';
+import { themeContextModel, IThemeContextModel } from './themeContextModel';
 import { themeLibrary } from './ThemeLibrary';
 import { IThemeType } from './ThemeLibrary/type';
 // end import /////////////////////////////////////////////////////////////////
 
-export const ThemeContext = createContext(initialState);
+export const ThemeContext = createContext(themeContextModel);
 
 /******************************************************************************
  * provides theme context
@@ -20,11 +20,11 @@ export const ThemeContext = createContext(initialState);
  */
 export default function ThemeContextProvider (props: {children: ReactNode}) {
     
-    const [themeType, setThemeType] = useState<IThemeType>(initialState.themeType);
+    const [themeType, setThemeType] = useState<IThemeType>(themeContextModel.themeType);
     const theme = themeLibrary[themeType];
     
-    const value: IThemeContextState = { 
-        ...initialState, 
+    const value: IThemeContextModel = { 
+        ...themeContextModel, 
         theme, 
         themeType, 
         setThemeType,

@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
 import { fontsizes, getLineHeight } from '../../utils/font/font';
 
-export const useStyle = () => {
+export const useInfoItemStyle = () => {
     const { theme } = useContext(ThemeContext);
 
     return StyleSheet.create({

@@ -3,14 +3,14 @@ import { Language, Dictionary } from "./LanguageLibrary/type";
 
 export const defaultLanguage: Language = "de";
 
-export interface ILanguageContextState {
+export interface ILanguageContextModel {
   availableLanguages: Language[];
   changeLanguage: (newLanguage: Language) => void;
   language: Language;
   translations: Dictionary;
 }
 
-export const initialState: ILanguageContextState = {
+export const initLanguageContextModel: ILanguageContextModel = {
   availableLanguages: Object.keys(library) as Language[],
   changeLanguage: () => {
     console.warn("changeLanguage() not implemented!");

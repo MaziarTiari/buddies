@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text } from "react-native";
-import useStyle from "./ChatItem.style";
+import useChatItemStyle from "./ChatItem.style";
 
 export interface ChatItemProps {
     message: string;
@@ -10,7 +10,7 @@ export interface ChatItemProps {
 }
 
 const ChatItem = (Props: ChatItemProps) => {
-    const styles = useStyle();
+    const styles = useChatItemStyle();
     return (
         <View
             style={[

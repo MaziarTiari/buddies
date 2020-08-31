@@ -3,7 +3,7 @@ import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
 import { StyleSheet } from "react-native";
 import { getResponsiveSize, fontsizes, getLineHeight } from "../../utils/font/font";
 
-const useStyle = () => {
+const useCategorizedInputListStyle = () => {
     const { theme } = useContext(ThemeContext);
     return StyleSheet.create({
         list: {
@@ -30,4 +30,4 @@ const useStyle = () => {
     });
 };
 
-export default useStyle;
+export default useCategorizedInputListStyle;

@@ -1,7 +1,7 @@
 import { ICategorizedInput } from './CategorizedInput';
 import { IImage } from './Image';
 import { IUserAvatar } from './UserAvatar';
-
+import { ITime } from '../components/FormDateInput/FormDatePicker';
 export interface IActivity {
     id: string;
     userId: string;
@@ -14,6 +14,8 @@ export interface IActivity {
     image?: IImage;
     startDate?: number;
     endDate?: number;
+    startTime?: ITime,
+    endTime?: ITime,
     applicationDeadline?: number;
     tags?: Array<ICategorizedInput>;
     maxMember?: number ;

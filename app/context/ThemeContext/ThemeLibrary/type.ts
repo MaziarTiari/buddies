@@ -17,18 +17,20 @@ export interface ITheme {
         contentBasicButton: string;
         basicItem: string;
         profileIsOnlineDot: string;
-        invalidInputBoarder: string;
+        invalidInputBoarder: string;        
         devider: string;
-        buttonBackground: string;
-        labelLinkColor: string;
         acceptColor: string;
         rejectColor: string;
         errorColor: string;
+        rejectBackground: string;
+        acceptBackground: string;
         secondaryAcceptColor: string;
         secondaryRejectColor: string;
         interactiveItem: string;
         secondaryInteractiveItem: string;
         inputBackground: string;
+        inputBorderColor: string;
+        darkenBackground: string;
     };
     ActivityListItem: {
         heartIconOn: string;
@@ -38,6 +40,8 @@ export interface ITheme {
         recievedMsgBackground: string;
     };
     Button: {
-        dangerousColor: string;
+        primary: string;
+        secondary: string;
+        dangerous: string;
     };
 }

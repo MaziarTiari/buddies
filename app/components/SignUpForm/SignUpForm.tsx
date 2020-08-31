@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { LanguageContext } from '../../context/LanguageContext/LanguageContext';
 import { INewUser } from '../../models/User';
 import { SessionContext } from '../../context/SessionContext/SessionContext';
-import { AuthState } from '../../context/SessionContext/stateFrame';
+import { AuthState } from '../../context/SessionContext/sessionContextModel';
 import Form, { IFormField, InputType } from '../Form/Form';
 
 const SignUpForm = () => {

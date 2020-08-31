@@ -19,10 +19,10 @@ const ProfileTab = () => {
     useFocusEffect(() => {
         // fetch own profile when user clicks on profile in bottom tab
         if (route.name === RouteName.Profile.OwnTab) {
-            fetchUserProfile(user.id).then(() => console.log("success"));
-        } else {
-            navigation.setOptions({ title: translations.other_profile + userProfile.username })
+            fetchUserProfile(user.id)
+            .then(userProfile => navigation.setOptions({ title: userProfile.username }));
         }
+        navigation.setOptions({ title: userProfile.username })
     });
 
     return (
@@ -30,7 +30,7 @@ const ProfileTab = () => {
             <Tab.Screen
                 name={RouteName.Profile.About}
                 component={ProfileAbout}
-                options={{ tabBarLabel: translations.about }}
+                options={{ tabBarLabel: translations.profile }}
             />
             <Tab.Screen
                 name={RouteName.Profile.Gallery}

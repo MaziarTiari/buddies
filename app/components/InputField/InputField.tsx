@@ -8,7 +8,7 @@ import {
     TextInputProps,
     View,
 } from "react-native";
-import useStyle from "./InputField.style";
+import useInputFieldStyle from "./InputField.style";
 import { InputFieldContainer } from "../InputFieldContainer/InputFieldContainer";
 
 interface IDynamicHeight {
@@ -21,26 +21,27 @@ export interface InputFieldProps extends TextInputProps {
     leftComponent?: JSX.Element;
     rightComponent?: JSX.Element;
     containerStyle?: StyleProp<ViewStyle>;
+    onPress?: () => void;
 }
 
-export const InputField = ({style, ...Props}: InputFieldProps) => {
-    const styles = useStyle();
+export const InputField = ({style, ...props}: InputFieldProps) => {
+    const styles = useInputFieldStyle();
 
-    const [inputHeight, setInputHeight] = useState(Props.dynamicHeight?.min);
+    const [inputHeight, setInputHeight] = useState(props.dynamicHeight?.min);
 
-    const LeftComponent = (Props.leftComponent ? Props.leftComponent : undefined);
-    const RightComponent = (Props.rightComponent ? Props.rightComponent : undefined);
+    const LeftComponent = (props.leftComponent ? props.leftComponent : undefined);
+    const RightComponent = (props.rightComponent ? props.rightComponent : undefined);
 
     const handleContentSizeChange = (
         event: NativeSyntheticEvent<TextInputContentSizeChangeEventData>
     ) => {
-        if (Props.dynamicHeight) {
+        if (props.dynamicHeight) {
             let inputHeight = event.nativeEvent.contentSize.height;
             inputHeight =
-                inputHeight < Props.dynamicHeight.min
-                    ? Props.dynamicHeight.min
-                    : inputHeight > Props.dynamicHeight.max
-                    ? Props.dynamicHeight.max
+                inputHeight < props.dynamicHeight.min
+                    ? props.dynamicHeight.min
+                    : inputHeight > props.dynamicHeight.max
+                    ? props.dynamicHeight.max
                     : inputHeight;
             setInputHeight(inputHeight);
         }
@@ -48,19 +49,19 @@ export const InputField = ({style, ...Props}: InputFieldProps) => {
 
     return (
         <View style={{flexDirection: "row"}}>
-            <InputFieldContainer 
+            <InputFieldContainer
                 leftComponent={LeftComponent} rightComponent={RightComponent}
-                style={Props.containerStyle}
+                style={props.containerStyle}
                 content={
                     <TextInput
                         onContentSizeChange={
-                            Props.dynamicHeight && handleContentSizeChange
+                            props.dynamicHeight && handleContentSizeChange
                         }
-                        {...Props}
+                        {...props}
                         style={[
                             styles.textInput,
                             style,
-                            Props.dynamicHeight && { height: inputHeight },
+                            props.dynamicHeight && { height: inputHeight },
                         ]}
                     />
                 }

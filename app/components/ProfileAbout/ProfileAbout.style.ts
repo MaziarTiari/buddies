@@ -3,73 +3,90 @@ import { StyleSheet } from "react-native";
 import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
 import { fontsizes, getResponsiveSize, getLineHeight } from "../../utils/font/font";
 
-const useStyle = () => {
+const useProfileAboutStyle = () => {
     const { theme } = useContext(ThemeContext);
-    return StyleSheet.create({
+    const styles = StyleSheet.create({
         galleryContainer: {
-            width: "100%",
-            aspectRatio: 1, // sets the height equal to width
+            flex: 1,
+            aspectRatio: 1 // sets the height equal to width
         },
         primaryInfoContainer: {
-            flexDirection: "row",
-            width: "100%",
-            justifyContent: "space-between",
+            flexDirection: 'row',
+            alignItems: 'center',
+            marginHorizontal: getResponsiveSize(15),
+            marginBottom: getResponsiveSize(15),
+            justifyContent: 'space-between',
+            flex: 1
         },
         innerInfoContainer: {
-            padding: getResponsiveSize(15),
-            maxWidth: "50%",
+            alignItems: 'flex-start',
+            flex: 7
+        },
+        userFriendsContainer: {
+            flexDirection: 'row-reverse',
+            alignItems: 'flex-end',
+            alignSelf: 'flex-start',
+            flex: 5
         },
         innerRippleContainer: {
-            alignItems: "center",
+            alignItems: 'center'
         },
         headline: {
             fontSize: fontsizes.medium,
-            fontWeight: "bold",
+            fontWeight: 'bold',
             color: theme.App.primaryText,
             lineHeight: getLineHeight(fontsizes.medium),
+            marginBottom: getResponsiveSize(5)
         },
         linkHeadline: {
             fontSize: fontsizes.medium,
-            fontWeight: "bold",
+            fontWeight: 'bold',
             color: theme.App.secondaryInteractiveItem,
-            lineHeight: getLineHeight(fontsizes.medium),
+            lineHeight: getLineHeight(fontsizes.medium)
         },
         linkText: {
             fontSize: fontsizes.small,
             color: theme.App.secondaryInteractiveItem,
-            lineHeight: getLineHeight(fontsizes.small),
+            lineHeight: getLineHeight(fontsizes.small)
         },
         text: {
             fontSize: fontsizes.small,
-            color: theme.App.secondaryText,
-            lineHeight: getLineHeight(fontsizes.small),
+            color: theme.App.secondaryText
+        },
+        jobPlace: {
+            fontStyle: 'italic',
+            fontSize: fontsizes.xsmall
         },
         secondaryInfoContainer: {
-            width: "100%",
+            flex: 1,
             padding: getResponsiveSize(15),
             borderTopWidth: 2,
             borderTopStartRadius: getResponsiveSize(25),
             borderTopEndRadius: getResponsiveSize(25),
-            borderColor: theme.App.layoutBackground,
+            borderColor: theme.App.layoutBackground
         },
         smallHeadline: {
             fontSize: fontsizes.small,
             color: theme.App.primaryText,
-            lineHeight: getLineHeight(fontsizes.small),
+            lineHeight: getLineHeight(fontsizes.small)
         },
         columnContainer: {
-            flexDirection: "row",
+            flexDirection: 'row'
         },
         column: {
-            width: "50%",
+            flex: 1
         },
         image: {
-            width: "100%",
             flex: 1,
-            resizeMode: "contain",
-            backgroundColor: "black",
+            resizeMode: 'contain',
+            backgroundColor: 'black'
         }
     });
+
+    return {
+        styles: styles,
+        theme: theme
+    }
 };
 
-export default useStyle;
+export default useProfileAboutStyle;

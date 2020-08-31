@@ -1,44 +1,48 @@
 import React, { useContext, useState } from "react";
-import { StyleProp, TextStyle, View, Text, ScrollView } from "react-native";
+import { StyleProp, TextStyle, View, Text, ScrollView, ViewStyle, TouchableHighlight } from "react-native";
 import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
 import { TouchableRipple, IconButton } from "react-native-paper";
 import FormTextInput, { FormTextInputProps } from "../FormTextInput/FormTextInput";
-import { getResponsiveSize } from "../../utils/font/font";
-import { useStyle } from "./FormSelectorInput.style";
+import { getResponsiveSize, getResponsiveHeight } from "../../utils/font/font";
+import { useFormSelectorInputStyle } from "./FormSelectorInput.style";
 import CustomModal from '../CustomModal/CustomModal';
+import { Utilities } from "../../utils/AppUtilities";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 export interface FormSelectorInputProps extends FormTextInputProps {
     modalTitle: string;
     items: string[];
     onSelect: (item: string) => void;
     selectedItem?: string;
-    style?: StyleProp<TextStyle>
+    inputStyle?: StyleProp<TextStyle>;
+    style?: StyleProp<ViewStyle>;
     editable?: boolean;
 }
 
-const FormSelectorInput = (Props: FormSelectorInputProps) => {
+const FormSelectorInput = (props: FormSelectorInputProps) => {
     const { theme } = useContext(ThemeContext);
-    const styles = useStyle(Props.editable || false);
+    const styles = useFormSelectorInputStyle(props.editable || false);
     const [showModal, setShowModal] = useState(false);
-    const [selectedItem, setSelectedItem] = useState(Props.selectedItem || "");
-    const [value, setValue] = useState(Props.selectedItem || "");
-    const [items, setItems] = useState<string[]>(Props.items);
+    const [selectedItem, setSelectedItem] = useState(props.selectedItem || "");
+    const [value, setValue] = useState(props.selectedItem || "");
+    const [items, setItems] = useState<string[]>(props.items);
 
     const handleItemPressed = (item: string) => {
         const selectedValue = item.length > getResponsiveSize(25)
-            ? item.slice(0, getResponsiveSize(25))
-            + "..." : item;
+            ? item.slice(0, getResponsiveSize(25)) + "..." 
+            : item;
         setShowModal(false);
         setSelectedItem(selectedValue);
-        Props.onSelect(item);
-        if (Props.editable)
+        props.onSelect(item);
+        if (props.editable) {
             filterItems(item);
+        }
         setValue("");
-        setItems(Props.items);
+        setItems(props.items);
     }
 
     const filterItems = (text: string) => {
-        const items = Props.items.filter(
+        const items = props.items.filter(
             item => item.toLowerCase().startsWith(text.toLowerCase())
         );
         setItems(items);
@@ -47,16 +51,16 @@ const FormSelectorInput = (Props: FormSelectorInputProps) => {
     const onChangeText = (text: string) => {
         setValue(text);
         filterItems(text);
-        const selectableItem = Props.items.find(
+        const selectableItem = props.items.find(
             item => item.toLowerCase() === text.toLowerCase()
         )
-        setSelectedItem(selectableItem || "")
+        setSelectedItem(selectableItem || "");
     }
 
     const deleteInputValue = () => {
         setValue("");
-        setItems(Props.items);
-        Props.onSelect("");
+        setItems(props.items);
+        props.onSelect("");
     }
 
     const setToDefault = () => {
@@ -72,13 +76,13 @@ const FormSelectorInput = (Props: FormSelectorInputProps) => {
     const renderItem = (item: string, index: number) => {
         const lastItem = items.length - 1;
         return (
-            <TouchableRipple
+            <TouchableHighlight
                 onPress={() => handleItemPressed(item)}
                 style={[
                     styles.item,
                     {
-                        marginTop: index === 0 ? 15 : 0,
-                        marginBottom: index === lastItem ? 15 : 0,
+                        paddingTop: index === 0 ? 15 : 0,
+                        paddingBottom: index === lastItem ? 15 : 0,
                     }
                 ]}
                 key={index}
@@ -86,21 +90,25 @@ const FormSelectorInput = (Props: FormSelectorInputProps) => {
                 <Text onPress={() => handleItemPressed(item)} style={styles.itemText}>
                     {item}
                 </Text>
-            </TouchableRipple>
+            </TouchableHighlight>
         )
     }
 
     return (
-        <View style={Props.style}>
-            <TouchableRipple
-                style={styles.selectorContainer}
+        <View style={props.style}>
+            <TouchableHighlight
+                underlayColor={
+                    Utilities.LightenDarkenColor(theme.App.inputBackground, -10)
+                }
+                style={[styles.selectorContainer, props.containerStyle]}
                 onPress={() => setShowModal(!showModal)}>
                 <FormTextInput
-                    {...Props}
+                    {...props}
+                    style={props.inputStyle}
                     value={selectedItem}
-                    defaultValue={Props.selectedItem}
+                    containerStyle={{marginVertical: 0, backgroundColor: "transparent"}}
+                    defaultValue={props.selectedItem}
                     editable={false}
-                    onTouchStart={() => setShowModal(!showModal)}
                     rightComponent={
                         selectedItem !== "" ?
                             <IconButton
@@ -112,18 +120,19 @@ const FormSelectorInput = (Props: FormSelectorInputProps) => {
                             : undefined
                     }
                 />
-            </TouchableRipple>
+            </TouchableHighlight>
             <CustomModal
                 onCloseModal={onCloseModal}
                 showModal={showModal}
-                fixPosition={Props.editable || false}
+                fixPosition={props.editable || false}
             >
-                {Props.editable &&
+                {props.editable &&
                     <FormTextInput
-                        containerStyle={styles.autosuggestInputField}
+                        containerStyle={[styles.autosuggestInputField, props.containerStyle]}
                         onChangeText={onChangeText}
-                        placeholder={Props.placeholder}
+                        placeholder={props.placeholder}
                         value={value}
+                        style={props.inputStyle}
                         rightComponent={
                             value !== "" ?
                                 <IconButton
@@ -138,7 +147,27 @@ const FormSelectorInput = (Props: FormSelectorInputProps) => {
                     />
                 }
                 <ScrollView style={styles.dropDownListContainer}>
-                    {items.map((item, index) => renderItem(item, index))}
+                    {items.map((item, index) => (
+                        <TouchableRipple
+                            onPress={() => handleItemPressed(item)}
+                            style={[
+                                styles.item,
+                                {
+                                    paddingVertical: getResponsiveHeight(5),
+                                    marginBottom: index === items.length - 1 
+                                        ? getResponsiveHeight(10) : 0,
+                                    marginTop: index === 0 
+                                        ? getResponsiveHeight(10) : 0,
+                                }
+                            ]}
+                            key={index}
+                        >
+                            <Text 
+                                style={styles.itemText}>
+                                {item}
+                            </Text>
+                        </TouchableRipple>
+                    ))}
                 </ScrollView>
             </CustomModal>
         </View>

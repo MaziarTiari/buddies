@@ -7,10 +7,14 @@ import { SessionContext } from "../../context/SessionContext/SessionContext";
 import { View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { RouteName } from "../../navigation/Navigation.config";
+import { LanguageContext } from "../../context/LanguageContext/LanguageContext";
+import { transform, transformFileAsync } from "@babel/core";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { TouchableHighlight } from "react-native-gesture-handler";
 
 export const LeftProfileHeader = () => {
     const { theme } = useContext(ThemeContext);
-    const { userIsEditingProfile, cancelEditingProfile, } = useContext(SessionContext);
+    const { userIsEditingProfile, cancelEditingProfile } = useContext(SessionContext);
 
     return userIsEditingProfile
         ? <IconButton
@@ -23,6 +27,7 @@ export const LeftProfileHeader = () => {
 };
 
 export const RightProfileHeader = () => {
+    const { translations } = useContext(LanguageContext);
     const { theme } = useContext(ThemeContext);
     const navigation = useNavigation();
     const {
@@ -30,26 +35,20 @@ export const RightProfileHeader = () => {
         userProfile,
         userIsEditingProfile,
         startEditingProfile,
-        saveEditingProfile
+        saveEditingProfile,
+        logout
     } = useContext(SessionContext);
 
     const isOwnProfile = user.id === userProfile.userId;
 
     return (
-        <View style={{ flexDirection: "row" }}>
+        <View style={{ flexDirection: "row", marginRight: 5}}>
             {isOwnProfile && !userIsEditingProfile &&
-                <React.Fragment>
-                    <IconButton
-                        icon="lead-pencil"
-                        color={theme.App.interactiveItem}
-                        onPress={startEditingProfile}
-                    />
-                    <IconButton
-                        icon="cogs"
-                        color={theme.App.interactiveItem}
-                        onPress={() => navigation.navigate(RouteName.Settings)}
-                    />
-                </React.Fragment>
+                <IconButton
+                    icon="lead-pencil"
+                    color={theme.App.interactiveItem}
+                    onPress={startEditingProfile}
+                />
             }
             {isOwnProfile && userIsEditingProfile &&
                 <IconButton
@@ -59,21 +58,36 @@ export const RightProfileHeader = () => {
                     onPress={saveEditingProfile}
                 />
             }
-            {/* {!isOwnProfile &&
-                <Menu>
+            {isOwnProfile && !userIsEditingProfile &&
+                <Menu 
+                    style={{
+                        justifyContent: "center", 
+                        alignItems: "center", 
+                        marginRight: 5}}
+                >
                     <MenuTrigger>
-                        <IconButton
-                            color={theme.App.basicItem}
-                            icon="dots-vertical-circle-outline"
+                        <MaterialCommunityIcons
+                            color={theme.App.interactiveItem}
+                            name="dots-horizontal-circle-outline"
+                            size={getResponsiveSize(30)}
+                            style={{padding: getResponsiveSize(5)}}
                         />
                     </MenuTrigger>
                     <MenuOptions
                         customStyles={{
                             optionsWrapper: {
-                                backgroundColor: theme.App.menuBackground,
+                                backgroundColor: theme.App.screenBackground,
                             },
                             optionWrapper: {
                                 padding: getResponsiveSize(12),
+                                shadowColor: "#0000",
+                                shadowOffset: {
+                                    width: 5,
+                                    height: 5
+                                },
+                                shadowOpacity: 0.5,
+                                shadowRadius: 3.84,
+                                elevation: 20
                             },
                             optionText: {
                                 fontSize: fontsizes.small,
@@ -81,13 +95,17 @@ export const RightProfileHeader = () => {
                             },
                         }}
                     >
-                        <MenuOption onSelect={() => { }} text="Option 1" />
-                        <MenuOption onSelect={() => { }} text="Option 2" />
-                        <MenuOption onSelect={() => { }} text="Option 3" />
-                        <MenuOption onSelect={() => { }} text="Option 4" />
+                        <MenuOption 
+                            onSelect={() => navigation.navigate(RouteName.Settings)} 
+                            text={translations.settings} 
+                        />
+                        <MenuOption 
+                            onSelect={logout} 
+                            text={translations.logout} 
+                        />
                     </MenuOptions>
                 </Menu>
-            } */}
+            }
         </View>
     );
 };

@@ -3,11 +3,11 @@ import { StyleSheet } from "react-native";
 import { getResponsiveSize, fontsizes, getLineHeight } from "../../utils/font/font";
 import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
 
-const useStyle = () => {
+const useErrorModalStyle = () => {
     const { theme } = useContext(ThemeContext);
     return StyleSheet.create({
         modalBackground: {
-            backgroundColor: "rgba(0, 0, 0, 0.8)",
+            backgroundColor: theme.App.darkenBackground,
             flex: 1,
             justifyContent: "center",
             alignItems: "center"
@@ -30,4 +30,4 @@ const useStyle = () => {
     })
 };
 
-export default useStyle;
+export default useErrorModalStyle;

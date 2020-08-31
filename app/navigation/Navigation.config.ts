@@ -39,6 +39,7 @@ export const useNavOption = () => {
         headerTintColor: theme.App.basicItem,
         headerTitleStyle: {
             fontSize: fontsizes.medium,
+            maxWidth: getResponsiveSize(330) - 30 
         },
         headerStyle: {
             backgroundColor: theme.App.layoutBackground,

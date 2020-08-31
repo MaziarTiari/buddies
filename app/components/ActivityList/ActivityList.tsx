@@ -8,17 +8,18 @@ import useStyle from "./ActivityList.style";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
 import Toast from "react-native-simple-toast";
-import { IActivity, IActivityRequest } from "../../models/Activity";
+import { IActivity } from "../../models/Activity";
 import ActionButton from "../ActionButton/ActionButton";
 import { SessionContext } from "../../context/SessionContext/SessionContext";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useRoute } from "@react-navigation/native";
 import { RouteName } from "../../navigation/Navigation.config";
 import { LanguageContext } from "../../context/LanguageContext/LanguageContext";
 import { ActivityContext } from "../../context/ActivityContext/ActivityContext";
-import { defaultActivity } from "../../context/SessionContext/stateFrame";
+import { defaultActivity } from "../../context/SessionContext/sessionContextModel";
+import useAppNavigation from "../../hooks/useAppNavigation";
 
 const ActivityList = () => {
-    const navigation = useNavigation();
+    const { navigation } = useAppNavigation();
     const { name: routeName } = useRoute();
     const style = useStyle();
     const { theme } = useContext(ThemeContext);
@@ -28,18 +29,24 @@ const ActivityList = () => {
 
     const showOwnActivities = routeName === RouteName.Activity.OwnList;
 
-    const { activities, isLoading, fetchActivities } = useMemo(() => showOwnActivities
-        ? {
-            activities: activityContext.ownActivities,
-            isLoading: activityContext.isLoadingOwn,
-            fetchActivities: activityContext.fetchOwnActivities
-        }
-        : {
-            activities: activityContext.foreignActivities,
-            isLoading: activityContext.isLoadingForeign,
-            fetchActivities: activityContext.fetchForeignActivities
-        }
-        , [activityContext.foreignActivities, activityContext.fetchOwnActivities, showOwnActivities])
+    const { activities, isLoading, fetchActivities } = useMemo(
+        () => ( showOwnActivities
+            ? {
+                activities: activityContext.ownActivities,
+                isLoading: activityContext.isLoadingOwn,
+                fetchActivities: activityContext.fetchOwnActivities
+            }
+            : {
+                activities: activityContext.foreignActivities,
+                isLoading: activityContext.isLoadingForeign,
+                fetchActivities: activityContext.fetchForeignActivities
+            }
+        ), [
+            activityContext.foreignActivities, 
+            activityContext.fetchOwnActivities, 
+            showOwnActivities
+        ]
+    )
 
     useEffect(() => {
         if (showOwnActivities)
@@ -50,12 +57,12 @@ const ActivityList = () => {
 
     const hideActivity = (id: string) => {
         activityContext.hideActivity(id);
-        Toast.show("Activity hidden.", Toast.SHORT); // TODO Translation
+        Toast.show(translations.application_is_hidden, Toast.SHORT);
     };
 
     const applyActivity = (id: string) => {
         activityContext.applyToActivity(id);
-        Toast.show("Application sent.", Toast.SHORT); // TODO Translation
+        Toast.show(translations.sent_application, Toast.SHORT);
     };
 
     const handleTouchEnd = () => {

@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
 import { getResponsiveSize } from "../../utils/font/font";
 
-const useStyle = () => {
+const useProfileGalleryStyle = () => {
     return StyleSheet.create({
         list: {
             width: "100%",
@@ -16,4 +16,4 @@ const useStyle = () => {
     });
 };
 
-export default useStyle;
+export default useProfileGalleryStyle;

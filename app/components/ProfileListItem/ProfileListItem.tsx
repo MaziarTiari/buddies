@@ -22,31 +22,15 @@ export interface ProfileListItemProps {
 
 export const ProfileListItem = (props: ProfileListItemProps) => {
     const styles = useStyle();
-    const navigation = useNavigation();
-    const { fetchUserProfile } = useContext(SessionContext);
 
     return (
         <View>
             <If condition={!!props.isLoading}>
-                    <View 
-                        style={{
-                            position: "absolute",
-                            zIndex: 1,
-                            opacity: 0.5,
-                            alignItems: "center",
-                            justifyContent: "center",
-                            top: 0,
-                            left: 0,
-                            height: "100%",
-                            width: "100%",
-                            backgroundColor: "black"
-                        }}
-                    >
+                    <View style={styles.activityIndicatorContainer}>
                         <ActivityIndicator/>
                     </View>
             </If>
             <TouchableRipple
-                rippleColor="rgba(0, 0, 0, 0.3)"
                 onPress={props.onPress}
                 onLongPress={props.onLongPress}
                 style={{backgroundColor: props.backgroundColor}}

@@ -9,16 +9,15 @@ export interface Dictionary {
 
     // General
     please_wait: string;
-    my_profile: string;
-    other_profile: string;
     feed: string;
     activities: string;
     my_activities: string;
     favorites: string;
     explore: string;
     messages: string;
+    message: string;
     edit_profile: string;
-    about: string;
+    about_me: string;
     gallery: string;
     firstname: string;
     surname: string;
@@ -36,9 +35,10 @@ export interface Dictionary {
     diverse: string;
     jobs: string;
     hobbies: string;
-    biography: string;
+    profile: string;
     register: string;
     login: string;
+    logout: string;
     password: string;
     repeat_password: string;
     password_mismatch: string;
@@ -53,13 +53,13 @@ export interface Dictionary {
     personal: string;
     information: string;
     meeting_point: string;
-    start_time: string;
-    end_time: string;
-    start_time_optional: string;
-    end_time_optional: string;
+    start_date: string;
+    end_date: string;
     visibility: string;
     member: string;
     applicants: string;
+    sent_application: string;
+    application_is_hidden: string;
     title: string;
     apply_changes: string;
     apply: string;
@@ -74,6 +74,9 @@ export interface Dictionary {
     remove_image: string;
     error: string;
     continue: string;
+    open: string;
+    from: string;
+    until: string;
 
     // Tags: Hobbies
     my_hobbies: string;
@@ -102,7 +105,9 @@ export interface Dictionary {
     error_invalid_email: string;
     error_invalid_number: string;
     error_invalid_phone: string;
+    wrong_login: string;
+    wrong_date_range: string;
 
     // Prepositions
-    date_range_preposition: string;
+    job_preposition: string;
 }

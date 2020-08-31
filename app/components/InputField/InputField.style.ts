@@ -3,7 +3,7 @@ import { fontsizes, getLineHeight, getResponsiveSize } from "../../utils/font/fo
 import { useContext } from "react";
 import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
 
-const useStyle = () => {
+const useInputFieldStyle = () => {
     const theme = useContext(ThemeContext).theme;
     return StyleSheet.create({
         textInput: {
@@ -16,4 +16,4 @@ const useStyle = () => {
     });
 };
 
-export default useStyle;
+export default useInputFieldStyle;

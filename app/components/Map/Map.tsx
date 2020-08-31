@@ -8,10 +8,10 @@ const Map = () => {
     const theme = useContext(ThemeContext).theme;
     return (
         <Container type="screen" layout="root">
-            <MapView
+            {/* <MapView    // TODO needs API Token
                 style={{ alignSelf: "stretch", flex: 1 }}
                 provider="google"
-            />
+            /> */}
         </Container>
     );
 };

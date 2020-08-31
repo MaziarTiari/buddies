@@ -4,14 +4,15 @@ import SignUpForm from "./components/SignUpForm/SignUpForm";
 import { NavigationContainer } from "@react-navigation/native";
 import Navigation from "./navigation/Navigation";
 import LoginForm from "./components/LoginForm/LoginForm";
-import { AuthState } from "./context/SessionContext/stateFrame";
+import { AuthState } from "./context/SessionContext/sessionContextModel";
 import ProfileEditForm from "./components/ProfileEditForm/ProfileEditForm";
 import LoadingModal from "./components/LoadingModal/LoadingModal";
 import { Switch, Case, If } from 'react-if';
+import ErrorModal from "./components/ErrorModal/ErrorModal";
 
 const App = (): JSX.Element => {
 
-    const { authState, isLoading } = useContext(SessionContext);
+    const { authState, isLoading, errorMessage } = useContext(SessionContext);
 
     return (
         <React.Fragment>
@@ -31,9 +32,14 @@ const App = (): JSX.Element => {
                     </NavigationContainer>
                 </Case>
             </Switch>
-            <If condition={isLoading}>
-                <LoadingModal />
-            </If>
+            <Switch>
+                <Case condition={isLoading}>
+                    <LoadingModal />
+                </Case>
+                <Case condition={!!errorMessage}>
+                    <ErrorModal />
+                </Case>
+            </Switch>
         </React.Fragment>
     );
 

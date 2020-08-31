@@ -1,14 +1,14 @@
 import React, { useContext } from "react";
 import { Modal, View, ActivityIndicator, Text } from "react-native";
 import { LanguageContext } from "../../context/LanguageContext/LanguageContext";
-import useStyle from "./LoadingModal.style";
+import useLoadingModalStyle from "./LoadingModal.style";
 import { getResponsiveSize } from "../../utils/font/font";
 import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
 
 const LoadingModal = (): JSX.Element => {
     const { translations } = useContext(LanguageContext);
     const { theme } = useContext(ThemeContext);
-    const style = useStyle();
+    const style = useLoadingModalStyle();
     return (
         <Modal visible={true} transparent={true}>
             <View style={style.modalBackground}>

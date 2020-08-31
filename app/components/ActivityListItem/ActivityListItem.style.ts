@@ -3,7 +3,7 @@ import { fontsizes, getResponsiveSize, getLineHeight } from "../../utils/font/fo
 import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
 import { useContext } from "react";
 
-export const useStyle = () => {
+export const useActivityListItemStyle = () => {
     const { theme } = useContext(ThemeContext);
     const styles = StyleSheet.create({
         root: {
@@ -11,8 +11,8 @@ export const useStyle = () => {
             backgroundColor: theme.App.screenBackground,
         },
         outerContainer: {
-            borderBottomWidth: 1,
-            borderColor: theme.App.devider,
+            borderBottomWidth: 0.5,
+            borderColor: "#3D3F4A",
             borderBottomStartRadius: getResponsiveSize(25),
             borderBottomEndRadius: getResponsiveSize(25),
         },

@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { View, StyleProp, ViewStyle, TextInputProps, StyleSheet } from "react-native";
 import { getResponsiveSize } from "../../utils/font/font";
 import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
+import useInputFieldContainerStyle from "./InputFieldContainer.style";
 
 
 export interface InputFieldProps extends TextInputProps {
@@ -12,18 +13,7 @@ export interface InputFieldProps extends TextInputProps {
 }
 
 export const InputFieldContainer = ({style, content, ...Props}: InputFieldProps) => {
-    const { theme, themeType } = useContext(ThemeContext);
-
-    const styles = StyleSheet.create({
-        inputContainer: {
-            flexDirection: "row",
-            alignItems: "center",
-            backgroundColor: theme.App.inputBackground,
-            flex: 1,
-            borderRadius: getResponsiveSize(8),
-            paddingHorizontal: getResponsiveSize(10),
-        },
-    });
+    const styles = useInputFieldContainerStyle();
 
     const LeftComponent = () => (Props.leftComponent ? Props.leftComponent : null);
     const RightComponent = () => (Props.rightComponent ? Props.rightComponent : null);

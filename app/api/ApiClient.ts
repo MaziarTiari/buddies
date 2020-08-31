@@ -10,7 +10,7 @@ export class ApiClient<T> extends Api<T> {
         super(config);
         this.Create = this.Create.bind(this);
         this.Update = this.Update.bind(this);
-        this.GetAll = this.GetAll.bind(this);
+        this.GetMany = this.GetMany.bind(this);
     }
 
     /**
@@ -37,7 +37,7 @@ export class ApiClient<T> extends Api<T> {
      * api.GetAll<User[]>().then((res) => this.setUser(res))
      * .catch((err: AxiosError) => setResponceError(genericResponceError);
      */
-    public GetAll<T>(url?: string) {
+    public GetMany<T>(url?: string) {
         return this.get<T>(url).then(this.success)
             .catch((error: AxiosError) => { throw error });
     }

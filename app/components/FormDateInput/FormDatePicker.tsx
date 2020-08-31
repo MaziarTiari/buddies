@@ -1,89 +1,127 @@
-import React, { useState, useContext } from 'react'
-import { View, Platform } from 'react-native'
+import React, { useState, useContext } from 'react';
+import { View, Platform, StyleProp, ViewStyle } from 'react-native';
 import DatePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
 import { IconButton, TouchableRipple } from 'react-native-paper';
-import FormTextInput, { FormTextInputProps } from '../FormTextInput/FormTextInput';
+import FormTextInput, {
+    FormTextInputProps
+} from '../FormTextInput/FormTextInput';
 import { getResponsiveSize } from '../../utils/font/font';
 import { ThemeContext } from '../../context/ThemeContext/ThemeContext';
 import { style } from './FormDatePicker.style';
+import { useDate } from '../../hooks/useDate';
 
+export interface ITime {
+    hour: number;
+    minute: number;
+}
 export interface FormDateInputProps extends FormTextInputProps {
-    onDateChange: (date: Date | undefined) => void;
+    mode: "date" | "time";
+    onDateChange: (date?: Date | ITime) => void;
     initialDate?: Date;
+    minimumDate?: Date;
+    style?: StyleProp<ViewStyle>;
 }
 
-const FormDateInput = (Props: FormDateInputProps) => {
-    const [date, setDate] = useState<Date | undefined>(Props.initialDate);
+function FormDateInput(props: FormDateInputProps) {
+    const { theme } = useContext(ThemeContext);
+    const { getLocalDateString, getTimeString } = useDate();
+    const [date, setDate] = useState<Date | undefined>(props.initialDate);
+    const [time, setTime] = useState<ITime>()
     const [show, setShow] = useState(false);
 
-    const { theme } = useContext(ThemeContext);
 
     const handleChange = (event: any, dateIn: any) => {
-        const date: Date = dateIn;
-        date.setHours(0);
-        date.setMinutes(0);
-        date.setSeconds(0);
         setShow(Platform.OS === 'ios');
-        setDate(date);
-        Props.onDateChange(date);
-    }
+        if (!dateIn) {
+            return;
+        }
+        let time: ITime = {
+            hour: dateIn.getHours(),
+            minute: dateIn.getMinutes()
+        };
+        let date: Date = dateIn as Date;
+        switch(props.mode) {
+            case "date":
+                date.setHours(0);
+                date.setMinutes(0);
+                date.setSeconds(0);
+                setDate(date);
+                break;
+            case "time":
+                setTime(time);
+                break;
+            default: 
+                return;
+        }
+        props.onDateChange(props.mode === "date" ? date : time);
+    };
 
     const IOS_OnCancel = () => {
         setShow(false);
-    }
+    };
 
     const IOS_OnSelect = () => {
         setShow(false);
         setDate(date);
-        Props.onDateChange(date);
-    }
+        props.onDateChange(date);
+    };
 
     const handleRemove = () => {
         setDate(undefined);
-        Props.onDateChange(undefined);
-    }
+        setTime(undefined);
+        props.onDateChange(undefined);
+    };
 
     let inputDeleteIcon: JSX.Element | undefined, inputText: string | undefined;
 
-    if (date !== undefined) {
-        inputDeleteIcon = <IconButton
-            icon="close"
-            onPress={handleRemove}
-            size={getResponsiveSize(24)}
-            style={{ margin: 0 }}
-            color={theme.App.primaryText}
-        />
-        inputText = moment(date).format('L');
+    if ((props.mode === "date" && date) || (props.mode === "time" && time)) {
+        inputDeleteIcon = (
+            <IconButton
+                icon="close"
+                onPress={handleRemove}
+                size={getResponsiveSize(24)}
+                style={{ margin: 0 }}
+                color={theme.App.primaryText}
+            />
+        );
+        inputText = props.mode === "date" 
+            ? date ? getLocalDateString(date, false) : undefined
+            : time ? getTimeString(time) : undefined;
     }
 
     return (
-        <View>
+        <View style={[{flex: 1}, props.style]}>
             <TouchableRipple onPress={() => setShow(!show)}>
                 <FormTextInput
-                    {...Props}
+                    {...props}
                     value={inputText}
                     editable={false}
                     rightComponent={inputDeleteIcon}
                 />
             </TouchableRipple>
-            {show &&
+            {show && (
                 <View style={style.container}>
                     <DatePicker
-                        mode="date"
+                        mode={props.mode}
+                        minimumDate={props.minimumDate}
+                        is24Hour={true}
                         onChange={handleChange}
                         value={date ? date : new Date()}
                     />
-                    {Platform.OS === 'ios' &&
+                    {Platform.OS === 'ios' && (
                         <View style={style.buttonContainer}>
                             <IconButton icon="close" onPress={IOS_OnCancel} />
-                            <IconButton icon="calendar-check" onPress={IOS_OnSelect} />
+                            <IconButton
+                                icon="calendar-check"
+                                onPress={IOS_OnSelect}
+                            />
                         </View>
-                    }
+                    )}
                 </View>
-            }
+            )}
         </View>
-    )
-}
+    );
+};
 
 export default FormDateInput;

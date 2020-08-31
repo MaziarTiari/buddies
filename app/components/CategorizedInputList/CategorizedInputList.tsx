@@ -1,12 +1,13 @@
-import React, { useState } from "react";
-import { View, FlatList, Text } from "react-native";
-import Container from "../Container/Container";
-import { TouchableRipple } from "react-native-paper";
-import useStyle from "./CategorizedInputList.style";
-import { useRoute, useNavigation } from "@react-navigation/native";
-import CategorizedInputEditor from "../CategorizedInputEditor/CategorizedInputEditor";
-import ActionButton from "../ActionButton/ActionButton";
-import { ICategorizedInput } from "../../models/CategorizedInput";
+import React, { useState, useContext } from 'react';
+import { View, FlatList, Text } from 'react-native';
+import Container from '../Container/Container';
+import { TouchableRipple } from 'react-native-paper';
+import useCategorizedInputListStyle from './CategorizedInputList.style';
+import { useRoute, useNavigation } from '@react-navigation/native';
+import CategorizedInputEditor from '../CategorizedInputEditor/CategorizedInputEditor';
+import ActionButton from '../ActionButton/ActionButton';
+import { ICategorizedInput } from '../../models/CategorizedInput';
+import { CategoryContext } from '../../context/CategoryContext/CategoryContext';
 
 export interface ICategorizedInputListConfig {
     categories: string[];
@@ -21,7 +22,7 @@ export interface ICategorizedInputListConfig {
 }
 
 const CategorizedInputList = () => {
-    const style = useStyle();
+    const style = useCategorizedInputListStyle();
     const route = useRoute();
     const navigation = useNavigation();
     const config = route.params as ICategorizedInputListConfig;
@@ -30,7 +31,9 @@ const CategorizedInputList = () => {
 
     const [editingItem, setEditingItem] = useState<ICategorizedInput | undefined>();
     const [showEditor, setShowEditor] = useState<boolean>(false);
-    const [items, setItems] = useState<ICategorizedInput[]>(config.items ? config.items : []);
+    const [items, setItems] = useState<ICategorizedInput[]>(
+        config.items ? config.items : []
+    );
 
     const handleItemPressed = (item: ICategorizedInput) => {
         setEditingItem(item);
@@ -50,11 +53,13 @@ const CategorizedInputList = () => {
         const categorizedInput = {
             category: category,
             title: title,
-            place: place,
-        }
+            place: place
+        };
         let updatedItems = [];
         if (editingItem) {
-            updatedItems = items.map(item => item === editingItem ? categorizedInput : item);
+            updatedItems = items.map((item) =>
+                item === editingItem ? categorizedInput : item
+            );
         } else {
             updatedItems = [...items, categorizedInput];
         }
@@ -65,7 +70,7 @@ const CategorizedInputList = () => {
     };
 
     const handleDeletePressed = () => {
-        const updatedItems = items.filter(item => item !== editingItem);
+        const updatedItems = items.filter((item) => item !== editingItem);
         setItems(updatedItems);
         setShowEditor(false);
         setEditingItem(undefined);
@@ -110,7 +115,11 @@ const CategorizedInputList = () => {
                 categoryPlaceholder={config.editorCategoryPlaceholder}
                 titlePlaceholder={config.editorTitlePlaceholder}
                 institutionPlaceholder={config.editorInstitutionPlaceholder}
-                headline={editingItem ? config.editorEditHeadline : config.editorAddHeadline}
+                headline={
+                    editingItem
+                        ? config.editorEditHeadline
+                        : config.editorAddHeadline
+                }
                 preselectedCategory={editingItem?.category}
                 preselectedTitle={editingItem?.title}
                 preselectedInstitution={editingItem?.place}

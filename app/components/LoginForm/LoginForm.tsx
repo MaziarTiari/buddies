@@ -1,13 +1,16 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { LanguageContext } from '../../context/LanguageContext/LanguageContext';
 import { SessionContext } from '../../context/SessionContext/SessionContext';
-import { AuthState } from '../../context/SessionContext/stateFrame';
+import { AuthState } from '../../context/SessionContext/sessionContextModel';
 import Form, { IFormField, InputType } from '../Form/Form';
+import { AxiosError } from 'axios';
+import { NOT_FOUND, UNAUTHORIZED } from 'http-status-codes';
 
 const LoginForm = () => {
 
     const { translations } = useContext(LanguageContext);
     const { loginUser, setAuthState } = useContext(SessionContext);
+    const [loginErrorMsg, setLoginErrorMsg] = useState<string|undefined>();
 
     enum Field { EMAIL, PASSWORD };
 
@@ -19,6 +22,7 @@ const LoginForm = () => {
         validationType: "email",
         placeholder: translations.email,
         icon: "email",
+        errorMessage: loginErrorMsg
     };
 
     fieldList[Field.PASSWORD] = {
@@ -30,7 +34,13 @@ const LoginForm = () => {
     };
 
     const onSubmit = (data: string[]) => {
-        loginUser(data[Field.EMAIL], data[Field.PASSWORD]);
+        loginUser(data[Field.EMAIL], data[Field.PASSWORD])
+            .then(() => {
+                setLoginErrorMsg(undefined);
+            })
+            .catch((error: AxiosError) => {
+                setLoginErrorMsg(translations.wrong_login);
+            })
     };
 
     return (

@@ -3,14 +3,12 @@ import { IUserProfile, INewUserProfile } from "../../models/UserProfile";
 import { IActivity } from '../../models/Activity';
 import { IPhotoGallery, IProfileImage } from '../../models/PhotoGallery';
 import { IUserAvatar } from '../../models/UserAvatar';
-import { loadOptions } from '@babel/core';
 import moment from 'moment';
-import { AxiosError } from 'axios';
 
 export enum AuthState { UNREGISTERED, UNAUTHORIZED, AUTHORIZED, AUTHORIZED_WITHOUT_PROFILE };
 
 export interface IAvatarBgColor { userId: string; color: string };
-export interface ISessionContextState {
+export interface ISessionContextModel {
     authState: AuthState;
     setAuthState: (authState: AuthState) => void;
     user: IUser;
@@ -22,7 +20,7 @@ export interface ISessionContextState {
     isLoading: boolean;
     setIsLoading: (state: boolean) => void;
     createUser: (createdUser: INewUser) => void;
-    loginUser: (email: string, password: string) => void;
+    loginUser: (email: string, password: string) => Promise<IUser>;
     createUserProfile: (createdUserProfile: INewUserProfile) => void;
     fetchUserProfile: (userId: string) => Promise<IUserProfile>;
     userIsEditingProfile: boolean;
@@ -40,7 +38,16 @@ export interface ISessionContextState {
     setErrorMessage: (errorMessage: string | undefined) => void;
     avatarList: Array<IUserAvatar>
     setAvatarList: (avatarList: Array<IUserAvatar>) => void;
+    logout: () => void;
 }
+
+export const defaultUser = {
+    email: "",
+    id: "",
+    password: "",
+    phone: "",
+    salt: ""
+};
 
 export const defaultUserProfile = {
     id: "",
@@ -51,7 +58,7 @@ export const defaultUserProfile = {
     sex: "",
     userId: "",
     username: ""
-}
+};
 
 export const defaultActivity = {
     title: "",
@@ -61,18 +68,12 @@ export const defaultActivity = {
     description: "",
     memberUserIds: [],
     applicantUserIds: []
-}
+};
 
-export const initialState: ISessionContextState = {
+export const initSessionContextModel: ISessionContextModel = {
     authState: AuthState.UNREGISTERED,
     userProfile: defaultUserProfile,
-    user: {
-        email: "",
-        id: "",
-        password: "",
-        phone: "",
-        salt: ""
-    },
+    user: defaultUser,
     activity: defaultActivity,
     gallery: {
         id: "",
@@ -87,7 +88,7 @@ export const initialState: ISessionContextState = {
     setActivity: () => console.warn("setActivity() not implemented!"),
     isLoading: false,
     createUser: () => console.warn("createUser() not implemented!"),
-    loginUser: () => console.warn("loginUser() not implemented!"),
+    loginUser: async () => defaultUser,
     createUserProfile: () => console.warn("createUserProfile() not implemented!"),
     userIsEditingProfile: false,
     fetchUserProfile: async () => defaultUserProfile,
@@ -103,4 +104,5 @@ export const initialState: ISessionContextState = {
     setErrorMessage: () => console.warn("setErrorMessage() not implemented!"),
     setAvatarList:  () => console.warn("setAvatarList() not implemented!"),
     setIsLoading: () => console.warn("setIsLoading() not implemented!"),
+    logout: () => console.warn("logout() not implemented!"),
 };

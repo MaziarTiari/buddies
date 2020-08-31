@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Image, Text, TouchableWithoutFeedback } from "react-native";
-import useStyle from "./Avatar.style";
+import useAvatarStyle from "./Avatar.style";
 
 const defaultImage = require("../../../assets/img/defaultProfileImage.png");
 
@@ -11,15 +11,16 @@ interface AvatarProps {
 }
 
 const Avatar = (Props: AvatarProps): JSX.Element => {
-    const style = useStyle();
+    const styles = useAvatarStyle();
     const { username, base64, onPress } = Props;
-    const imageSource = base64 ? { uri: "data:image/gif;base64," + base64 } : defaultImage;
+    const imageSource = base64 
+        ? { uri: "data:image/gif;base64," + base64 } : defaultImage;
 
     return (
-        <View style={style.container}>
-            <Image style={style.image} source={imageSource} />
+        <View style={styles.container}>
+            <Image style={styles.image} source={imageSource} />
             <TouchableWithoutFeedback onPress={onPress}>
-                <Text style={style.text}>{username}</Text>
+                <Text style={styles.text}>{username}</Text>
             </TouchableWithoutFeedback>
         </View>
     );

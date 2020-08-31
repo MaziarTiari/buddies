@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
 import { fontsizes, getResponsiveSize, getLineHeight } from "../../utils/font/font";
 
-const useStyle = () => {
+const useCustomizedPickerStyle = () => {
     const { theme } = useContext(ThemeContext);
     return StyleSheet.create({
         field: {
@@ -35,4 +35,4 @@ const useStyle = () => {
     });
 };
 
-export default useStyle;
+export default useCustomizedPickerStyle;

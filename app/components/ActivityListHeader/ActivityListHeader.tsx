@@ -14,6 +14,7 @@ const ActivityListHeader = () => {
 
     return (
         <BadgedIcon
+            style={{padding: getResponsiveSize(10), marginRight: 5}}
             color={theme.App.interactiveItem}
             icon="store"
             size={getResponsiveSize(30)}

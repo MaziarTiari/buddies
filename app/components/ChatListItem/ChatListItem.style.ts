@@ -3,7 +3,7 @@ import { fontsizes, getLineHeight } from "../../utils/font/font";
 import { useContext } from "react";
 import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
 
-const useStyle = () => {
+const useChatListItemStyle = () => {
     const theme = useContext(ThemeContext).theme;
     return StyleSheet.create({
         rightContainer: {
@@ -38,4 +38,4 @@ const useStyle = () => {
     });
 };
 
-export default useStyle;
+export default useChatListItemStyle;

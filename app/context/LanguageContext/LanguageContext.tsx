@@ -1,40 +1,28 @@
-import React, { createContext, useState, ReactNode } from "react";
-import { library } from "./LanguageLibrary";
+import React, { createContext, useState, ReactNode } from 'react';
+import { library } from './LanguageLibrary';
 import {
-	initialState,
-	defaultLanguage,
-	ILanguageContextState
-} from './stateFrame'
-import { Language } from "./LanguageLibrary/type";
-// end import /////////////////////////////////////////////////////////////
+    initLanguageContextModel,
+    defaultLanguage,
+    ILanguageContextModel
+} from './languageContextModel';
+import { Language } from './LanguageLibrary/type';
 
-
-/**
- * provides language context
- * @param props children as consumer of this context
- * @returns object {	
- * 		availableLanguages,		
- * 		language,	
- * 		changeLanguage,		
- * 		translations	
- * }
- */
 export const LanguageContextProvider = (props: { children: ReactNode }) => {
-	const [language, changeLanguage] = useState<Language>(defaultLanguage)
-	const translations = library[language];
+    const [language, changeLanguage] = useState<Language>(defaultLanguage);
+    const translations = library[language];
 
-	const value: ILanguageContextState = {
-		...initialState,
-		language,
-		changeLanguage: changeLanguage,
-		translations
-	}
+    const value: ILanguageContextModel = {
+        ...initLanguageContextModel,
+        language,
+        changeLanguage: changeLanguage,
+        translations
+    };
 
-	return (
-		<LanguageContext.Provider value={value}>
-			{props.children}
-		</LanguageContext.Provider>
-	);
-}
+    return (
+        <LanguageContext.Provider value={value}>
+            {props.children}
+        </LanguageContext.Provider>
+    );
+};
 
-export const LanguageContext = createContext(initialState);
+export const LanguageContext = createContext(initLanguageContextModel);

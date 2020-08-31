@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
     NativeSyntheticEvent,
     TextInputFocusEventData,
@@ -7,8 +7,9 @@ import {
 } from "react-native";
 import { IconButton } from "react-native-paper";
 import InputField from "../InputField/InputField";
-import useStyle from "./ChatInput.style";
+import useChatInputStyle from "./ChatInput.style";
 import { fontsizes, getLineHeight, getResponsiveSize } from "../../utils/font/font";
+import { LanguageContext } from "../../context/LanguageContext/LanguageContext";
 
 export interface ChatInputProps extends ViewProps {
     onSend: (message: string) => void;
@@ -20,8 +21,9 @@ const MIN_HEIGHT = getLineHeight(fontsizes.medium);
 const MAX_HEIGHT = getLineHeight(fontsizes.medium * 5);
 
 export const ChatInput = (Props: ChatInputProps) => {
-    const { theme, styles } = useStyle();
+    const { theme, styles } = useChatInputStyle();
     const [inputText, setInputText] = useState("");
+    const { translations } = useContext(LanguageContext);
 
     const handleChangeText = (text: string) => {
         setInputText(text);
@@ -33,13 +35,14 @@ export const ChatInput = (Props: ChatInputProps) => {
     };
 
     return (
-        <View style={{ flexDirection: "row" }}>
+        <View>
             <InputField
                 containerStyle={styles.inputContainer}
                 dynamicHeight={{ min: MIN_HEIGHT, max: MAX_HEIGHT }}
                 multiline={true}
                 value={inputText}
                 onChangeText={handleChangeText}
+                placeholder={translations.messages}
                 leftComponent={
                     <IconButton
                         icon="delete"

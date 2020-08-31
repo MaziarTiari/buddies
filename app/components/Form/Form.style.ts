@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 import { getResponsiveSize, fontsizes, getLineHeight } from "../../utils/font/font";
 import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
 
-const useStyle = () => {
+const useFormStyle = () => {
     const { theme, themeType } = useContext(ThemeContext);
     return StyleSheet.create({
         contentContainer: {
@@ -27,8 +27,12 @@ const useStyle = () => {
         buttonText: {
             color: themeType === "light" 
                 ? theme.App.layoutBackground : theme.App.primaryText
+        },
+        timeRangeContainer: {
+            display: "flex", 
+            flexDirection: "row"
         }
     });
 };
 
-export default useStyle;
+export default useFormStyle;

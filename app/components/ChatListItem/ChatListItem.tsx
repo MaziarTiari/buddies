@@ -1,9 +1,10 @@
 import React, { useContext } from "react";
 import { View, Text } from "react-native";
-import useStyle from "./ChatListItem.style";
+import useChatListItemStyle from "./ChatListItem.style";
 import { ProfileListItem } from "../ProfileListItem/ProfileListItem";
 import { IChatPartner, Relation } from "../../dev/example_data/MessageListQueryResponse";
 import { LanguageContext } from "../../context/LanguageContext/LanguageContext";
+import { useDate } from "../../hooks/useDate";
 
 export interface ChatListItemProps {
     chatPartner: IChatPartner;
@@ -12,26 +13,26 @@ export interface ChatListItemProps {
 }
 
 export const ChatListItem = (Props: ChatListItemProps) => {
-    const translate = useContext(LanguageContext).translations;
-
+    const { translations } = useContext(LanguageContext);
+    const { getLocalDateString } = useDate();
     function getRelationText(relation: Relation): string {
         switch (relation) {
             case Relation.FRIEND:
-                return translate.is_friend;
+                return translations.is_friend;
             case Relation.STRANGER:
-                return translate.is_stranger;
+                return translations.is_stranger;
             case Relation.BLOCKED:
-                return translate.is_blocked;
+                return translations.is_blocked;
             case Relation.GROUP:
-                return translate.is_group;
+                return translations.is_group;
         }
     }
 
-    const styles = useStyle();
+    const styles = useChatListItemStyle();
     const rightComponent = (
         <View style={styles.rightContainer}>
             <Text style={styles.lastMessageText}>
-                {getFormattedDateText(Props.chatPartner.lastMessage)}
+                {getLocalDateString(Props.chatPartner.lastMessage)}
             </Text>
             <View style={styles.unreadContainer}>
                 {Props.chatPartner.unreadMessages > 0 && (

@@ -3,12 +3,10 @@ import { StyleSheet } from "react-native";
 import { useContext } from "react";
 import { getResponsiveSize, getLineHeight, fontsizes } from "../../utils/font/font";
 
-const useStyle = () => {
+const useButtonStyle = () => {
     const { theme } = useContext(ThemeContext);
     return StyleSheet.create({
         container: {
-            borderColor: theme.App.layoutBackground,
-            backgroundColor: theme.App.primaryItem,
             borderRadius: getResponsiveSize(50),
             alignSelf: "baseline",
         },
@@ -18,9 +16,9 @@ const useStyle = () => {
             textAlign: "center",
             color: theme.App.primaryText,
             padding: getResponsiveSize(15),
-            fontWeight: "bold"
+            fontWeight: "600"
         },
     });
 };
 
-export default useStyle;
+export default useButtonStyle;

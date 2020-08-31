@@ -1,4 +1,5 @@
 import { StyleSheet, Platform } from "react-native";
+import { getResponsiveHeight } from "../../utils/font/font";
 
 const styles = StyleSheet.create({
     container: {
@@ -9,6 +10,7 @@ const styles = StyleSheet.create({
     },
     list: {
         flex: 1,
+        marginBottom: getResponsiveHeight(7)
     },
 });
 

@@ -4,7 +4,7 @@ import moment from 'moment';
 import { INewUserProfile } from '../../models/UserProfile';
 import { SessionContext } from '../../context/SessionContext/SessionContext';
 import Form, { IFormField, InputType } from '../Form/Form';
-import { AuthState } from '../../context/SessionContext/stateFrame';
+import { AuthState } from '../../context/SessionContext/sessionContextModel';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
 import { RouteName } from '../../navigation/Navigation.config';
 
@@ -13,7 +13,14 @@ import { RouteName } from '../../navigation/Navigation.config';
 const ProfileEditForm = () => {
 
     const { translations } = useContext(LanguageContext);
-    const { userProfile, user, authState, createUserProfile, setUserProfile } = useContext(SessionContext);
+    
+    const { 
+        userProfile, 
+        user, 
+        authState, 
+        createUserProfile, 
+        setUserProfile 
+    } = useContext(SessionContext);
 
     let navigation: NavigationProp<any>;
 

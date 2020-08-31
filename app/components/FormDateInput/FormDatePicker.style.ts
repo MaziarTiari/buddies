@@ -2,7 +2,7 @@ import { StyleSheet, Platform } from "react-native";
 
 export const style = StyleSheet.create({
     container: {
-        backgroundColor: Platform.select({ ios: "#fff" }),
+        backgroundColor: Platform.select({ ios: "#fff" }), // TODO
         borderRadius: Platform.select({ ios: 8 })
     },
     buttonContainer: {

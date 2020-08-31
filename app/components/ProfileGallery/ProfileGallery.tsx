@@ -6,16 +6,22 @@ import { SessionContext } from "../../context/SessionContext/SessionContext";
 import { IProfileImage } from "../../models/PhotoGallery";
 import moment from "moment";
 import { useFocusEffect } from "@react-navigation/native";
-import useStyle from "./ProfileGallery.style";
-import useImagePicker, { ImageSelectMode } from "../../Hooks/useImagePicker";
+import useProfileGalleryStyle from "./ProfileGallery.style";
+import useImagePicker, { ImageSelectMode } from "../../hooks/useImagePicker";
 
 const ProfileGallery = () => {
 
 	const [childrenVisible, setChildrenVisible] = useState<boolean>(false);
-
-	const { userProfile, user, gallery, fetchGallery, uploadToGallery } = useContext(SessionContext);
 	const { selectImage } = useImagePicker();
-	const style = useStyle();
+	const styles = useProfileGalleryStyle();
+
+	const { 
+		userProfile, 
+		user, 
+		gallery, 
+		fetchGallery, 
+		uploadToGallery 
+	} = useContext(SessionContext);
 
 	const isOwnGallery = user.id === gallery.userId;
 
@@ -45,8 +51,8 @@ const ProfileGallery = () => {
 	};
 
 	const renderItem = (image: IProfileImage): JSX.Element => (
-		<View style={style.imageContainer}>
-			<Image style={style.image}
+		<View style={styles.imageContainer}>
+			<Image style={styles.image}
 				source={{ uri: "data:image/gif;base64," + image.base64 }}
 			/>
 		</View>
@@ -55,7 +61,7 @@ const ProfileGallery = () => {
 	return (
 		<Container type="screen" layout="root">
 			<FlatList
-				style={style.list}
+				style={styles.list}
 				data={gallery.images}
 				renderItem={(item) => renderItem(item.item)}
 				numColumns={3}
@@ -63,6 +69,7 @@ const ProfileGallery = () => {
 			/>
 			{isOwnGallery &&
 				<ActionButton
+					horizontalLeft
 					icon="plus"
 					onPress={handleAddPressed}
 					children={[

@@ -1,192 +1,271 @@
-import React from 'react';
-import { IForeignActivity, IActivity, IActivityRequest } from '../../models/Activity'
-import { createContext, useState, ReactNode, useMemo, useEffect, useContext } from 'react'
+import React, { useCallback } from 'react';
+import {
+    IForeignActivity,
+    IActivity,
+    IActivityRequest
+} from '../../models/Activity';
+import {
+    createContext,
+    useState,
+    ReactNode,
+    useMemo,
+    useEffect,
+    useContext
+} from 'react';
 import { HubConnectionBuilder } from '@microsoft/signalr';
-import { hubs, baseUrl } from '../../api/channels';
+import { hubs, baseUrl, apiResources } from '../../api/channels';
 import { SessionContext } from '../SessionContext/SessionContext';
 import { activityApi } from '../../api/ApiClient';
 import { AxiosError, AxiosResponse } from 'axios';
+import {
+    activityContextModel,
+    ActivityContextModel,
+    ContextActivity
+} from './activityContextModel';
 
-export interface ActivityContextModel {
-    ownActivities: Array<IActivity>;
-    foreignActivities: Array<IForeignActivity>;
-    isLoadingOwn: boolean;
-    isLoadingForeign: boolean;
-    unhandledApplications: number;
-    updateOwnActivity: (activity: IActivity) => void;
-    fetchOwnActivities: () => void;
-    fetchForeignActivities: () => void;
-    hideActivity: (activityId: string) => void;
-    applyToActivity: (activityId: string) => void;
-}
-
-export const initState: ActivityContextModel = {
-    ownActivities: [],
-    foreignActivities: [],
-    isLoadingOwn: false,
-    isLoadingForeign: false,
-    unhandledApplications: 0,
-    updateOwnActivity: () => console.warn("updateActivity() not implemented!"),
-    fetchOwnActivities: () => console.warn("fetchOwnActivities() not implemented!"),
-    fetchForeignActivities: () => console.warn("fetchForeignActivities() not implemented!"),
-    hideActivity: () => console.warn("removeForeignActivity() not implemented!"),
-    applyToActivity: () => console.warn("removeOwnActivity() not implemented!"),
-}
-
-export const ActivityContext = createContext(initState);
-
-type ContextActivity = IActivity | IForeignActivity;
+ export const ActivityContext = createContext(activityContextModel);
 
 export function ActivityContextProvider(props: { children: ReactNode }) {
-    const { user, activity: sessionActiity, setActivity } = useContext(SessionContext);
-    const [ownActivities, setOwnActivities] = useState(initState.ownActivities);
-    const [foreignActivities, setForeignActivities] = useState(initState.foreignActivities);
-    const [isLoadingOwn, setIsLoadingOwn] = useState(initState.isLoadingOwn);
-    const [isLoadingForeign, setIsLoadingForeign] = useState(initState.isLoadingForeign);
+
+    const { 
+        user, 
+        activity: sessionActivity, 
+        setActivity: setSessionActivity,
+        setErrorMessage
+    } = useContext(SessionContext);
+
+    const [ownActivities, setOwnActivities] = useState(
+        activityContextModel.ownActivities
+    );
+    const [foreignActivities, setForeignActivities] = useState(
+        activityContextModel.foreignActivities
+    );
+    const [isLoadingOwn, setIsLoadingOwn] = useState(
+        activityContextModel.isLoadingOwn
+    );
+    const [isLoadingForeign, setIsLoadingForeign] = useState(
+        activityContextModel.isLoadingForeign
+    );
 
     const activityHubConnection = useMemo(() => {
         const connection = new HubConnectionBuilder()
-            .withUrl(baseUrl + hubs.activities)
+            .withUrl(baseUrl + hubs.activities.connection)
             .withAutomaticReconnect()
             .build();
 
-        connection.start()
-            .then(() => console.log("Connection started!"))
-            .catch(err => console.error("Could not connect to websocket: " + err));
+        connection
+            .start()
+            .then(() => console.log('Connection started!'))
+            .catch((error: AxiosError) => setErrorMessage(error.message));
         return connection;
     }, []);
 
-    useEffect(() => {
-        if (user.id !== "") {
-            activityHubConnection.invoke("addToActivityUserGroup", user.id)
-                .catch(err => console.error(err));
-            fetchForeignActivities();
-            fetchOwnActivities();
+
+    function getUpdatedActivities(
+        activities: Array<ContextActivity>,
+        activity: ContextActivity
+    ) {
+        const activityIndex = activities.findIndex((a) => a.id === activity.id);
+        activities[activityIndex] = {...activities[activityIndex], ...activity};
+        return activities;
+    }
+
+    const updateForeignActivity = useCallback((activity: ContextActivity) => {
+        setIsLoadingForeign(true);
+        if (sessionActivity.id === activity.id) {
+            setSessionActivity({...activity});
         }
-    }, [user.id])
+        const updatedActivities = getUpdatedActivities(
+            [...foreignActivities], activity
+        ) as Array<IForeignActivity>;
 
-    useEffect(() => {
-        activityHubConnection.on("updateActivity", (activity: IForeignActivity) => {
-            console.log("new activity: ", activity)
-            updateForeignActivity(activity);
-        });
-        return () => {
-            activityHubConnection.off("updateActivity");
+        setForeignActivities(updatedActivities);
+        setIsLoadingForeign(false);
+    }, [foreignActivities, getUpdatedActivities, sessionActivity]);
+
+    const updateOwnActivity = useCallback((activity: IActivity) => {
+        setIsLoadingOwn(true);
+        if (sessionActivity.id === activity.id) {
+            setSessionActivity(activity);
         }
-    }, [foreignActivities]);
+        const updatedActivities = getUpdatedActivities([...ownActivities], activity);
+        setOwnActivities(updatedActivities);
+        setIsLoadingOwn(false);
+    }, [sessionActivity, getUpdatedActivities, ownActivities]);
 
-    useEffect(() => {
-        activityHubConnection.on("newApplicant", (application: IActivityRequest) => {
-            console.log("new application: ", application);
-            let activity = ownActivities.find(a => a.id === application.activityId);
-            if (activity) {
-                activity.applicantUserIds = activity?.applicantUserIds
-                    ? [...activity.applicantUserIds, application.applicantId]
-                    : [application.activityId]
-                    ;
-                setOwnActivities([...getUpdatedActivities([...ownActivities], activity)]);
-            }
-        });
-        return () => { 
-            activityHubConnection.off("newApplicant")
-        };
-    }, [ownActivities]);
-
-    useEffect(() => {
-        activityHubConnection.on("newActivity", (activity: IForeignActivity) => {
-            if (activity.userId === user.id) {
-                setOwnActivities([...ownActivities, activity])
-            } else {
-                setForeignActivities([...foreignActivities, activity]);
-            }
-        })
-        return () => {
-            activityHubConnection.off("newActivity")
-        };
-    }), [foreignActivities, ownActivities];
+    const addApplicantId = useCallback((activity: ContextActivity, id: string) => {
+        activity.applicantUserIds = activity?.applicantUserIds
+            ? [...activity.applicantUserIds, id]
+            : [id];
+    },[]);
 
     function fetchOwnActivities() {
         setIsLoadingOwn(true);
-        activityApi.GetAll<Array<IActivity>>("user/" + user.id)
-            .then(activities => {
+        activityApi
+            .GetMany<Array<IActivity>>(
+                apiResources.activities.fromUser(user.id)
+            )
+            .then((activities) => {
                 setOwnActivities(activities);
-                const activityIds = activities.map(a => a.id);
-                activityHubConnection.invoke("addToActivityGroups", activityIds)
-                    .catch(err => console.error(err));
+                const activityIds = activities.map((a) => a.id);
+                activityHubConnection
+                    .invoke(hubs.activities.subscribeMany, activityIds)
+                    .catch((err) => console.error(err));
             })
-            .catch((error: AxiosError) => console.error("include: ", error))
-            .finally(() => setIsLoadingOwn(false))
+            .catch((error: AxiosError) => setErrorMessage(error.message))
+            .finally(() => setIsLoadingOwn(false));
     }
 
     function fetchForeignActivities() {
         setIsLoadingForeign(true);
-        activityApi.GetAll<Array<IForeignActivity>>("exclude/" + user.id)
-            .then(activities => {
+        activityApi
+            .GetMany<Array<IForeignActivity>>(
+                apiResources.activities.notFromUser(user.id)
+            )
+            .then((activities) => {
                 setForeignActivities(activities);
-                const activityIds = activities.map(a => a.id);
-                activityHubConnection.invoke("addToActivityGroups", activityIds)
-                    .catch(err => console.error(err));
+                const activityIds = activities.map((a) => a.id);
+                activityHubConnection
+                    .invoke(hubs.activities.subscribeMany, activityIds)
+                    .catch((err) => console.error(err));
             })
-            .catch((error: AxiosError) => console.error("exclude: ", error))
-            .finally(() => setIsLoadingForeign(false))
+            .catch((error: AxiosError) => setErrorMessage(error.message))
+            .finally(() => setIsLoadingForeign(false));
     }
 
     function removeForeignActivity(activityId: string) {
-        activityHubConnection.invoke("removeFromActivityGroup", activityId);
-        setForeignActivities([...foreignActivities.filter(a => a.id !== activityId)]);
-    }
-
-    function getUpdatedActivities(
-        activities: Array<ContextActivity>,
-        activity: ContextActivity) {
-        const activityIndex = activities.findIndex(a => a.id === activity.id);
-        activities[activityIndex] = activity;
-        return activities;
-    }
-
-    function updateForeignActivity(activity: IForeignActivity) {
-        setIsLoadingForeign(true);
-        setForeignActivities(
-            getUpdatedActivities(
-                [...foreignActivities], activity) as Array<IForeignActivity>
-        );
-        setIsLoadingForeign(false);
-    }
-
-    function updateOwnActivity(activity: IActivity) {
-        setIsLoadingOwn(true);
-        if (sessionActiity.id === activity.id) {
-            setActivity(activity);
-        }
-        setOwnActivities(getUpdatedActivities([...ownActivities], activity));
-        setIsLoadingOwn(false);
+        activityHubConnection.invoke(hubs.activities.unsubscribe, activityId);
+        setForeignActivities([
+            ...foreignActivities.filter((a) => a.id !== activityId)
+        ]);
     }
 
     function hideActivity(activityId: string) {
         const activityRequest: IActivityRequest = {
-            activityId: activityId, 
+            activityId: activityId,
             applicantId: user.id
         };
-        activityApi.Post<AxiosResponse, IActivityRequest>("hide", activityRequest)
+        activityApi
+            .Post<AxiosResponse, IActivityRequest>(
+                apiResources.activities.hide,
+                activityRequest
+            )
             .then(() => removeForeignActivity(activityId))
-            .catch(err => console.error(err)); // TODO Error Handling
+            .catch((error: AxiosError) => setErrorMessage(error.message));
     }
 
     function applyToActivity(activityId: string) {
-        const application: IActivityRequest = { 
-            activityId: activityId, 
-            applicantId: user.id 
+        const application: IActivityRequest = {
+            activityId: activityId,
+            applicantId: user.id
         };
-        activityApi.Post<AxiosResponse, IActivityRequest>("apply", application)
+        activityApi
+            .Post<AxiosResponse, IActivityRequest>(
+                apiResources.activities.apply,
+                application
+            )
             .then(() => removeForeignActivity(activityId))
-            .catch(err => console.error(err)) // TODO error handling
+            .catch((error: AxiosError) => setErrorMessage(error.message));
     }
 
     const unhandledApplications = useMemo(() => {
         let count = 0;
-        ownActivities.forEach(a => count += a.applicantUserIds.length);
+        ownActivities.forEach((a) => (count += a.applicantUserIds.length));
         return count;
     }, [ownActivities]);
+
+    useEffect(() => {
+        if (user.id !== '') {
+            activityHubConnection
+                .invoke(hubs.activities.subscribeUser, user.id)
+                .catch((error: AxiosError) => setErrorMessage(error.message));
+            fetchForeignActivities();
+            fetchOwnActivities();
+        }
+    }, [user.id]);
+
+    useEffect(() => {
+        activityHubConnection.on(
+            hubs.activities.onUpdate,
+            (activity: IActivity) => {
+                updateForeignActivity(activity);
+            }
+        );
+        return () => {
+            activityHubConnection.off(hubs.activities.onUpdate);
+        };
+    }, [foreignActivities]);
+
+    useEffect(() => {
+        activityHubConnection.on(
+            hubs.activities.newApplicant,
+            (application: IActivityRequest) => {
+                let activity: ContextActivity | undefined = foreignActivities.find(
+                    a => a.id === application.activityId
+                );
+                if (activity) {
+                    addApplicantId(activity, application.applicantId);
+                    updateForeignActivity({...activity} as IForeignActivity);
+                } else {
+                    activity = ownActivities.find((a) => a.id === application.activityId);
+                    if (activity) {
+                        addApplicantId(activity, application.applicantId);
+                        updateOwnActivity({...activity});
+                    }
+                }
+            }
+        );
+        return () => {
+            activityHubConnection.off(hubs.activities.newApplicant);
+        };
+    }, [
+        ownActivities, 
+        foreignActivities, 
+        addApplicantId, 
+        updateForeignActivity, 
+        updateOwnActivity
+    ]);
+
+    useEffect(() => {
+        activityHubConnection.on(
+            hubs.activities.newActivity,
+            (activity: IForeignActivity) => {
+                if (activity.userId === user.id) {
+                    setOwnActivities([...ownActivities, activity]);
+                } else {
+                    setForeignActivities([...foreignActivities, activity]);
+                }
+            }
+        );
+        return () => {
+            activityHubConnection.off(hubs.activities.newActivity);
+        };
+    }), [foreignActivities, ownActivities];
+
+    useEffect(() => {
+    activityHubConnection.onclose((error) => {
+        let notConnected = true;
+        let waitingPeriod = 0;
+        const userInfo = "Please wait while we are are trying to reconnect."
+        if (error) {
+            setErrorMessage(error.message + "\n" + userInfo);
+        } else {
+            setErrorMessage("We have websocket-connection problems. " + userInfo);
+        }
+        
+        while (notConnected) {
+            setTimeout(() => {
+                activityHubConnection
+                    .start()
+                    .then(() => {
+                        alert("Success: we are connected again!");
+                        notConnected = false;
+                    })
+                    .catch((err: Error) => waitingPeriod = waitingPeriod + 500);
+            }, waitingPeriod);
+        }
+        
+    })});
 
     const contextValue: ActivityContextModel = {
         isLoadingOwn,
@@ -199,12 +278,11 @@ export function ActivityContextProvider(props: { children: ReactNode }) {
         fetchForeignActivities: fetchForeignActivities,
         hideActivity: hideActivity,
         applyToActivity: applyToActivity
-        
     };
 
     return (
         <ActivityContext.Provider value={contextValue}>
             {props.children}
         </ActivityContext.Provider>
-    )
+    );
 }

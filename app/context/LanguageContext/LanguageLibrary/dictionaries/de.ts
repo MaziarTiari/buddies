@@ -4,16 +4,15 @@ export const germanDictionary: Dictionary = {
 
     // General
     please_wait: "Bitte warten ...",
-    my_profile: "Mein Profil",
-    other_profile: "Profil von ",
     feed: "Feed",
     activities: "Aktivitäten",
     my_activities: "Meine Aktivitäten",
     favorites: "Meine Favoriten",
     explore: "Erkunden",
     messages: "Nachrichten",
+    message: "Nachricht",
     edit_profile: "Profil bearbeiten",
-    about: "Über mich",
+    about_me: "Über mich",
     gallery: "Gallerie",
     firstname: "Vorname",
     surname: "Nachname",
@@ -31,9 +30,10 @@ export const germanDictionary: Dictionary = {
     diverse: "Divers",
     jobs: "Tätigkeiten",
     hobbies: "Hobbys",
-    biography: "Biographie",
+    profile: "Profil",
     register: "Registrieren",
     login: "Anmelden",
+    logout: "Abmelden",
     password: "Passwort",
     repeat_password: "Passwort wiederholen",
     password_mismatch: "Die Passwörter stimmen nicht überein",
@@ -48,16 +48,16 @@ export const germanDictionary: Dictionary = {
     personal: "Persönliches",
     information: "Informationen",
     meeting_point: "Treffpunkt",
-    start_time: "Beginn",
-    end_time: "Ende",
-    start_time_optional: "Beginn (optional)",
-    end_time_optional: "Ende (optional)",
+    start_date: "Startdatum",
+    end_date: "Enddatum",
     visibility: "Sichbarkeit",
     member: "Teilnehmer",
     applicants: "Bewerber",
     title: "Titel",
     apply_changes: "Änderungen übernehmen",
     apply: "Bewerben",
+    application_is_hidden: "Wird nicht mehr angezeigt",
+    sent_application: "Bewerbung losgeschickt",
     hide: "Ausblenden",
     create: "Erstellen",
     settings: "Einstellungen",
@@ -69,6 +69,9 @@ export const germanDictionary: Dictionary = {
     remove_image: "Bild entfernen",
     error: "Fehler",
     continue: "Weiter",
+    open: "Offen",
+    from: "Von",
+    until: "Bis",
 
     // Tags: Hobbies
     my_hobbies: "Meine Hobbys",
@@ -97,7 +100,9 @@ export const germanDictionary: Dictionary = {
     error_invalid_email: "Gib bitte eine korrekte Email-Adresse ein",
     error_invalid_number: "Gib bitte eine Zahl ein",
     error_invalid_phone: "Gib bitte eine korrekte Telefonnummer ein",
+    wrong_login: "Falsche Logindaten!",
+    wrong_date_range: "Enddatum sollte nach Startdatum sein",
 
     // Prepositions
-    date_range_preposition: "bis"
+    job_preposition: "bei"
 }

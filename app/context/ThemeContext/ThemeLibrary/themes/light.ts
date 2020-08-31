@@ -6,6 +6,7 @@ export const lightTheme: ITheme = {
         primaryText: "#000000",
         secondaryText: "#171717",
         inputBackground: "#FFFFFF",
+        inputBorderColor: "#000000",
         primaryItem: "#B13E00",
         layoutBackground: "#FFFFFF",
         screenBackground: "#FFFFFF",
@@ -15,15 +16,16 @@ export const lightTheme: ITheme = {
         profileIsOnlineDot: "#79C879",
         invalidInputBoarder: "red",
         devider: "#374758",
-        buttonBackground: "#C2821F",
-        labelLinkColor: "#005C87",
         errorColor: "#FF322F",
         acceptColor: "#009754",
         rejectColor: "#A00022",
+        rejectBackground: "#560019",
+        acceptBackground: "#013B24",
         secondaryAcceptColor: "#00C86F",
         secondaryRejectColor: "#B90026",
         interactiveItem: "#001E2C",
         secondaryInteractiveItem: "#004160",
+        darkenBackground: "rgba(0,0,0,0.8)"
     },
     ActivityListItem: {
         heartIconOn: "#FBCF07",
@@ -33,6 +35,8 @@ export const lightTheme: ITheme = {
         recievedMsgBackground: "#45535F",
     },
     Button: {
-        dangerousColor: "red",
+        dangerous: "red",
+        primary: "#C57903",
+        secondary: "#455464"
     },
 };

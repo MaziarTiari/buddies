@@ -3,7 +3,7 @@ import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
 import { useContext } from "react";
 import { fontsizes, getLineHeight, getResponsiveSize } from "../../utils/font/font";
 
-const useStyle = () => {
+const useAvatarStyle = () => {
     const { theme } = useContext(ThemeContext);
     return StyleSheet.create({
         container: {
@@ -23,4 +23,4 @@ const useStyle = () => {
     });
 };
 
-export default useStyle;
+export default useAvatarStyle;

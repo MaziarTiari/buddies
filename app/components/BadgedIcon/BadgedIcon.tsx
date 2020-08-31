@@ -1,7 +1,12 @@
 import React from "react";
 import { withBadge, BadgeProps } from "react-native-elements";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import TouchableRippleCircle from "../TouchableRippleCircle/TouchableRippleCircle";
+import { TouchableRipple } from "react-native-paper";
+import { TouchableDarken } from "../TouchableDarken/TouchableDarken";
+import { TouchableNativeFeedback, TouchableOpacity, TouchableHighlight } from "react-native-gesture-handler";
+import { TouchableOpacityProps, ViewStyle } from "react-native";
+import { fontsizes, getResponsiveSize } from "../../utils/font/font";
+import { Utilities } from "../../utils/AppUtilities";
 
 interface BadgedIconProps {
     icon: string;
@@ -9,13 +14,17 @@ interface BadgedIconProps {
     color: string;
     value?: number;
     onPress?: () => void;
+    style?: ViewStyle;
 }
 
 const BadgedIcon = (props: BadgedIconProps): JSX.Element => {
 
+    const r = 0.3 * props.size;
     const badgeOptions: BadgeProps = {
         badgeStyle: {
-            right: props.size / 3,
+            right: (r - getResponsiveSize(r)) + r,
+            scaleX: getResponsiveSize(1.2),
+            scaleY: getResponsiveSize(1.2),
         },
     };
 
@@ -29,10 +38,19 @@ const BadgedIcon = (props: BadgedIconProps): JSX.Element => {
         size={props.size}
     />
 
+    let underlayColor = Utilities.hexToRgb(props.color);
+    const rgba = underlayColor
+        ? `rgba(${underlayColor?.r},${underlayColor?.g},${underlayColor?.b},0.3)`
+        : "rgba(0,0,0,0.3)";
+
     return props.onPress
-        ? <TouchableRippleCircle onPress={props.onPress}>
+        ? <TouchableHighlight 
+            underlayColor={rgba}
+            style={[{borderRadius: 50, alignItems: "center"} ,props.style]} 
+            onPress={props.onPress}
+        >
             {badgedIcon}
-        </TouchableRippleCircle>
+        </TouchableHighlight>
         : badgedIcon;
 
 }

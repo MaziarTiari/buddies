@@ -16,6 +16,18 @@ const useStyle = () => {
             flexDirection: "row",
             marginVertical: getResponsiveSize(15),
         },
+        activityIndicatorContainer: {
+            position: "absolute",
+            zIndex: 1,
+            opacity: 0.5,
+            alignItems: "center",
+            justifyContent: "center",
+            top: 0,
+            left: 0,
+            height: "100%",
+            width: "100%",
+            backgroundColor: "black"
+        },
         profileImageContainer: {
             position: "relative",
             marginRight: getResponsiveSize(15),

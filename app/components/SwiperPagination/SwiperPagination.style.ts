@@ -3,7 +3,7 @@ import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
 import { StyleSheet } from "react-native";
 import { getResponsiveSize, fontsizes } from "../../utils/font/font";
 
-const useStyle = () => {
+const useSwiperPaginationStyle = () => {
     const { theme } = useContext(ThemeContext);
     return StyleSheet.create({
         paginationContainer: {
@@ -23,4 +23,4 @@ const useStyle = () => {
     });
 }
 
-export default useStyle;
+export default useSwiperPaginationStyle;

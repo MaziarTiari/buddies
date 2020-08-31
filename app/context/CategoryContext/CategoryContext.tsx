@@ -30,7 +30,7 @@ export function CategoryContextProvider(props: { children: ReactNode }) {
     const { language } = useContext(LanguageContext);
 
     useEffect(() => {
-        categoryApi.GetAll<ICategory[]>()
+        categoryApi.GetMany<ICategory[]>()
             .then((categories: ICategory[]) => setCategories(categories))
             .catch((error: AxiosError) => console.log(error));
     }, []);

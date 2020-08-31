@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text } from "react-native";
-import useStyle from "./SwiperPagination.style";
+import useSwiperPaginationStyle from "./SwiperPagination.style";
 
 export interface SwiperPaginationProps {
     index: number;
@@ -8,7 +8,7 @@ export interface SwiperPaginationProps {
 }
 
 const SwiperPagination = ({ index, total }: SwiperPaginationProps): JSX.Element => {
-    const style = useStyle();
+    const style = useSwiperPaginationStyle();
     return total > 1 ? (
         <View style={style.paginationContainer}>
             <Text style={style.paginationText}>

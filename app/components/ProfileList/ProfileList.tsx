@@ -5,7 +5,6 @@ import { IUserAvatar } from "../../models/UserAvatar";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import { ProfileListItem } from "../ProfileListItem/ProfileListItem";
 import { SessionContext } from "../../context/SessionContext/SessionContext";
-import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
 import { RouteName } from "../../navigation/Navigation.config";
 
 export interface ProfileListProps {

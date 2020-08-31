@@ -5,16 +5,22 @@ import { Menu, MenuTrigger, MenuOption, MenuOptions } from "react-native-popup-m
 import { fontsizes, getResponsiveSize } from "../../utils/font/font";
 import { useNavigation } from '@react-navigation/native';
 import { SessionContext } from "../../context/SessionContext/SessionContext";
+import useAppNavigation from "../../hooks/useAppNavigation";
 
 export const LeftActivityHeader = () => {
-    const navigation = useNavigation();
+    const { navigation } = useAppNavigation();
     const { theme } = useContext(ThemeContext);
-    const { userIsEditingActivity, cancelEditingActivity, activity } = useContext(SessionContext);
+    const {
+        userIsEditingActivity,
+        cancelEditingActivity,
+        activity
+    } = useContext(SessionContext);
 
     const handleCancelPressed = () => {
         cancelEditingActivity();
-        if (activity.id === "")
+        if (activity.id === "") {
             navigation.goBack();
+        }
     }
 
     return userIsEditingActivity

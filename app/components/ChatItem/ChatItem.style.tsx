@@ -5,7 +5,7 @@ import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
 
 const roundMessageBorderRadius = getResponsiveSize(25);
 
-const useStyle = () => {
+const useChatItemStyle = () => {
     const theme = useContext(ThemeContext).theme;
 
     return StyleSheet.create({
@@ -48,4 +48,4 @@ const useStyle = () => {
     });
 };
 
-export default useStyle;
+export default useChatItemStyle;

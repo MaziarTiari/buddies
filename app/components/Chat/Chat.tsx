@@ -28,21 +28,23 @@ const Chat = ({ route, navigation }: any) => {
 
     return (
         <Container type="screen" layout="root" style={styles.container} keyboardAvoiding>
-            <FlatList
-                data={sortedMessages}
-                renderItem={({ item: message }) => (
-                    <ChatItem
-                        sender={isGroup ? message.senderDisplayName : undefined}
-                        message={message.message}
-                        self={message.senderUuid === OWN_UUID}
-                        date={message.date}
-                    />
-                )}
-                style={styles.list}
-                keyExtractor={(item) => item.uuid}
-                inverted
-            />
-            <ChatInput style={styles.inputField} onSend={handleSend} />
+            <Container type="component" layout="root">
+                <FlatList
+                    data={sortedMessages}
+                    renderItem={({ item: message }) => (
+                        <ChatItem
+                            sender={isGroup ? message.senderDisplayName : undefined}
+                            message={message.message}
+                            self={message.senderUuid === OWN_UUID}
+                            date={message.date}
+                        />
+                    )}
+                    style={styles.list}
+                    keyExtractor={(item) => item.uuid}
+                    inverted
+                />
+                <ChatInput style={styles.inputField} onSend={handleSend} />
+            </Container>
         </Container>
     );
 };
