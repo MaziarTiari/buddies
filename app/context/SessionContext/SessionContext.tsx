@@ -4,7 +4,7 @@ import { userProfileApi, activityApi } from '../../api/ApiClient';
 // import { baseUrl, hubs } from "../../api/channels";
 import { AxiosError } from 'axios';
 import { NOT_FOUND } from 'http-status-codes';
-import { IActivity } from '../../models/Activity';
+import { IActivity, INewActivity } from '../../models/Activity';
 import { IUser, INewUser } from '../../models/User';
 import {
     ISessionContextModel,
@@ -29,7 +29,7 @@ export function SessionContextProvider(props: { children: ReactNode }) {
 
     const [gallery, setGallery] = useState<IPhotoGallery>(initState.gallery);
 
-    const [activity, setActivity] = useState<IActivity>(initState.activity);
+    const [activity, setActivity] = useState<IActivity|INewActivity>(initState.activity);
 
     const [isLoading, setIsLoading] = useState<boolean>(initState.isLoading);
 
@@ -54,7 +54,7 @@ export function SessionContextProvider(props: { children: ReactNode }) {
         initState.userProfile
     );
 
-    const [activityBackup, setActivityBackup] = useState<IActivity>(
+    const [activityBackup, setActivityBackup] = useState<IActivity|INewActivity>(
         initState.activity
     );
 
@@ -215,10 +215,10 @@ export function SessionContextProvider(props: { children: ReactNode }) {
             .finally(() => setIsLoading(false));
     };
 
-    const createActivity = (createdActivity: IActivity) => {
+    const createActivity = (createdActivity: INewActivity) => {
         setIsLoading(true);
         activityApi
-            .Create<IActivity>(createdActivity)
+            .Create<IActivity, INewActivity>(createdActivity)
             .then((activity: IActivity) => setActivity(activity))
             .catch((error: AxiosError) => setErrorMessage(error.message))
             .finally(() => setIsLoading(false));
@@ -250,8 +250,8 @@ export function SessionContextProvider(props: { children: ReactNode }) {
 
     const saveEditingActivity = () => {
         if (!userIsEditingActivity) return;
-        if (activity.id !== '') updateActivity({ ...activity });
-        else createActivity({ ...activity });
+        if ((activity as IActivity).id) updateActivity({ ...activity } as IActivity);
+        else createActivity({ ...activity } as INewActivity);
         setUserIsEditingActivity(false);
     };
 

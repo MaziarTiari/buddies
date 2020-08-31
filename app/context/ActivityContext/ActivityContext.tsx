@@ -72,7 +72,7 @@ export function ActivityContextProvider(props: { children: ReactNode }) {
 
     const updateForeignActivity = useCallback((activity: ContextActivity) => {
         setIsLoadingForeign(true);
-        if (sessionActivity.id === activity.id) {
+        if ((sessionActivity as IActivity)?.id === activity.id) {
             setSessionActivity({...activity});
         }
         const updatedActivities = getUpdatedActivities(
@@ -85,7 +85,7 @@ export function ActivityContextProvider(props: { children: ReactNode }) {
 
     const updateOwnActivity = useCallback((activity: IActivity) => {
         setIsLoadingOwn(true);
-        if (sessionActivity.id === activity.id) {
+        if ((sessionActivity as IActivity)?.id === activity.id) {
             setSessionActivity(activity);
         }
         const updatedActivities = getUpdatedActivities([...ownActivities], activity);
@@ -188,7 +188,11 @@ export function ActivityContextProvider(props: { children: ReactNode }) {
         activityHubConnection.on(
             hubs.activities.onUpdate,
             (activity: IActivity) => {
-                updateForeignActivity(activity);
+                if (activity.userId === user.id) {
+                    updateOwnActivity(activity);
+                } else {
+                    updateForeignActivity(activity);
+                }
             }
         );
         return () => {
@@ -230,11 +234,8 @@ export function ActivityContextProvider(props: { children: ReactNode }) {
         activityHubConnection.on(
             hubs.activities.newActivity,
             (activity: IForeignActivity) => {
-                if (activity.userId === user.id) {
-                    setOwnActivities([...ownActivities, activity]);
-                } else {
-                    setForeignActivities([...foreignActivities, activity]);
-                }
+                fetchOwnActivities();
+                fetchForeignActivities();
             }
         );
         return () => {

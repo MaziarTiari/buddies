@@ -2,8 +2,8 @@ import { ICategorizedInput } from './CategorizedInput';
 import { IImage } from './Image';
 import { IUserAvatar } from './UserAvatar';
 import { ITime } from '../components/FormDateInput/FormDatePicker';
-export interface IActivity {
-    id: string;
+
+export interface INewActivity {
     userId: string;
     title: string;
     location?: string;
@@ -19,6 +19,10 @@ export interface IActivity {
     applicationDeadline?: number;
     tags?: Array<ICategorizedInput>;
     maxMember?: number ;
+}
+
+export interface IActivity extends INewActivity {
+    id: string;
 }
 
 export interface IActivityRequest {

@@ -1,6 +1,6 @@
 import { IUser, INewUser } from '../../models/User'
 import { IUserProfile, INewUserProfile } from "../../models/UserProfile";
-import { IActivity } from '../../models/Activity';
+import { IActivity, INewActivity } from '../../models/Activity';
 import { IPhotoGallery, IProfileImage } from '../../models/PhotoGallery';
 import { IUserAvatar } from '../../models/UserAvatar';
 import moment from 'moment';
@@ -13,10 +13,10 @@ export interface ISessionContextModel {
     setAuthState: (authState: AuthState) => void;
     user: IUser;
     userProfile: IUserProfile;
-    activity: IActivity;
+    activity: IActivity | INewActivity;
     setUser: (user: IUser) => void;
     setUserProfile: (profile: IUserProfile) => void;
-    setActivity: (activity: IActivity) => void;
+    setActivity: (activity: IActivity | INewActivity) => void;
     isLoading: boolean;
     setIsLoading: (state: boolean) => void;
     createUser: (createdUser: INewUser) => void;
@@ -62,7 +62,6 @@ export const defaultUserProfile = {
 
 export const defaultActivity = {
     title: "",
-    id: "",
     visibility: 0,
     userId: "",
     description: "",
