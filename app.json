@@ -5,6 +5,7 @@
     "name": "buddies",
     "slug": "buddies",
     "version": "0.0.1",
+    "orientation": "portrait",
     "platforms": [
       "ios",
       "android",

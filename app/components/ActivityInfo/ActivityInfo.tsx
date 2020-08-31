@@ -377,19 +377,19 @@ const ActivityInfo = () => {
                 {((activity.description &&
                     activity.description.trim().length > 0) ||
                     userIsEditingActivity) && (
-                    <EditableSection
-                        isEditing={userIsEditingActivity}
-                        onEdit={() => setShowDescriptionEditor(true)}
-                    >
-                        <Headline style={styles.headline}>
-                            {translations.description}
-                        </Headline>
-                        {((activity.description !== undefined &&
+                        <EditableSection
+                            isEditing={userIsEditingActivity}
+                            onEdit={() => setShowDescriptionEditor(true)}
+                        >
+                            <Headline style={styles.headline}>
+                                {translations.description}
+                            </Headline>
+                            {((activity.description &&
                                 activity.description.trim().length > 0) &&
-                            <Text style={styles.text}>{activity.description}</Text>
-                        )}
-                    </EditableSection>
-                )}
+                                <Text style={styles.text}>{activity.description}</Text>
+                            )}
+                        </EditableSection>
+                    )}
 
                 {/* Information */}
                 {userIsEditingActivity &&
@@ -448,45 +448,45 @@ const ActivityInfo = () => {
                 {/* Tags */}
                 {((activity.tags && activity.tags.length > 0) ||
                     userIsEditingActivity) && (
-                    <EditableSection
-                        isEditing={userIsEditingActivity}
-                        onEdit={() => {
-                            navigation.navigate(RouteName.Taglist, {
-                                categories: hobbyCategories,
-                                editorEditHeadline: translations.edit_subject,
-                                editorAddHeadline: translations.add_subject,
-                                editorTitlePlaceholder:
-                                    translations.description,
-                                editorCategoryPlaceholder:
-                                    translations.category,
-                                items: activity.tags,
-                                headerTitle: translations.subjects,
-                                onItemsChanged: (tags) =>
-                                    setActivity({ ...activity, tags: tags })
-                            } as ICategorizedInputListConfig);
-                        }}
-                    >
-                        <Headline style={styles.headline}>
-                            {translations.subjects}
-                        </Headline>
-                        <If condition={userIsEditingActivity}>
-                            <Then>
-                                {activity.tags?.map((tag, index) => (
-                                    <InfoItem
-                                        key={index}
-                                        keyText={tag.category}
-                                        valueText={tag.title}
-                                    />
-                                ))}
-                            </Then>
-                            <Else>
-                                <Text style={styles.text}>
-                                    {activity.tags?.map((t) => t.title).join(", ")}
-                                </Text>
-                            </Else>
-                        </If>
-                    </EditableSection>
-                )}
+                        <EditableSection
+                            isEditing={userIsEditingActivity}
+                            onEdit={() => {
+                                navigation.navigate(RouteName.Taglist, {
+                                    categories: hobbyCategories,
+                                    editorEditHeadline: translations.edit_subject,
+                                    editorAddHeadline: translations.add_subject,
+                                    editorTitlePlaceholder:
+                                        translations.description,
+                                    editorCategoryPlaceholder:
+                                        translations.category,
+                                    items: activity.tags,
+                                    headerTitle: translations.subjects,
+                                    onItemsChanged: (tags) =>
+                                        setActivity({ ...activity, tags: tags })
+                                } as ICategorizedInputListConfig);
+                            }}
+                        >
+                            <Headline style={styles.headline}>
+                                {translations.subjects}
+                            </Headline>
+                            <If condition={userIsEditingActivity}>
+                                <Then>
+                                    {activity.tags?.map((tag, index) => (
+                                        <InfoItem
+                                            key={index}
+                                            keyText={tag.category}
+                                            valueText={tag.title}
+                                        />
+                                    ))}
+                                </Then>
+                                <Else>
+                                    <Text style={styles.text}>
+                                        {activity.tags?.map((t) => t.title).join(", ")}
+                                    </Text>
+                                </Else>
+                            </If>
+                        </EditableSection>
+                    )}
 
                 {/* Criteria */}
                 {/*

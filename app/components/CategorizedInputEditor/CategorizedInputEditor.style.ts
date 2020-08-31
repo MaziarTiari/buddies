@@ -32,7 +32,7 @@ const useCategorizedInputEditorStyle = () => {
         pickerInput: {
             fontSize: fontsizes.small,
             lineHeight: getLineHeight(fontsizes.small),
-            paddingVertical: getResponsiveSize(5),
+            paddingVertical: getResponsiveSize(10),
         },
         autoComplete: {
             fontSize: fontsizes.small,
@@ -68,7 +68,7 @@ const useCategorizedInputEditorStyle = () => {
             color: theme.App.primaryText,
         },
         buttonContainer: {
-            alignItems:"center",
+            alignItems: "center",
             flexDirection: "row",
             justifyContent: "space-between",
             marginTop: getResponsiveSize(30),
