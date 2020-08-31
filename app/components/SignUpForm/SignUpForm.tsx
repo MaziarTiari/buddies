@@ -58,8 +58,8 @@ const SignUpForm = () => {
         } else {
             setPasswordMismatch(false);
             const createdUser: INewUser = {
-                email: data[Field.EMAIL],
-                phone: data[Field.PHONE],
+                email: data[Field.EMAIL].trim(),
+                phone: data[Field.PHONE].trim(),
                 password: data[Field.PASSWORD]
             };
             createUser(createdUser);

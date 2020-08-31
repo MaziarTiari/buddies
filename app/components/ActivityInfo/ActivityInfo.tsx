@@ -39,7 +39,7 @@ import InfoWithIcon from '../InfoWithIcon/InfoWithIcon';
 import useAppNavigation from '../../hooks/useAppNavigation';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-const defaultImg = require('../../../assets/img/default-activity-img.jpg');
+const defaultImg = require('../../../assets/img/defaultActivityImg.png');
 
 const MIN_TITLE_LENGTH = 10;
 
@@ -53,11 +53,11 @@ const ActivityInfo = () => {
 
     const { hideActivity, applyToActivity } = useContext(ActivityContext);
 
-    const { 
-        getTimeRange, 
-        getLocalDateRange, 
-        getLocalDateString, 
-        getTimeString 
+    const {
+        getTimeRange,
+        getLocalDateRange,
+        getLocalDateString,
+        getTimeString
     } = useDate();
 
     const {
@@ -280,10 +280,10 @@ const ActivityInfo = () => {
                                             {
                                                 color:
                                                     isOwnActivity &&
-                                                    activity.applicantUserIds.length > 0
+                                                        activity.applicantUserIds.length > 0
                                                         ? theme.App.rejectColor
                                                         : theme.App
-                                                              .secondaryInteractiveItem
+                                                            .secondaryInteractiveItem
                                             }
                                         ]}
                                     >

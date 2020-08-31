@@ -11,18 +11,18 @@ import { IActivity, IForeignActivity } from '../../models/Activity';
 import Avatar from '../Avatar/Avatar';
 import { useDate } from '../../hooks/useDate';
 import InfoWithIcon from '../InfoWithIcon/InfoWithIcon';
-const defaultImg = require('../../../assets/img/default-activity-img.jpg');
+const defaultImg = require('../../../assets/img/defaultActivityImg.png');
 
-function ActivityListItem (activity: IActivity | IForeignActivity) {
+function ActivityListItem(activity: IActivity | IForeignActivity) {
 
     const { styles } = useActivityListItemStyle();
     const navigation = useNavigation();
     const { translations } = useContext(LanguageContext);
     const { setActivity, fetchUserProfile, user } = useContext(SessionContext);
-    const { getTimeRange,  getLocalDateRange } = useDate();
+    const { getTimeRange, getLocalDateRange } = useDate();
 
     const isOwnActivity = activity.userId === user.id;
-    
+
     const memberCount = (
         activity.memberUserIds.length +
         (activity.maxMember ? '/' + activity.maxMember : '') +
@@ -73,10 +73,10 @@ function ActivityListItem (activity: IActivity | IForeignActivity) {
                             </Text>
                             <InfoWithIcon icon="pin" text={activity.location} />
                             <InfoWithIcon
-                                icon="calendar" 
+                                icon="calendar"
                                 text={
                                     getLocalDateRange(
-                                        activity.startDate, 
+                                        activity.startDate,
                                         activity.endDate
                                     )
                                 }
@@ -85,7 +85,7 @@ function ActivityListItem (activity: IActivity | IForeignActivity) {
                                 icon="clock"
                                 text={getTimeRange(activity.startTime, activity.endTime)}
                             />
-                            <InfoWithIcon 
+                            <InfoWithIcon
                                 icon="account-group"
                                 text={memberCount}
                                 redText={isOwnActivity ? applicantCount : undefined}

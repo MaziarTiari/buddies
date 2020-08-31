@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { Text } from "react-native";
 import Container from "../Container/Container";
 import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
-import MapView from "react-native-maps";
+//import MapView from "react-native-maps";
 
 const Map = () => {
     const theme = useContext(ThemeContext).theme;

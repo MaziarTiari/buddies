@@ -34,7 +34,7 @@ const LoginForm = () => {
     };
 
     const onSubmit = (data: string[]) => {
-        loginUser(data[Field.EMAIL], data[Field.PASSWORD])
+        loginUser(data[Field.EMAIL].trim(), data[Field.PASSWORD])
             .then(() => {
                 setLoginErrorMsg(undefined);
             })

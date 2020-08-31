@@ -241,8 +241,8 @@ export function ActivityContextProvider(props: { children: ReactNode }) {
             activityHubConnection.off(hubs.activities.newActivity);
         };
     }), [foreignActivities, ownActivities];
+    
 
-    useEffect(() => {
     activityHubConnection.onclose((error) => {
         let notConnected = true;
         let waitingPeriod = 0;
@@ -265,7 +265,7 @@ export function ActivityContextProvider(props: { children: ReactNode }) {
             }, waitingPeriod);
         }
         
-    })});
+    });
 
     const contextValue: ActivityContextModel = {
         isLoadingOwn,

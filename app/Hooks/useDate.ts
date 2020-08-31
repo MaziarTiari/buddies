@@ -4,15 +4,20 @@ import moment from 'moment';
 import { ITime } from "../components/FormDateInput/FormDatePicker";
 import { Item } from "react-native-paper/lib/typescript/src/components/List/List";
 
+// TODO Find a nicer Solution to include only used Locales !
+import "moment/locale/de.js";
+import "moment/locale/en-gb.js";
+
 export function useDate() {
     const { language } = useContext(LanguageContext);
 
     const getLocalDateString = (date: number | Date, shortYear: boolean = true) => {
         const f = shortYear ? "DD.MM.YY" : "DD.MM.YYYY";
+        const locale = language === "de" ? "de" : "en-gb"; // TODO Find a nicer Solution !
         if (typeof date === "number") {
-            return moment.unix(date).locale(language).format(f);
+            return moment.unix(date).locale(locale).format(f);
         } else {
-            return moment(date).locale(language).format(f);
+            return moment(date).locale(locale).format(f);
         }
     }
 
@@ -47,7 +52,7 @@ export function useDate() {
     }
 
     const getTimeString = (time: ITime) =>
-        time.hour.toString().padStart(2, "0") + ":" + 
+        time.hour.toString().padStart(2, "0") + ":" +
         time.minute.toString().padStart(2, "0");
 
     const timesAreEqual = (t1: ITime, t2: ITime) =>
