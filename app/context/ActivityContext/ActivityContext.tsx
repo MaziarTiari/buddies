@@ -198,7 +198,7 @@ export function ActivityContextProvider(props: { children: ReactNode }) {
         return () => {
             activityHubConnection.off(hubs.activities.onUpdate);
         };
-    }, [foreignActivities]);
+    }, [foreignActivities, ownActivities, updateForeignActivity, updateOwnActivity]);
 
     useEffect(() => {
         activityHubConnection.on(
