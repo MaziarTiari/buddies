@@ -79,7 +79,8 @@ const useProfileAboutStyle = () => {
         image: {
             flex: 1,
             resizeMode: 'contain',
-            backgroundColor: 'black'
+            backgroundColor: 'black',
+            width: '100%',
         }
     });
 
