@@ -10,6 +10,10 @@ const useProfileAboutStyle = () => {
             flex: 1,
             aspectRatio: 1 // sets the height equal to width
         },
+        quickinfoContainer: {
+            marginHorizontal: getResponsiveSize(15),
+            marginTop: getResponsiveSize(15)
+        },
         primaryInfoContainer: {
             flexDirection: 'row',
             alignItems: 'center',

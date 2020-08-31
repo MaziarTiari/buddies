@@ -140,9 +140,7 @@ const CategorizedInputEditor = (props: CategorizedInputEditorProps) => {
                 <View style={styles.modalView}>
                     <Text style={styles.headline}>{props.headline}</Text>
                     <FormSelectorInput
-                        inputStyle={[
-                            styles.pickerInput,
-                        ]}
+                        inputStyle={styles.pickerInput}
                         hasError={categoryShowError}
                         modalTitle={props.categoryPlaceholder || ''}
                         placeholder={props.categoryPlaceholder}

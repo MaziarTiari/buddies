@@ -106,7 +106,7 @@ const ProfileAbout = () => {
                 {/* Quick Info */}
                 <If condition={!userIsEditingProfile}>
                     <>
-                    <View style={{marginHorizontal: getResponsiveSize(15), marginTop: getResponsiveSize(15)}}>
+                    <View style={styles.quickinfoContainer}>
                         <Text style={styles.headline}>
                             {userProfile.firstname + " " + userProfile.lastname}
                             <Text style={{fontSize: fontsizes.small, fontWeight: "500"}}>{
@@ -125,7 +125,10 @@ const ProfileAbout = () => {
                         </View>
                         {/** Groups and Friends */}
                         <View style={styles.userFriendsContainer}>
-                            <TouchableOpacity onPress={() => {}} style={{marginRight: getResponsiveSize(10)}}>
+                            <TouchableOpacity 
+                                onPress={() => {}} 
+                                style={{marginRight: getResponsiveSize(10)}}
+                            >
                                 <View style={styles.innerRippleContainer}>
                                     <View style={{flexDirection:"row"}}>
                                         <MaterialCommunityIcons
@@ -134,7 +137,12 @@ const ProfileAbout = () => {
                                             size={getLineHeight(fontsizes.small)}
                                             color={theme.App.secondaryInteractiveItem}
                                         />
-                                        <Text style={[styles.linkText, {textAlignVertical: "center"}]}>
+                                        <Text 
+                                            style={[
+                                                styles.linkText, 
+                                                {textAlignVertical: "center"}
+                                            ]}
+                                        >
                                             {userProfile.groups
                                                 ? userProfile.groups.length
                                                 : 0}
@@ -145,7 +153,12 @@ const ProfileAbout = () => {
                                     </Text>
                                 </View>
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={() => {}} style={{marginHorizontal: getResponsiveSize(10)}}>
+                            <TouchableOpacity 
+                                onPress={() => {}} 
+                                style={{
+                                    marginHorizontal: getResponsiveSize(10)
+                                }}
+                            >
                                 <View style={styles.innerRippleContainer}>
                                     <View style={{flexDirection:"row"}}>
                                         <MaterialCommunityIcons
@@ -154,8 +167,15 @@ const ProfileAbout = () => {
                                             size={getLineHeight(fontsizes.small)}
                                             color={theme.App.secondaryInteractiveItem}
                                         />
-                                        <Text style={[styles.linkText,{textAlignVertical: "center"}]}>
-                                            {userProfile.friends ? userProfile.friends.length : 0}
+                                        <Text 
+                                            style={[
+                                                styles.linkText,
+                                                {textAlignVertical: "center"}
+                                            ]}
+                                        > { 
+                                            userProfile.friends 
+                                                ? userProfile.friends.length : 0
+                                        }
                                         </Text>
                                     </View>
                                     <Text style={[styles.linkText]}>
@@ -359,7 +379,7 @@ const renderCategorizedInputs = (
             </Then>
             <Else>
                 <Text 
-                    key={index} 
+                    key={index + category} 
                     style={[textStyle,{marginBottom: getResponsiveHeight(3)}]}
                 >
                     {category + ": "}

@@ -25,9 +25,15 @@ export interface FormDateInputProps extends FormTextInputProps {
 
 function FormDateInput(props: FormDateInputProps) {
     const { theme } = useContext(ThemeContext);
-    const { getLocalDateString, getTimeString } = useDate();
+    const { getLocalDateString, getTimeString, getTime } = useDate();
     const [date, setDate] = useState<Date | undefined>(props.initialDate);
-    const [time, setTime] = useState<ITime>()
+    
+    const [time, setTime] = useState<ITime | undefined>(
+        props.initialDate && props.mode === "time"
+            ? getTime(props.initialDate) 
+            : undefined
+    );
+    
     const [show, setShow] = useState(false);
 
 

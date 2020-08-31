@@ -13,7 +13,7 @@ export const germanDictionary: Dictionary = {
     message: "Nachricht",
     edit_profile: "Profil bearbeiten",
     about_me: "Über mich",
-    gallery: "Gallerie",
+    gallery: "Galerie",
     firstname: "Vorname",
     surname: "Nachname",
     email: "Email-Adresse",

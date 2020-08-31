@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { LanguageContext } from "../context/LanguageContext/LanguageContext";
 import moment from 'moment';
 import { ITime } from "../components/FormDateInput/FormDatePicker";
+import { Item } from "react-native-paper/lib/typescript/src/components/List/List";
 
 export function useDate() {
     const { language } = useContext(LanguageContext);
@@ -52,11 +53,24 @@ export function useDate() {
     const timesAreEqual = (t1: ITime, t2: ITime) =>
         t1.hour === t2.hour && t1.minute === t2.minute
 
+    const getTimeDate = (time: ITime) => {
+        let d = new Date();
+        d.setHours(time.hour, time.minute)
+        return d;
+    }
+
+    const getTime = (date: Date) => ({
+        hour: date.getHours(), 
+        minute: date.getMinutes()
+    })
+
     return {
         getLocalDateString: getLocalDateString,
         getLocalDateRange: getLocalDateRange,
         getTimeString: getTimeString,
         timesAreEqual: timesAreEqual,
-        getTimeRange: getTimeRange
+        getTimeRange: getTimeRange,
+        getTimeDate,
+        getTime
     }
 }

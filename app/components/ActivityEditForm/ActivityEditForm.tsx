@@ -51,26 +51,27 @@ function ActivityEditForm() {
         minimumDate: new Date(),
     };
 
-    let tmpDate: Date = new Date();
+    let startTime: Date = new Date();
     if (activity.startTime) {
-        tmpDate.setHours(activity.startTime.hour, activity.startTime.minute);
+        startTime.setHours(activity.startTime.hour, activity.startTime.minute);
     }
     fieldList[Field.START_TIME] = {
         inputType: InputType.TIME,
         initialValue: activity.startTime
-            ? tmpDate
+            ? startTime
             : undefined,
         required: false,
         placeholder: translations.from,
     };
 
+    let endTime = new Date();
     if (activity.endTime) {
-        tmpDate.setHours(activity.endTime.hour, activity.endTime.minute);
+        endTime.setHours(activity.endTime.hour, activity.endTime.minute);
     }
     fieldList[Field.END_TIME] = {
         inputType: InputType.TIME,
         initialValue: activity.endTime
-            ? tmpDate
+            ? endTime
             : undefined,
         required: false,
         placeholder: translations.until

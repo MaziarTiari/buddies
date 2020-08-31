@@ -384,7 +384,10 @@ const ActivityInfo = () => {
                         <Headline style={styles.headline}>
                             {translations.description}
                         </Headline>
-                        <Text style={styles.text}>{activity.description}</Text>
+                        {((activity.description !== undefined &&
+                                activity.description.trim().length > 0) &&
+                            <Text style={styles.text}>{activity.description}</Text>
+                        )}
                     </EditableSection>
                 )}
 
@@ -435,7 +438,7 @@ const ActivityInfo = () => {
                             )}
                             {activity.endTime && (
                                 <InfoItem
-                                    keyText={translations.end_date}
+                                    keyText={translations.until}
                                     valueText={getTimeString(activity.endTime)}
                                 />
                             )}
@@ -478,7 +481,7 @@ const ActivityInfo = () => {
                             </Then>
                             <Else>
                                 <Text style={styles.text}>
-                                    {activity.tags?.map((t) => t.title).join()}
+                                    {activity.tags?.map((t) => t.title).join(", ")}
                                 </Text>
                             </Else>
                         </If>
