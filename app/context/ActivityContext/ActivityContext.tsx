@@ -56,7 +56,7 @@ export function ActivityContextProvider(props: { children: ReactNode }) {
         connection
             .start()
             .then(() => console.log('Connection started!'))
-            .catch((error: AxiosError) => setErrorMessage(error.message));
+            .catch((error: Error) => setErrorMessage(error.message));
         return connection;
     }, []);
 
@@ -178,7 +178,7 @@ export function ActivityContextProvider(props: { children: ReactNode }) {
         if (user.id !== '') {
             activityHubConnection
                 .invoke(hubs.activities.subscribeUser, user.id)
-                .catch((error: AxiosError) => setErrorMessage(error.message));
+                .catch((error: Error) => setErrorMessage(error.message));
             fetchForeignActivities();
             fetchOwnActivities();
         }
