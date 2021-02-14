@@ -16,7 +16,7 @@ import CustomModal from '../CustomModal/CustomModal';
 import InputField from '../InputField/InputField';
 import { ICategorizedInput } from '../../models/CategorizedInput';
 import { CategoryContext } from '../../context/CategoryContext/CategoryContext';
-import { useDate } from '../../hooks/useDate';
+import { useDate } from '../../hooks/useLocalDate';
 import { If, Then, Else } from 'react-if';
 import InfoWithIcon from '../InfoWithIcon/InfoWithIcon';
 import useAppNavigation from '../../hooks/useAppNavigation';

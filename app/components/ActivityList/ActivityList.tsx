@@ -43,8 +43,12 @@ const ActivityList = () => {
             }
         ), [
             activityContext.foreignActivities, 
-            activityContext.fetchOwnActivities, 
-            showOwnActivities
+            activityContext.fetchOwnActivities,
+            activityContext.ownActivities,
+            activityContext.fetchOwnActivities,
+            activityContext.isLoadingOwn,
+            activityContext.isLoadingForeign,
+            showOwnActivities,
         ]
     )
 

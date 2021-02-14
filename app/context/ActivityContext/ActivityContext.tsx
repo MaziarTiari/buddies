@@ -13,15 +13,15 @@ import {
     useContext
 } from 'react';
 import { HubConnectionBuilder } from '@microsoft/signalr';
-import { hubs, baseUrl, apiResources } from '../../api/channels';
+import { hubs, baseUrl, apiRoutes } from '../../api/channels';
 import { SessionContext } from '../SessionContext/SessionContext';
-import { activityApi } from '../../api/ApiClient';
 import { AxiosError, AxiosResponse } from 'axios';
 import {
     activityContextModel,
     ActivityContextModel,
     ContextActivity
 } from './activityContextModel';
+import { useActivityClient } from '../../api/activityClient';
 
  export const ActivityContext = createContext(activityContextModel);
 
@@ -31,8 +31,12 @@ export function ActivityContextProvider(props: { children: ReactNode }) {
         user, 
         activity: sessionActivity, 
         setActivity: setSessionActivity,
-        setErrorMessage
+        setErrorMessage,
+        token,
+        authenticate,
     } = useContext(SessionContext);
+
+    const activityClient = useActivityClient(token, authenticate);
 
     const [ownActivities, setOwnActivities] = useState(
         activityContextModel.ownActivities
@@ -101,16 +105,15 @@ export function ActivityContextProvider(props: { children: ReactNode }) {
 
     function fetchOwnActivities() {
         setIsLoadingOwn(true);
-        activityApi
-            .GetMany<Array<IActivity>>(
-                apiResources.activities.fromUser(user.id)
-            )
-            .then((activities) => {
+        activityClient.getUsersActivities()
+            .then(activities => {
+                console.log("OWN ACTIVITIES:");
+                activities.forEach(a => console.log(a.title));
                 setOwnActivities(activities);
                 const activityIds = activities.map((a) => a.id);
                 activityHubConnection
                     .invoke(hubs.activities.subscribeMany, activityIds)
-                    .catch((err) => console.error(err));
+                    .catch((error: Error) => setErrorMessage(error.message));
             })
             .catch((error: AxiosError) => setErrorMessage(error.message))
             .finally(() => setIsLoadingOwn(false));
@@ -118,16 +121,15 @@ export function ActivityContextProvider(props: { children: ReactNode }) {
 
     function fetchForeignActivities() {
         setIsLoadingForeign(true);
-        activityApi
-            .GetMany<Array<IForeignActivity>>(
-                apiResources.activities.notFromUser(user.id)
-            )
-            .then((activities) => {
+        activityClient.getForeignActivities()
+            .then(activities => {
+                console.log("OFFERS:");
+                activities.forEach(a => console.log(a.title));
                 setForeignActivities(activities);
                 const activityIds = activities.map((a) => a.id);
                 activityHubConnection
                     .invoke(hubs.activities.subscribeMany, activityIds)
-                    .catch((err) => console.error(err));
+                    .catch((error: Error) => setErrorMessage(error.message));
             })
             .catch((error: AxiosError) => setErrorMessage(error.message))
             .finally(() => setIsLoadingForeign(false));
@@ -145,11 +147,7 @@ export function ActivityContextProvider(props: { children: ReactNode }) {
             activityId: activityId,
             applicantId: user.id
         };
-        activityApi
-            .Post<AxiosResponse, IActivityRequest>(
-                apiResources.activities.hide,
-                activityRequest
-            )
+        activityClient.hideActivity(activityId)
             .then(() => removeForeignActivity(activityId))
             .catch((error: AxiosError) => setErrorMessage(error.message));
     }
@@ -159,11 +157,7 @@ export function ActivityContextProvider(props: { children: ReactNode }) {
             activityId: activityId,
             applicantId: user.id
         };
-        activityApi
-            .Post<AxiosResponse, IActivityRequest>(
-                apiResources.activities.apply,
-                application
-            )
+        activityClient.applyActivity(activityId)
             .then(() => removeForeignActivity(activityId))
             .catch((error: AxiosError) => setErrorMessage(error.message));
     }
@@ -241,7 +235,7 @@ export function ActivityContextProvider(props: { children: ReactNode }) {
         return () => {
             activityHubConnection.off(hubs.activities.newActivity);
         };
-    }), [foreignActivities, ownActivities];
+    }), [foreignActivities, ownActivities, fetchOwnActivities, fetchForeignActivities];
     
 
     activityHubConnection.onclose((error) => {

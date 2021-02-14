@@ -20,7 +20,6 @@ import {
 import { ThemeContext } from '../../context/ThemeContext/ThemeContext';
 import FormTextInput from '../FormTextInput/FormTextInput';
 import { ActivityContext } from '../../context/ActivityContext/ActivityContext';
-import { userProfileApi } from '../../api/ApiClient';
 import { IUserAvatar } from '../../models/UserAvatar';
 import {
     Menu,
@@ -33,12 +32,13 @@ import { CategoryContext } from '../../context/CategoryContext/CategoryContext';
 import { ApplicantListProps } from '../ApplicantList/ApplicantList';
 import { If, Then, Else } from 'react-if';
 import EditApproval from '../EditApproval/EditApproval';
-import { apiResources as apiPath } from '../../api/channels';
-import { useDate } from '../../hooks/useDate';
+import { useDate } from '../../hooks/useLocalDate';
 import InfoWithIcon from '../InfoWithIcon/InfoWithIcon';
 import useAppNavigation from '../../hooks/useAppNavigation';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { IActivity } from '../../models/Activity';
+import { useUserProfileClient } from '../../api/userProfileClient';
 const defaultImg = require('../../../assets/img/defaultActivityImg.png');
 
 const MIN_TITLE_LENGTH = 10;
@@ -65,10 +65,14 @@ const ActivityInfo = () => {
         setActivity,
         userIsEditingActivity,
         user,
+        token,
+        authenticate,
         setAvatarList,
         setIsLoading,
         cancelEditingActivity
     } = useContext(SessionContext);
+
+    const profileClient = useUserProfileClient(token, authenticate);
 
     navigation.setOptions({ title: activity.title });
 
@@ -93,7 +97,7 @@ const ActivityInfo = () => {
 
     function handleDescriptionEditorSubmit() {
         setShowDescriptionEditor(false);
-        setActivity({ ...activity, description: activityDescription });
+        setActivity({ ...(activity as IActivity), description: activityDescription });
     };
 
     function handleDescriptionEditorClose() {
@@ -106,7 +110,7 @@ const ActivityInfo = () => {
             return setShowError(true);
         }
         setShowTitleEditor(false);
-        setActivity({ ...activity, title: activityTitle });
+        setActivity({ ...(activity as IActivity), title: activityTitle });
     };
 
     function handleTitleEditorClose() {
@@ -124,7 +128,7 @@ const ActivityInfo = () => {
 
     function handleImagePicked(base64: string, width: number, height: number) {
         setActivity({
-            ...activity,
+            ...(activity as IActivity),
             image: {
                 base64: base64,
                 width: width,
@@ -138,11 +142,8 @@ const ActivityInfo = () => {
             return;
         }
         setIsLoading(true);
-        userProfileApi
-            .Post<Array<IUserAvatar>, Array<string>>(
-                apiPath.user.getAvatars,
-                activity.applicantUserIds
-            )
+        profileClient
+            .getAvatars(activity.applicantUserIds)
             .then((avatars) => {
                 setAvatarList(avatars);
                 navigation.navigate(RouteName.Activity.ApplicantList, {
@@ -158,11 +159,8 @@ const ActivityInfo = () => {
             return;
         }
         setIsLoading(true);
-        userProfileApi
-            .Post<Array<IUserAvatar>, Array<string>>(
-                apiPath.user.getAvatars,
-                activity.memberUserIds
-            )
+        profileClient
+            .getAvatars(activity.memberUserIds)
             .then((avatars) => {
                 setAvatarList(avatars);
                 navigation.navigate(RouteName.Profile.ProfileList, {
@@ -185,12 +183,12 @@ const ActivityInfo = () => {
     }, [userIsEditingActivity]);
 
     function handleOnApply() {
-        applyToActivity(activity.id)
+        applyToActivity((activity as IActivity)?.id)
         navigation.goBack();
     }
 
     function handleOnHide() {
-        hideActivity(activity.id)
+        hideActivity((activity as IActivity)?.id)
         navigation.goBack();
     }
 
@@ -247,7 +245,7 @@ const ActivityInfo = () => {
                                     <MenuOption
                                         onSelect={() =>
                                             setActivity({
-                                                ...activity,
+                                                ...(activity as IActivity),
                                                 image: undefined
                                             })
                                         }
@@ -463,7 +461,7 @@ const ActivityInfo = () => {
                                     items: activity.tags,
                                     headerTitle: translations.subjects,
                                     onItemsChanged: (tags) =>
-                                        setActivity({ ...activity, tags: tags })
+                                        setActivity({ ...(activity as IActivity), tags: tags })
                                 } as ICategorizedInputListConfig);
                             }}
                         >

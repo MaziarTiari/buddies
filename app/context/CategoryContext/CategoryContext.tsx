@@ -1,9 +1,11 @@
 import React from 'react';
 import { createContext, useState, ReactNode, useEffect, useContext } from 'react'
 import { ICategory } from '../../models/Category';
-import { categoryApi } from '../../api/ApiClient';
 import { AxiosError } from 'axios';
 import { LanguageContext } from '../LanguageContext/LanguageContext';
+import { apiRoutes } from '../../api/channels';
+import { httpClientBaseConfig } from '../../api/Api.config';
+import { TypedAxiosInstance } from '../../api/TypedAxiosInstance';
 
 interface CategoryContextModel {
     jobCategories: string[];
@@ -27,16 +29,18 @@ export function CategoryContextProvider(props: { children: ReactNode }) {
         initState.hobbyCategories
     );
 
+    const categoryClient = new TypedAxiosInstance<ICategory>(httpClientBaseConfig, {baseURL: apiRoutes.categories()})
+
     const { language } = useContext(LanguageContext);
 
     useEffect(() => {
-        categoryApi.GetMany<ICategory[]>()
-            .then((categories: ICategory[]) => setCategories(categories))
+        categoryClient.get<ICategory[]>()
+            .then(res => setCategories(res.data))
             .catch((error: AxiosError) => console.log(error));
     }, []);
 
     useEffect(() => {
-        categories.forEach(category => {
+        categories?.forEach(category => {
             switch (category.title) {
                 case "hobbies":
                     setHobbyCategories(category.categories[language]);

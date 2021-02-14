@@ -4,7 +4,7 @@ import useChatListItemStyle from "./ChatListItem.style";
 import { ProfileListItem } from "../ProfileListItem/ProfileListItem";
 import { IChatPartner, Relation } from "../../dev/example_data/MessageListQueryResponse";
 import { LanguageContext } from "../../context/LanguageContext/LanguageContext";
-import { useDate } from "../../hooks/useDate";
+import { useDate } from "../../hooks/useLocalDate";
 
 export interface ChatListItemProps {
     chatPartner: IChatPartner;

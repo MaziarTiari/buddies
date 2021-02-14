@@ -6,7 +6,7 @@ import { LanguageContext } from '../../context/LanguageContext/LanguageContext';
 import { useNavigation } from '@react-navigation/native';
 import { RouteName } from '../../navigation/Navigation.config';
 import { ITime } from '../FormDateInput/FormDatePicker';
-import { useDate } from '../../hooks/useDate';
+import { useDate } from '../../hooks/useLocalDate';
 
 function ActivityEditForm() {
     const navigation = useNavigation();

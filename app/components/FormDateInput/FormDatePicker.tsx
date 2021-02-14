@@ -9,7 +9,7 @@ import FormTextInput, {
 import { getResponsiveSize } from '../../utils/font/font';
 import { ThemeContext } from '../../context/ThemeContext/ThemeContext';
 import { style } from './FormDatePicker.style';
-import { useDate } from '../../hooks/useDate';
+import { useDate } from '../../hooks/useLocalDate';
 
 export interface ITime {
     hour: number;

@@ -1,3 +1,4 @@
+import moment from 'moment';
 export class Utilities {
 
     public static LightenDarkenColor(col: string, amt: number) {
@@ -35,4 +36,6 @@ export class Utilities {
           b: parseInt(result[3], 16)
         } : null;
     }
+
+    public static isUnixTimeExpired = (time: number) => time - moment().unix() <= 0;
 }

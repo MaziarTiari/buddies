@@ -6,6 +6,7 @@ import { fontsizes, getResponsiveSize } from "../../utils/font/font";
 import { useNavigation } from '@react-navigation/native';
 import { SessionContext } from "../../context/SessionContext/SessionContext";
 import useAppNavigation from "../../hooks/useAppNavigation";
+import { IActivity } from "../../models/Activity";
 
 export const LeftActivityHeader = () => {
     const { navigation } = useAppNavigation();
@@ -18,7 +19,7 @@ export const LeftActivityHeader = () => {
 
     const handleCancelPressed = () => {
         cancelEditingActivity();
-        if (activity.id === "") {
+        if ((activity as IActivity)?.id === "") {
             navigation.goBack();
         }
     }

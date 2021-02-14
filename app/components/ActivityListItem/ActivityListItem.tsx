@@ -9,7 +9,7 @@ import { LanguageContext } from '../../context/LanguageContext/LanguageContext';
 import { SessionContext } from '../../context/SessionContext/SessionContext';
 import { IActivity, IForeignActivity } from '../../models/Activity';
 import Avatar from '../Avatar/Avatar';
-import { useDate } from '../../hooks/useDate';
+import { useDate } from '../../hooks/useLocalDate';
 import InfoWithIcon from '../InfoWithIcon/InfoWithIcon';
 const defaultImg = require('../../../assets/img/defaultActivityImg.png');
 

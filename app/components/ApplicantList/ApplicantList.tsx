@@ -9,12 +9,12 @@ import { ThemeContext } from '../../context/ThemeContext/ThemeContext';
 import { IconButton } from 'react-native-paper';
 import { IAvatarBgColor } from '../../context/SessionContext/sessionContextModel';
 import { IActivity } from '../../models/Activity';
-import { activityApi } from '../../api/ApiClient';
 import { ActivityContext } from '../../context/ActivityContext/ActivityContext';
 import EditApproval from '../EditApproval/EditApproval';
 import { RouteName } from '../../navigation/Navigation.config';
 import useAppNavigation from '../../hooks/useAppNavigation';
 import { AxiosError } from 'axios';
+import { useActivityClient } from '../../api/activityClient';
 
 export interface ApplicantListProps {
     activity: IActivity;
@@ -27,13 +27,16 @@ export default function ApplicantList() {
     const { theme, themeType } = useContext(ThemeContext);
     
     const { 
-        avatarList, 
+        avatarList,
+        token, 
+        authenticate,
         setAvatarList, 
         setIsLoading,
         fetchUserProfile,
         setErrorMessage,
     } = useContext(SessionContext);
 
+    const activityClient = useActivityClient(token, authenticate);
     const { updateOwnActivity } = useContext(ActivityContext);
     const [avatarBgColors, setAvatarBgColors] = useState<IAvatarBgColor[]>([]);
     const [acceptedApplicants, setAcceptedApplicants] = useState<string[]>([]);
@@ -58,8 +61,8 @@ export default function ApplicantList() {
         let updatedActivity = { ...props.activity };
         setIsLoading(true);
         if (rejectedApplicants.length > 0) {
-            await activityApi
-                .Post('reject/' + props.activity.id, rejectedApplicants)
+            await activityClient
+                .rejectAcpplications(props.activity.id, rejectedApplicants)
                 .then(() => {
                     updatedActivity
                         .applicantUserIds = updatedActivity.applicantUserIds.filter(
@@ -69,8 +72,8 @@ export default function ApplicantList() {
                 .catch((err) => console.error(err));
         }
         if (acceptedApplicants.length > 0) {
-            await activityApi
-                .Post('accept/' + props.activity.id, acceptedApplicants)
+            await activityClient
+                .acceptApplications(props.activity.id, acceptedApplicants)
                 .then(() => {
                     updatedActivity
                         .applicantUserIds = updatedActivity.applicantUserIds.filter(

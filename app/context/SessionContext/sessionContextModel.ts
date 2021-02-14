@@ -4,6 +4,7 @@ import { IActivity, INewActivity } from '../../models/Activity';
 import { IPhotoGallery, IProfileImage } from '../../models/PhotoGallery';
 import { IUserAvatar } from '../../models/UserAvatar';
 import moment from 'moment';
+import { MutableRefObject } from 'react';
 
 export enum AuthState { UNREGISTERED, UNAUTHORIZED, AUTHORIZED, AUTHORIZED_WITHOUT_PROFILE };
 
@@ -12,15 +13,17 @@ export interface ISessionContextModel {
     authState: AuthState;
     setAuthState: (authState: AuthState) => void;
     user: IUser;
+    token: MutableRefObject<string>;
     userProfile: IUserProfile;
     activity: IActivity | INewActivity;
     setUser: (user: IUser) => void;
     setUserProfile: (profile: IUserProfile) => void;
-    setActivity: (activity: IActivity | INewActivity) => void;
+    setActivity: (activity: IActivity) => void;
+    authenticate: () => Promise<void>;
     isLoading: boolean;
     setIsLoading: (state: boolean) => void;
     createUser: (createdUser: INewUser) => void;
-    loginUser: (email: string, password: string) => Promise<IUser>;
+    loginUser: (email: string, password: string) => Promise<void>;
     createUserProfile: (createdUserProfile: INewUserProfile) => void;
     fetchUserProfile: (userId: string) => Promise<IUserProfile>;
     userIsEditingProfile: boolean;
@@ -60,7 +63,8 @@ export const defaultUserProfile = {
     username: ""
 };
 
-export const defaultActivity = {
+export const defaultActivity: IActivity = {
+    id: "",
     title: "",
     visibility: 0,
     userId: "",
@@ -73,12 +77,14 @@ export const initSessionContextModel: ISessionContextModel = {
     authState: AuthState.UNREGISTERED,
     userProfile: defaultUserProfile,
     user: defaultUser,
+    token: {current: ""},
     activity: defaultActivity,
     gallery: {
         id: "",
         userId: "",
         images: [],
     },
+    authenticate: async () => console.warn("authenticate() not implemented!"),
     errorMessage: undefined,
     avatarList: [],
     setAuthState: () => console.warn("setAuthState() not implemented!"),
@@ -87,7 +93,7 @@ export const initSessionContextModel: ISessionContextModel = {
     setActivity: () => console.warn("setActivity() not implemented!"),
     isLoading: false,
     createUser: () => console.warn("createUser() not implemented!"),
-    loginUser: async () => defaultUser,
+    loginUser: async () => console.warn("loginUser not implemented!"),
     createUserProfile: () => console.warn("createUserProfile() not implemented!"),
     userIsEditingProfile: false,
     fetchUserProfile: async () => defaultUserProfile,
