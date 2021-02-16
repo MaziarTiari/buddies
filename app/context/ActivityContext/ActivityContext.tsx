@@ -107,8 +107,6 @@ export function ActivityContextProvider(props: { children: ReactNode }) {
         setIsLoadingOwn(true);
         activityClient.getUsersActivities()
             .then(activities => {
-                console.log("OWN ACTIVITIES:");
-                activities.forEach(a => console.log(a.title));
                 setOwnActivities(activities);
                 const activityIds = activities.map((a) => a.id);
                 activityHubConnection
@@ -123,8 +121,6 @@ export function ActivityContextProvider(props: { children: ReactNode }) {
         setIsLoadingForeign(true);
         activityClient.getForeignActivities()
             .then(activities => {
-                console.log("OFFERS:");
-                activities.forEach(a => console.log(a.title));
                 setForeignActivities(activities);
                 const activityIds = activities.map((a) => a.id);
                 activityHubConnection
