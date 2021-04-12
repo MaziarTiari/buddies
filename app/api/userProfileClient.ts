@@ -1,7 +1,7 @@
 import { MutableRefObject, useRef } from "react";
 import { round } from "react-native-reanimated";
 import { IUserAvatar } from "../models/UserAvatar";
-import { INewUserProfile, IUserProfile } from "../models/UserProfile";
+import { IGetUserAvatarsRequest, INewUserProfile, IUserProfile } from "../models/UserProfile";
 import { apiRoutes } from "./channels";
 import useHttpClient from "./httpClient";
 
@@ -15,7 +15,7 @@ interface ReturnValue {
     getAvatars: (userIds: string[]) => Promise<IUserAvatar[]>;
 }
 
-export function useUserProfileClient(token: MutableRefObject<string>, onExpiredToken: () => Promise<void>) : ReturnValue {
+export function useUserProfileClient(token: MutableRefObject<string>, onExpiredToken: () => Promise<string>) : ReturnValue {
     
     const httpClient = useHttpClient<IUserProfile>({
         config: {baseURL: apiRoutes.userProfiles()}, 
@@ -39,9 +39,9 @@ export function useUserProfileClient(token: MutableRefObject<string>, onExpiredT
         httpClient.get<IUserAvatar>(apiRoutes.userProfiles("user-avatar/") + userId);
 
     const getAvatars = (userIds: string[]): Promise<IUserAvatar[]> =>
-        httpClient.post<IUserAvatar[], string[]>(
+        httpClient.post<IUserAvatar[], IGetUserAvatarsRequest>(
             apiRoutes.userProfiles("user-avatars"), 
-            userIds
+            { userIds }
         );
 
     const updateProfile = (userProfile: IUserProfile): Promise<void> =>

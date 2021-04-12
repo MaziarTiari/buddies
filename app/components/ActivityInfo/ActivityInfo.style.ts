@@ -13,7 +13,7 @@ const useStyle = () => {
     return StyleSheet.create({
         root: {
             flex: 1,
-            alignSelf: 'stretch'
+            alignSelf: 'stretch',
         },
         headline: {
             fontSize: fontsizes.medium,

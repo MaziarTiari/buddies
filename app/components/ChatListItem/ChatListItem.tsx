@@ -4,8 +4,7 @@ import useChatListItemStyle from "./ChatListItem.style";
 import { ProfileListItem } from "../ProfileListItem/ProfileListItem";
 import { IChatPartner, Relation } from "../../dev/example_data/MessageListQueryResponse";
 import { LanguageContext } from "../../context/LanguageContext/LanguageContext";
-import { useDate } from "../../hooks/useLocalDate";
-
+import { useLocalDate } from "../../hooks/useLocalDate";
 export interface ChatListItemProps {
     chatPartner: IChatPartner;
     onPress?: () => void;
@@ -14,25 +13,25 @@ export interface ChatListItemProps {
 
 export const ChatListItem = (Props: ChatListItemProps) => {
     const { translations } = useContext(LanguageContext);
-    const { getLocalDateString } = useDate();
-    function getRelationText(relation: Relation): string {
-        switch (relation) {
-            case Relation.FRIEND:
-                return translations.is_friend;
-            case Relation.STRANGER:
-                return translations.is_stranger;
-            case Relation.BLOCKED:
-                return translations.is_blocked;
-            case Relation.GROUP:
-                return translations.is_group;
-        }
-    }
+    const { getLocalDateString } = useLocalDate();
+    // function getRelationText(relation: Relation): string {
+    //     switch (relation) {
+    //         case Relation.FRIEND:
+    //             return translations.is_friend;
+    //         case Relation.STRANGER:
+    //             return translations.is_stranger;
+    //         case Relation.BLOCKED:
+    //             return translations.is_blocked;
+    //         case Relation.GROUP:
+    //             return translations.is_group;
+    //     }
+    // }
 
     const styles = useChatListItemStyle();
     const rightComponent = (
         <View style={styles.rightContainer}>
             <Text style={styles.lastMessageText}>
-                {getLocalDateString(Props.chatPartner.lastMessage)}
+                {getLocalDateString(Props.chatPartner.lastUpdate)}
             </Text>
             <View style={styles.unreadContainer}>
                 {Props.chatPartner.unreadMessages > 0 && (
@@ -48,13 +47,14 @@ export const ChatListItem = (Props: ChatListItemProps) => {
 
     return (
         <ProfileListItem
-            userId={Props.chatPartner.uuid}
-            isOnline={Props.chatPartner.isOnline}
+            userId={Props.chatPartner.chatId}
+            isOnline={false}
             rightComponent={rightComponent}
             title={Props.chatPartner.displayName}
-            subTitle={getRelationText(Props.chatPartner.relation)}
+            subTitle={Props.chatPartner.username}
             onPress={Props.onPress}
             onLongPress={Props.onLongPress}
+            avatar={Props.chatPartner.avatar}
         />
     );
 };

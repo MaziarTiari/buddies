@@ -11,7 +11,7 @@ interface ReturnValue {
     createPhotoGallery: (gallery: IPhotoGallery) => Promise<IPhotoGallery>;
 }
 
-export function usePhotoGalleryClient(token: MutableRefObject<string>, onExpiredToken: () => Promise<void>) : ReturnValue {
+export function usePhotoGalleryClient(token: MutableRefObject<string>, onExpiredToken: () => Promise<string>) : ReturnValue {
     
     const httpClient = useHttpClient<IPhotoGallery>({
         config: {baseURL: apiRoutes.photoGalleries()}, 

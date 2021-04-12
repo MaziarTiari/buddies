@@ -28,7 +28,7 @@ const useStyle = () => {
             width: "100%",
             backgroundColor: "black"
         },
-        profileImageContainer: {
+        profileAvatarContainer: {
             position: "relative",
             marginRight: getResponsiveSize(15),
         },

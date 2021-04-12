@@ -16,13 +16,15 @@ import CustomModal from '../CustomModal/CustomModal';
 import InputField from '../InputField/InputField';
 import { ICategorizedInput } from '../../models/CategorizedInput';
 import { CategoryContext } from '../../context/CategoryContext/CategoryContext';
-import { useDate } from '../../hooks/useLocalDate';
+import { useLocalDate } from '../../hooks/useLocalDate';
 import { If, Then, Else } from 'react-if';
 import InfoWithIcon from '../InfoWithIcon/InfoWithIcon';
 import useAppNavigation from '../../hooks/useAppNavigation';
 import { fontsizes, getResponsiveSize, getLineHeight, getResponsiveHeight } from '../../utils/font/font';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { ProfileButton } from './components/ProfileButton';
+import { ChatContext } from '../../context/ChatContext/ChatContext';
 
 const defaultImage = require('../../../assets/img/defaultProfileImage.png');
 
@@ -31,8 +33,8 @@ const ProfileAbout = () => {
     const { styles, theme } = useProfileAboutStyle();
     const { translations } = useContext(LanguageContext);
     const { jobCategories, hobbyCategories } = useContext(CategoryContext);
-    const { getLocalDateString } = useDate();
-    const { userProfile, setUserProfile, userIsEditingProfile } = useContext(
+    const { getLocalDateString } = useLocalDate();
+    const { userProfile, setUserProfile, userIsEditingProfile, user } = useContext(
         SessionContext
     );
 
@@ -68,6 +70,11 @@ const ProfileAbout = () => {
         };
     }, [userIsEditingProfile]);
 
+    async function handleOnMessagePressed() {
+        const memberIds = [user.id, userProfile.userId];
+        navigation.navigateToChat({memberIds, displayName: userProfile.firstname})
+    }
+
     return (
         <Container type="screen" layout="root">
             <ScrollView style={{ flex: 1, width: '100%' }}>
@@ -82,229 +89,235 @@ const ProfileAbout = () => {
                         <Image style={styles.image} source={defaultImage} />
                         <Image style={styles.image} source={defaultImage} />
                     </Swiper>
+                    <View style={styles.imageButtonContainer}>
+                        <ProfileButton type="subscribe" onPress={() => {}} />
+                        <ProfileButton type="message" onPress={handleOnMessagePressed} />
+                    </View>
                 </View>
 
                 {/* Quick Info */}
-                <If condition={!userIsEditingProfile}>
-                    <>
-                    <View style={styles.quickinfoContainer}>
-                        <Text style={styles.headline}>
-                            {userProfile.firstname + " " + userProfile.lastname}
-                            <Text style={{fontSize: fontsizes.small, fontWeight: "500"}}>{
-                                " (" + userProfile.sex.toLowerCase().substr(0,1) + "/" + 
-                                getAge(userProfile.birthDate) + ")"
-                            }</Text>
-                        </Text>
-                    </View>
-                    <View style={styles.primaryInfoContainer}>
-                        <View style={styles.innerInfoContainer}>
-                            <InfoWithIcon 
-                                text={userProfile.username} 
-                                icon="account" 
-                            />
-                            <InfoWithIcon text={userProfile.city} icon="pin" />
+                <View style={{marginHorizontal: getResponsiveSize(15)}}>
+                    <If condition={!userIsEditingProfile}>
+                        <>
+                        <View style={styles.quickinfoContainer}>
+                            <Text style={styles.headline}>
+                                {userProfile.firstname + " " + userProfile.lastname}
+                                <Text style={{fontSize: fontsizes.small, fontWeight: "500"}}>{
+                                    " (" + userProfile.sex.toLowerCase().substr(0,1) + "/" + 
+                                    getAge(userProfile.birthDate) + ")"
+                                }</Text>
+                            </Text>
                         </View>
-                        {/** Groups and Friends */}
-                        <View style={styles.userFriendsContainer}>
-                            <TouchableOpacity 
-                                onPress={() => {}} 
-                                style={{marginRight: getResponsiveSize(10)}}
-                            >
-                                <View style={styles.innerRippleContainer}>
-                                    <View style={{flexDirection:"row"}}>
-                                        <MaterialCommunityIcons
-                                            style={{marginRight: getResponsiveSize(5)}}
-                                            name="account-group"
-                                            size={getLineHeight(fontsizes.small)}
-                                            color={theme.App.secondaryInteractiveItem}
-                                        />
-                                        <Text 
-                                            style={[
-                                                styles.linkText, 
-                                                {textAlignVertical: "center"}
-                                            ]}
-                                        >{
-                                            userProfile.groups
-                                                ? userProfile.groups.length : 0
-                                        }
+                        <View style={styles.primaryInfoContainer}>
+                            <View style={styles.innerInfoContainer}>
+                                <InfoWithIcon 
+                                    text={userProfile.username} 
+                                    icon="account" 
+                                />
+                                <InfoWithIcon text={userProfile.city} icon="pin" />
+                            </View>
+                            {/** Groups and Friends */}
+                            <View style={styles.userFriendsContainer}>
+                                <TouchableOpacity 
+                                    onPress={() => {}} 
+                                    style={{marginRight: getResponsiveSize(10)}}
+                                >
+                                    <View style={styles.innerRippleContainer}>
+                                        <View style={{flexDirection:"row"}}>
+                                            <MaterialCommunityIcons
+                                                style={{marginRight: getResponsiveSize(5)}}
+                                                name="account-group"
+                                                size={getLineHeight(fontsizes.small)}
+                                                color={theme.App.secondaryInteractiveItem}
+                                            />
+                                            <Text 
+                                                style={[
+                                                    styles.linkText, 
+                                                    {textAlignVertical: "center"}
+                                                ]}
+                                            >{
+                                                userProfile.groups
+                                                    ? userProfile.groups.length : 0
+                                            }
+                                            </Text>
+                                        </View>
+                                        <Text style={styles.linkText}>
+                                            {translations.groups}
                                         </Text>
                                     </View>
-                                    <Text style={styles.linkText}>
-                                        {translations.groups}
-                                    </Text>
-                                </View>
-                            </TouchableOpacity>
-                            <TouchableOpacity 
-                                onPress={() => {}} 
-                                style={{
-                                    marginHorizontal: getResponsiveSize(10)
+                                </TouchableOpacity>
+                                <TouchableOpacity 
+                                    onPress={() => {}} 
+                                    style={{
+                                        marginHorizontal: getResponsiveSize(10)
+                                    }}
+                                >
+                                    <View style={styles.innerRippleContainer}>
+                                        <View style={{flexDirection:"row"}}>
+                                            <MaterialCommunityIcons
+                                                style={{marginRight: getResponsiveSize(5)}}
+                                                name="account-multiple"
+                                                size={getLineHeight(fontsizes.small)}
+                                                color={theme.App.secondaryInteractiveItem}
+                                            />
+                                            <Text 
+                                                style={[
+                                                    styles.linkText,
+                                                    {textAlignVertical: "center"}
+                                                ]}
+                                            > { 
+                                                userProfile.friends 
+                                                    ? userProfile.friends.length : 0
+                                            }
+                                            </Text>
+                                        </View>
+                                        <Text style={styles.linkText}>
+                                            {translations.friends}
+                                        </Text>
+                                    </View>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                        </>
+                    </If>
+
+                    {/* Personell */}
+                    <If condition={userIsEditingProfile}>
+                        <EditableSection
+                            noDevider
+                            isEditing={userIsEditingProfile}
+                            onEdit={() =>
+                                navigation.navigate(RouteName.Profile.EditForm)
+                            }
+                        >
+                            <Headline style={styles.headline}>
+                                {translations.personal}
+                            </Headline>
+                            <InfoItem
+                                keyText={translations.fullname}
+                                valueText={
+                                    userProfile.firstname + ' ' + userProfile.lastname
+                                }
+                            />
+                            <InfoItem
+                                keyText={translations.city}
+                                valueText={userProfile.city}
+                            />
+                            <InfoItem
+                                keyText={translations.birthdate}
+                                valueText={getLocalDateString(userProfile.birthDate, false)}
+                            />
+                            <InfoItem
+                                keyText={translations.sex}
+                                valueText={userProfile.sex}
+                            />
+                        </EditableSection>
+                    </If>
+
+                    {/* About Text */}
+                    {((userProfile.info && userProfile.info.trim().length > 0) ||
+                        userIsEditingProfile) && (
+                            <EditableSection
+                                isEditing={userIsEditingProfile}
+                                onEdit={() => setShowInfoEditor(true)}
+                            >
+                                <Text style={styles.headline}>
+                                    {translations.about_me}
+                                </Text>
+                                {userProfile.info && (
+                                    <Text style={styles.text}>{userProfile.info}</Text>
+                                )}
+                            </EditableSection>
+                        )}
+
+                    {/* Jobs */}
+                    {((userProfile.jobs && userProfile.jobs.length > 0) ||
+                        userIsEditingProfile) && (
+                            <EditableSection
+                                isEditing={userIsEditingProfile}
+                                onEdit={() => {
+                                    navigation.navigate(RouteName.Taglist, {
+                                        categories: jobCategories,
+                                        editorEditHeadline: translations.edit_job,
+                                        editorAddHeadline: translations.add_job,
+                                        editorInstitutionPlaceholder:
+                                            translations.company_or_institution_optional,
+                                        editorTitlePlaceholder:
+                                            translations.description,
+                                        editorCategoryPlaceholder:
+                                            translations.category,
+                                        items: userProfile.jobs,
+                                        headerTitle: translations.my_jobs,
+                                        onItemsChanged: handleJobItemsChanged
+                                    } as ICategorizedInputListConfig);
                                 }}
                             >
-                                <View style={styles.innerRippleContainer}>
-                                    <View style={{flexDirection:"row"}}>
-                                        <MaterialCommunityIcons
-                                            style={{marginRight: getResponsiveSize(5)}}
-                                            name="account-multiple"
-                                            size={getLineHeight(fontsizes.small)}
-                                            color={theme.App.secondaryInteractiveItem}
-                                        />
-                                        <Text 
-                                            style={[
-                                                styles.linkText,
-                                                {textAlignVertical: "center"}
-                                            ]}
-                                        > { 
-                                            userProfile.friends 
-                                                ? userProfile.friends.length : 0
-                                        }
+                                <Headline style={styles.headline}>
+                                    {translations.jobs}
+                                </Headline>
+                                <If condition={userIsEditingProfile}>
+                                    <Then>{
+                                        userProfile.jobs &&
+                                        renderCategorizedInputs(userProfile.jobs, true)
+                                    }
+                                    </Then>
+                                    <Else>
+                                        <Text>
+                                            {userProfile.jobs?.map((job, i) => (
+                                                <Text key={i} style={styles.text}>
+                                                    {job.title}
+                                                    {job.place &&
+                                                        <Text style={styles.jobPlace}>
+                                                            {" bei " + job.place}
+                                                        </Text>
+                                                    }
+                                                    {i < userProfile.jobs!.length - 1 && ", "}
+                                                </Text>
+                                            ))}
                                         </Text>
+                                    </Else>
+                                </If>
+                            </EditableSection>
+                        )}
+
+                    {/* Hobbies */}
+                    {((userProfile.hobbies && userProfile.hobbies.length > 0) ||
+                        userIsEditingProfile) && (
+                            <EditableSection
+                                isEditing={userIsEditingProfile}
+                                onEdit={() => {
+                                    navigation.navigate(RouteName.Taglist, {
+                                        categories: hobbyCategories,
+                                        editorEditHeadline: translations.edit_hobby,
+                                        editorAddHeadline: translations.add_hobby,
+                                        editorInstitutionPlaceholder:
+                                            translations.place_or_club_optional,
+                                        editorTitlePlaceholder:
+                                            translations.description,
+                                        editorCategoryPlaceholder:
+                                            translations.category,
+                                        items: userProfile.hobbies,
+                                        headerTitle: translations.my_hobbies,
+                                        onItemsChanged: handleHobbyItemsChanged
+                                    } as ICategorizedInputListConfig);
+                                }}
+                            >
+                                <Headline style={styles.headline}>
+                                    {translations.hobbies}
+                                </Headline>
+                                {userProfile.hobbies && (
+                                    <View>{
+                                        renderCategorizedInputs(
+                                            userProfile.hobbies,
+                                            userIsEditingProfile,
+                                            styles.text
+                                        )
+                                    }
                                     </View>
-                                    <Text style={styles.linkText}>
-                                        {translations.friends}
-                                    </Text>
-                                </View>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                    </>
-                </If>
-
-                {/* Personell */}
-                <If condition={userIsEditingProfile}>
-                    <EditableSection
-                        noDevider
-                        isEditing={userIsEditingProfile}
-                        onEdit={() =>
-                            navigation.navigate(RouteName.Profile.EditForm)
-                        }
-                    >
-                        <Headline style={styles.headline}>
-                            {translations.personal}
-                        </Headline>
-                        <InfoItem
-                            keyText={translations.fullname}
-                            valueText={
-                                userProfile.firstname + ' ' + userProfile.lastname
-                            }
-                        />
-                        <InfoItem
-                            keyText={translations.city}
-                            valueText={userProfile.city}
-                        />
-                        <InfoItem
-                            keyText={translations.birthdate}
-                            valueText={getLocalDateString(userProfile.birthDate, false)}
-                        />
-                        <InfoItem
-                            keyText={translations.sex}
-                            valueText={userProfile.sex}
-                        />
-                    </EditableSection>
-                </If>
-
-                {/* About Text */}
-                {((userProfile.info && userProfile.info.trim().length > 0) ||
-                    userIsEditingProfile) && (
-                        <EditableSection
-                            isEditing={userIsEditingProfile}
-                            onEdit={() => setShowInfoEditor(true)}
-                        >
-                            <Text style={styles.headline}>
-                                {translations.about_me}
-                            </Text>
-                            {userProfile.info && (
-                                <Text style={styles.text}>{userProfile.info}</Text>
-                            )}
-                        </EditableSection>
-                    )}
-
-                {/* Jobs */}
-                {((userProfile.jobs && userProfile.jobs.length > 0) ||
-                    userIsEditingProfile) && (
-                        <EditableSection
-                            isEditing={userIsEditingProfile}
-                            onEdit={() => {
-                                navigation.navigate(RouteName.Taglist, {
-                                    categories: jobCategories,
-                                    editorEditHeadline: translations.edit_job,
-                                    editorAddHeadline: translations.add_job,
-                                    editorInstitutionPlaceholder:
-                                        translations.company_or_institution_optional,
-                                    editorTitlePlaceholder:
-                                        translations.description,
-                                    editorCategoryPlaceholder:
-                                        translations.category,
-                                    items: userProfile.jobs,
-                                    headerTitle: translations.my_jobs,
-                                    onItemsChanged: handleJobItemsChanged
-                                } as ICategorizedInputListConfig);
-                            }}
-                        >
-                            <Headline style={styles.headline}>
-                                {translations.jobs}
-                            </Headline>
-                            <If condition={userIsEditingProfile}>
-                                <Then>{
-                                    userProfile.jobs &&
-                                    renderCategorizedInputs(userProfile.jobs, true)
-                                }
-                                </Then>
-                                <Else>
-                                    <Text>
-                                        {userProfile.jobs?.map((job, i) => (
-                                            <Text key={i} style={styles.text}>
-                                                {job.title}
-                                                {job.place &&
-                                                    <Text style={styles.jobPlace}>
-                                                        {" bei " + job.place}
-                                                    </Text>
-                                                }
-                                                {i < userProfile.jobs!.length - 1 && ", "}
-                                            </Text>
-                                        ))}
-                                    </Text>
-                                </Else>
-                            </If>
-                        </EditableSection>
-                    )}
-
-                {/* Hobbies */}
-                {((userProfile.hobbies && userProfile.hobbies.length > 0) ||
-                    userIsEditingProfile) && (
-                        <EditableSection
-                            isEditing={userIsEditingProfile}
-                            onEdit={() => {
-                                navigation.navigate(RouteName.Taglist, {
-                                    categories: hobbyCategories,
-                                    editorEditHeadline: translations.edit_hobby,
-                                    editorAddHeadline: translations.add_hobby,
-                                    editorInstitutionPlaceholder:
-                                        translations.place_or_club_optional,
-                                    editorTitlePlaceholder:
-                                        translations.description,
-                                    editorCategoryPlaceholder:
-                                        translations.category,
-                                    items: userProfile.hobbies,
-                                    headerTitle: translations.my_hobbies,
-                                    onItemsChanged: handleHobbyItemsChanged
-                                } as ICategorizedInputListConfig);
-                            }}
-                        >
-                            <Headline style={styles.headline}>
-                                {translations.hobbies}
-                            </Headline>
-                            {userProfile.hobbies && (
-                                <View>{
-                                    renderCategorizedInputs(
-                                        userProfile.hobbies,
-                                        userIsEditingProfile,
-                                        styles.text
-                                    )
-                                }
-                                </View>
-                            )}
-                        </EditableSection>
-                    )}
+                                )}
+                            </EditableSection>
+                        )}
+                </View>
 
                 <CustomModal
                     onSubmit={onInfoEditorSubmit}
@@ -341,45 +354,42 @@ const renderCategorizedInputs = (
         }
     });
 
-    return categories.map((category, index) => (
-        <If condition={editMode}>
-            <Then>
-                <View 
-                    key={index + category} 
-                    style={{ marginTop: getResponsiveHeight(5) }}
-                >
-                    <InfoItem
-                        keyText={category}
-                        valueText={inputList
-                            .filter((hobby) => hobby.category === category)
-                            .map(
-                                (hobby) =>
-                                    hobby.title +
-                                    (hobby.place ? ' (' + hobby.place + ')' : '')
-                            )
-                            .join(',\n')}
-                    />
-                </View>
-            </Then>
-            <Else>
-                <Text 
-                    key={index + category} 
-                    style={[textStyle,{marginBottom: getResponsiveHeight(3)}]}
-                >
-                    {category + ": "}
-                    <Text style={{ fontStyle: "italic" }}>{
-                        inputList
-                            .filter((hobby) => hobby.category === category)
-                            .map((hobby, i) =>
+    return categories.map((category, index) => editMode 
+        ? (
+            <View 
+                key={index + category} 
+                style={{ marginTop: getResponsiveHeight(5) }}
+            >
+                <InfoItem
+                    keyText={category}
+                    valueText={inputList
+                        .filter((hobby) => hobby.category === category)
+                        .map(
+                            (hobby) =>
                                 hobby.title +
                                 (hobby.place ? ' (' + hobby.place + ')' : '')
-                            ).join(', ')
-                    }
-                    </Text>
+                        )
+                        .join(',\n')}
+                />
+            </View>
+        ) : (
+            <Text 
+                key={index + category} 
+                style={[textStyle,{marginBottom: getResponsiveHeight(3)}]}
+            >
+                {category + ": "}
+                <Text style={{ fontStyle: "italic" }}>{
+                    inputList
+                        .filter((hobby) => hobby.category === category)
+                        .map((hobby, i) =>
+                            hobby.title +
+                            (hobby.place ? ' (' + hobby.place + ')' : '')
+                        ).join(', ')
+                }
                 </Text>
-            </Else>
-        </If>
-    ));
+            </Text>
+        )
+    );
 };
 
 export default ProfileAbout;

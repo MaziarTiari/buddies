@@ -23,7 +23,7 @@ interface ReturnValue {
 
 export function useActivityClient(
     token: MutableRefObject<string>, 
-    onExpiredToken: () => Promise<void>
+    onExpiredToken: () => Promise<string>
 ) : ReturnValue {
     
     const httpClient = useHttpClient<IActivity>({

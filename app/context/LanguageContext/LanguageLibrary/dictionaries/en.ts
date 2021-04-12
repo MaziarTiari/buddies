@@ -102,6 +102,7 @@ export const englishDictionary: Dictionary = {
     error_invalid_email: "Please enter a valid email address",
     wrong_login: "Wrong email or password",
     wrong_date_range: "End date should be after start date",
+    server_error: "Server problem. Please try again later",
 
     // Prepositions
     job_preposition: "at",

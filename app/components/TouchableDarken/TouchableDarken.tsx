@@ -1,3 +1,4 @@
+import Color from 'color';
 import React, { ReactNode } from 'react';
 import { TouchableOpacityProps } from 'react-native';
 import { TouchableHighlight } from 'react-native-gesture-handler';
@@ -10,7 +11,7 @@ export interface TouchableDarkenProps extends TouchableOpacityProps {
 }
 export const TouchableDarken = (props: TouchableDarkenProps) => (
     <TouchableHighlight
-            underlayColor={Utilities.LightenDarkenColor(props.color, -30)}
+            underlayColor={Color(props.color).darken(0.3).hex()}
             {...props}
             style={[props.style, !props.transparent && {backgroundColor: props.color}]}
         >

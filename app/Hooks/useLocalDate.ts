@@ -2,23 +2,33 @@ import { useContext } from "react";
 import { LanguageContext } from "../context/LanguageContext/LanguageContext";
 import moment from 'moment';
 import { ITime } from "../components/FormDateInput/FormDatePicker";
-import { Item } from "react-native-paper/lib/typescript/src/components/List/List";
 
 // TODO Find a nicer Solution to include only used Locales !
 import "moment/locale/de.js";
 import "moment/locale/en-gb.js";
 
-export function useDate() {
+export function useLocalDate() {
     const { language } = useContext(LanguageContext);
+    
+    function getLocale() {
+        const locale = language === "de" ? "de" : "en-gb";
+        return locale;
+    }
 
     const getLocalDateString = (date: number | Date, shortYear: boolean = true) => {
         const f = shortYear ? "DD.MM.YY" : "DD.MM.YYYY";
-        const locale = language === "de" ? "de" : "en-gb"; // TODO Find a nicer Solution !
+         // TODO Find a nicer Solution !
         if (typeof date === "number") {
-            return moment.unix(date).locale(locale).format(f);
+            return moment.unix(date).locale(getLocale()).format(f);
         } else {
-            return moment(date).locale(locale).format(f);
+            return moment(date).locale(getLocale()).format(f);
         }
+    }
+
+    function getLocalTimeString(ts: number) {
+        const d = moment.unix(ts).locale(getLocale());
+        const s = d.get("hours") + ":" + d.get("minutes") + ":" + d.get("seconds");
+        return s;
     }
 
     const getLocalDateRange = (date1?: number, date2?: number) => {
@@ -76,6 +86,7 @@ export function useDate() {
         timesAreEqual: timesAreEqual,
         getTimeRange: getTimeRange,
         getTimeDate,
-        getTime
+        getTime,
+        getLocalTimeString
     }
 }

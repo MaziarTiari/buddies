@@ -8,6 +8,7 @@ import { useFormSelectorInputStyle } from "./FormSelectorInput.style";
 import CustomModal from '../CustomModal/CustomModal';
 import { Utilities } from "../../utils/AppUtilities";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import Color from "color";
 
 export interface FormSelectorInputProps extends FormTextInputProps {
     modalTitle: string;
@@ -97,9 +98,7 @@ const FormSelectorInput = (props: FormSelectorInputProps) => {
     return (
         <View style={props.style}>
             <TouchableHighlight
-                underlayColor={
-                    Utilities.LightenDarkenColor(theme.App.inputBackground, -10)
-                }
+                underlayColor={Color(theme.App.inputBackground).darken(0.3).hex()}
                 style={[styles.selectorContainer, props.containerStyle]}
                 onPress={() => setShowModal(!showModal)}>
                 <FormTextInput

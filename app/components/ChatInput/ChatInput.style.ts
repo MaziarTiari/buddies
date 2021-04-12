@@ -7,6 +7,7 @@ const useChatInputStyle = () => {
     const theme = useContext(ThemeContext).theme;
     const styles = StyleSheet.create({
         inputContainer: {
+            backgroundColor: theme.App.inputBackground,
             borderColor: theme.App.inputBorderColor,
             borderWidth: 1,
             borderRadius: getResponsiveSize(30),

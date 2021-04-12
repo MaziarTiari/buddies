@@ -35,7 +35,7 @@ export const ChatInput = (Props: ChatInputProps) => {
     };
 
     return (
-        <View>
+        <View style={{width: "97%", alignSelf: "center"}}>
             <InputField
                 containerStyle={styles.inputContainer}
                 dynamicHeight={{ min: MIN_HEIGHT, max: MAX_HEIGHT }}
@@ -43,6 +43,7 @@ export const ChatInput = (Props: ChatInputProps) => {
                 value={inputText}
                 onChangeText={handleChangeText}
                 placeholder={translations.messages}
+                placeholderTextColor={"grey"}
                 leftComponent={
                     <IconButton
                         icon="delete"

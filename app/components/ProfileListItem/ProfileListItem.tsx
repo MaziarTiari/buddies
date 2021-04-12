@@ -1,12 +1,10 @@
 import React, { useContext } from "react";
-import { View, Text, Image, GestureResponderEvent, ActivityIndicator } from "react-native";
+import { View, Text, GestureResponderEvent, ActivityIndicator, Image } from "react-native";
 import useStyle from "./ProfileListItem.style";
 import { TouchableRipple } from "react-native-paper";
 import Container from "../Container/Container";
-import { Switch, Case, Default, If } from 'react-if';
-import { SessionContext } from "../../context/SessionContext/SessionContext";
-import { useNavigation } from "@react-navigation/native";
-import { RouteName } from "../../navigation/Navigation.config";
+import { If } from 'react-if';
+import { IImage } from "../../models/Image";
 
 export interface ProfileListItemProps {
     userId: string;
@@ -18,6 +16,7 @@ export interface ProfileListItemProps {
     onLongPress?: (event?: GestureResponderEvent) => void;
     backgroundColor?: string;
     isLoading?: boolean;
+    avatar?: IImage
 }
 
 export const ProfileListItem = (props: ProfileListItemProps) => {
@@ -44,11 +43,13 @@ export const ProfileListItem = (props: ProfileListItemProps) => {
                     ]}
                 >
                     <View style={styles.container}>
-                        <View style={styles.profileImageContainer}>
+                        <View style={styles.profileAvatarContainer}>
                             <Image
                                 style={styles.profileImage}
-                                source={require(
-                                    "../../../assets/img/defaultProfileImage.png")}
+                                source={props.avatar 
+                                    ? {uri: "data:image/gif;base64," + props.avatar.base64}
+                                    : require("../../../assets/img/defaultProfileImage.png")
+                                }
                             />
                             {props.isOnline && <View style={styles.onlineDot}></View>}
                         </View>

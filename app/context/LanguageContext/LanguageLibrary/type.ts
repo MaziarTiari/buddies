@@ -107,6 +107,7 @@ export interface Dictionary {
     error_invalid_phone: string;
     wrong_login: string;
     wrong_date_range: string;
+    server_error: string;
 
     // Prepositions
     job_preposition: string;

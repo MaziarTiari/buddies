@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     TextInput,
     NativeSyntheticEvent,
@@ -47,25 +47,32 @@ export const InputField = ({style, ...props}: InputFieldProps) => {
         }
     };
 
+    useEffect(() => {
+        if (props.value === "" && props.dynamicHeight) {
+            setInputHeight(props.dynamicHeight.min);
+        }
+    }, [props.value]);
+
     return (
-        <View style={{flexDirection: "row"}}>
-            <InputFieldContainer
-                leftComponent={LeftComponent} rightComponent={RightComponent}
-                style={props.containerStyle}
-                content={
-                    <TextInput
-                        onContentSizeChange={
-                            props.dynamicHeight && handleContentSizeChange
-                        }
-                        {...props}
-                        style={[
-                            styles.textInput,
-                            style,
-                            props.dynamicHeight && { height: inputHeight },
-                        ]}
-                    />
-                }
-            />
+        <View style={{display: "flex", flexDirection: "row", width: "100%"}}>
+        <InputFieldContainer
+            leftComponent={LeftComponent} rightComponent={RightComponent}
+            style={props.containerStyle}
+            content={
+                <TextInput
+                    onContentSizeChange={
+                        props.dynamicHeight && handleContentSizeChange
+                    }
+                    {...props}
+                    style={[
+                        styles.textInput,
+                        style,
+                        props.dynamicHeight && { height: inputHeight },
+                    ]}
+                    value={props.value}
+                />
+            }
+        />
         </View>
     );
 };

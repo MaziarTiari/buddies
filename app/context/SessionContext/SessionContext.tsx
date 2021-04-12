@@ -16,8 +16,11 @@ import { useUserProfileClient } from '../../api/userProfileClient';
 import { useActivityClient } from '../../api/activityClient';
 import { httpClientBaseConfig } from '../../api/Api.config';
 import { TypedAxiosInstance } from '../../api/TypedAxiosInstance';
-import useHttpClient from '../../api/httpClient';
 import { usePhotoGalleryClient } from '../../api/photoGalleryClient';
+import { JWT } from '../../models/JWT';
+import jwtDecode from 'jwt-decode';
+import moment from 'moment';
+import { Utilities } from '../../utils/AppUtilities';
 
 const anonymClient = new TypedAxiosInstance<IUser>(
     httpClientBaseConfig, 
@@ -32,22 +35,33 @@ export function SessionContextProvider(props: { children: ReactNode }) {
 
     const [userCred, setUserCred] = useState<IUserCredentials>({email: "", password: ""});
 
-    const authenticate = (_userCred?: IUserCredentials): Promise<void> =>
+    const authenticate = (_userCred?: IUserCredentials): Promise<string> =>
         anonymClient
             .post<string, IUserCredentials>(
                 apiRoutes.user("authenticate"), 
                 _userCred || userCred
             )   
             .then(res => { 
-                console.log("authenticate: ", res.data);
-                token.current = res.data 
+                token.current = res.data;
+                return res.data;
             })
             .catch((error: AxiosError) => {
-                console.log("auth error: ");
                 throw error;
             })
         ;
     ;
+
+    function jwtIsExpired(jws: string) {
+        const jwt: JWT = jwtDecode<JWT>(jws);
+        return Utilities.isUnixTimeExpired(jwt.exp);
+    }
+
+    async function accessTokenFactory() {
+        if (jwtIsExpired(token.current)) {
+            return authenticate().then(token => token);
+        }
+        return token.current;
+    }
 
     const userClient = useUserClient(token, authenticate);
 
@@ -105,7 +119,7 @@ export function SessionContextProvider(props: { children: ReactNode }) {
             .catch((error: AxiosError) => setErrorMessage(error.message))
             .finally(() => {
                 setIsLoading(false);
-                setAuthState(AuthState.AUTHORIZED_WITHOUT_PROFILE)
+                setAuthState(AuthState.REGISTERED_WITHOUT_PROFILE)
             })
         ;
     };
@@ -137,21 +151,18 @@ export function SessionContextProvider(props: { children: ReactNode }) {
                         .then(() => {
                             userProfileClient.getUserProfile()
                                 .then((userProfile: IUserProfile) => {
-                                    console.log("userProfile: ", userProfile);
                                     setUserProfile(userProfile);
-                                    setAuthState(AuthState.AUTHORIZED);
+                                    setAuthState(AuthState.AUTHENTICATED);
                                 })
                                 .catch(() => {
-                                    setAuthState(AuthState.AUTHORIZED_WITHOUT_PROFILE);
+                                    setAuthState(AuthState.REGISTERED_WITHOUT_PROFILE);
                                 });
                         })
                         .catch((error: AxiosError) => {
-                            console.log("user ERROR");
                             setErrorMessage(error.message);
                         })
                 )
                 .catch((error: AxiosError) => {
-                    console.log("auth error");
                      throw error;
                 })
                 .finally(() => {
@@ -172,7 +183,7 @@ export function SessionContextProvider(props: { children: ReactNode }) {
                 });
             })
             .then((gallery: IPhotoGallery) => {
-                setAuthState(AuthState.AUTHORIZED);
+                setAuthState(AuthState.AUTHENTICATED);
                 setGallery(gallery);
             })
             .catch((axiosError: AxiosError) => {
@@ -332,7 +343,8 @@ export function SessionContextProvider(props: { children: ReactNode }) {
         setErrorMessage,
         avatarList,
         setAvatarList,
-        logout
+        logout,
+        accessTokenFactory
     };
 
     return (

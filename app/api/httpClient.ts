@@ -11,7 +11,7 @@ import { Utilities } from '../utils/AppUtilities';
 interface HttpClientProps {
     config: AxiosRequestConfig; 
     token: MutableRefObject<string>;
-    onExpiredToken: () => Promise<void>;
+    onExpiredToken: () => Promise<string>;
 }
 
 export default function useHttpClient<T>(props: HttpClientProps) {

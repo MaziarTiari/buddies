@@ -7,15 +7,17 @@ const useButtonStyle = () => {
     const { theme } = useContext(ThemeContext);
     return StyleSheet.create({
         container: {
-            borderRadius: getResponsiveSize(50),
+            borderRadius: getResponsiveSize(10),
             alignSelf: "baseline",
+            padding: getResponsiveSize(9),
+            alignItems: "center",
+            justifyContent: "center",
         },
         text: {
             fontSize: fontsizes.medium,
             lineHeight: getLineHeight(fontsizes.medium),
             textAlign: "center",
-            color: theme.App.primaryText,
-            padding: getResponsiveSize(15),
+            color: theme.App.primaryText,            
             fontWeight: "600"
         },
     });

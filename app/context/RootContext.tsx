@@ -5,6 +5,8 @@ import { MenuProvider } from "react-native-popup-menu";
 import { SessionContextProvider } from "./SessionContext/SessionContext";
 import { ActivityContextProvider } from "./ActivityContext/ActivityContext";
 import { CategoryContextProvider } from "./CategoryContext/CategoryContext";
+import ChatContextProvider from "./ChatContext/ChatContext";
+import ProfileContextProvider from "./ProfileContext/ProfileContext";
 
 export default class RootContextProvider extends Component {
     render() {
@@ -13,11 +15,15 @@ export default class RootContextProvider extends Component {
                 <LanguageContextProvider>
                     <ThemeContextProvider>
                         <SessionContextProvider>
-                            <ActivityContextProvider>
-                                <CategoryContextProvider>
-                                    {this.props.children}
-                                </CategoryContextProvider>
-                            </ActivityContextProvider>
+                            <ProfileContextProvider>
+                                <ActivityContextProvider>
+                                    <CategoryContextProvider>
+                                        <ChatContextProvider>
+                                            {this.props.children}
+                                        </ChatContextProvider>
+                                    </CategoryContextProvider>
+                                </ActivityContextProvider>
+                            </ProfileContextProvider>
                         </SessionContextProvider>
                     </ThemeContextProvider>
                 </LanguageContextProvider>

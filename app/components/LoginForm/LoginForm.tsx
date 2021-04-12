@@ -1,15 +1,15 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { LanguageContext } from '../../context/LanguageContext/LanguageContext';
 import { SessionContext } from '../../context/SessionContext/SessionContext';
-import { AuthState } from '../../context/SessionContext/sessionContextModel';
+import { AuthState, secureStoreKeys } from '../../context/SessionContext/sessionContextModel';
 import Form, { IFormField, InputType } from '../Form/Form';
 import { AxiosError } from 'axios';
-import { NOT_FOUND, UNAUTHORIZED } from 'http-status-codes';
+import { getItemAsync, setItemAsync } from 'expo-secure-store';
 
 const LoginForm = () => {
 
     const { translations } = useContext(LanguageContext);
-    const { loginUser, setAuthState } = useContext(SessionContext);
+    const { loginUser, setAuthState, setIsLoading } = useContext(SessionContext);
     const [loginErrorMsg, setLoginErrorMsg] = useState<string|undefined>();
 
     enum Field { EMAIL, PASSWORD };
@@ -33,7 +33,9 @@ const LoginForm = () => {
         icon: "onepassword",
     };
 
-    const onSubmit = (data: string[]) => {
+    const onSubmit = async (data: string[]) => {
+        await setItemAsync(secureStoreKeys.email, data[Field.EMAIL]);
+        await setItemAsync(secureStoreKeys.password, data[Field.PASSWORD]);
         loginUser(data[Field.EMAIL].trim(), data[Field.PASSWORD])
             .then(() => {
                 setLoginErrorMsg(undefined);

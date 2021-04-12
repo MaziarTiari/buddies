@@ -24,7 +24,7 @@ const ProfileEditForm = () => {
 
     let navigation: NavigationProp<any>;
 
-    if (authState === AuthState.AUTHORIZED) {
+    if (authState === AuthState.AUTHENTICATED) {
         navigation = useNavigation();
         navigation.setOptions({ title: translations.edit_profile });
     }
@@ -78,7 +78,7 @@ const ProfileEditForm = () => {
     };
 
     const onSubmit = (data: any[]) => {
-        if (authState === AuthState.AUTHORIZED_WITHOUT_PROFILE) {
+        if (authState === AuthState.REGISTERED_WITHOUT_PROFILE) {
             const createdUserProfile: INewUserProfile = {
                 username: data[Field.NICKNAME],
                 birthDate: moment(data[Field.BIRTHDATE] as Date).unix(),
@@ -89,7 +89,7 @@ const ProfileEditForm = () => {
                 userId: user.id
             };
             createUserProfile(createdUserProfile)
-        } else if (authState === AuthState.AUTHORIZED) {
+        } else if (authState === AuthState.AUTHENTICATED) {
             setUserProfile({
                 ...userProfile,
                 username: data[Field.NICKNAME],
@@ -106,12 +106,12 @@ const ProfileEditForm = () => {
     return (
         <Form
             heading={
-                authState === AuthState.AUTHORIZED_WITHOUT_PROFILE
+                authState === AuthState.REGISTERED_WITHOUT_PROFILE
                     ? translations.create_your_profile
                     : undefined
             }
             buttonTitle={
-                authState === AuthState.AUTHORIZED_WITHOUT_PROFILE
+                authState === AuthState.REGISTERED_WITHOUT_PROFILE
                     ? translations.create
                     : translations.apply_changes
             }

@@ -9,8 +9,8 @@ import { LanguageContext } from '../../context/LanguageContext/LanguageContext';
 import { SessionContext } from '../../context/SessionContext/SessionContext';
 import { IActivity, IForeignActivity } from '../../models/Activity';
 import Avatar from '../Avatar/Avatar';
-import { useDate } from '../../hooks/useLocalDate';
 import InfoWithIcon from '../InfoWithIcon/InfoWithIcon';
+import { useLocalDate } from '../../hooks/useLocalDate';
 const defaultImg = require('../../../assets/img/defaultActivityImg.png');
 
 function ActivityListItem(activity: IActivity | IForeignActivity) {
@@ -19,7 +19,7 @@ function ActivityListItem(activity: IActivity | IForeignActivity) {
     const navigation = useNavigation();
     const { translations } = useContext(LanguageContext);
     const { setActivity, fetchUserProfile, user } = useContext(SessionContext);
-    const { getTimeRange, getLocalDateRange } = useDate();
+    const { getTimeRange, getLocalDateRange } = useLocalDate();
 
     const isOwnActivity = activity.userId === user.id;
 

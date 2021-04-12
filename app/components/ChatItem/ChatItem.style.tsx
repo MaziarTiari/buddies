@@ -5,7 +5,7 @@ import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
 
 const roundMessageBorderRadius = getResponsiveSize(25);
 
-const useChatItemStyle = () => {
+const useChatItemStyle = (self: boolean) => {
     const theme = useContext(ThemeContext).theme;
 
     return StyleSheet.create({
@@ -15,18 +15,19 @@ const useChatItemStyle = () => {
             padding: getResponsiveSize(15),
             margin: getResponsiveSize(5),
             minWidth: getResponsiveSize(150),
+            backgroundColor: self 
+            ? theme.ChatItem.sentMsgBackground 
+            : theme.ChatItem.recievedMsgBackground,
         },
-        messageContainerSelf: {
-            backgroundColor: theme.ChatItem.sentMsgBackground,
+        self: {
+            marginLeft: "10%",
             borderBottomLeftRadius: roundMessageBorderRadius,
             alignSelf: "flex-end",
-            marginLeft: "10%",
         },
-        messageContainerOther: {
-            backgroundColor: theme.ChatItem.recievedMsgBackground,
+        otherMember: {
+            marginRight: "10%",
             borderBottomRightRadius: roundMessageBorderRadius,
             alignSelf: "flex-start",
-            marginRight: "10%",
         },
         nameText: {
             fontSize: fontsizes.small,
@@ -43,6 +44,7 @@ const useChatItemStyle = () => {
             fontSize: fontsizes.xsmall,
             marginTop: getResponsiveSize(5),
             textAlign: "right",
+            alignSelf: "flex-end",
             color: theme.App.secondaryText,
         },
     });

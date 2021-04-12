@@ -139,20 +139,12 @@ export function ActivityContextProvider(props: { children: ReactNode }) {
     }
 
     function hideActivity(activityId: string) {
-        const activityRequest: IActivityRequest = {
-            activityId: activityId,
-            applicantId: user.id
-        };
         activityClient.hideActivity(activityId)
             .then(() => removeForeignActivity(activityId))
             .catch((error: AxiosError) => setErrorMessage(error.message));
     }
 
     function applyToActivity(activityId: string) {
-        const application: IActivityRequest = {
-            activityId: activityId,
-            applicantId: user.id
-        };
         activityClient.applyActivity(activityId)
             .then(() => removeForeignActivity(activityId))
             .catch((error: AxiosError) => setErrorMessage(error.message));
@@ -255,7 +247,6 @@ export function ActivityContextProvider(props: { children: ReactNode }) {
                     .catch((err: Error) => waitingPeriod = waitingPeriod + 500);
             }, waitingPeriod);
         }
-        
     });
 
     const contextValue: ActivityContextModel = {

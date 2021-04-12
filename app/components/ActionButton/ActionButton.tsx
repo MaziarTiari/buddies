@@ -4,7 +4,6 @@ import useActionButtonStyle from './ActionButton.style';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { ThemeContext } from '../../context/ThemeContext/ThemeContext';
 import { getResponsiveSize } from '../../utils/font/font';
-import { TouchableHighlight } from 'react-native-gesture-handler';
 import { TouchableDarken } from '../TouchableDarken/TouchableDarken';
 
 export interface ActionButtonChildProps {

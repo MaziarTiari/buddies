@@ -7,6 +7,7 @@ import { TouchableNativeFeedback, TouchableOpacity, TouchableHighlight } from "r
 import { TouchableOpacityProps, ViewStyle } from "react-native";
 import { fontsizes, getResponsiveSize } from "../../utils/font/font";
 import { Utilities } from "../../utils/AppUtilities";
+import Color from "color";
 
 interface BadgedIconProps {
     icon: string;
@@ -38,9 +39,9 @@ const BadgedIcon = (props: BadgedIconProps): JSX.Element => {
         size={props.size}
     />
 
-    let underlayColor = Utilities.hexToRgb(props.color);
+    let underlayColor = Color(props.color).rgb();
     const rgba = underlayColor
-        ? `rgba(${underlayColor?.r},${underlayColor?.g},${underlayColor?.b},0.3)`
+        ? `rgba(${underlayColor?.red},${underlayColor?.green},${underlayColor?.blue},0.3)`
         : "rgba(0,0,0,0.3)";
 
     return props.onPress

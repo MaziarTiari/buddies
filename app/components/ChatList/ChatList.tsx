@@ -1,43 +1,65 @@
-import React, { useState, useMemo } from "react";
-import { FlatList } from "react-native";
+import React, { useState, useMemo, useContext, useEffect } from "react";
+import { FlatList, View } from "react-native";
+import { ChatContext } from "../../context/ChatContext/ChatContext";
+import { ProfileContext } from "../../context/ProfileContext/ProfileContext";
+import { SessionContext } from "../../context/SessionContext/SessionContext";
 import {
-    exampleResponse, IChatPartner, Relation,
+    IChatPartner, Relation,
 } from "../../dev/example_data/MessageListQueryResponse";
-import { RouteName } from "../../navigation/Navigation.config";
+import useAppNavigation from "../../hooks/useAppNavigation";
+import { getResponsiveSize } from "../../utils/font/font";
 import { ChatListItem } from "../ChatListItem/ChatListItem";
 import Container from "../Container/Container";
 
-const ChatList = ({ navigation }: any) => {
-    const chatPartners = useState<IChatPartner[]>(exampleResponse)[0];
-    const sortedChatPartners = useMemo<IChatPartner[]>(
-        () => chatPartners.sort((a, b) => (b.lastMessage > a.lastMessage ? 1 : -1)),
-        [chatPartners]
-    );
+function ChatList() {
+    const { navigation } = useAppNavigation();
+
+    const { user } = useContext(SessionContext);
+    const { chats } = useContext(ChatContext);
+    const { userAvatars } = useContext(ProfileContext);
+
+    const chatPartners = useMemo(() => {
+        const res: IChatPartner[] = [];
+        Promise.all(chats.map(c => {
+            const partner = c.members.find(m => m.userId !== user.id)!;
+            let lastTimeOnChat = c.members
+                .find(m => m.userId === user.id)!.lastTimeOnChat;
+            const avatar = userAvatars.find(a => a.userId === partner.userId)!;
+            res.push({
+                username: avatar.username,
+                memberUserId: avatar.userId,
+                displayName: avatar.firstname,
+                lastUpdate: c.messages[0].sentAt,
+                chatId: c.id,
+                avatar: avatar.avatar === null ? undefined : avatar.avatar,
+                unreadMessages: c.messages
+                    .filter(m => m.sentAt > lastTimeOnChat).length
+            });
+            return c;
+        }));
+        return res;
+    }, [chats])
 
     const handlePress = (chatPartner: IChatPartner) => {
-        navigation.navigate(RouteName.Messages.Chat, {
-            isGroup: chatPartner.relation == Relation.GROUP,
-            displayName: chatPartner.displayName,
-        });
-    };
-
-    const handleLongPress = (chatPartner: IChatPartner) => {
-        console.log("Long Pressed: ", chatPartner.displayName);
+        navigation.navigateToChat({
+            displayName: chatPartner.displayName, 
+            memberIds: [chatPartner.memberUserId, user.id]
+        })
     };
 
     return (
         <Container type="screen" layout="root">
-            <Container type="screen" layout="body">
+            <Container type="component" layout="root">
                     <FlatList
-                        data={sortedChatPartners}
-                        renderItem={({ item: chatPartner }) => (
-                            <ChatListItem
-                                chatPartner={chatPartner}
+                        style={{paddingHorizontal: getResponsiveSize(15), marginHorizontal: 1}}
+                        data={chatPartners}
+                        renderItem={({item: chatPartner}) => 
+                            <ChatListItem 
+                                chatPartner={chatPartner} 
                                 onPress={() => handlePress(chatPartner)}
-                                onLongPress={() => handleLongPress(chatPartner)}
                             />
-                        )}
-                        keyExtractor={(chatPartner) => chatPartner.uuid}
+                        }
+                        keyExtractor={c => c.chatId}
                     />
             </Container>
         </Container>

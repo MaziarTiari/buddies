@@ -10,10 +10,12 @@ export default function useInputFieldContainerStyle() {
         inputContainer: {
             flexDirection: "row",
             alignItems: "center",
+            width: "100%",
             backgroundColor: theme.App.inputBackground,
             flex: 1,
             borderRadius: getResponsiveSize(8),
             paddingHorizontal: getResponsiveSize(10),
+            borderWidth: 1,
         },
     });
 }

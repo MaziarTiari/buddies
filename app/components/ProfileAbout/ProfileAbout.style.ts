@@ -11,13 +11,11 @@ const useProfileAboutStyle = () => {
             aspectRatio: 1 // sets the height equal to width
         },
         quickinfoContainer: {
-            marginHorizontal: getResponsiveSize(15),
             marginTop: getResponsiveSize(15)
         },
         primaryInfoContainer: {
             flexDirection: 'row',
             alignItems: 'center',
-            marginHorizontal: getResponsiveSize(15),
             marginBottom: getResponsiveSize(15),
             justifyContent: 'space-between',
             flex: 1
@@ -84,7 +82,18 @@ const useProfileAboutStyle = () => {
             flex: 1,
             resizeMode: 'contain',
             backgroundColor: 'black',
+            width: '100%'
+        },
+        imageButtonContainer: {
+            position: 'absolute',
             width: '100%',
+            bottom: getResponsiveSize(15),
+            height: getResponsiveSize(35),
+            paddingHorizontal: getResponsiveSize(15),
+            alignItems: 'center',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            display: 'flex',
         }
     });
 

@@ -11,7 +11,7 @@ interface ReturnValue {
 
 export function useUserClient(
     token: MutableRefObject<string>, 
-    onExpiredToken: () => Promise<void>
+    onExpiredToken: () => Promise<string>
 ) : ReturnValue {
     
     const httpClient = useHttpClient<IUser>({

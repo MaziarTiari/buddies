@@ -25,7 +25,7 @@ export const useStyle = () => {
             flex: 1,
             alignItems: "stretch",
             alignSelf: "stretch",
-            marginHorizontal: getResponsiveSize(15),
+            width: "100%"
         },
         root_center: {
             flex: 1,

@@ -21,3 +21,7 @@ export interface INewUserProfile {
 export interface IUserProfile extends INewUserProfile {
     id: string;
 }
+
+export interface IGetUserAvatarsRequest {
+    userIds: string[];
+}

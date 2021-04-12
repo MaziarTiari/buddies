@@ -32,7 +32,7 @@ import { CategoryContext } from '../../context/CategoryContext/CategoryContext';
 import { ApplicantListProps } from '../ApplicantList/ApplicantList';
 import { If, Then, Else } from 'react-if';
 import EditApproval from '../EditApproval/EditApproval';
-import { useDate } from '../../hooks/useLocalDate';
+import { useLocalDate } from '../../hooks/useLocalDate';
 import InfoWithIcon from '../InfoWithIcon/InfoWithIcon';
 import useAppNavigation from '../../hooks/useAppNavigation';
 import { TouchableHighlight } from 'react-native-gesture-handler';
@@ -58,7 +58,7 @@ const ActivityInfo = () => {
         getLocalDateRange,
         getLocalDateString,
         getTimeString
-    } = useDate();
+    } = useLocalDate();
 
     const {
         activity,
@@ -314,238 +314,240 @@ const ActivityInfo = () => {
                 </View>
 
                 {/* Quick Info */}
-                <EditableSection
-                    isEditing={userIsEditingActivity}
-                    noDevider
-                    onEdit={() => setShowTitleEditor(true)}
-                >
-                    <View>
-                        <View
-                            style={[
-                                styles.quickInfoContainer,
-                                !isOwnActivity && {
-                                    marginBottom: getResponsiveHeight(5)
-                                }
-                            ]}
-                        >
-                            <Text
-                                numberOfLines={2}
+                <View style={{marginHorizontal: getResponsiveSize(15)}}>
+                    <EditableSection
+                        isEditing={userIsEditingActivity}
+                        noDevider
+                        onEdit={() => setShowTitleEditor(true)}
+                    >
+                        <View>
+                            <View
                                 style={[
-                                    styles.headline,
-                                    userIsEditingActivity && {
-                                        marginRight: getResponsiveSize(50)
+                                    styles.quickInfoContainer,
+                                    !isOwnActivity && {
+                                        marginBottom: getResponsiveHeight(5)
                                     }
                                 ]}
                             >
-                                {activity.title}
-                            </Text>
+                                <Text
+                                    numberOfLines={2}
+                                    style={[
+                                        styles.headline,
+                                        userIsEditingActivity && {
+                                            marginRight: getResponsiveSize(50)
+                                        }
+                                    ]}
+                                >
+                                    {activity.title}
+                                </Text>
+                            </View>
                         </View>
-                    </View>
 
-                    <If condition={!userIsEditingActivity}>
-                        <Then>
-                            {activity.location && (
-                                <InfoWithIcon
-                                    icon="pin"
-                                    text={activity.location}
-                                />
-                            )}
-                            {(activity.startDate || activity.endDate) && (
-                                <InfoWithIcon
-                                    icon="calendar"
-                                    text={getLocalDateRange(
-                                        activity.startDate,
-                                        activity.endDate
-                                    )}
-                                />
-                            )}
-                            {(activity.startTime || activity.endTime) && (
-                                <InfoWithIcon
-                                    icon="clock"
-                                    text={getTimeRange(
-                                        activity.startTime,
-                                        activity.endTime
-                                    )}
-                                />
-                            )}
-                        </Then>
-                    </If>
-                </EditableSection>
+                        <If condition={!userIsEditingActivity}>
+                            <Then>
+                                {activity.location && (
+                                    <InfoWithIcon
+                                        icon="pin"
+                                        text={activity.location}
+                                    />
+                                )}
+                                {(activity.startDate || activity.endDate) && (
+                                    <InfoWithIcon
+                                        icon="calendar"
+                                        text={getLocalDateRange(
+                                            activity.startDate,
+                                            activity.endDate
+                                        )}
+                                    />
+                                )}
+                                {(activity.startTime || activity.endTime) && (
+                                    <InfoWithIcon
+                                        icon="clock"
+                                        text={getTimeRange(
+                                            activity.startTime,
+                                            activity.endTime
+                                        )}
+                                    />
+                                )}
+                            </Then>
+                        </If>
+                    </EditableSection>
 
-                {/* Description */}
-                {((activity.description &&
-                    activity.description.trim().length > 0) ||
-                    userIsEditingActivity) && (
-                        <EditableSection
-                            isEditing={userIsEditingActivity}
-                            onEdit={() => setShowDescriptionEditor(true)}
-                        >
-                            <Headline style={styles.headline}>
-                                {translations.description}
-                            </Headline>
-                            {((activity.description !== undefined && activity.description !== null &&
-                                activity.description.trim().length > 0) &&
-                                <Text style={styles.text}>{activity.description}</Text>
-                            )}
-                        </EditableSection>
-                    )}
+                    {/* Description */}
+                    {((activity.description &&
+                        activity.description.trim().length > 0) ||
+                        userIsEditingActivity) && (
+                            <EditableSection
+                                isEditing={userIsEditingActivity}
+                                onEdit={() => setShowDescriptionEditor(true)}
+                            >
+                                <Headline style={styles.headline}>
+                                    {translations.description}
+                                </Headline>
+                                {((activity.description !== undefined && activity.description !== null &&
+                                    activity.description.trim().length > 0) &&
+                                    <Text style={styles.text}>{activity.description}</Text>
+                                )}
+                            </EditableSection>
+                        )}
 
-                {/* Information */}
-                {userIsEditingActivity &&
-                    (userIsEditingActivity ||
-                        activity.location ||
-                        activity.startDate ||
-                        activity.endDate) && (
-                        <EditableSection
-                            isEditing={userIsEditingActivity}
-                            onEdit={() =>
-                                navigation.navigate(RouteName.Activity.EditForm)
-                            }
-                        >
-                            <Headline style={styles.headline}>
-                                {translations.information}
-                            </Headline>
-                            {activity.location && (
-                                <InfoItem
-                                    keyText={translations.meeting_point}
-                                    valueText={activity.location}
-                                />
-                            )}
-                            {activity.startDate && (
-                                <InfoItem
-                                    keyText={translations.start_date}
-                                    valueText={getLocalDateString(
-                                        activity.startDate
-                                    )}
-                                />
-                            )}
-                            {activity.endDate && (
-                                <InfoItem
-                                    keyText={translations.end_date}
-                                    valueText={getLocalDateString(
-                                        activity.endDate
-                                    )}
-                                />
-                            )}
-                            {activity.startTime?.hour && (
-                                <InfoItem
-                                    keyText={translations.from}
-                                    valueText={getTimeString(
-                                        activity.startTime
-                                    )}
-                                />
-                            )}
-                            {activity.endTime?.hour && (
-                                <InfoItem
-                                    keyText={translations.until}
-                                    valueText={getTimeString(activity.endTime)}
-                                />
-                            )}
-                        </EditableSection>
-                    )}
+                    {/* Information */}
+                    {userIsEditingActivity &&
+                        (userIsEditingActivity ||
+                            activity.location ||
+                            activity.startDate ||
+                            activity.endDate) && (
+                            <EditableSection
+                                isEditing={userIsEditingActivity}
+                                onEdit={() =>
+                                    navigation.navigate(RouteName.Activity.EditForm)
+                                }
+                            >
+                                <Headline style={styles.headline}>
+                                    {translations.information}
+                                </Headline>
+                                {activity.location && (
+                                    <InfoItem
+                                        keyText={translations.meeting_point}
+                                        valueText={activity.location}
+                                    />
+                                )}
+                                {activity.startDate && (
+                                    <InfoItem
+                                        keyText={translations.start_date}
+                                        valueText={getLocalDateString(
+                                            activity.startDate
+                                        )}
+                                    />
+                                )}
+                                {activity.endDate && (
+                                    <InfoItem
+                                        keyText={translations.end_date}
+                                        valueText={getLocalDateString(
+                                            activity.endDate
+                                        )}
+                                    />
+                                )}
+                                {activity.startTime?.hour && (
+                                    <InfoItem
+                                        keyText={translations.from}
+                                        valueText={getTimeString(
+                                            activity.startTime
+                                        )}
+                                    />
+                                )}
+                                {activity.endTime?.hour && (
+                                    <InfoItem
+                                        keyText={translations.until}
+                                        valueText={getTimeString(activity.endTime)}
+                                    />
+                                )}
+                            </EditableSection>
+                        )}
 
-                {/* Tags */}
-                {((activity.tags && activity.tags.length > 0) ||
-                    userIsEditingActivity) && (
-                        <EditableSection
-                            isEditing={userIsEditingActivity}
-                            onEdit={() => {
-                                navigation.navigate(RouteName.Taglist, {
-                                    categories: hobbyCategories,
-                                    editorEditHeadline: translations.edit_subject,
-                                    editorAddHeadline: translations.add_subject,
-                                    editorTitlePlaceholder:
-                                        translations.description,
-                                    editorCategoryPlaceholder:
-                                        translations.category,
-                                    items: activity.tags,
-                                    headerTitle: translations.subjects,
-                                    onItemsChanged: (tags) =>
-                                        setActivity({ ...(activity as IActivity), tags: tags })
-                                } as ICategorizedInputListConfig);
-                            }}
-                        >
-                            <Headline style={styles.headline}>
-                                {translations.subjects}
-                            </Headline>
-                            <If condition={userIsEditingActivity}>
-                                <Then>
-                                    {activity.tags?.map((tag, index) => (
-                                        <InfoItem
-                                            key={index}
-                                            keyText={tag.category}
-                                            valueText={tag.title}
-                                        />
-                                    ))}
-                                </Then>
-                                <Else>
-                                    <Text style={styles.text}>
-                                        {activity.tags?.map((t) => t.title).join(", ")}
-                                    </Text>
-                                </Else>
-                            </If>
-                        </EditableSection>
-                    )}
+                    {/* Tags */}
+                    {((activity.tags && activity.tags.length > 0) ||
+                        userIsEditingActivity) && (
+                            <EditableSection
+                                isEditing={userIsEditingActivity}
+                                onEdit={() => {
+                                    navigation.navigate(RouteName.Taglist, {
+                                        categories: hobbyCategories,
+                                        editorEditHeadline: translations.edit_subject,
+                                        editorAddHeadline: translations.add_subject,
+                                        editorTitlePlaceholder:
+                                            translations.description,
+                                        editorCategoryPlaceholder:
+                                            translations.category,
+                                        items: activity.tags,
+                                        headerTitle: translations.subjects,
+                                        onItemsChanged: (tags) =>
+                                            setActivity({ ...(activity as IActivity), tags: tags })
+                                    } as ICategorizedInputListConfig);
+                                }}
+                            >
+                                <Headline style={styles.headline}>
+                                    {translations.subjects}
+                                </Headline>
+                                <If condition={userIsEditingActivity}>
+                                    <Then>
+                                        {activity.tags?.map((tag, index) => (
+                                            <InfoItem
+                                                key={index}
+                                                keyText={tag.category}
+                                                valueText={tag.title}
+                                            />
+                                        ))}
+                                    </Then>
+                                    <Else>
+                                        <Text style={styles.text}>
+                                            {activity.tags?.map((t) => t.title).join(", ")}
+                                        </Text>
+                                    </Else>
+                                </If>
+                            </EditableSection>
+                        )}
 
-                {/* Criteria */}
-                {/*
-                <EditableSection editable={isEditable} onEdit={() => { }}>
-                    <Headline style={style.headline}>{translations.activity.criteria}</Headline>
-                    
-                    {activity.applicationDeadline !== undefined &&
-                        <InfoItem keyText={translations.activity.applicationDeadline} valueText={moment.unix(activity.applicationDeadline).format("LLL")} />}
-                    {activity.reqLocation !== undefined &&
-                        <InfoItem keyText={translations.activity.reqLocation} valueText={activity.reqLocation + (activity.reqLocationRadius ? " (+" + activity.reqLocationRadius + "km)" : "")} />}
-                    {activity.reqLanguage !== undefined &&
-                        <InfoItem keyText={translations.activity.reqLanguage} valueText={activity.reqLanguage.join(", ")} />}
-                    {activity.reqSex !== undefined &&
-                        <InfoItem keyText={translations.activity.reqSex} valueText={activity.reqSex} />}
-                    {activity.reqAge !== undefined &&
-                        <InfoItem keyText={translations.activity.reqAge} valueText={activity.reqAge.toString()} />}
-                    {activity.reqRelationshipState !== undefined &&
-                        <InfoItem keyText={translations.activity.reqRelationshipState} valueText={activity.reqRelationshipState} />}
-                    {activity.reqJob !== undefined && activity.reqJob.length > 0 &&
-                        <InfoItem keyText={translations.activity.reqJob} valueText={activity.reqJob.map(job => job.title + " (" + job.category + ")").join(",")} />} 
-                </EditableSection>
-                */}
+                    {/* Criteria */}
+                    {/*
+                    <EditableSection editable={isEditable} onEdit={() => { }}>
+                        <Headline style={style.headline}>{translations.activity.criteria}</Headline>
+                        
+                        {activity.applicationDeadline !== undefined &&
+                            <InfoItem keyText={translations.activity.applicationDeadline} valueText={moment.unix(activity.applicationDeadline).format("LLL")} />}
+                        {activity.reqLocation !== undefined &&
+                            <InfoItem keyText={translations.activity.reqLocation} valueText={activity.reqLocation + (activity.reqLocationRadius ? " (+" + activity.reqLocationRadius + "km)" : "")} />}
+                        {activity.reqLanguage !== undefined &&
+                            <InfoItem keyText={translations.activity.reqLanguage} valueText={activity.reqLanguage.join(", ")} />}
+                        {activity.reqSex !== undefined &&
+                            <InfoItem keyText={translations.activity.reqSex} valueText={activity.reqSex} />}
+                        {activity.reqAge !== undefined &&
+                            <InfoItem keyText={translations.activity.reqAge} valueText={activity.reqAge.toString()} />}
+                        {activity.reqRelationshipState !== undefined &&
+                            <InfoItem keyText={translations.activity.reqRelationshipState} valueText={activity.reqRelationshipState} />}
+                        {activity.reqJob !== undefined && activity.reqJob.length > 0 &&
+                            <InfoItem keyText={translations.activity.reqJob} valueText={activity.reqJob.map(job => job.title + " (" + job.category + ")").join(",")} />} 
+                    </EditableSection>
+                    */}
 
-                {/* Modal for description */}
-                <CustomModal
-                    onSubmit={handleDescriptionEditorSubmit}
-                    onCloseModal={handleDescriptionEditorClose}
-                    showModal={showDescriptionEditor}
-                >
-                    <InputField
-                        value={activityDescription}
-                        multiline
-                        dynamicHeight={{ min: 150, max: 300 }}
-                        onChangeText={setActivityDescription}
-                    />
-                </CustomModal>
-
-                {/* Modal for title */}
-                <CustomModal
-                    onSubmit={handleTitleEditorSubmit}
-                    onCloseModal={handleTitleEditorClose}
-                    showModal={showTitleEditor}
-                >
-                    <Text
-                        style={[
-                            styles.text,
-                            { marginBottom: getResponsiveSize(10) }
-                        ]}
+                    {/* Modal for description */}
+                    <CustomModal
+                        onSubmit={handleDescriptionEditorSubmit}
+                        onCloseModal={handleDescriptionEditorClose}
+                        showModal={showDescriptionEditor}
                     >
-                        {translations.activity_title_hint}
-                    </Text>
-                    <FormTextInput
-                        value={activityTitle}
-                        onChangeText={setActivityTitle}
-                        placeholder={translations.title}
-                        hasError={
-                            showError && activityTitle.length < MIN_TITLE_LENGTH
-                        }
-                    />
-                </CustomModal>
+                        <InputField
+                            value={activityDescription}
+                            multiline
+                            dynamicHeight={{ min: 150, max: 300 }}
+                            onChangeText={setActivityDescription}
+                        />
+                    </CustomModal>
+
+                    {/* Modal for title */}
+                    <CustomModal
+                        onSubmit={handleTitleEditorSubmit}
+                        onCloseModal={handleTitleEditorClose}
+                        showModal={showTitleEditor}
+                    >
+                        <Text
+                            style={[
+                                styles.text,
+                                { marginBottom: getResponsiveSize(10) }
+                            ]}
+                        >
+                            {translations.activity_title_hint}
+                        </Text>
+                        <FormTextInput
+                            value={activityTitle}
+                            onChangeText={setActivityTitle}
+                            placeholder={translations.title}
+                            hasError={
+                                showError && activityTitle.length < MIN_TITLE_LENGTH
+                            }
+                        />
+                    </CustomModal>
+                </View>
             </ScrollView>
             <If condition={!isOwnActivity}>
                 <EditApproval

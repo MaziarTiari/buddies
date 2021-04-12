@@ -1,18 +1,35 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { SessionContext } from "./context/SessionContext/SessionContext";
 import SignUpForm from "./components/SignUpForm/SignUpForm";
 import { NavigationContainer } from "@react-navigation/native";
 import Navigation from "./navigation/Navigation";
 import LoginForm from "./components/LoginForm/LoginForm";
-import { AuthState } from "./context/SessionContext/sessionContextModel";
+import { AuthState, secureStoreKeys } from "./context/SessionContext/sessionContextModel";
 import ProfileEditForm from "./components/ProfileEditForm/ProfileEditForm";
 import LoadingModal from "./components/LoadingModal/LoadingModal";
 import { Switch, Case, If } from 'react-if';
 import ErrorModal from "./components/ErrorModal/ErrorModal";
+import { getItemAsync, setItemAsync } from 'expo-secure-store';
 
 const App = (): JSX.Element => {
 
-    const { authState, isLoading, errorMessage } = useContext(SessionContext);
+    const { authState, isLoading, errorMessage, loginUser } = useContext(SessionContext);
+
+    useEffect(() => {
+        getItemAsync(secureStoreKeys.email)
+            .then(email => {
+                if (email === null) {
+                    return;
+                }
+                getItemAsync(secureStoreKeys.password)
+                    .then( async password => {
+                        if (password === null) {
+                            return;
+                        }
+                        await loginUser(email, password)
+                    })
+            })
+    }, [])
 
     return (
         <React.Fragment>
@@ -23,10 +40,10 @@ const App = (): JSX.Element => {
                 <Case condition={authState === AuthState.UNAUTHORIZED}>
                     <LoginForm />
                 </Case>
-                <Case condition={authState === AuthState.AUTHORIZED_WITHOUT_PROFILE}>
+                <Case condition={authState === AuthState.REGISTERED_WITHOUT_PROFILE}>
                     <ProfileEditForm />
                 </Case>
-                <Case condition={authState === AuthState.AUTHORIZED}>
+                <Case condition={authState === AuthState.AUTHENTICATED}>
                     <NavigationContainer>
                         <Navigation />
                     </NavigationContainer>

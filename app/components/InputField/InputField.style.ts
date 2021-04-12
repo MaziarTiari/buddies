@@ -11,7 +11,6 @@ const useInputFieldStyle = () => {
             fontSize: fontsizes.medium,
             lineHeight: getLineHeight(fontsizes.medium),
             flex: 1,
-            height:"100%",
         },
     });
 };

@@ -6,13 +6,13 @@ import { LanguageContext } from '../../context/LanguageContext/LanguageContext';
 import { useNavigation } from '@react-navigation/native';
 import { RouteName } from '../../navigation/Navigation.config';
 import { ITime } from '../FormDateInput/FormDatePicker';
-import { useDate } from '../../hooks/useLocalDate';
+import { useLocalDate } from '../../hooks/useLocalDate';
 
 function ActivityEditForm() {
     const navigation = useNavigation();
     const { activity, setActivity } = useContext(SessionContext);
     const { translations } = useContext(LanguageContext);
-    const { getTime } = useDate();
+    const { getTime } = useLocalDate();
     const [errorMessage, setErrorMessage] = useState<string | undefined>()
 
     navigation.setOptions({ title: activity.title });
@@ -106,7 +106,6 @@ function ActivityEditForm() {
                     : getTime(data[Field.END_TIME] as Date)
                 : undefined
         });
-        console.log(data);
         navigation.navigate(RouteName.Activity.Info);
     };
 

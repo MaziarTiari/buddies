@@ -6,10 +6,16 @@ import { IUserAvatar } from '../../models/UserAvatar';
 import moment from 'moment';
 import { MutableRefObject } from 'react';
 
-export enum AuthState { UNREGISTERED, UNAUTHORIZED, AUTHORIZED, AUTHORIZED_WITHOUT_PROFILE };
+export enum AuthState { 
+    UNREGISTERED, 
+    UNAUTHORIZED, 
+    AUTHENTICATED, 
+    REGISTERED_WITHOUT_PROFILE 
+};
 
 export interface IAvatarBgColor { userId: string; color: string };
 export interface ISessionContextModel {
+    accessTokenFactory: () => Promise<string>;
     authState: AuthState;
     setAuthState: (authState: AuthState) => void;
     user: IUser;
@@ -19,7 +25,7 @@ export interface ISessionContextModel {
     setUser: (user: IUser) => void;
     setUserProfile: (profile: IUserProfile) => void;
     setActivity: (activity: IActivity) => void;
-    authenticate: () => Promise<void>;
+    authenticate: () => Promise<string>;
     isLoading: boolean;
     setIsLoading: (state: boolean) => void;
     createUser: (createdUser: INewUser) => void;
@@ -84,7 +90,8 @@ export const initSessionContextModel: ISessionContextModel = {
         userId: "",
         images: [],
     },
-    authenticate: async () => console.warn("authenticate() not implemented!"),
+    accessTokenFactory: async () => "",
+    authenticate: async () => "authenticate() not implemented!",
     errorMessage: undefined,
     avatarList: [],
     setAuthState: () => console.warn("setAuthState() not implemented!"),
@@ -111,3 +118,8 @@ export const initSessionContextModel: ISessionContextModel = {
     setIsLoading: () => console.warn("setIsLoading() not implemented!"),
     logout: () => console.warn("logout() not implemented!"),
 };
+
+export const secureStoreKeys = {
+    password: "password",
+    email: "email"
+}

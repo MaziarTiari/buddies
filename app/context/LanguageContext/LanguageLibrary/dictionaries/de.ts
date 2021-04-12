@@ -102,6 +102,7 @@ export const germanDictionary: Dictionary = {
     error_invalid_phone: "Gib bitte eine korrekte Telefonnummer ein",
     wrong_login: "Falsche Logindaten!",
     wrong_date_range: "Enddatum sollte nach Startdatum sein",
+    server_error: "Server Probleme. Bitte versuche später noch einmal",
 
     // Prepositions
     job_preposition: "bei"

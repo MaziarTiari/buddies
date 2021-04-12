@@ -1,28 +1,35 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { Else, If, Then } from "react-if";
+import { View, Text, ActivityIndicator } from "react-native";
+import { useLocalDate } from "../../hooks/useLocalDate";
 import useChatItemStyle from "./ChatItem.style";
-
+import moment from 'moment';
 export interface ChatItemProps {
     message: string;
-    sender?: string;
-    date: Date;
+    author?: string;
+    date?: number;
     self: boolean;
 }
 
-const ChatItem = (Props: ChatItemProps) => {
-    const styles = useChatItemStyle();
+export default function ChatItem(props: ChatItemProps) {
+    const styles = useChatItemStyle(props.self);
+    const { getLocalTimeString } = useLocalDate();
     return (
-        <View
-            style={[
-                styles.messageContainer,
-                Props.self ? styles.messageContainerSelf : styles.messageContainerOther,
-            ]}
-        >
-            {Props.sender && <Text style={styles.nameText}>{Props.sender}</Text>}
-            <Text style={styles.messageText}>{Props.message}</Text>
-            <Text style={styles.dateText}>{Props.date.toLocaleTimeString()}</Text>
+        <View style={[styles.messageContainer, props.self ? styles.self : styles.otherMember]}>
+            {props.author && <Text style={styles.nameText}>{props.author}</Text>}
+            <Text style={styles.messageText}>{props.message}</Text>
+            <If condition={props.date !== undefined}>
+                <Then>
+                    <Text style={styles.dateText}>
+                        {getLocalTimeString(props.date!)}
+                    </Text>
+                </Then>
+                <Else>
+                    <View style={styles.dateText}>
+                        <ActivityIndicator size="small" color="white" />
+                    </View>
+                </Else>
+            </If>
         </View>
     );
 };
-
-export default ChatItem;
